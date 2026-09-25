@@ -189,3 +189,32 @@ def reload():
     service.assessments = {}
     service._save_cache()
     return service.summary()
+
+@app.get("/api/tracking-data", tags=["Tracking"])
+def tracking_data():
+    ds = service.ds
+
+    return {
+        "base": ds.base,
+        "zones": [
+            {
+                "name": z.name,
+                "center": [z.lat, z.lon],
+            }
+            for z in ds.zones
+        ],
+        "tracks": [
+            {
+                "id": track_id,
+                "points": [
+                    {
+                        "time": min_to_hhmm(p.t),
+                        "lat": p.lat,
+                        "lon": p.lon,
+                    }
+                    for p in track.points
+                ],
+            }
+            for track_id, track in ds.tracks.items()
+        ],
+    }
