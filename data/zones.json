@@ -15,8 +15,8 @@
     {
       "name": "Kuzeydogu Kavsagi",
       "center": [
-        39.942166,
-        32.879564
+        39.944,
+        32.878
       ]
     },
     {
@@ -29,36 +29,36 @@
     {
       "name": "Guneydogu Yerlesimi",
       "center": [
-        39.901514,
-        32.879564
+        39.902,
+        32.877
       ]
     },
     {
       "name": "Guney Kapisi Yaklasimi",
       "center": [
-        39.907451,
+        39.897,
         32.85306
       ]
     },
     {
       "name": "Guneybati Yolu",
       "center": [
-        39.901514,
-        32.826556
+        39.903,
+        32.831
       ]
     },
     {
       "name": "Bati Yerlesimi",
       "center": [
         39.92184,
-        32.815578
+        32.817
       ]
     },
     {
       "name": "Kuzeybati Yolu",
       "center": [
-        39.942166,
-        32.826556
+        39.944,
+        32.829
       ]
     }
   ]
