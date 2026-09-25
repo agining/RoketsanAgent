@@ -43,3 +43,4 @@ tmp/
 temp/
 
 # mock_data/ is intentionally included: required demo fixtures.
+/agent-roketsan/

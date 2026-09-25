@@ -7,7 +7,7 @@ export function routeFeatures(tracks: VehicleTrack[]): FeatureCollection<LineStr
     type: 'Feature', properties: { trackId: track.id }, geometry: { type: 'LineString', coordinates: track.points.map(point => [point.lon, point.lat]) },
   })) };
 }
-export function trackingBounds(data: TrackingData): [[number, number], [number, number]] {
+export function trackingBounds(data: Pick<TrackingData, 'base' | 'zones' | 'tracks'>): [[number, number], [number, number]] {
   const positions = [ [data.base.lon, data.base.lat], ...data.zones.map(zone => [zone.center[1], zone.center[0]]), ...data.tracks.flatMap(track => track.points.map(point => [point.lon, point.lat])) ];
   return positions.reduce<[[number, number], [number, number]]>((bounds, [lon, lat]) => [[Math.min(bounds[0][0], lon), Math.min(bounds[0][1], lat)], [Math.max(bounds[1][0], lon), Math.max(bounds[1][1], lat)]], [[Infinity, Infinity], [-Infinity, -Infinity]]);
 }

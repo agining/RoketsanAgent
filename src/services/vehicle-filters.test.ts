@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { defaultFilters, filterVehicles } from './vehicle-filters';
 import { futureFeatures, traveledFeatures } from './map-data';
 import type { TrackingData } from '../types/tracking';
-const data: TrackingData = { base: { name: 'Base', lat: 0, lon: 0 }, zones: [{ name: 'North', center: [0, .01] }], tracks: [
+const data: TrackingData = { base: { name: 'Base', lat: 0, lon: 0 }, zones: [{ name: 'North', center: [0, .01] }], analysis: { frames: {}, summary: { frames: 0, frame_risk_counts: { DUSUK: 0, ORTA: 0, YUKSEK: 0, KRITIK: 0 }, vehicles: 0, missed_detections_recovered: 0, offframe_tracks: 0, report_verdicts: {} } }, tracks: [
   { id: 'Approach', points: [{ time: '12:00', lat: 0, lon: .01 }, { time: '12:10', lat: 0, lon: 0 }] },
   { id: 'Parked', points: [{ time: '12:00', lat: 0, lon: .03 }, { time: '12:10', lat: 0, lon: .03 }] },
   { id: 'Depart', points: [{ time: '12:00', lat: 0, lon: 0 }, { time: '12:10', lat: 0, lon: .01 }] },

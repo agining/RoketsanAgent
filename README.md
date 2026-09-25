@@ -1,6 +1,6 @@
 # Atlas operations dashboard
 
-A browser-only vehicle-track dashboard built with React, TypeScript, Vite, Tailwind CSS, shadcn-style UI components, Zustand, MapLibre GL JS, and Recharts. **There is no backend, database, or API-key setup.** Included mock data is enough to run the demo.
+A vehicle-track dashboard built with React, TypeScript, Vite, Tailwind CSS, Zustand, MapLibre GL JS, and Recharts. The map, pipeline, reports and risk analysis use `mock_data/` as their single data source. The Python API is optional for deterministic playback, but is required for `/api/chat`.
 
 ## Prerequisites
 
@@ -38,22 +38,22 @@ Open **http://localhost:5173**. Stop the server with **Ctrl+C**.
 
 ## Environment setup
 
-**No environment variables or `.env` file are required.** There is no `.env.example` to copy and no API URL, GLM key, or secret to supply. A missing `.env` is expected. Local `.env` files are ignored in case configuration is introduced later; they must not be committed.
+The deterministic dashboard does not require an API key. `VITE_API_URL` selects the optional Python API used by Agent Chat and defaults to `http://localhost:8000`. `OPENAI_API_KEY` in `agent-roketsan/.env` is optional; without it, deterministic analysis and the rest of the dashboard continue to work.
 
-## Included mock data
+## Operational data source
 
-Keep the entire `mock_data/` directory in the checkout:
+The active frontend dataset is deliberately kept in one place:
 
 | File | Purpose | Used by the current frontend |
 | --- | --- | --- |
-| `tracks.csv` | 16 vehicles, 400 GPS records; `track_id,time,lat,lon` | Yes |
-| `zones.json` | Base location and eight named zone centers | Yes |
-| `image_meta.json` | Synthetic image metadata | No; fixture included |
-| `field_reports.json` | Synthetic field reports | No; fixture included |
-| `mock_predictions.csv` | Synthetic detection predictions | No; fixture included |
-| `ground_truth.json` | Synthetic reference labels | No; fixture included |
+| `mock_data/tracks.csv` | Playback tracks and GPS positions | Yes |
+| `mock_data/zones.json` | Base and zone centers | Yes |
+| `mock_data/image_meta.json` | Frame time and location metadata | Via pipeline |
+| `mock_data/detections.json` | Vehicle detections and labels | Via pipeline |
+| `mock_data/field_reports.json` | Field reports | Via pipeline |
+| `mock_data/analysis.json` | Pipeline-generated risk, evidence and report analysis | Yes |
 
-`src/services/tracking.ts` imports the CSV/JSON as Vite asset URLs, fetches them, and validates the data. Vite includes required assets in the build, sometimes inlining small JSON files. No manual copy to `public/`, data server, or absolute filesystem path is needed. Keep filenames and capitalization unchanged; imports use forward slashes and work on Windows too.
+`src/services/tracking.ts` loads tracks and zones from `mock_data`, while `src/services/analysis.ts` loads `mock_data/analysis.json`. The Python pipeline reads the same folder and writes its analysis back there. Startup validation rejects stale analysis whose track IDs do not match the active track export. After changing mock data, run `cd agent-roketsan && python run_pipeline.py`.
 
 ## Run and check commands
 

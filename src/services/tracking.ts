@@ -1,6 +1,9 @@
+// All operational inputs and generated analysis share the mock_data source.
 import tracksUrl from '../../mock_data/tracks.csv?url';
 import zonesUrl from '../../mock_data/zones.json?url';
 import type { BaseLocation, TrackingData, VehicleTrack, Zone } from '../types/tracking';
+import type { AnalysisData } from '../types/analysis';
+import { buildAnalysisIndex, loadAnalysisData } from './analysis';
 
 function coordinates(lat: number, lon: number) {
   return Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
@@ -32,14 +35,31 @@ export function parseZones(value: unknown): { base: BaseLocation; zones: Zone[] 
   )) throw new Error('Invalid base or zone coordinates.');
   return { base, zones };
 }
+
+/** Refuses to join stale analysis with a different track export. */
+export function validateDatasetConsistency(tracks: VehicleTrack[], analysis: AnalysisData): void {
+  const trackIds = new Set(tracks.map(track => track.id));
+  const analysisIds = new Set(buildAnalysisIndex(analysis).byTrackId.keys());
+  const missing = [...trackIds].filter(id => !analysisIds.has(id));
+  const extra = [...analysisIds].filter(id => !trackIds.has(id));
+  if (missing.length || extra.length) {
+    const details = [
+      missing.length ? `${missing.length} track(s) missing from analysis (${missing.slice(0, 3).join(', ')})` : '',
+      extra.length ? `${extra.length} unknown analysis track(s) (${extra.slice(0, 3).join(', ')})` : '',
+    ].filter(Boolean).join('; ');
+    throw new Error(`Mock dataset is out of sync: ${details}. Run the analysis pipeline again.`);
+  }
+}
+
 export async function loadTrackingData(signal?: AbortSignal): Promise<TrackingData> {
   const fetchFile = async (url: string, label: string) => {
     try { const response = await fetch(url, { signal }); if (!response.ok) throw new Error(`HTTP ${response.status}`); return response; }
     catch (error) { if (signal?.aborted) throw error; throw new Error(`${label} unavailable. Check the file and connection, then retry.`); }
   };
-  const [tracksResponse, zonesResponse] = await Promise.all([fetchFile(tracksUrl, 'tracks.csv'), fetchFile(zonesUrl, 'zones.json')]);
+  const [tracksResponse, zonesResponse, analysis] = await Promise.all([fetchFile(tracksUrl, 'tracks.csv'), fetchFile(zonesUrl, 'zones.json'), loadAnalysisData(signal)]);
   let tracks: VehicleTrack[];
   try { tracks = parseTracksCsv(await tracksResponse.text()); } catch (error) { throw new Error(`Malformed tracks.csv: ${error instanceof Error ? error.message : 'Cannot read track rows.'}`); }
-  try { return { tracks, ...parseZones(await zonesResponse.json()) }; }
+  validateDatasetConsistency(tracks, analysis);
+  try { return { tracks, ...parseZones(await zonesResponse.json()), analysis }; }
   catch (error) { throw new Error(`Invalid zones.json: ${error instanceof Error ? error.message : 'Cannot read reference locations.'}`); }
 }
