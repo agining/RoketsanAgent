@@ -1,0 +1,45 @@
+# Frontend dependencies and generated output
+node_modules/
+dist/
+.vite/
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
+blob-report/
+
+# Local environment values; examples may be versioned
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE / operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Generated temporary files and logs
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
+
+# mock_data/ is intentionally included: required demo fixtures.
