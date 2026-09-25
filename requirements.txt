@@ -1,0 +1,9 @@
+langchain>=1.0,<2
+langchain-openai>=1.0
+langgraph>=1.0
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-dotenv>=1.0
+pydantic>=2.7
+# opsiyonel: gerçek model geldiğinde
+# ultralytics>=8.3
