@@ -110,7 +110,7 @@ def parse_report(text: str, zone_names: list[str]) -> ParsedReport:
     m = re.search(r"\b(kuzeydogu|kuzeybati|guneydogu|guneybati|kuzey|guney|dogu|bati)\s+yonun", n)
     if m:
         p.direction_deg = DIRECTIONS[m.group(1)]
-    p.toward_base = bool(re.search(r"\buse\s+dogru|\bsusse\b|merkez\s+use", n))
+    p.toward_base = bool(re.search(r"\buse\s+dogru|\busse\b|merkez\s+use", n))
     p.zone_traffic_normal = "trafik akisi normal" in n
     p.friendly_claim = "dost" in n or "bize ait" in n
     p.friendly_confirmed_wording = "kimlik teyidi" in n or "teyit edilmis" in n or "teyidi yapilmistir" in n
@@ -248,15 +248,24 @@ class ReportVerifier:
         loc_only = [c for c in cands if c[2] is not None and c[2] <= R and c not in timely]
 
         v.checks["kare_icinde"] = bool(frames_here)
-        v.checks["rapor_saatinde_eslesen_iz_sayisi"] = len(timely)
+        v.checks["rapor_saatinde_eslesen_iz_sayisi"] = len({c[1] or c[0] for c in timely})
 
-        if timely:
-            best = min(timely, key=lambda c: min(x for x in (c[2] if same_time(c) else None, c[3]) if x is not None))
-            self._judge_matched(v, p, t, best, timely)
-            return
+        def eff_dist(c):  # adayın rapor noktasına en yakın (yarıçap içindeki) mesafesi
+            return min(x for x in (c[2], c[3]) if x is not None and x <= R)
 
-        if loc_only:
-            best = min(loc_only, key=lambda c: c[2])
+        def type_mismatch(c):  # rapor tip veriyorsa ve aracın etiketi biliniyorsa uyuşmazlık
+            label = (self.state.vehicles.get(c[0]) or {}).get("label")
+            return bool(p.types) and label is not None and label not in p.types
+
+        # "Rapor saatinde yakın" adaylar, "çekim anında yakın" adaylardan körü körüne öne alınmaz:
+        # önce tip uyumu, sonra mesafe. (brief img_000860: 12:35 raporu 3 m'deki kamyonu anlatıyor;
+        # 40 m ötede park etmiş binek aracı rapor saatinde yarıçap içinde diye seçilmemeli.)
+        pool = timely + loc_only
+        if pool:
+            best = min(pool, key=lambda c: (type_mismatch(c), eff_dist(c)))
+            if best in timely:
+                self._judge_matched(v, p, t, best, timely)
+                return
             veh = self.state.vehicles[best[0]]
             v.matched_vehicle_id, v.matched_track_id = best[0], best[1]
             v.related_frames = sorted(set(v.related_frames) | {veh["frame_id"]})
@@ -271,6 +280,13 @@ class ReportVerifier:
                          f"çekim anında ({veh['capture_time']}) örtüşüyor, ancak araç {where}. "
                          "Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle "
                          "tespitle karşılaştırılamadı.")
+            if p.claims_normal:
+                risk, scen = self._track_final(best[1]) if best[1] else (veh["risk_level"], veh["scenario"])
+                threat = risk in ("YUKSEK", "KRITIK")
+                v.checks["olagan_iddiasi"] = "aracın güncel durumuyla çelişiyor" if threat else "uyumlu"
+                if threat:
+                    v.summary += (f" Ayrıca 'olağan' nitelendirmesi aracın güncel durumuyla ({risk}, {scen}) "
+                                  "çelişiyor; rapor güven verici kanıt olarak kullanılmamalı.")
             return
 
         if frames_here:
@@ -284,6 +300,17 @@ class ReportVerifier:
         v.verdict, v.report_type = "dogrulanamaz", "HAYALET_KARE_DISI"
         v.checks.update({"konum": "hiçbir karenin kapsamında değil, yakın iz yok"})
         v.summary = "Koordinat hiçbir karenin kapsamında değil ve rapor saatinde yakında iz yok; doğrulanamaz."
+
+    def _track_final(self, tid: str) -> tuple[str | None, str | None]:
+        """İzin son konumundaki değerlendirmesi: kare dışıysa oradan, değilse en geç çekimli kayıttan."""
+        off = self.state.offframe_risk.get(tid)
+        if off:
+            return off["risk_level"], off["scenario"]
+        recs = [v for v in self.state.vehicles.values() if v["track_id"] == tid and not v["filtered"]]
+        if not recs:
+            return None, None
+        last = max(recs, key=lambda v: v["capture_min"])
+        return last["risk_level"], last["scenario"]
 
     def _type_check(self, p: ParsedReport, label: str | None) -> str:
         if not p.types:
@@ -300,8 +327,11 @@ class ReportVerifier:
         if veh:
             v.related_frames = sorted(set(v.related_frames) | {veh["frame_id"]})
         label = veh["label"] if veh else None
-        risk = veh["risk_level"] if veh else self.state.offframe_risk.get(tid, {}).get("risk_level")
-        scenario = veh["scenario"] if veh else self.state.offframe_risk.get(tid, {}).get("scenario")
+        # Bir iz birden fazla karede kayıtlı olabilir (erken karedeki anlık görüntü + bittiği kare).
+        # Tehdit / devriye yargısı izin SON durumuna göre yapılır; eşleşen anlık görüntüye göre değil.
+        risk, scenario = self._track_final(tid) if tid else (None, None)
+        if risk is None and veh:
+            risk, scenario = veh["risk_level"], veh["scenario"]
 
         # davranış (rapor saatindeki iz hareketinden; iz yoksa karedeki senaryodan)
         spd = _speed_at(track, t) if track else None
@@ -315,7 +345,9 @@ class ReportVerifier:
 
         # sayı iddiası
         if p.count and p.count > 1:
-            same = [c for c in timely if (self.state.vehicles.get(c[0]) or {}).get("label") in (p.types or [label])]
+            # aynı iz birden fazla karede kayıtlı olabilir → iz (yoksa araç) kimliğine göre tekilleştir
+            same = {c[1] or c[0] for c in timely
+                    if (self.state.vehicles.get(c[0]) or {}).get("label") in (p.types or [label])}
             v.checks["sayi"] = "uyumlu" if len(same) >= p.count else f"uyumsuz (bulunan {len(same)})"
 
         behav = "belirtilmemis"
@@ -376,8 +408,9 @@ class ReportVerifier:
             v.summary = f"Konum/tip tutarlı ancak araç sayısı tutmuyor: {v.checks['sayi']}."
         elif v.checks["tip"] == "dogrulanamaz":
             v.verdict, v.report_type = "kismen_uyumlu", "IZ_ESLESMESI"
-            v.summary = (f"Rapor saatinde {tid} izi bu noktada; davranış {v.checks['davranis']}, ancak iz hiçbir karede "
-                         "görünmediği için araç tipi doğrulanamadı.")
+            why = ("araç karede tespit edilmediği (yalnızca iz) için" if veh else "iz hiçbir karede görünmediği için")
+            v.summary = (f"Rapor saatinde {tid} izi bu noktada; davranış {v.checks['davranis']}, ancak {why} "
+                         "araç tipi doğrulanamadı.")
         else:
             v.verdict, v.report_type = "destekler", "DOGRU_GOZLEM"
             v.summary = (f"Konum, tip ({label}) ve davranış tespit/iz verisiyle tutarlı"
@@ -387,9 +420,12 @@ class ReportVerifier:
 
     # -------------------------------------------------------------- bölge bazlı
     def _threats_in_zone(self, zone: str, t: int, window: int = 60) -> list[dict]:
-        out = []
+        out, seen = [], set()
         for veh in self.state.vehicles.values():
             if veh["filtered"] or veh["risk_level"] not in ("YUKSEK", "KRITIK"):
+                continue
+            key = veh["track_id"] or veh["vehicle_id"]   # aynı iz birden fazla karede olabilir
+            if key in seen:
                 continue
             in_zone_now = False
             if veh["track_id"]:
@@ -397,6 +433,7 @@ class ReportVerifier:
                 in_zone_now = bool(pos) and self.ds.zone_of(*pos) == zone
             if in_zone_now or (veh["zone"] == zone and abs(veh["capture_min"] - t) <= window):
                 out.append(veh)
+                seen.add(key)
         return out
 
     def _verify_zone_normal(self, v: ReportVerdict, p: ParsedReport, t: int):
@@ -426,6 +463,8 @@ class ReportVerifier:
             toward = hd is not None and angle_diff(hd, bearing_deg(*pos, self.ds.base["lat"], self.ds.base["lon"])) <= 45
             if (p.claims_moving and (spd or 0) > 1.0 and (toward or not p.toward_base)) or (p.claims_stationary and (spd or 0) <= 1.0):
                 cands.append((veh, spd, toward))
+        # ilk bulunan değil, en riskli aday (dict sırasına bağımlı olmasın)
+        cands.sort(key=lambda c: RISK_ORDER.index(c[0]["risk_level"]), reverse=True)
         type_match = [c for c in cands if not p.types or c[0]["label"] in p.types]
         v.checks["bolgede_uyan_arac_sayisi"] = len(cands)
         v.checks["tip_uyan"] = len(type_match)

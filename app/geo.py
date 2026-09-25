@@ -36,8 +36,11 @@ def to_local_xy(lat: float, lon: float, lat0: float, lon0: float) -> tuple[float
 
 
 def hhmm_to_min(t: str) -> int:
-    h, m = t.strip().split(":")
-    return int(h) * 60 + int(m)
+    """'HH:MM' veya 'HH:MM:SS' → gün içindeki dakika (saniye yuvarlanır)."""
+    parts = t.strip().split(":")
+    h, m = int(parts[0]), int(parts[1])
+    s = int(float(parts[2])) if len(parts) > 2 else 0
+    return h * 60 + m + round(s / 60)
 
 
 def min_to_hhmm(m: int | float) -> str:

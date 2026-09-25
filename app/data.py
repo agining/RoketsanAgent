@@ -75,7 +75,8 @@ class Dataset:
 
 def load_dataset(data_dir: Path) -> Dataset:
     data_dir = Path(data_dir)
-    zones_raw = json.loads((data_dir / "zones.json").read_text(encoding="utf-8"))
+    # utf-8-sig: dosya BOM'lu gelirse de okur, BOM'suz UTF-8'i de aynen okur
+    zones_raw = json.loads((data_dir / "zones.json").read_text(encoding="utf-8-sig"))
     base = zones_raw["base"]
     zones = []
     for z in zones_raw["zones"]:
@@ -86,17 +87,21 @@ def load_dataset(data_dir: Path) -> Dataset:
             dist_m=haversine_m(base["lat"], base["lon"], lat, lon),
         ))
 
-    image_meta = json.loads((data_dir / "image_meta.json").read_text(encoding="utf-8"))
+    image_meta = json.loads((data_dir / "image_meta.json").read_text(encoding="utf-8-sig"))
+    if isinstance(image_meta, list):  # [{"image_id": ..., ...}] biçimine de dayanıklı ol
+        image_meta = {m.get("image_id") or m.get("id"): m for m in image_meta}
 
     tracks: dict[str, list[TrackPoint]] = {}
-    with open(data_dir / "tracks.csv", encoding="utf-8") as f:
+    with open(data_dir / "tracks.csv", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             tracks.setdefault(row["track_id"], []).append(
                 TrackPoint(hhmm_to_min(row["time"]), float(row["lat"]), float(row["lon"]))
             )
     track_objs = {tid: Track(tid, sorted(p, key=lambda x: x.t)) for tid, p in tracks.items()}
 
-    reports = json.loads((data_dir / "field_reports.json").read_text(encoding="utf-8"))
+    reports = json.loads((data_dir / "field_reports.json").read_text(encoding="utf-8-sig"))
+    if isinstance(reports, dict):  # {"reports": [...]} biçimine de dayanıklı ol
+        reports = reports.get("reports") or next((v for v in reports.values() if isinstance(v, list)), [])
     for i, r in enumerate(reports):
         r.setdefault("id", f"R{i:03d}")
 
