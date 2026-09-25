@@ -1,45 +1,227 @@
-import tracksUrl from '../../mock_data/tracks.csv?url';
-import zonesUrl from '../../mock_data/zones.json?url';
-import type { BaseLocation, TrackingData, VehicleTrack, Zone } from '../types/tracking';
+import type {
+  BaseLocation,
+  TrackingData,
+  VehicleTrack,
+  Zone,
+} from '../types/tracking';
 
-function coordinates(lat: number, lon: number) {
-  return Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+
+const API_URL =
+  import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+
+
+function coordinates(lat: number, lon: number): boolean {
+  return (
+    Number.isFinite(lat) &&
+    Number.isFinite(lon) &&
+    Math.abs(lat) <= 90 &&
+    Math.abs(lon) <= 180
+  );
 }
-/** Parses the unquoted four-column track export; preserves source point order. */
-export function parseTracksCsv(csv: string): VehicleTrack[] {
-  const lines = csv.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-  if (lines.shift()?.trim() !== 'track_id,time,lat,lon') throw new Error('Unexpected tracks.csv header.');
-  const tracks = new Map<string, VehicleTrack>();
-  lines.forEach((line, index) => {
-    if (!line.trim()) return;
-    const columns = line.split(',').map(value => value.trim());
-    const [id, time, rawLat, rawLon] = columns;
-    const lat = Number(rawLat), lon = Number(rawLon);
-    if (columns.length !== 4 || !id || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time) || !rawLat || !rawLon || !coordinates(lat, lon)) {
-      throw new Error(`Invalid track data on row ${index + 2}.`);
-    }
-    if (!tracks.has(id)) tracks.set(id, { id, points: [] });
-    tracks.get(id)!.points.push({ time, lat, lon });
-  });
-  if (!tracks.size) throw new Error('No vehicle tracks found.');
-  return [...tracks.values()];
-}
-export function parseZones(value: unknown): { base: BaseLocation; zones: Zone[] } {
-  if (!value || typeof value !== 'object') throw new Error('Invalid zone data.');
-  const { base, zones } = value as { base?: BaseLocation; zones?: Zone[] };
-  if (!base || typeof base.name !== 'string' || !coordinates(base.lat, base.lon) || !Array.isArray(zones) || zones.some(zone =>
-    !zone || typeof zone.name !== 'string' || !Array.isArray(zone.center) || zone.center.length !== 2 || !coordinates(zone.center[0], zone.center[1])
-  )) throw new Error('Invalid base or zone coordinates.');
-  return { base, zones };
-}
-export async function loadTrackingData(signal?: AbortSignal): Promise<TrackingData> {
-  const fetchFile = async (url: string, label: string) => {
-    try { const response = await fetch(url, { signal }); if (!response.ok) throw new Error(`HTTP ${response.status}`); return response; }
-    catch (error) { if (signal?.aborted) throw error; throw new Error(`${label} unavailable. Check the file and connection, then retry.`); }
+
+
+function validateBase(value: unknown): BaseLocation {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Invalid base data.');
+  }
+
+  const base = value as Partial<BaseLocation>;
+
+  if (
+    typeof base.name !== 'string' ||
+    typeof base.lat !== 'number' ||
+    typeof base.lon !== 'number' ||
+    !coordinates(base.lat, base.lon)
+  ) {
+    throw new Error('Invalid base coordinates.');
+  }
+
+  return {
+    name: base.name,
+    lat: base.lat,
+    lon: base.lon,
   };
-  const [tracksResponse, zonesResponse] = await Promise.all([fetchFile(tracksUrl, 'tracks.csv'), fetchFile(zonesUrl, 'zones.json')]);
-  let tracks: VehicleTrack[];
-  try { tracks = parseTracksCsv(await tracksResponse.text()); } catch (error) { throw new Error(`Malformed tracks.csv: ${error instanceof Error ? error.message : 'Cannot read track rows.'}`); }
-  try { return { tracks, ...parseZones(await zonesResponse.json()) }; }
-  catch (error) { throw new Error(`Invalid zones.json: ${error instanceof Error ? error.message : 'Cannot read reference locations.'}`); }
+}
+
+
+function validateZones(value: unknown): Zone[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Invalid zones data.');
+  }
+
+  return value.map((item, index) => {
+    if (!item || typeof item !== 'object') {
+      throw new Error(`Invalid zone at index ${index}.`);
+    }
+
+    const zone = item as {
+      name?: unknown;
+      center?: unknown;
+    };
+
+    if (
+      typeof zone.name !== 'string' ||
+      !Array.isArray(zone.center) ||
+      zone.center.length !== 2
+    ) {
+      throw new Error(`Invalid zone at index ${index}.`);
+    }
+
+    const [lat, lon] = zone.center;
+
+    if (
+      typeof lat !== 'number' ||
+      typeof lon !== 'number' ||
+      !coordinates(lat, lon)
+    ) {
+      throw new Error(`Invalid zone coordinates at index ${index}.`);
+    }
+
+    return {
+      name: zone.name,
+      center: [lat, lon] as [number, number],
+    };
+  });
+}
+
+
+function validateTracks(value: unknown): VehicleTrack[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Invalid tracks data.');
+  }
+
+  return value.map((item, trackIndex) => {
+    if (!item || typeof item !== 'object') {
+      throw new Error(`Invalid track at index ${trackIndex}.`);
+    }
+
+    const track = item as {
+      id?: unknown;
+      points?: unknown;
+    };
+
+    if (
+      typeof track.id !== 'string' ||
+      !track.id.trim() ||
+      !Array.isArray(track.points)
+    ) {
+      throw new Error(`Invalid track at index ${trackIndex}.`);
+    }
+
+    const points = track.points.map((point, pointIndex) => {
+      if (!point || typeof point !== 'object') {
+        throw new Error(
+          `Invalid point ${pointIndex} in track ${track.id}.`
+        );
+      }
+
+      const value = point as {
+        time?: unknown;
+        lat?: unknown;
+        lon?: unknown;
+      };
+
+      if (
+        typeof value.time !== 'string' ||
+        !/^([01]\d|2[0-3]):[0-5]\d$/.test(value.time) ||
+        typeof value.lat !== 'number' ||
+        typeof value.lon !== 'number' ||
+        !coordinates(value.lat, value.lon)
+      ) {
+        throw new Error(
+          `Invalid point ${pointIndex} in track ${track.id}.`
+        );
+      }
+
+      return {
+        time: value.time,
+        lat: value.lat,
+        lon: value.lon,
+      };
+    });
+
+    return {
+      id: track.id,
+      points,
+    };
+  });
+}
+
+
+export function validateTrackingData(value: unknown): TrackingData {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Invalid tracking data.');
+  }
+
+  const data = value as {
+    base?: unknown;
+    zones?: unknown;
+    tracks?: unknown;
+  };
+
+  const base = validateBase(data.base);
+  const zones = validateZones(data.zones);
+  const tracks = validateTracks(data.tracks);
+
+  return {
+    base,
+    zones,
+    tracks,
+  };
+}
+
+
+export async function loadTrackingData(
+  signal?: AbortSignal
+): Promise<TrackingData> {
+  let response: Response;
+
+  try {
+    response = await fetch(
+      `${API_URL}/api/tracking-data`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+        signal,
+      }
+    );
+  } catch (error) {
+    if (signal?.aborted) {
+      throw error;
+    }
+
+    throw new Error(
+      'Tracking API unavailable. Backend bağlantısını kontrol edin.'
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      `Tracking API request failed: HTTP ${response.status}`
+    );
+  }
+
+  let json: unknown;
+
+  try {
+    json = await response.json();
+  } catch {
+    throw new Error(
+      'Tracking API geçerli JSON döndürmedi.'
+    );
+  }
+
+  try {
+    return validateTrackingData(json);
+  } catch (error) {
+    throw new Error(
+      `Invalid tracking API response: ${
+        error instanceof Error
+          ? error.message
+          : 'Unknown response format.'
+      }`
+    );
+  }
 }
