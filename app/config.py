@@ -14,7 +14,7 @@ load_dotenv(ROOT / ".env")
 @dataclass(frozen=True)
 class Thresholds:
     # --- tespit ---
-    min_confidence: float = 0.40          # altı düşük güvenli yanlış pozitif sayılır
+    min_confidence: float = 0.35          # altı düşük güvenli yanlış pozitif sayılır
     # --- iz eşleştirme ---
     match_radius_m: float = 5.0           # iz son noktası ↔ kutu merkezi (sapma <1 m + ±2 px jitter)
     track_end_tol_min: int = 5            # iz bu karede "bitiyor" sayılması için |t_end - t_cap| toleransı
