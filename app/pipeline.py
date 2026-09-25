@@ -10,7 +10,8 @@ from .data import Dataset, load_dataset
 from .detector import BaseDetector, build_detector
 from .geo import bbox_center_latlon, frame_center, hhmm_to_min, min_to_hhmm, point_in_frame
 from .reports import ReportVerifier
-from .risk import classify_tracked, classify_untracked, max_risk
+from .risk import (classify_tracked, classify_untracked, firm_margin, max_risk, tracked_margin,
+                   untracked_margin)
 from .tracking import compute_features
 from .geo import haversine_m
 
@@ -53,40 +54,34 @@ class Analyzer:
     # ---------------------------------------------------------------------------
     def run(self) -> WorldState:
         st = WorldState(generated_at=time.time(), detector=self.detector.name)
-        frames = sorted(self.ds.image_meta.items(), key=lambda kv: (hhmm_to_min(kv[1]["capture_time"]), kv[0]))
+        assigned: set[str] = set()
 
-        for fid, meta in frames:
+        for fid, meta in sorted(self.ds.image_meta.items(), key=lambda kv: kv[1]["capture_time"]):
             t_cap = hhmm_to_min(meta["capture_time"])
             clat, clon = frame_center(meta)
             fr = {"frame_id": fid, "capture_time": meta["capture_time"], "capture_min": t_cap, "meta": meta,
                   "center": [clat, clon], "zone": self.ds.zone_of(clat, clon),
-                  "dist_to_base_m": round(self.ds.dist_to_base(clat, clon), 1), "vehicle_ids": [],
-                  "passing_tracks": []}
+                  "dist_to_base_m": round(self.ds.dist_to_base(clat, clon), 1), "vehicle_ids": []}
             dets = self.detector.detect(fid)
-            positions = {tid: pos for tid, tr in self.ds.tracks.items()
-                         if (pos := self._position_for_match(tr, t_cap)) is not None}
 
-            # 1) iz eşleştirme — bire bir kısıtı SADECE KARE İÇİNDE.
-            #    Bir iz, bittiği kareden önce başka bir karenin alanından geçebilir. Global bir
-            #    "atanmış izler" kümesi, izi o erken kareye bağlayıp asıl karesindeki tespitten
-            #    koparıyordu (araç UNTRACKED kalıp davranış özniteliklerini kaybediyordu).
-            #    Aynı mesafe aralığında, bu karede BİTEN iz geçen ize tercih edilir.
-            pairs, centers, nearest = [], [], []
+            # 1) iz eşleştirme — global açgözlü, bire bir
+            pairs = []
+            centers = []
             for i, d in enumerate(dets):
                 lat, lon = bbox_center_latlon(d["bbox"], meta)
                 centers.append((lat, lon))
-                ranked = sorted((haversine_m(lat, lon, *pos), tid) for tid, pos in positions.items())
-                nearest.append(ranked[:2])
                 if d["confidence"] < self.th.min_confidence:
                     continue
-                for dist, tid in ranked:
-                    if dist > self.th.match_radius_m:
-                        break
-                    pairs.append((0 if self._ends_at(tid, t_cap) else 1, dist, i, tid))
+                for tid, tr in self.ds.tracks.items():
+                    pos = tr.position_at(t_cap)
+                    if pos:
+                        dist = haversine_m(lat, lon, *pos)
+                        if dist <= self.th.match_radius_m:
+                            pairs.append((dist, i, tid))
             det_to_track: dict[int, tuple[str, float]] = {}
-            used: set[str] = set()
-            for _, dist, i, tid in sorted(pairs):
-                if i in det_to_track or tid in used:
+            used = set()
+            for dist, i, tid in sorted(pairs):
+                if i in det_to_track or tid in used or tid in assigned:
                     continue
                 det_to_track[i] = (tid, dist)
                 used.add(tid)
@@ -98,85 +93,59 @@ class Analyzer:
                 tid, mdist = det_to_track.get(i, (None, None))
                 rec = self._vehicle_record(vid, fid, meta, t_cap, d["label"], d["confidence"], d["bbox"],
                                            lat, lon, tid, mdist, source="detection")
-                # brief'teki gibi: "T0122 · <1 m (ikinci en yakın: T0032 · 41 m)" — hem açıklama hem
-                # gerçek veride match_radius_m ayarı için teşhis bilgisi
-                rec["track_candidates"] = [{"track_id": t, "dist_m": round(dd, 1)} for dd, t in nearest[i]]
                 if d["confidence"] < self.th.min_confidence:
                     rec.update(filtered=True, risk_level="DUSUK", scenario="FILTERED_LOW_CONF",
                                risk_reasons=[f"Güven {d['confidence']:.2f} < {self.th.min_confidence:.2f}: "
-                                             "olası yanlış pozitif, risk hesabına katılmadı."])
+                                             "olası yanlış pozitif, risk hesabına katılmadı."],
+                               margin=firm_margin("Düşük güvenli tespit; risk hesabına katılmadı."))
                 st.vehicles[vid] = rec
                 fr["vehicle_ids"].append(vid)
+            assigned |= used
 
-            # 3) çekim anında karenin içinde olup bu karede tespitle eşleşmemiş izler
-            for tid, pos in positions.items():
-                if tid in used or not point_in_frame(pos[0], pos[1], meta):
+            # 3) karede olduğu halde tespit edilmemiş izler (kaçırılan tespit)
+            for tid, tr in self.ds.tracks.items():
+                if tid in assigned:
                     continue
-                if self._ends_at(tid, t_cap):
-                    # iz bu karede bitiyor → aracın kendi karesi; tespit yok = kaçırılmış tespit
+                pos = tr.position_at(t_cap)
+                if pos and point_in_frame(pos[0], pos[1], meta):
                     vid = f"{fid}_trk_{tid}"
                     rec = self._vehicle_record(vid, fid, meta, t_cap, None, None, None, pos[0], pos[1], tid, 0.0,
                                                source="track_only")
                     rec["risk_reasons"].insert(0, "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir.")
                     st.vehicles[vid] = rec
                     fr["vehicle_ids"].append(vid)
-                else:
-                    # iz bu karenin alanından çekim anında sadece GEÇİYOR; aracın son konumu başka yerde.
-                    # Araç kaydı açılmaz: asıl değerlendirme izin bittiği yerde yapılır (kendi karesi
-                    # ya da kare dışı). Burada bağlam olarak tutulur.
-                    fr["passing_tracks"].append({"track_id": tid, "lat": round(pos[0], 6), "lon": round(pos[1], 6),
-                                                 "track_end": min_to_hhmm(self.ds.tracks[tid].t_end)})
+                    assigned.add(tid)
             st.frames[fid] = fr
 
-        # 4) kare dışı izler: izin BİTTİĞİ andaki durumu hiçbir karede değerlendirilmemiş her iz.
-        #    Değişmez: her iz, son konumunda tam bir kez değerlendirilir (kendi karesinde ya da burada).
-        #    Erken bir karede görünmüş (geçen/eşleşen) iz de son durumuyla burada değerlendirilir.
-        evaluated_at_end = {v["track_id"] for v in st.vehicles.values()
-                            if v["track_id"] and self._ends_at(v["track_id"], v["capture_min"])}
-        seen_in: dict[str, set[str]] = {}
-        for v in st.vehicles.values():
-            if v["track_id"]:
-                seen_in.setdefault(v["track_id"], set()).add(v["frame_id"])
-        for fr in st.frames.values():
-            for p in fr["passing_tracks"]:
-                seen_in.setdefault(p["track_id"], set()).add(fr["frame_id"])
+        # 4) hiçbir kareye bağlanmayan izler (kare dışı; aralarında tehdit olabilir)
         for tid, tr in self.ds.tracks.items():
-            if tid in evaluated_at_end:
+            if tid in assigned:
                 continue
             st.offframe_track_ids.append(tid)
             f = compute_features(tr, self.ds, self.th, tr.t_end)
             scen, risk, reasons = classify_tracked(f, self.th)
             last = tr.points[-1]
             st.offframe_risk[tid] = {"track_id": tid, "scenario": scen, "risk_level": risk, "risk_reasons": reasons,
+                                     "margin": tracked_margin(f, self.th, scen, risk),
                                      "last_time": min_to_hhmm(last.t), "lat": last.lat, "lon": last.lon,
-                                     "zone": self.ds.zone_of(last.lat, last.lon), "features": f.to_dict(),
-                                     "seen_in_frames": sorted(seen_in.get(tid, ())),   # boş = hiçbir karede görünmedi
-                                     "friendly_confirmed_by": []}
+                                     "zone": self.ds.zone_of(last.lat, last.lon), "features": f.to_dict()}
 
         # 5) rapor doğrulama
         verifier = ReportVerifier(self.ds, st, self.th)
         verdicts = [verifier.verify(r) for r in self.ds.reports]
         for v in verdicts:
-            # sadece doğrulanmış (destekler) resmi dost teyidi riski düşürür; kismen_uyumlu düşürmez
-            if v.report_type == "DOST_TEYITLI" and v.verdict == "destekler":
-                self._apply_friendly(st, v)
+            if v.report_type == "DOST_TEYITLI" and v.verdict == "destekler" and v.matched_vehicle_id:
+                veh = st.vehicles[v.matched_vehicle_id]
+                veh["risk_level"] = "DUSUK"
+                veh["friendly_confirmed_by"].append(v.report_id)
+                veh["risk_reasons"].append(f"Resmi dost teyidi ({v.report_id}, {v.time}) — risk DUSUK'e indirildi.")
+                veh["margin"] = firm_margin(f"Resmi dost teyidi ({v.report_id}).")
+            elif v.report_type == "DOST_TEYITLI" and v.matched_track_id in st.offframe_risk:
+                st.offframe_risk[v.matched_track_id]["risk_level"] = "DUSUK"
+                st.offframe_risk[v.matched_track_id]["margin"] = firm_margin(f"Resmi dost teyidi ({v.report_id}).")
             if v.matched_vehicle_id:
                 st.vehicles[v.matched_vehicle_id]["report_ids"].append(v.report_id)
         st.reports = [v.to_dict() for v in verdicts]
-
-        # 5b) erken karedeki anlık görüntüye izin son durumunu iliştir (ajan/UI bağlamı için)
-        final_state = {tid: {"where": "kare_disi", "risk_level": r["risk_level"], "scenario": r["scenario"],
-                             "time": r["last_time"]} for tid, r in st.offframe_risk.items()}
-        for v in st.vehicles.values():
-            if v["track_id"] and self._ends_at(v["track_id"], v["capture_min"]):
-                final_state[v["track_id"]] = {"where": v["frame_id"], "risk_level": v["risk_level"],
-                                              "scenario": v["scenario"], "time": v["capture_time"]}
-        for v in st.vehicles.values():
-            if v["track_id"] and not self._ends_at(v["track_id"], v["capture_min"]):
-                v["track_final_state"] = final_state.get(v["track_id"])
-        for fr in st.frames.values():
-            for p in fr["passing_tracks"]:
-                p["final_state"] = final_state.get(p["track_id"])
 
         # 6) kare risk seviyesi = araçların en yükseği
         for fid, fr in st.frames.items():
@@ -189,37 +158,6 @@ class Analyzer:
         return st
 
     # ---------------------------------------------------------------------------
-    def _ends_at(self, tid: str, t_cap: int) -> bool:
-        """İz bu çekim anında mı bitiyor? (veri: kare araçlarının izi çekim anında biter)"""
-        return abs(self.ds.tracks[tid].t_end - t_cap) <= self.th.track_end_tol_min
-
-    def _position_for_match(self, tr, t_cap: int) -> tuple[float, float] | None:
-        """İz penceresi içindeyse interpolasyon. Çekim anı izin son noktasından en fazla
-        track_end_tol_min sonra ise (ızgara dışı çekim saati) son hızla kısa ekstrapolasyon."""
-        pos = tr.position_at(t_cap)
-        if pos is not None or not (0 < t_cap - tr.t_end <= self.th.track_end_tol_min):
-            return pos
-        if len(tr.points) < 2:
-            return tr.points[-1].lat, tr.points[-1].lon
-        a, b = tr.points[-2], tr.points[-1]
-        r = (t_cap - b.t) / max(b.t - a.t, 1)
-        return b.lat + r * (b.lat - a.lat), b.lon + r * (b.lon - a.lon)
-
-    def _apply_friendly(self, st: WorldState, v) -> None:
-        """Doğrulanmış resmi dost teyidi: aynı izin TÜM kayıtlarına ve kare dışı kaydına uygulanır."""
-        reason = f"Resmi dost teyidi ({v.report_id}, {v.time}) — risk DUSUK'e indirildi."
-        tid = v.matched_track_id
-        for veh in st.vehicles.values():
-            if veh["vehicle_id"] == v.matched_vehicle_id or (tid and veh["track_id"] == tid):
-                veh["risk_level"] = "DUSUK"
-                veh["friendly_confirmed_by"].append(v.report_id)
-                veh["risk_reasons"].append(reason)
-        if tid in st.offframe_risk:
-            off = st.offframe_risk[tid]
-            off["risk_level"] = "DUSUK"
-            off["friendly_confirmed_by"].append(v.report_id)
-            off["risk_reasons"].append(reason)
-
     def _vehicle_record(self, vid, fid, meta, t_cap, label, conf, bbox, lat, lon, tid, mdist, source) -> dict:
         dist = self.ds.dist_to_base(lat, lon)
         rec = {"vehicle_id": vid, "frame_id": fid, "capture_time": meta["capture_time"], "capture_min": t_cap,
@@ -232,9 +170,12 @@ class Analyzer:
             f = compute_features(self.ds.tracks[tid], self.ds, self.th, t_cap)
             scen, risk, reasons = classify_tracked(f, self.th)
             rec["features"] = f.to_dict()
+            margin = tracked_margin(f, self.th, scen, risk)
         else:
             scen, risk, reasons = classify_untracked(label or "unknown", dist, self.th)
-        rec.update(scenario=scen, risk_level=risk, risk_reasons=reasons)
+            margin = untracked_margin(label or "unknown", dist, self.th, risk)
+        # margin: motor bu seviyeden ne kadar emin (net / sınırda) — ortak karar tablosu kullanır
+        rec.update(scenario=scen, risk_level=risk, risk_reasons=reasons, margin=margin)
         return rec
 
 

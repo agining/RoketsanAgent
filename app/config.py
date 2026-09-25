@@ -14,10 +14,9 @@ load_dotenv(ROOT / ".env")
 @dataclass(frozen=True)
 class Thresholds:
     # --- tespit ---
-    min_confidence: float = 0.35          # altı düşük güvenli yanlış pozitif sayılır
+    min_confidence: float = 0.40          # altı düşük güvenli yanlış pozitif sayılır
     # --- iz eşleştirme ---
     match_radius_m: float = 5.0           # iz son noktası ↔ kutu merkezi (sapma <1 m + ±2 px jitter)
-    track_end_tol_min: int = 5            # iz bu karede "bitiyor" sayılması için |t_end - t_cap| toleransı
     # --- duraklama ---
     stop_radius_m: float = 20.0           # README: 15–25 m arası
     stop_min_minutes: int = 15
@@ -40,6 +39,8 @@ class Thresholds:
     report_match_radius_m: float = 60.0   # rapor koordinatı ↔ araç
     report_time_tol_min: int = 10         # rapor saati ↔ çekim saati "aynı an" toleransı
     frame_margin_m: float = 15.0          # koordinat kare içinde mi kontrolünde pay
+    # --- motor güveni (ortak karar) ---
+    margin_tol: float = 0.10              # değer eşiğin bu oranda yakınındaysa motor "sınırda" sayılır
 
 
 @dataclass(frozen=True)
@@ -48,8 +49,14 @@ class Settings:
     output_dir: Path = field(default_factory=lambda: Path(os.getenv("OUTPUT_DIR", ROOT / "outputs")))
     openai_model: str = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
     openai_api_key: str | None = os.getenv("OPENAI_API_KEY")
+    # OpenAI uyumlu başka sağlayıcı (ör. GLM) için uç nokta; boşsa OpenAI
+    openai_base_url: str | None = os.getenv("OPENAI_BASE_URL") or None
+    # 1 → GLM düşünme modu açılır, modelin reasoning_content'i ajan izine "reasoning" olayı olarak düşer
+    llm_thinking: bool = os.getenv("LLM_THINKING", "0") == "1"
     detector_backend: str = os.getenv("DETECTOR_BACKEND", "simulated")  # simulated | yolo
     yolo_weights: str | None = os.getenv("YOLO_WEIGHTS")
+    # "Son söz insanda" özelliğinin ilk açılıştaki durumu; arayüzden (PUT /api/settings) değiştirilir
+    human_review_default: bool = os.getenv("HUMAN_REVIEW", "0") == "1"
     thresholds: Thresholds = field(default_factory=Thresholds)
 
     @property
