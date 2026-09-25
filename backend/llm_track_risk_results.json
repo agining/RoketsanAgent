@@ -1,0 +1,442 @@
+[
+  {
+    "track_id": "T0001",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.85,
+      "summary": "Track yaklaşma hareketi sergiliyor ancak davranış ve kanıtlar normal görünüyor, bazı sınıf uyumsuzlukları ve rapor çelişkileri mevcut.",
+      "reasoning": [
+        "latest_movement verileri aracı üsse doğru yaklaşmakta gösteriyor (APPROACHING_BASE)",
+        "latest_behavior NORMAL_PATH olup yol verimliliği ve yön değişimi normal",
+        "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu bazı risk göstergesi ancak tek başına yüksek risk için yeterli değil",
+        "CLASS_INCONSISTENCY araç sınıfında belirsizlik gösteriyor fakat tehdit anlamına gelmiyor",
+        "REPORT_CONTRADICTION raporların sensör verisi ile çeliştiğini gösteriyor, güvenilirlik azaltıyor",
+        "Hareket normal ve düşük hızda, duraksama ya da dolanma paterni yok",
+        "Diğer risk artırıcı güncel kanıtlar (loitering, circling vb.) yok"
+      ],
+      "key_evidence": [
+        "APPROACHING_BASE hareket durumu",
+        "NORMAL_PATH davranışı",
+        "CLASS_INCONSISTENCY kanıt bayrağı",
+        "REPORT_CONTRADICTION bayrağı"
+      ],
+      "uncertainties": [
+        "Araç sınıfında tutarsızlık var, kimlik belirsizliği mevcut",
+        "Saha raporları sensör verisiyle çelişiyor, bu nedenle kesin yorum yapılması zor"
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0002",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.95,
+      "summary": "Track güncel olarak üs bölgesinden uzaklaşmakta ve hareket durumu normal seyretmektedir.",
+      "reasoning": [
+        "latest_movement verileri aracın LEAVING_BASE halinde olduğunu ve kararlı şekilde üsden uzaklaştığını gösteriyor.",
+        "latest_behavior NORMAL_PATH ve yüksek yol verimliliği ile normal hareketi doğruluyor.",
+        "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu risk seviyesini artırmaz ve saha raporlarının güvenilir olmadığını gösterir.",
+        "raporlar aracın bekliyor olduğu iddiasını çürütüyor; hız ve hareket durumu buna uymuyor."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state: LEAVING_BASE",
+        "latest_behavior.behavior: NORMAL_PATH",
+        "current_evidence_flags: REPORT_CONTRADICTION",
+        "raporların hareket durumu ile çelişmesi"
+      ],
+      "uncertainties": [
+        "ETA ve hız değerleri hakkında şüpheli veya anormal bilgilenme için eşik yok"
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  },
+  {
+    "track_id": "T0003",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.85,
+      "summary": "Araç güncel olarak üsse yaklaşmakta ve hareket halinde; yüksek yön değişimi olmasına rağmen davranış normal olarak sınıflandırılmıştır.",
+      "reasoning": [
+        "Latest movement verisi aracın üsse doğru hareket ettiğini ve hareket halinde olduğunu gösteriyor (APPROACHING_BASE, speed 0.44 mps).",
+        "Behavior NORMAL_PATH olarak belirtilmiş ve path efficiency yüksek (0.979), bu da düzenli bir hareket profiline işaret ediyor.",
+        "HIGH_HEADING_CHANGE flag'i mevcut ancak davranış NORMAL_PATH olduğundan bu tek başına risk artırıcı değildir.",
+        "Current evidence flag'lerde APPROACHING_BASE ve ETA_AVAILABLE bulunuyor, bu bir risk göstergesi ancak tek başına HIGH veya CRITICAL seviyesine yetmez.",
+        "REPORT_CONTRADICTION flag'i ve saha raporlarının çelişkili/noktasal bilgiler vermesi güvenilirliği azaltıyor ve belirsizlik yaratıyor.",
+        "Saha raporları aracın uzun süre beklediği (stationary) belirtilmiş ancak sensör verisi aracın hareket halinde olduğunu gösteriyor; bu çelişki risk değerlendirmesini etkiliyor."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state=APPROACHING_BASE",
+        "speed_now_mps=0.44 (hareket halinde)",
+        "latest_behavior.behavior=NORMAL_PATH",
+        "current_evidence_flags arasında APPROACHING_BASE ve REPORT_CONTRADICTION bulunması",
+        "stops toplam 45 dakika ancak şu an hareket halinde olunması"
+      ],
+      "uncertainties": [
+        "Saha raporları hareket durumu hakkında çelişkili bilgi veriyor.",
+        "High heading change var ancak normal davranış içinde olduğundan yorum karmaşık.",
+        "ETA mevcut ancak aracın hız ve durumu ile risk etkileşimi belirsiz."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0004",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.8,
+      "summary": "Aracın güncel hareketi leaving_base ve düşük hızda olmasına rağmen loitering davranışı gözlemlenmiştir. Güncel kanıtlarda loitering ve leaving_base birlikte bulunmakta, bu da riski orta seviyeye taşımaktadır.",
+      "reasoning": [
+        "Latest movement leaving_base olarak tanımlanmış, bu genellikle riski düşüren bir göstergedir.",
+        "Latest behavior 'loitering' şeklindedir; düşük yol verimliliği ve yüksek yön değişimlerini içerir, bu operasyonel risk göstergesi sayılır.",
+        "Current evidence flags'da 'LOITERING' ve 'REPORT_CONTRADICTION' var; rapor güvenilirliğini azaltır ancak risk seviyesini tek başına artırmaz.",
+        "Araç nispeten üsse 3.2 km mesafede ve hareket halindedir; geçtiği hareket durumu leaving_base, geçmişte approaching_base durumu olmuş ancak güncel risk değerlendirmesine dahil edilmemelidir.",
+        "Hız ve hareket durumu normal sınırlar dahilinde, düşük ancak sabit hızda seyrediyor, buna dayanarak hızdan risk çıkarılamaz.",
+        "Raporda continuous bekliyor ifadesi mevcut ancak sensör verisi ile çeliştiği için dikkate alınmaz.",
+        "Ana risk göstergesi loitering davranışıdır fakat leaving_base olması riski azaltan etkendir.",
+        "Yeterince güçlü ve uyumlu birden fazla güncel yüksek risk göstergesi yoktur, bu yüzden risk yüksek değil. GERÇEK zamanlı risk yüksek değildir. Daha çok orta düzeyde belirsizlik ve dikkat gerekir."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state: LEAVING_BASE",
+        "latest_behavior.behavior: LOITERING",
+        "current_evidence_flags: LOITERING",
+        "latest_position.distance_to_base_m: 3238.1",
+        "speed_now_mps: 0.16",
+        "reportlarda REPORT_CONTRADICTION bulunması",
+        "observation_count ve detection confidence yüksek ve consistent"
+      ],
+      "uncertainties": [
+        "Loitering davranışı niyet belirtmez, sadece yol verimliliği düşük hareket örüntüsüdür.",
+        "Raporlardaki doğruluk sorunları değerlendirme belirsizliği yaratmaktadır.",
+        "ETA verisi güncel hareket için mevcut değil."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0005",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.95,
+      "summary": "Araç güncel olarak hareket halinde, davranışı normal ve risk göstergesi yok.",
+      "reasoning": [
+        "latest_movement alanında araç TRANSIT durumda, hareket halinde ve duraklama yok.",
+        "latest_behavior NORMAL_PATH olarak belirtilmiş, dolayısıyla alışılmadık veya şüpheli hareket yok.",
+        "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının sensör verisiyle çeliştiğini gösteriyor ancak risk seviyesi artırmaz.",
+        "Approach veya loitering gibi risk artırıcı güncel flag yok.",
+        "Araç üsten 3.3 km uzaklıkta, yakınlık riski yok."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state: TRANSIT",
+        "latest_behavior.behavior: NORMAL_PATH",
+        "current_evidence_flags: REPORT_CONTRADICTION",
+        "distance_to_base_m yaklaşık 3372 m"
+      ],
+      "uncertainties": [
+        "Saha raporları hareketsiz olduğunu iddia ediyor ancak sensör verileri çelişiyor."
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  },
+  {
+    "track_id": "T0006",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.8,
+      "summary": "Track LEAVING_BASE konumunda, hızla biraz uzaklaşırken, güncel olarak düşük yol verimliliği ve yüksek yön değişimine sahip loitering davranışı sergiliyor. Ancak LEAVING_BASE durumu risk azaltıcıdır ve sadece loitering kanıtı bulunmakta. Saha raporları tutarsız ve güvenilir kabul edilmemelidir.",
+      "reasoning": [
+        "latest_movement’da hareket durumu LEAVING_BASE, bu riskleri azaltır.",
+        "latest_behavior’da loitering tespit edilmiş, düşük yol verimliliği ve yüksek yön değişimi mevcut, bu orta düzey risk göstergesidir.",
+        "current_evidence_flags’te LOITERING ve REPORT_CONTRADICTION var; REPORT_CONTRADICTION saha raporunun doğruluğunu sorgulamakta, riski artırmaz.",
+        "Geçmiş flags APPROACHING_BASE olmasına rağmen şu anda LEAVING_BASE konumunda olması nedeniyle geçerli risk artışı sağlamaz.",
+        "Hız ve diğer hareket verilerinde yüksek risk yaratacak anormal durum yok."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state: LEAVING_BASE",
+        "latest_behavior.behavior: LOITERING",
+        "current_evidence_flags: LOITERING, REPORT_CONTRADICTION",
+        "movement_history: 13:30 LEAVING_BASE",
+        "report_summary: PARTIAL with CONTRADICTED stationary claim"
+      ],
+      "uncertainties": [
+        "Loitering davranışının niyeti net değil ancak risk potansiyeli orta seviyede.",
+        "Saha raporlarının çelişkili olması gerçek durumun kesin olarak tanımlanmasını zorlaştırıyor."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0007",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.8,
+      "summary": "Araç üsse yaklaşmakta ve hareket halinde ancak davranışı normal ve durma yok.",
+      "reasoning": [
+        "latest_movement en önemli güncel veri olarak APPROACHING_BASE (üste yaklaşma) gösteriyor.",
+        "latest_behavior NORMAL_PATH; yani hareket paterni normal ve verimli.",
+        "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu risk göstergeleri arasında.",
+        "Loitering, Circling veya ani yön değişimi yok.",
+        "Raporda çelişki (REPORT_CONTRADICTION) var; raporların güvenilirliği düşük, riski artırmaz.",
+        "Araç vaqtında ve düzenli bir şekilde üsse yaklaşmakta, hız düşük ama verilen eşik yok bu nedenle yorum yapılmıyor."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = APPROACHING_BASE",
+        "latest_behavior.behavior = NORMAL_PATH",
+        "current_evidence_flags: APPROACHING_BASE, ETA_AVAILABLE",
+        "saha raporlarındaki REPORT_CONTRADICTION var ancak sensör verisi ile çeliştiği için dikkate alınmadı"
+      ],
+      "uncertainties": [
+        "Hız için uygun kritik eşik değerleri verilmemiştir.",
+        "Raporda çelişkiler mevcut, saha bilgisi belirsizliğe neden oluyor."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0008",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.95,
+      "summary": "Araç normal yolda LEAVING_BASE hareketinde, önemli risk göstergesi yok.",
+      "reasoning": [
+        "latest_movement harekete devam ediyor ve LEAVING_BASE durumu risk azaltıcıdır",
+        "latest_behavior NORMAL_PATH ve yüksek yol verimliliği (1.0) gösteriyor",
+        "hız düşük ama sistem tarafından anormal veya şüpheli olarak tanımlanmadı",
+        "current_evidence_flags CLASS_INCONSISTENCY ve REPORT_CONTRADICTION içeriyor ancak bunlar risk artırıcı değil, saha raporuyla sensör verisi çelişiyor ve rapor güvenilir değil"
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = LEAVING_BASE",
+        "latest_behavior.behavior = NORMAL_PATH",
+        "current_evidence_flags = [CLASS_INCONSISTENCY, REPORT_CONTRADICTION]",
+        "hareket hızı 0.33 mps, hareketsiz değil"
+      ],
+      "uncertainties": [
+        "Araç sınıfında tutarsızlık var ancak bu doğrudan risk oluşturmaz",
+        "Saha raporu hareket etmediğini iddia etti ancak sensör verisi çelişiyor"
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  },
+  {
+    "track_id": "T0009",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.85,
+      "summary": "Araç Güncel Olarak Üsse Yaklaşıyor, Normal Bir Hareket Deseni Sergiliyor.",
+      "reasoning": [
+        "Latest movement hareket durumu APPROACHING_BASE, bu yaklaşımı işaret ediyor ve risk artırıcı.",
+        "Ancak latest_behavior NORMAL_PATH ve yüksek yol verimliliği var, bu anormal bir hareket olmadığını gösteriyor.",
+        "HIGH_HEADING_CHANGE flag'i mevcut fakat behavior NORMAL_PATH olduğundan tek başına risk artırıcı değil.",
+        "Current evidence flags APPROACHING_BASE ve REPORT_SUPPORTED mevcut, rapor sensör verisi ile uyumlu ve araç uzun süre hareketsiz kalmış ancak bu hareketin göstergesi değil (stationary) ve risk seviyesini tek başına yükseltmiyor.",
+        "Araç hala üsten 1124.7 metre uzaklıkta ve ETA yaklaşık 57 dakika, bu yakın ve acil bir tehdit olmadığı anlamına gelir."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state APPROACHING_BASE",
+        "latest_behavior.behavior NORMAL_PATH",
+        "current_evidence_flags APPROACHING_BASE, REPORT_SUPPORTED",
+        "movement_state 45 dakika STATIONARY raporu ile uyumlu"
+      ],
+      "uncertainties": [
+        "Hız değerleri için karşılaştırma eşikleri verilmemiş, hızın risk üzerindeki etkisi değerlendirilemiyor.",
+        "REPORT_CONTRADICTION yok ve rapor güvenilir kabul edilmiş ancak saha raporlarının genel güvenilirliği sınırlı."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0010",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "HIGH",
+      "confidence": 0.85,
+      "summary": "Araç güncel olarak üsse yaklaşmakta ve belirgin loitering davranışı sergilemektedir.",
+      "reasoning": [
+        "latest_movement verisi güncel olarak APPROACHING_BASE durumunu ve hareket halini göstermektedir.",
+        "latest_behavior LOITERING ve düşük yol verimliliği ile yüksek yön değişimi olduğunu ortaya koymaktadır.",
+        "current_evidence_flags güncel olarak APPROACHING_BASE ve LOITERING kanıtlarını desteklemektedir.",
+        "Araç üste yaklaşık 2.8 km mesafede ve hareket halinde, bu mesafe yakın olarak değerlendirilebilir.",
+        "LEAVING_BASE durumundan sonra tekrar üsse yaklaşması risk oluşturabilir."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = APPROACHING_BASE",
+        "latest_behavior.behavior = LOITERING",
+        "current_evidence_flags içeriyor: APPROACHING_BASE, LOITERING"
+      ],
+      "uncertainties": [
+        "ETA süresi oldukça uzun (387.1 dakika), bu durum tehlike süresini uzatabilir ancak aciliyetini düşürebilir.",
+        "Saha raporu yok, sensör verileri ile doğrulama yapılmıştır, ama rapor doğrulanmamış."
+      ],
+      "recommended_attention": "PRIORITY"
+    }
+  },
+  {
+    "track_id": "T0011",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.9,
+      "summary": "Araç normal yol hareketi sergilemekte ve güncel bir risk göstergesi bulunmamaktadır.",
+      "reasoning": [
+        "latest_movement alanı araç hareket halinde ve seyir halinde olduğunu göstermekte (TRANSIT, speed 0.2 m/s).",
+        "latest_behavior NORMAL_PATH olarak tanımlanmış, yani normal hareket paterni mevcut.",
+        "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının sensör verileriyle çeliştiğini ancak riskin yükselmediğini gösterir.",
+        "Güncel risk göstergeleri arasında APPROACHING_BASE, LOITERING veya CIRCLING gibi önemli risk faktörleri bulunmamakta.",
+        "Araç üsse yaklaşık 2600 metrelik bir mesafede ve bu mesafe çok yakın değil."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = TRANSIT",
+        "latest_behavior.behavior = NORMAL_PATH",
+        "current_evidence_flags = [REPORT_CONTRADICTION]",
+        "distance_to_base = 2636 m"
+      ],
+      "uncertainties": [
+        "Saha raporları hareket durumu ile çelişmekte ve kısmen güvenilmez.",
+        "ETA verisi mevcut değil."
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  },
+  {
+    "track_id": "T0012",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "HIGH",
+      "confidence": 0.85,
+      "summary": "Track güncel olarak üsse yaklaşmakta ve dolaşma (circling) davranışı sergilemektedir. Bu iki güncel risk göstergesi bir arada olduğundan operasyonel risk yüksek olarak değerlendirilmiştir.",
+      "reasoning": [
+        "latest_movement.movement_state 'APPROACHING_BASE' olarak güncel risk göstergesidir.",
+        "latest_behavior.behavior 'CIRCLING' olup düşük yol verimliliği ve yüksek yön değişikliği ile uyumludur.",
+        "current_evidence_flags içinde 'APPROACHING_BASE' ve 'CIRCLING' güncel risk göstergeleri mevcuttur.",
+        "CLASS_INCONSISTENCY ve REPORT_CONTRADICTION risk seviyesi artırmaz, saha raporlarının güvenilirliği düşüktür.",
+        "Dolaşma (circling) ve üsse yaklaşma kombinasyonu tek başına HIGH riski doğrular."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = APPROACHING_BASE",
+        "latest_behavior.behavior = CIRCLING",
+        "current_evidence_flags içindeki APPROACHING_BASE ve CIRCLING",
+        "hareket ve davranış verilerinin uyumu"
+      ],
+      "uncertainties": [
+        "ETA 199.5 dakika ile uzak, riskin yakın ve acil olduğu söylenemez.",
+        "CLASS_INCONSISTENCY ve REPORT_CONTRADICTION saha raporlarının güvenilirliğini azaltıyor."
+      ],
+      "recommended_attention": "PRIORITY"
+    }
+  },
+  {
+    "track_id": "T0013",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.85,
+      "summary": "Aracın güncel verilerine göre düzenli bir şekilde üssüne yaklaştığı tespit edildi. Hareket normal ve etkin, risk gösteren başka önemli bir bulgu yok.",
+      "reasoning": [
+        "latest_movement verileri aracın yavaş ancak sürekli ve üssüne yönelmiş hareket ettiğini gösteriyor (APPROACHING_BASE).",
+        "latest_behavior NORMAL_PATH olarak tanımlanmış; davranışta sıra dışı ya da şüpheli bir hareket yok.",
+        "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var; bunlar tek başına risk artırıcı ancak yeterli değil.",
+        "saha raporları aracın beklediğini iddia ediyor ancak sensör verileri bunu çelişkili buluyor (REPORT_CONTRADICTION), bu raporlar güvenilir değil.",
+        "Hız tek bir değer olarak düşük; hız için risk ya da anormallik ataması mevcut değil."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state: APPROACHING_BASE",
+        "latest_behavior.behavior: NORMAL_PATH",
+        "current_evidence_flags: [APPROACHING_BASE, ETA_AVAILABLE, REPORT_CONTRADICTION]",
+        "hareket sürekliliği ve yönlendirme verilerinin uyumu",
+        "saha raporları ve sensor verilerinin çelişmesi (REPORT_CONTRADICTION)"
+      ],
+      "uncertainties": [
+        "saha raporlarının güvenilir olmaması nedeniyle alandaki potansiyel bekleme durumu kesin değil.",
+        "Hız için herhangi bir referans eşiği sağlanmamış, bu nedenle ani bir hız düşüşü ya da anormallik tespiti yapılamıyor."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0014",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.95,
+      "summary": "Araç üsse doğru hareket etmiyor, leaving_base durumunda ve hareket paterni normal, güncel risk faktörü bulunmamaktadır.",
+      "reasoning": [
+        "latest_movement hareket durumu LEAVING_BASE ve araç üsse uzaklaşmakta",
+        "latest_behavior NORMAL_PATH ve yüksek yol verimliliği gösteriyor",
+        "current_evidence_flags boş, güncel risk göstergesi yok",
+        "movement_history uyumlu ve doğal hareket paterni sergiliyor"
+      ],
+      "key_evidence": [
+        "LEAVING_BASE hareket durumu",
+        "NORMAL_PATH davranışı",
+        "current_evidence_flags'in boş olması"
+      ],
+      "uncertainties": [
+        "Saha raporu ve geçmiş kanıtlar yok ancak bu alanlar risk belirlemede öncelikli değil"
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  },
+  {
+    "track_id": "T0015",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "MEDIUM",
+      "confidence": 0.85,
+      "summary": "Track, üsse yaklaşmakta olup, hareket durumu ve kanıt bayrakları uyumlu ancak davranışı normal ve durağan hareket sonrası yaklaşma var.",
+      "reasoning": [
+        "latest_movement güncel olarak APPROACHING_BASE durumunu gösteriyor ve 1378.8 m mesafede üse yaklaşmakta.",
+        "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu hareketin doğruluğunu destekliyor.",
+        "latest_behavior NORMAL_PATH ve yüksek heading değişimine rağmen path verimliliği yüksek, loitering veya şüpheli hareket yok.",
+        "Stationary duraklama raporu sensör verisiyle destekleniyor; ancak durağanlık risk değil, bekleme anlamına gelip ek risk oluşturmaz.",
+        "Saha raporu uyumlu ve hiçbir rapor çelişkisi yok, rapor doğrulanmış durumda.",
+        "Hareket hızları düşük ve stabil, olağandışı hız veya çevrimsel hareket yok."
+      ],
+      "key_evidence": [
+        "APPROACHING_BASE güncel hareket durumu",
+        "ETA_AVAILABLE kanıt bayrağı",
+        "NORMAL_PATH davranışı yüksek path verimliliğiyle",
+        "Stationary hareket ve desteklenen saha raporu"
+      ],
+      "uncertainties": [
+        "Düşük hız sebebiyle hareketin tam niyeti bilinmiyor ancak risk artırıcı değil.",
+        "Yüksek heading değişimi davranış uyarısı ancak NORMAL_PATH ile çelişmiyor."
+      ],
+      "recommended_attention": "MONITOR"
+    }
+  },
+  {
+    "track_id": "T0016",
+    "model": "gpt-4.1-mini",
+    "assessment": {
+      "risk_level": "LOW",
+      "confidence": 0.9,
+      "summary": "Track T0016 için güncel operasyonel risk düşük seviyededir.",
+      "reasoning": [
+        "latest_movement verisi TRANSIT durumunda hareketi doğruluyor ve durağanlık yok.",
+        "latest_behavior NORMAL_PATH davranışını ve HIGH_HEADING_CHANGE ile uyumlu heading değişimi içeriyor ancak bu tek başına risk oluşturmaz.",
+        "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının güvenilir olmadığını gösterir ve risk artırmaz.",
+        "historical_evidence_flags'da APPROACHING_BASE var ancak bu geçmişteki durumdur ve güncel risk için tek başına yeterli değil.",
+        "Araç yaklaşık 3 km uzaklıkta ve ETA bilgisi yok, acil yaklaşım durumu söz konusu değil."
+      ],
+      "key_evidence": [
+        "latest_movement.movement_state = TRANSIT, speed = 0.16 mps, hareket halinde",
+        "latest_behavior.behavior = NORMAL_PATH, flags = [HIGH_HEADING_CHANGE]",
+        "current_evidence_flags = [REPORT_CONTRADICTION], saha raporu ile sensör verisi uyuşmuyor",
+        "distance_to_base yaklaşık 3 km, yakın değil"
+      ],
+      "uncertainties": [
+        "ETA bilgisi null, yaklaşımın aciliyeti tam net değil",
+        "Saha raporu araç bekliyor iddiası CONTRADICTED olduğundan doğrulanmadı"
+      ],
+      "recommended_attention": "ROUTINE"
+    }
+  }
+]

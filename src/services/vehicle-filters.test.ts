@@ -2,7 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { defaultFilters, filterVehicles } from './vehicle-filters';
 import { futureFeatures, traveledFeatures } from './map-data';
 import type { TrackingData } from '../types/tracking';
-const data: TrackingData = { base: { name: 'Base', lat: 0, lon: 0 }, zones: [{ name: 'North', center: [0, .01] }], tracks: [
+const base = { name: 'Base', lat: 0, lon: 0 }, zones = [{ name: 'North', center: [0, .01] as [number, number] }];
+const data: TrackingData = { base, zones, analysis: { generated_at: '2026-01-01T00:00:00Z', base, zones, entities: [], untracked_observations: [], operation_summary: {
+  tracked_entity_count: 0, untracked_observation_count: 0,
+  risk_counts: { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0, UNKNOWN: 0 },
+  attention_counts: { ROUTINE: 0, MONITOR: 0, PRIORITY: 0, IMMEDIATE: 0, UNKNOWN: 0 },
+  current_state_counts: { approaching_base: 0, leaving_base: 0, loitering: 0, circling: 0, report_contradiction: 0, class_inconsistency: 0 }, priority_entities: [],
+} }, tracks: [
   { id: 'Approach', points: [{ time: '12:00', lat: 0, lon: .01 }, { time: '12:10', lat: 0, lon: 0 }] },
   { id: 'Parked', points: [{ time: '12:00', lat: 0, lon: .03 }, { time: '12:10', lat: 0, lon: .03 }] },
   { id: 'Depart', points: [{ time: '12:00', lat: 0, lon: 0 }, { time: '12:10', lat: 0, lon: .01 }] },

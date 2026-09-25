@@ -1,52 +1,72 @@
-import { useEffect, useState } from 'react';
-import { Crosshair, RefreshCw, TerminalSquare, CircleAlert } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AlertTriangle, CircleAlert, Clock3, Crosshair, RefreshCw, Search } from 'lucide-react';
 import { OperationsMap } from './components/map/OperationsMap';
-import { Button } from './components/ui/button';
-import { loadTrackingData } from './services/tracking';
-import { OperationsSidebar } from './components/sidebar/OperationsSidebar';
+import { MapOverlays } from './components/map/MapOverlays';
+import { MapSidebar, entityMatchesMapFilters, initialMapFilters, type MapFilterState } from './components/map/MapSidebar';
+import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
+import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
-import { VehicleDetails } from './components/VehicleDetails';
-import { usePlaybackStore } from './store/playback';
-import { playbackBounds } from './services/playback';
+import { Button } from './components/ui/button';
+import { useAnalysis } from './hooks/useAnalysis';
 import { startPlaybackClock } from './services/playback-clock';
-import { ResizablePanel } from './components/layout/ResizablePanel';
-import { CommandPalette } from './components/CommandPalette';
-import { WorkspaceStatus } from './components/WorkspaceStatus';
-import { useWorkspaceStore } from './store/workspace';
+import { usePlaybackStore } from './store/playback';
 import { useTrackingStore } from './store/tracking';
-import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
-import type { TrackingData } from './types/tracking';
+import { useWorkspaceStore } from './store/workspace';
+
+function formatTimestamp(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+}
+
+function InitialState({ error, retry }: { error: string | null; retry: () => void }) {
+  return <div className={`map-first-initial ${error ? 'error' : ''}`} role={error ? 'alert' : 'status'}>{error ? <CircleAlert size={30} /> : <Crosshair size={30} />}<h1>{error ? 'Analiz verisi alınamadı' : 'Operasyon haritası yükleniyor'}</h1><p>{error ?? 'Son backend analizi alınıp doğrulanıyor.'}</p>{error ? <Button variant="outline" onClick={retry}><RefreshCw size={15} />Tekrar Dene</Button> : <div className="map-loading-line"><i /></div>}</div>;
+}
+
 export default function App() {
-  const [data, setData] = useState<TrackingData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [attempt, setAttempt] = useState(0);
-  const sidebarOpen = useTrackingStore(state => state.sidebarOpen);
+  const analysis = useAnalysis();
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 900);
+  const [bottomOpen, setBottomOpen] = useState(false);
+  const [filters, setFilters] = useState<MapFilterState>(initialMapFilters);
+  const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
   const inspectorOpen = useWorkspaceStore(state => state.inspectorOpen);
-  useKeyboardShortcuts();
-  useEffect(() => startPlaybackClock(), []);
+  const playbackTime = usePlaybackStore(state => Math.floor(state.currentTime));
+  const visibleTrackIds = useMemo(() => new Set(analysis.data?.entities.filter(entity => entityMatchesMapFilters(entity, filters)).map(entity => entity.track_id) ?? []), [analysis.data, filters]);
+  const selectedEntity = analysis.data?.entities.find(entity => entity.track_id === selectedTrackId) ?? null;
+  const highCritical = analysis.data ? analysis.data.operation_summary.risk_counts.HIGH + analysis.data.operation_summary.risk_counts.CRITICAL : 0;
+  const selectTrack = useCallback((trackId: string) => {
+    setBottomOpen(false); useTrackingStore.getState().selectTrack(trackId); useTrackingStore.getState().requestView('vehicle');
+  }, []);
+
   useEffect(() => {
-    const controller = new AbortController(); setError(null);
-    loadTrackingData(controller.signal).then(loaded => {
-      if (controller.signal.aborted) return;
-      const { minTime, maxTime } = playbackBounds(loaded.tracks);
-      usePlaybackStore.getState().initialize(minTime, maxTime); setData(loaded);
-    }).catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'Unable to load tracking data.'); });
-    return () => controller.abort();
-  }, [attempt]);
-  const pointCount = data?.tracks.reduce((count, track) => count + track.points.length, 0) ?? 0;
-  return <div className="app-shell">
-    <header className="topbar"><div className="brand"><div className="brand-icon"><Crosshair size={22} /></div><span>ATLAS<span className="brand-sub">OPERATIONS CENTER</span></span></div><div className="topbar-label">Regional monitoring <span>/</span> Track overview</div><Button className="command-trigger" variant="outline" onClick={() => useWorkspaceStore.getState().setCommandOpen(true)}><TerminalSquare size={14} /> Commands <kbd>Ctrl K</kbd></Button><span className="dataset-badge"><span className="status-dot" /> MOCK DATA</span></header>
-    <div className="workspace">
-      <ResizablePanel side="left" open={sidebarOpen}><OperationsSidebar data={data} /></ResizablePanel>
-      <main>
-        <div className="page-heading"><div><div className="section-eyebrow">SITUATIONAL OVERVIEW</div><h1>Operations map</h1><p>Vehicle routes and reference locations</p></div><div className="summary"><div><strong>{data?.tracks.length ?? '—'}</strong><span>VEHICLES</span></div><div><strong>{data?.zones.length ?? '—'}</strong><span>ZONES</span></div><div><strong>{pointCount || '—'}</strong><span>GPS POINTS</span></div></div></div>
-        <div className="analysis-layout"><div className="map-column"><section className="map-region" aria-label="Operations overview">
-          {data ? <OperationsMap data={data} /> : <div className="loading-state" role="status">{error ? <><CircleAlert size={28} /><h2>Unable to prepare the workspace</h2><p>{error}</p><small>Check the source files, then retry loading.</small><Button variant="outline" onClick={() => setAttempt(value => value + 1)}><RefreshCw size={16} /> Retry loading</Button></> : <><div className="loading-symbol"><Crosshair size={28} /></div><h2>Preparing operations map</h2><p>Loading and validating vehicle tracks and reference locations…</p><div className="loading-bars"><i /><i /><i /></div></>}</div>}
-        </section>
-        {data && <><WorkspaceStatus data={data} /><Timeline /></>}</div><ResizablePanel side="right" open={inspectorOpen}><VehicleDetails tracks={data?.tracks ?? []} base={data?.base} /></ResizablePanel></div>
-        <footer className="main-footer"><span>COORDINATES · WGS 84</span><span>5-minute source intervals <span>•</span> Interpolated positions</span></footer>
-      </main>
-    </div>
-    <CommandPalette tracks={data?.tracks ?? []} />
+    if (selectedTrackId && analysis.data && !analysis.data.entities.some(entity => entity.track_id === selectedTrackId)) useTrackingStore.getState().selectTrack(null);
+  }, [analysis.data, selectedTrackId]);
+  useEffect(() => {
+    const clearSelection = (event: KeyboardEvent) => { if (event.key === 'Escape' && !event.defaultPrevented) useTrackingStore.getState().selectTrack(null); };
+    window.addEventListener('keydown', clearSelection); return () => window.removeEventListener('keydown', clearSelection);
+  }, []);
+  useEffect(() => startPlaybackClock(), []);
+
+  if (!analysis.data) return <div className="map-first-shell"><header className="map-first-topbar"><div className="map-first-brand"><Crosshair size={18} /><span>ATLAS<small>OPERATIONS CENTER</small></span></div></header><InitialState error={analysis.status === 'error' ? analysis.error : null} retry={analysis.reload} /></div>;
+
+  return <div className="map-first-shell">
+    <header className="map-first-topbar">
+      <div className="map-first-brand"><Crosshair size={18} /><span>ATLAS<small>OPERATIONS CENTER</small></span></div>
+      <div className="map-top-stat timestamp"><Clock3 size={13} /><span><small>SON ANALİZ</small><strong>{formatTimestamp(analysis.data.generated_at)}</strong></span></div>
+      <div className="map-top-stat"><span><small>TAKİPTE</small><strong>{analysis.data.operation_summary.tracked_entity_count}</strong></span></div>
+      <div className={`map-top-stat risk-total ${highCritical ? 'active' : ''}`}><AlertTriangle size={13} /><span><small>YÜKSEK / KRİTİK</small><strong>{highCritical}</strong></span></div>
+      <button className="map-top-search" onClick={() => { setSidebarOpen(true); requestAnimationFrame(() => document.querySelector<HTMLInputElement>('[aria-label="Harita araç kayıtlarında ara"]')?.focus()); }}><Search size={13} /><span>Araç ara</span></button>
+      <button className="map-refresh" onClick={analysis.reload} disabled={analysis.status === 'loading'} aria-label="Analiz verisini yenile"><RefreshCw size={14} className={analysis.status === 'loading' ? 'spinning' : ''} /><span>{analysis.status === 'loading' ? 'Yenileniyor…' : 'Yenile'}</span></button>
+    </header>
+    <main className={`map-first-workspace ${sidebarOpen ? 'sidebar-open' : ''} ${selectedEntity && inspectorOpen ? 'detail-open' : ''}`}>
+      <OperationsMap analysis={analysis.data} onSelectTrack={selectTrack} visibleTrackIds={visibleTrackIds} />
+      <MapSidebar analysis={analysis.data} filters={filters} setFilters={setFilters} open={sidebarOpen} setOpen={setSidebarOpen} onSelectTrack={selectTrack} />
+      <MapOverlays analysis={analysis.data} onSelectTrack={selectTrack} />
+      <BottomTrackPanel analysis={analysis.data} selectedTrackId={selectedTrackId} onSelectTrack={selectTrack} open={bottomOpen} setOpen={setBottomOpen} />
+      <Timeline analysis={analysis.data} />
+      {selectedEntity && inspectorOpen && <div className="map-detail-backdrop" onClick={() => useTrackingStore.getState().selectTrack(null)} aria-hidden="true" />}
+      {selectedEntity && inspectorOpen && <aside className="map-detail-drawer" aria-label={`${selectedEntity.track_id} araç detay paneli`}><TrackDetail entity={selectedEntity} playbackTime={playbackTime} /></aside>}
+      {analysis.status === 'empty' && <div className="map-empty-notice" role="status"><CircleAlert size={14} /><span>Araç gözlemi yok. Üs ve bölge bilgileri gösterilmeye devam ediyor.</span></div>}
+      {analysis.status === 'error' && <div className="map-refresh-error" role="alert"><CircleAlert size={14} /><span>Yenileme başarısız: {analysis.error}</span><button onClick={analysis.reload}>Tekrar dene</button></div>}
+    </main>
   </div>;
 }

@@ -1,0 +1,6366 @@
+{
+  "generated_at": "2026-09-25T23:59:03",
+  "base": {
+    "name": "Merkez Us",
+    "lat": 39.92184,
+    "lon": 32.85306
+  },
+  "zones": [
+    {
+      "name": "Kuzey Yolu",
+      "center": [
+        39.950586,
+        32.85306
+      ]
+    },
+    {
+      "name": "Kuzeydogu Kavsagi",
+      "center": [
+        39.944,
+        32.878
+      ]
+    },
+    {
+      "name": "Dogu Yolu",
+      "center": [
+        39.92184,
+        32.890542
+      ]
+    },
+    {
+      "name": "Guneydogu Yerlesimi",
+      "center": [
+        39.902,
+        32.877
+      ]
+    },
+    {
+      "name": "Guney Kapisi Yaklasimi",
+      "center": [
+        39.897,
+        32.85306
+      ]
+    },
+    {
+      "name": "Guneybati Yolu",
+      "center": [
+        39.903,
+        32.831
+      ]
+    },
+    {
+      "name": "Bati Yerlesimi",
+      "center": [
+        39.92184,
+        32.817
+      ]
+    },
+    {
+      "name": "Kuzeybati Yolu",
+      "center": [
+        39.944,
+        32.829
+      ]
+    }
+  ],
+  "operation_summary": {
+    "tracked_entity_count": 16,
+    "untracked_observation_count": 1,
+    "risk_counts": {
+      "LOW": 6,
+      "MEDIUM": 8,
+      "HIGH": 2,
+      "CRITICAL": 0,
+      "UNKNOWN": 0
+    },
+    "attention_counts": {
+      "ROUTINE": 6,
+      "MONITOR": 8,
+      "PRIORITY": 2,
+      "IMMEDIATE": 0,
+      "UNKNOWN": 0
+    },
+    "current_state_counts": {
+      "approaching_base": 8,
+      "leaving_base": 5,
+      "loitering": 3,
+      "circling": 1,
+      "report_contradiction": 12,
+      "class_inconsistency": 3
+    },
+    "priority_entities": [
+      {
+        "track_id": "T0010",
+        "risk_level": "HIGH",
+        "recommended_attention": "PRIORITY",
+        "summary": "Araç güncel olarak üsse yaklaşmakta ve belirgin loitering davranışı sergilemektedir.",
+        "vehicle_class": "truck",
+        "zone": "Guney Kapisi Yaklasimi",
+        "distance_to_base_m": 2788.6
+      },
+      {
+        "track_id": "T0012",
+        "risk_level": "HIGH",
+        "recommended_attention": "PRIORITY",
+        "summary": "Track güncel olarak üsse yaklaşmakta ve dolaşma (circling) davranışı sergilemektedir. Bu iki güncel risk göstergesi bir arada olduğundan operasyonel risk yüksek olarak değerlendirilmiştir.",
+        "vehicle_class": "van",
+        "zone": "Guneybati Yolu",
+        "distance_to_base_m": 2619.6
+      }
+    ]
+  },
+  "entities": [
+    {
+      "entity_id": "T0001",
+      "track_id": "T0001",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "van",
+        "observed_classes": {
+          "truck": 1,
+          "van": 2
+        },
+        "consistent": false,
+        "average_detection_confidence": 0.89
+      },
+      "latest_position": {
+        "lat": 39.929922,
+        "lon": 32.853445,
+        "zone": "Kuzey Yolu",
+        "distance_to_base_m": 899.3
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.950586,
+          "lon": 32.854235,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3198.0
+        },
+        {
+          "time": "12:05",
+          "lat": 39.949827,
+          "lon": 32.8542,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3113.5
+        },
+        {
+          "time": "12:10",
+          "lat": 39.949052,
+          "lon": 32.854165,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3027.3
+        },
+        {
+          "time": "12:15",
+          "lat": 39.948249,
+          "lon": 32.854129,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2938.0
+        },
+        {
+          "time": "12:20",
+          "lat": 39.947407,
+          "lon": 32.854094,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2844.3
+        },
+        {
+          "time": "12:25",
+          "lat": 39.946524,
+          "lon": 32.854059,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2746.1
+        },
+        {
+          "time": "12:30",
+          "lat": 39.945603,
+          "lon": 32.854024,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2643.6
+        },
+        {
+          "time": "12:35",
+          "lat": 39.944653,
+          "lon": 32.853988,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2537.9
+        },
+        {
+          "time": "12:40",
+          "lat": 39.943687,
+          "lon": 32.853953,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2430.5
+        },
+        {
+          "time": "12:45",
+          "lat": 39.942721,
+          "lon": 32.853918,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2323.0
+        },
+        {
+          "time": "12:50",
+          "lat": 39.941771,
+          "lon": 32.853883,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2217.3
+        },
+        {
+          "time": "12:55",
+          "lat": 39.94085,
+          "lon": 32.853847,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2114.9
+        },
+        {
+          "time": "13:00",
+          "lat": 39.939967,
+          "lon": 32.853812,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2016.7
+        },
+        {
+          "time": "13:05",
+          "lat": 39.939125,
+          "lon": 32.853777,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1923.0
+        },
+        {
+          "time": "13:10",
+          "lat": 39.938322,
+          "lon": 32.853742,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1833.6
+        },
+        {
+          "time": "13:15",
+          "lat": 39.937547,
+          "lon": 32.853706,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1747.4
+        },
+        {
+          "time": "13:20",
+          "lat": 39.936788,
+          "lon": 32.853671,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1663.0
+        },
+        {
+          "time": "13:25",
+          "lat": 39.936029,
+          "lon": 32.853636,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1578.5
+        },
+        {
+          "time": "13:30",
+          "lat": 39.935254,
+          "lon": 32.853601,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1492.3
+        },
+        {
+          "time": "13:35",
+          "lat": 39.93445,
+          "lon": 32.853565,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1402.8
+        },
+        {
+          "time": "13:40",
+          "lat": 39.933609,
+          "lon": 32.85353,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1309.3
+        },
+        {
+          "time": "13:45",
+          "lat": 39.932726,
+          "lon": 32.853495,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1211.0
+        },
+        {
+          "time": "13:50",
+          "lat": 39.931805,
+          "lon": 32.85346,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1108.6
+        },
+        {
+          "time": "13:55",
+          "lat": 39.930855,
+          "lon": 32.853424,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1002.9
+        },
+        {
+          "time": "14:00",
+          "lat": 39.929889,
+          "lon": 32.853389,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 895.4
+        }
+      ],
+      "minimum_distance_to_base_m": 899.3,
+      "latest_movement": {
+        "track_id": "T0001",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 3198.0,
+        "dist_now_m": 895.4,
+        "dist_min_m": 895.4,
+        "dist_max_m": 3198.0,
+        "approach_total_m": 2302.5,
+        "approach_last60_m": 1121.2,
+        "speed_now_mps": 0.36,
+        "avg_speed_mps": 0.32,
+        "max_speed_mps": 0.36,
+        "closing_speed_mps": 0.36,
+        "heading_deg": 181.6,
+        "bearing_to_base_deg": 181.8,
+        "heading_offset_deg": 0.2,
+        "eta_min": 41.7,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 2302.5,
+        "net_displacement_m": 2302.5,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.28,
+          "closing_speed_mps": 0.28,
+          "eta_min": 184.3,
+          "distance_to_base_m": 3113.5
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": 0.33,
+          "eta_min": 102.6,
+          "distance_to_base_m": 2016.7
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.36,
+          "closing_speed_mps": 0.36,
+          "eta_min": 41.7,
+          "distance_to_base_m": 895.4
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0001",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 2302.5,
+        "net_displacement_m": 2302.5,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 1.3,
+        "extent_m": 2302.5,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.6,
+          "flags": []
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 1.3,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "third_party",
+          "text": "39.94653N 32.85409E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0001",
+          "match_distance_m": 2.7,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.33,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:40",
+          "source": "official",
+          "text": "39.93362N 32.85374E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0001",
+          "match_distance_m": 17.9,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.31,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "CLASS_INCONSISTENCY",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "CLASS_INCONSISTENCY",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.85,
+          "summary": "Track yaklaşma hareketi sergiliyor ancak davranış ve kanıtlar normal görünüyor, bazı sınıf uyumsuzlukları ve rapor çelişkileri mevcut.",
+          "reasoning": [
+            "latest_movement verileri aracı üsse doğru yaklaşmakta gösteriyor (APPROACHING_BASE)",
+            "latest_behavior NORMAL_PATH olup yol verimliliği ve yön değişimi normal",
+            "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu bazı risk göstergesi ancak tek başına yüksek risk için yeterli değil",
+            "CLASS_INCONSISTENCY araç sınıfında belirsizlik gösteriyor fakat tehdit anlamına gelmiyor",
+            "REPORT_CONTRADICTION raporların sensör verisi ile çeliştiğini gösteriyor, güvenilirlik azaltıyor",
+            "Hareket normal ve düşük hızda, duraksama ya da dolanma paterni yok",
+            "Diğer risk artırıcı güncel kanıtlar (loitering, circling vb.) yok"
+          ],
+          "key_evidence": [
+            "APPROACHING_BASE hareket durumu",
+            "NORMAL_PATH davranışı",
+            "CLASS_INCONSISTENCY kanıt bayrağı",
+            "REPORT_CONTRADICTION bayrağı"
+          ],
+          "uncertainties": [
+            "Araç sınıfında tutarsızlık var, kimlik belirsizliği mevcut",
+            "Saha raporları sensör verisiyle çelişiyor, bu nedenle kesin yorum yapılması zor"
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0002",
+      "track_id": "T0002",
+      "first_seen": "12:30",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "truck",
+        "observed_classes": {
+          "truck": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.9
+      },
+      "latest_position": {
+        "lat": 39.945278,
+        "lon": 32.853808,
+        "zone": "Kuzey Yolu",
+        "distance_to_base_m": 2607.0
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.927705,
+          "lon": 32.85324,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 652.3
+        },
+        {
+          "time": "12:05",
+          "lat": 39.928683,
+          "lon": 32.85327,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 761.1
+        },
+        {
+          "time": "12:10",
+          "lat": 39.92966,
+          "lon": 32.8533,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 869.8
+        },
+        {
+          "time": "12:15",
+          "lat": 39.930638,
+          "lon": 32.85333,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 978.6
+        },
+        {
+          "time": "12:20",
+          "lat": 39.931615,
+          "lon": 32.85336,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1087.2
+        },
+        {
+          "time": "12:25",
+          "lat": 39.932593,
+          "lon": 32.85339,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1196.0
+        },
+        {
+          "time": "12:30",
+          "lat": 39.933571,
+          "lon": 32.85342,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1304.8
+        },
+        {
+          "time": "12:35",
+          "lat": 39.934548,
+          "lon": 32.853449,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1413.5
+        },
+        {
+          "time": "12:40",
+          "lat": 39.935526,
+          "lon": 32.853479,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1522.2
+        },
+        {
+          "time": "12:45",
+          "lat": 39.936503,
+          "lon": 32.853509,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1630.9
+        },
+        {
+          "time": "12:50",
+          "lat": 39.937481,
+          "lon": 32.853539,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1739.7
+        },
+        {
+          "time": "12:55",
+          "lat": 39.938458,
+          "lon": 32.853569,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1848.3
+        },
+        {
+          "time": "13:00",
+          "lat": 39.939436,
+          "lon": 32.853599,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 1957.1
+        },
+        {
+          "time": "13:05",
+          "lat": 39.940413,
+          "lon": 32.853629,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2065.8
+        },
+        {
+          "time": "13:10",
+          "lat": 39.941391,
+          "lon": 32.853659,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2174.6
+        },
+        {
+          "time": "13:15",
+          "lat": 39.942368,
+          "lon": 32.853689,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2283.2
+        },
+        {
+          "time": "13:20",
+          "lat": 39.943346,
+          "lon": 32.853719,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2392.0
+        },
+        {
+          "time": "13:25",
+          "lat": 39.944324,
+          "lon": 32.853749,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2500.8
+        },
+        {
+          "time": "13:30",
+          "lat": 39.945301,
+          "lon": 32.853779,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2609.5
+        },
+        {
+          "time": "13:35",
+          "lat": 39.946279,
+          "lon": 32.853809,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2718.2
+        },
+        {
+          "time": "13:40",
+          "lat": 39.947256,
+          "lon": 32.853839,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2826.9
+        },
+        {
+          "time": "13:45",
+          "lat": 39.948234,
+          "lon": 32.853869,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 2935.7
+        },
+        {
+          "time": "13:50",
+          "lat": 39.949211,
+          "lon": 32.853899,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3044.4
+        },
+        {
+          "time": "13:55",
+          "lat": 39.950189,
+          "lon": 32.853929,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3153.1
+        },
+        {
+          "time": "14:00",
+          "lat": 39.951166,
+          "lon": 32.853959,
+          "zone": "Kuzey Yolu",
+          "distance_to_base_m": 3261.8
+        }
+      ],
+      "minimum_distance_to_base_m": 1298.8,
+      "latest_movement": {
+        "track_id": "T0002",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 652.3,
+        "dist_now_m": 2609.5,
+        "dist_min_m": 652.3,
+        "dist_max_m": 2609.5,
+        "approach_total_m": -1957.1,
+        "approach_last60_m": -1304.7,
+        "speed_now_mps": 0.36,
+        "avg_speed_mps": 0.36,
+        "max_speed_mps": 0.36,
+        "closing_speed_mps": -0.36,
+        "heading_deg": 1.3,
+        "bearing_to_base_deg": 181.3,
+        "heading_offset_deg": 180.0,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "LEAVING_BASE",
+        "path_length_m": 1957.1,
+        "net_displacement_m": 1957.1,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.36,
+          "closing_speed_mps": -0.36,
+          "eta_min": null,
+          "distance_to_base_m": 1304.8
+        },
+        {
+          "time": "13:00",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.36,
+          "closing_speed_mps": -0.36,
+          "eta_min": null,
+          "distance_to_base_m": 1957.1
+        },
+        {
+          "time": "13:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.36,
+          "closing_speed_mps": -0.36,
+          "eta_min": null,
+          "distance_to_base_m": 2609.5
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0002",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1957.1,
+        "net_displacement_m": 1957.1,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 0.1,
+        "extent_m": 1957.1,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.0,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.1,
+          "flags": []
+        },
+        {
+          "time": "13:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.1,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.93250N 32.85345E civarinda 1 truck goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "truck",
+          "matched_track_id": "T0002",
+          "match_distance_m": 11.5,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "truck",
+                "observed": "truck"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "LEAVING_BASE",
+                "speed_now_mps": 0.36,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:00",
+          "source": "third_party",
+          "text": "39.93943N 32.85363E civarinda 1 truck goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "truck",
+          "matched_track_id": "T0002",
+          "match_distance_m": 2.7,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "truck",
+                "observed": "truck"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "LEAVING_BASE",
+                "speed_now_mps": 0.36,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.95,
+          "summary": "Track güncel olarak üs bölgesinden uzaklaşmakta ve hareket durumu normal seyretmektedir.",
+          "reasoning": [
+            "latest_movement verileri aracın LEAVING_BASE halinde olduğunu ve kararlı şekilde üsden uzaklaştığını gösteriyor.",
+            "latest_behavior NORMAL_PATH ve yüksek yol verimliliği ile normal hareketi doğruluyor.",
+            "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu risk seviyesini artırmaz ve saha raporlarının güvenilir olmadığını gösterir.",
+            "raporlar aracın bekliyor olduğu iddiasını çürütüyor; hız ve hareket durumu buna uymuyor."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state: LEAVING_BASE",
+            "latest_behavior.behavior: NORMAL_PATH",
+            "current_evidence_flags: REPORT_CONTRADICTION",
+            "raporların hareket durumu ile çelişmesi"
+          ],
+          "uncertainties": [
+            "ETA ve hız değerleri hakkında şüpheli veya anormal bilgilenme için eşik yok"
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0003",
+      "track_id": "T0003",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 4,
+      "vehicle_class": {
+        "canonical": "car",
+        "observed_classes": {
+          "car": 4
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.87
+      },
+      "latest_position": {
+        "lat": 39.931334,
+        "lon": 32.864026,
+        "zone": "Kuzeydogu Kavsagi",
+        "distance_to_base_m": 1410.2
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.944942,
+          "lon": 32.878549,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3364.8
+        },
+        {
+          "time": "12:05",
+          "lat": 39.944941,
+          "lon": 32.878572,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3366.0
+        },
+        {
+          "time": "12:10",
+          "lat": 39.944939,
+          "lon": 32.878488,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3361.2
+        },
+        {
+          "time": "12:15",
+          "lat": 39.944948,
+          "lon": 32.878546,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3365.2
+        },
+        {
+          "time": "12:20",
+          "lat": 39.944942,
+          "lon": 32.878552,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3365.0
+        },
+        {
+          "time": "12:25",
+          "lat": 39.944951,
+          "lon": 32.878598,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3368.3
+        },
+        {
+          "time": "12:30",
+          "lat": 39.944958,
+          "lon": 32.878554,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3366.5
+        },
+        {
+          "time": "12:35",
+          "lat": 39.94492,
+          "lon": 32.87851,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3360.8
+        },
+        {
+          "time": "12:40",
+          "lat": 39.944951,
+          "lon": 32.878605,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3368.7
+        },
+        {
+          "time": "12:45",
+          "lat": 39.944944,
+          "lon": 32.87855,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3365.0
+        },
+        {
+          "time": "12:50",
+          "lat": 39.94403,
+          "lon": 32.877582,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3234.2
+        },
+        {
+          "time": "12:55",
+          "lat": 39.943117,
+          "lon": 32.876613,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3103.3
+        },
+        {
+          "time": "13:00",
+          "lat": 39.942203,
+          "lon": 32.875643,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2972.3
+        },
+        {
+          "time": "13:05",
+          "lat": 39.94129,
+          "lon": 32.874674,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2841.5
+        },
+        {
+          "time": "13:10",
+          "lat": 39.940376,
+          "lon": 32.873705,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2710.5
+        },
+        {
+          "time": "13:15",
+          "lat": 39.939462,
+          "lon": 32.872736,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2579.6
+        },
+        {
+          "time": "13:20",
+          "lat": 39.938549,
+          "lon": 32.871767,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2448.7
+        },
+        {
+          "time": "13:25",
+          "lat": 39.937635,
+          "lon": 32.870797,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2317.8
+        },
+        {
+          "time": "13:30",
+          "lat": 39.936722,
+          "lon": 32.869828,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2186.9
+        },
+        {
+          "time": "13:35",
+          "lat": 39.935808,
+          "lon": 32.868859,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 2056.0
+        },
+        {
+          "time": "13:40",
+          "lat": 39.934895,
+          "lon": 32.86789,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 1925.2
+        },
+        {
+          "time": "13:45",
+          "lat": 39.933981,
+          "lon": 32.866921,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 1794.3
+        },
+        {
+          "time": "13:50",
+          "lat": 39.933068,
+          "lon": 32.865951,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 1663.4
+        },
+        {
+          "time": "13:55",
+          "lat": 39.932154,
+          "lon": 32.864982,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 1532.6
+        },
+        {
+          "time": "14:00",
+          "lat": 39.931241,
+          "lon": 32.864013,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 1401.8
+        }
+      ],
+      "minimum_distance_to_base_m": 1410.2,
+      "latest_movement": {
+        "track_id": "T0003",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 3364.8,
+        "dist_now_m": 1401.8,
+        "dist_min_m": 1401.8,
+        "dist_max_m": 3368.7,
+        "approach_total_m": 1963.0,
+        "approach_last60_m": 1570.5,
+        "speed_now_mps": 0.44,
+        "avg_speed_mps": 0.28,
+        "max_speed_mps": 0.44,
+        "closing_speed_mps": 0.44,
+        "heading_deg": 219.1,
+        "bearing_to_base_deg": 221.8,
+        "heading_offset_deg": 2.6,
+        "eta_min": 53.6,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 2006.2,
+        "net_displacement_m": 1963.9,
+        "stops": [
+          {
+            "start": "12:00",
+            "end": "12:45",
+            "minutes": 45,
+            "lat": 39.944944,
+            "lon": 32.87855
+          }
+        ],
+        "stopped_minutes_total": 45
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "STATIONARY",
+          "speed_mps": 0.01,
+          "closing_speed_mps": -0.0,
+          "eta_min": null,
+          "distance_to_base_m": 3366.0
+        },
+        {
+          "time": "12:30",
+          "state": "STATIONARY",
+          "speed_mps": 0.01,
+          "closing_speed_mps": 0.01,
+          "eta_min": null,
+          "distance_to_base_m": 3366.5
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.44,
+          "closing_speed_mps": 0.44,
+          "eta_min": 113.5,
+          "distance_to_base_m": 2972.3
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.44,
+          "closing_speed_mps": 0.44,
+          "eta_min": 53.6,
+          "distance_to_base_m": 1401.8
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0003",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 2006.2,
+        "net_displacement_m": 1963.9,
+        "path_efficiency": 0.979,
+        "heading_change_total_deg": 1053.1,
+        "extent_m": 1967.7,
+        "flags": [
+          "HIGH_HEADING_CHANGE"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.08,
+          "heading_change_total_deg": 630.1,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.903,
+          "heading_change_total_deg": 1052.8,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.979,
+          "heading_change_total_deg": 1053.1,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.94488N 32.87858E civarinda 1 car goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "car",
+          "matched_track_id": "T0003",
+          "match_distance_m": 8.0,
+          "verdict": "SUPPORTED",
+          "supported_checks": 2,
+          "contradicted_checks": 0,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "car",
+                "observed": "car"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "SUPPORTED",
+              "value": {
+                "movement_state": "STATIONARY",
+                "speed_now_mps": 0.01,
+                "stopped_minutes_total": 25
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle uyumlu."
+          ]
+        },
+        {
+          "time": "13:00",
+          "source": "official",
+          "text": "39.94218N 32.87568E civarinda 1 car goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "car",
+          "matched_track_id": "T0003",
+          "match_distance_m": 4.1,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "car",
+                "observed": "car"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.44,
+                "stopped_minutes_total": 45
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 1,
+        "CONTRADICTED": 0,
+        "PARTIAL": 1,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION",
+        "REPORT_SUPPORTED"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION",
+        "REPORT_SUPPORTED"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.85,
+          "summary": "Araç güncel olarak üsse yaklaşmakta ve hareket halinde; yüksek yön değişimi olmasına rağmen davranış normal olarak sınıflandırılmıştır.",
+          "reasoning": [
+            "Latest movement verisi aracın üsse doğru hareket ettiğini ve hareket halinde olduğunu gösteriyor (APPROACHING_BASE, speed 0.44 mps).",
+            "Behavior NORMAL_PATH olarak belirtilmiş ve path efficiency yüksek (0.979), bu da düzenli bir hareket profiline işaret ediyor.",
+            "HIGH_HEADING_CHANGE flag'i mevcut ancak davranış NORMAL_PATH olduğundan bu tek başına risk artırıcı değildir.",
+            "Current evidence flag'lerde APPROACHING_BASE ve ETA_AVAILABLE bulunuyor, bu bir risk göstergesi ancak tek başına HIGH veya CRITICAL seviyesine yetmez.",
+            "REPORT_CONTRADICTION flag'i ve saha raporlarının çelişkili/noktasal bilgiler vermesi güvenilirliği azaltıyor ve belirsizlik yaratıyor.",
+            "Saha raporları aracın uzun süre beklediği (stationary) belirtilmiş ancak sensör verisi aracın hareket halinde olduğunu gösteriyor; bu çelişki risk değerlendirmesini etkiliyor."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state=APPROACHING_BASE",
+            "speed_now_mps=0.44 (hareket halinde)",
+            "latest_behavior.behavior=NORMAL_PATH",
+            "current_evidence_flags arasında APPROACHING_BASE ve REPORT_CONTRADICTION bulunması",
+            "stops toplam 45 dakika ancak şu an hareket halinde olunması"
+          ],
+          "uncertainties": [
+            "Saha raporları hareket durumu hakkında çelişkili bilgi veriyor.",
+            "High heading change var ancak normal davranış içinde olduğundan yorum karmaşık.",
+            "ETA mevcut ancak aracın hız ve durumu ile risk etkileşimi belirsiz."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0004",
+      "track_id": "T0004",
+      "first_seen": "12:05",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "van",
+        "observed_classes": {
+          "van": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.84
+      },
+      "latest_position": {
+        "lat": 39.942855,
+        "lon": 32.879351,
+        "zone": "Kuzeydogu Kavsagi",
+        "distance_to_base_m": 3238.1
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.946345,
+          "lon": 32.880187,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3574.1
+        },
+        {
+          "time": "12:05",
+          "lat": 39.94656,
+          "lon": 32.879686,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3565.0
+        },
+        {
+          "time": "12:10",
+          "lat": 39.946684,
+          "lon": 32.879136,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3546.1
+        },
+        {
+          "time": "12:15",
+          "lat": 39.946713,
+          "lon": 32.878563,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3518.2
+        },
+        {
+          "time": "12:20",
+          "lat": 39.946643,
+          "lon": 32.877996,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3482.3
+        },
+        {
+          "time": "12:25",
+          "lat": 39.94648,
+          "lon": 32.877463,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3440.3
+        },
+        {
+          "time": "12:30",
+          "lat": 39.94623,
+          "lon": 32.87699,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3393.8
+        },
+        {
+          "time": "12:35",
+          "lat": 39.945907,
+          "lon": 32.876601,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3345.2
+        },
+        {
+          "time": "12:40",
+          "lat": 39.945525,
+          "lon": 32.876314,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3296.5
+        },
+        {
+          "time": "12:45",
+          "lat": 39.945105,
+          "lon": 32.876144,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3250.6
+        },
+        {
+          "time": "12:50",
+          "lat": 39.944666,
+          "lon": 32.8761,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3209.6
+        },
+        {
+          "time": "12:55",
+          "lat": 39.94423,
+          "lon": 32.876183,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3175.8
+        },
+        {
+          "time": "13:00",
+          "lat": 39.94382,
+          "lon": 32.876389,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3151.2
+        },
+        {
+          "time": "13:05",
+          "lat": 39.943454,
+          "lon": 32.876708,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3137.2
+        },
+        {
+          "time": "13:10",
+          "lat": 39.943151,
+          "lon": 32.877125,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3134.6
+        },
+        {
+          "time": "13:15",
+          "lat": 39.942927,
+          "lon": 32.877619,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3143.7
+        },
+        {
+          "time": "13:20",
+          "lat": 39.942791,
+          "lon": 32.878165,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3163.7
+        },
+        {
+          "time": "13:25",
+          "lat": 39.942751,
+          "lon": 32.878737,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3193.7
+        },
+        {
+          "time": "13:30",
+          "lat": 39.942809,
+          "lon": 32.879306,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3231.8
+        },
+        {
+          "time": "13:35",
+          "lat": 39.942962,
+          "lon": 32.879844,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3275.9
+        },
+        {
+          "time": "13:40",
+          "lat": 39.943202,
+          "lon": 32.880326,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3323.7
+        },
+        {
+          "time": "13:45",
+          "lat": 39.943518,
+          "lon": 32.880726,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3372.7
+        },
+        {
+          "time": "13:50",
+          "lat": 39.943893,
+          "lon": 32.881025,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3420.3
+        },
+        {
+          "time": "13:55",
+          "lat": 39.94431,
+          "lon": 32.881209,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3464.6
+        },
+        {
+          "time": "14:00",
+          "lat": 39.944748,
+          "lon": 32.881269,
+          "zone": "Kuzeydogu Kavsagi",
+          "distance_to_base_m": 3503.4
+        }
+      ],
+      "minimum_distance_to_base_m": 3238.1,
+      "latest_movement": {
+        "track_id": "T0004",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 3574.1,
+        "dist_now_m": 3231.8,
+        "dist_min_m": 3134.6,
+        "dist_max_m": 3574.1,
+        "approach_total_m": 342.3,
+        "approach_last60_m": 162.0,
+        "speed_now_mps": 0.16,
+        "avg_speed_mps": 0.16,
+        "max_speed_mps": 0.16,
+        "closing_speed_mps": -0.13,
+        "heading_deg": 82.4,
+        "bearing_to_base_deg": 223.8,
+        "heading_offset_deg": 141.4,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "LEAVING_BASE",
+        "path_length_m": 880.9,
+        "net_displacement_m": 400.3,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "TRANSIT",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.03,
+          "eta_min": null,
+          "distance_to_base_m": 3565.0
+        },
+        {
+          "time": "12:30",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.15,
+          "eta_min": 365.0,
+          "distance_to_base_m": 3393.8
+        },
+        {
+          "time": "13:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.16,
+          "closing_speed_mps": -0.13,
+          "eta_min": null,
+          "distance_to_base_m": 3231.8
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0004",
+        "behavior": "LOITERING",
+        "path_length_m": 880.9,
+        "net_displacement_m": 400.3,
+        "path_efficiency": 0.454,
+        "heading_change_total_deg": 216.8,
+        "extent_m": 440.8,
+        "flags": [
+          "LOW_PATH_EFFICIENCY",
+          "HIGH_HEADING_CHANGE",
+          "POSSIBLE_LOITERING"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.929,
+          "heading_change_total_deg": 63.8,
+          "flags": []
+        },
+        {
+          "time": "13:30",
+          "behavior": "LOITERING",
+          "path_efficiency": 0.454,
+          "heading_change_total_deg": 216.8,
+          "flags": [
+            "LOW_PATH_EFFICIENCY",
+            "HIGH_HEADING_CHANGE",
+            "POSSIBLE_LOITERING"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE",
+        "LOW_PATH_EFFICIENCY",
+        "POSSIBLE_LOITERING"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.94643N 32.87748E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0004",
+          "match_distance_m": 5.7,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.16,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:00",
+          "source": "official",
+          "text": "39.94384N 32.87635E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0004",
+          "match_distance_m": 4.0,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.16,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "LOITERING",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "LOITERING",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.8,
+          "summary": "Aracın güncel hareketi leaving_base ve düşük hızda olmasına rağmen loitering davranışı gözlemlenmiştir. Güncel kanıtlarda loitering ve leaving_base birlikte bulunmakta, bu da riski orta seviyeye taşımaktadır.",
+          "reasoning": [
+            "Latest movement leaving_base olarak tanımlanmış, bu genellikle riski düşüren bir göstergedir.",
+            "Latest behavior 'loitering' şeklindedir; düşük yol verimliliği ve yüksek yön değişimlerini içerir, bu operasyonel risk göstergesi sayılır.",
+            "Current evidence flags'da 'LOITERING' ve 'REPORT_CONTRADICTION' var; rapor güvenilirliğini azaltır ancak risk seviyesini tek başına artırmaz.",
+            "Araç nispeten üsse 3.2 km mesafede ve hareket halindedir; geçtiği hareket durumu leaving_base, geçmişte approaching_base durumu olmuş ancak güncel risk değerlendirmesine dahil edilmemelidir.",
+            "Hız ve hareket durumu normal sınırlar dahilinde, düşük ancak sabit hızda seyrediyor, buna dayanarak hızdan risk çıkarılamaz.",
+            "Raporda continuous bekliyor ifadesi mevcut ancak sensör verisi ile çeliştiği için dikkate alınmaz.",
+            "Ana risk göstergesi loitering davranışıdır fakat leaving_base olması riski azaltan etkendir.",
+            "Yeterince güçlü ve uyumlu birden fazla güncel yüksek risk göstergesi yoktur, bu yüzden risk yüksek değil. GERÇEK zamanlı risk yüksek değildir. Daha çok orta düzeyde belirsizlik ve dikkat gerekir."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state: LEAVING_BASE",
+            "latest_behavior.behavior: LOITERING",
+            "current_evidence_flags: LOITERING",
+            "latest_position.distance_to_base_m: 3238.1",
+            "speed_now_mps: 0.16",
+            "reportlarda REPORT_CONTRADICTION bulunması",
+            "observation_count ve detection confidence yüksek ve consistent"
+          ],
+          "uncertainties": [
+            "Loitering davranışı niyet belirtmez, sadece yol verimliliği düşük hareket örüntüsüdür.",
+            "Raporlardaki doğruluk sorunları değerlendirme belirsizliği yaratmaktadır.",
+            "ETA verisi güncel hareket için mevcut değil."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0005",
+      "track_id": "T0005",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "bus",
+        "observed_classes": {
+          "bus": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.877
+      },
+      "latest_position": {
+        "lat": 39.915276,
+        "lon": 32.891666,
+        "zone": "Dogu Yolu",
+        "distance_to_base_m": 3372.3
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.929271,
+          "lon": 32.891494,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3379.9
+        },
+        {
+          "time": "12:05",
+          "lat": 39.928688,
+          "lon": 32.891501,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3365.3
+        },
+        {
+          "time": "12:10",
+          "lat": 39.928105,
+          "lon": 32.891507,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3351.7
+        },
+        {
+          "time": "12:15",
+          "lat": 39.927522,
+          "lon": 32.891514,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3339.4
+        },
+        {
+          "time": "12:20",
+          "lat": 39.926938,
+          "lon": 32.891521,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3328.4
+        },
+        {
+          "time": "12:25",
+          "lat": 39.926355,
+          "lon": 32.891527,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3318.5
+        },
+        {
+          "time": "12:30",
+          "lat": 39.925772,
+          "lon": 32.891534,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3309.9
+        },
+        {
+          "time": "12:35",
+          "lat": 39.925188,
+          "lon": 32.89154,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3302.5
+        },
+        {
+          "time": "12:40",
+          "lat": 39.924605,
+          "lon": 32.891547,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3296.4
+        },
+        {
+          "time": "12:45",
+          "lat": 39.924022,
+          "lon": 32.891553,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3291.5
+        },
+        {
+          "time": "12:50",
+          "lat": 39.923439,
+          "lon": 32.89156,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3288.0
+        },
+        {
+          "time": "12:55",
+          "lat": 39.922855,
+          "lon": 32.891566,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3285.6
+        },
+        {
+          "time": "13:00",
+          "lat": 39.922272,
+          "lon": 32.891573,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3284.6
+        },
+        {
+          "time": "13:05",
+          "lat": 39.921689,
+          "lon": 32.891579,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3284.9
+        },
+        {
+          "time": "13:10",
+          "lat": 39.921105,
+          "lon": 32.891586,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3286.4
+        },
+        {
+          "time": "13:15",
+          "lat": 39.920522,
+          "lon": 32.891593,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3289.3
+        },
+        {
+          "time": "13:20",
+          "lat": 39.919939,
+          "lon": 32.891599,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3293.4
+        },
+        {
+          "time": "13:25",
+          "lat": 39.919355,
+          "lon": 32.891606,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3298.8
+        },
+        {
+          "time": "13:30",
+          "lat": 39.918772,
+          "lon": 32.891612,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3305.4
+        },
+        {
+          "time": "13:35",
+          "lat": 39.918189,
+          "lon": 32.891619,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3313.3
+        },
+        {
+          "time": "13:40",
+          "lat": 39.917606,
+          "lon": 32.891625,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3322.4
+        },
+        {
+          "time": "13:45",
+          "lat": 39.917022,
+          "lon": 32.891632,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3332.8
+        },
+        {
+          "time": "13:50",
+          "lat": 39.916439,
+          "lon": 32.891638,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3344.3
+        },
+        {
+          "time": "13:55",
+          "lat": 39.915856,
+          "lon": 32.891645,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3357.2
+        },
+        {
+          "time": "14:00",
+          "lat": 39.915272,
+          "lon": 32.891651,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3371.2
+        }
+      ],
+      "minimum_distance_to_base_m": 3282.2,
+      "latest_movement": {
+        "track_id": "T0005",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 3379.9,
+        "dist_now_m": 3371.2,
+        "dist_min_m": 3284.6,
+        "dist_max_m": 3379.9,
+        "approach_total_m": 8.8,
+        "approach_last60_m": -86.5,
+        "speed_now_mps": 0.22,
+        "avg_speed_mps": 0.22,
+        "max_speed_mps": 0.22,
+        "closing_speed_mps": -0.05,
+        "heading_deg": 179.5,
+        "bearing_to_base_deg": 282.5,
+        "heading_offset_deg": 103.0,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "TRANSIT",
+        "path_length_m": 1556.7,
+        "net_displacement_m": 1556.7,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "TRANSIT",
+          "speed_mps": 0.22,
+          "closing_speed_mps": 0.05,
+          "eta_min": null,
+          "distance_to_base_m": 3365.3
+        },
+        {
+          "time": "13:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.22,
+          "closing_speed_mps": 0.0,
+          "eta_min": null,
+          "distance_to_base_m": 3284.6
+        },
+        {
+          "time": "14:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.22,
+          "closing_speed_mps": -0.05,
+          "eta_min": null,
+          "distance_to_base_m": 3371.2
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0005",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1556.7,
+        "net_displacement_m": 1556.7,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 1.6,
+        "extent_m": 1556.7,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.8,
+          "flags": []
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 1.6,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.92638N 32.89155E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0005",
+          "match_distance_m": 3.4,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.22,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:40",
+          "source": "third_party",
+          "text": "39.91769N 32.89150E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0005",
+          "match_distance_m": 14.2,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.22,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.95,
+          "summary": "Araç güncel olarak hareket halinde, davranışı normal ve risk göstergesi yok.",
+          "reasoning": [
+            "latest_movement alanında araç TRANSIT durumda, hareket halinde ve duraklama yok.",
+            "latest_behavior NORMAL_PATH olarak belirtilmiş, dolayısıyla alışılmadık veya şüpheli hareket yok.",
+            "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının sensör verisiyle çeliştiğini gösteriyor ancak risk seviyesi artırmaz.",
+            "Approach veya loitering gibi risk artırıcı güncel flag yok.",
+            "Araç üsten 3.3 km uzaklıkta, yakınlık riski yok."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state: TRANSIT",
+            "latest_behavior.behavior: NORMAL_PATH",
+            "current_evidence_flags: REPORT_CONTRADICTION",
+            "distance_to_base_m yaklaşık 3372 m"
+          ],
+          "uncertainties": [
+            "Saha raporları hareketsiz olduğunu iddia ediyor ancak sensör verileri çelişiyor."
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0006",
+      "track_id": "T0006",
+      "first_seen": "12:30",
+      "last_seen": "13:30",
+      "observation_count": 2,
+      "vehicle_class": {
+        "canonical": "car",
+        "observed_classes": {
+          "car": 2
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.855
+      },
+      "latest_position": {
+        "lat": 39.921194,
+        "lon": 32.886989,
+        "zone": "Dogu Yolu",
+        "distance_to_base_m": 2894.3
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.924191,
+          "lon": 32.894033,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3503.8
+        },
+        {
+          "time": "12:05",
+          "lat": 39.924279,
+          "lon": 32.894079,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3508.4
+        },
+        {
+          "time": "12:10",
+          "lat": 39.923937,
+          "lon": 32.893903,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3490.7
+        },
+        {
+          "time": "12:15",
+          "lat": 39.923257,
+          "lon": 32.893504,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3452.5
+        },
+        {
+          "time": "12:20",
+          "lat": 39.922419,
+          "lon": 32.892901,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3398.1
+        },
+        {
+          "time": "12:25",
+          "lat": 39.921647,
+          "lon": 32.892123,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3331.3
+        },
+        {
+          "time": "12:30",
+          "lat": 39.921147,
+          "lon": 32.891212,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3254.4
+        },
+        {
+          "time": "12:35",
+          "lat": 39.921052,
+          "lon": 32.89022,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3170.1
+        },
+        {
+          "time": "12:40",
+          "lat": 39.921387,
+          "lon": 32.889203,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3082.6
+        },
+        {
+          "time": "12:45",
+          "lat": 39.922061,
+          "lon": 32.888221,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2998.5
+        },
+        {
+          "time": "12:50",
+          "lat": 39.922892,
+          "lon": 32.887329,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2924.7
+        },
+        {
+          "time": "12:55",
+          "lat": 39.923656,
+          "lon": 32.886578,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2865.4
+        },
+        {
+          "time": "13:00",
+          "lat": 39.924149,
+          "lon": 32.886007,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2821.3
+        },
+        {
+          "time": "13:05",
+          "lat": 39.924237,
+          "lon": 32.885645,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2791.5
+        },
+        {
+          "time": "13:10",
+          "lat": 39.923895,
+          "lon": 32.885506,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2776.3
+        },
+        {
+          "time": "13:15",
+          "lat": 39.923215,
+          "lon": 32.885588,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2778.1
+        },
+        {
+          "time": "13:20",
+          "lat": 39.922377,
+          "lon": 32.885875,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2799.0
+        },
+        {
+          "time": "13:25",
+          "lat": 39.921605,
+          "lon": 32.886338,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2838.0
+        },
+        {
+          "time": "13:30",
+          "lat": 39.921105,
+          "lon": 32.886933,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2889.8
+        },
+        {
+          "time": "13:35",
+          "lat": 39.92101,
+          "lon": 32.887609,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 2947.7
+        },
+        {
+          "time": "13:40",
+          "lat": 39.921345,
+          "lon": 32.888309,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3006.5
+        },
+        {
+          "time": "13:45",
+          "lat": 39.922019,
+          "lon": 32.888976,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3062.9
+        },
+        {
+          "time": "13:50",
+          "lat": 39.92285,
+          "lon": 32.889552,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3114.0
+        },
+        {
+          "time": "13:55",
+          "lat": 39.923614,
+          "lon": 32.889988,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3155.3
+        },
+        {
+          "time": "14:00",
+          "lat": 39.924107,
+          "lon": 32.890243,
+          "zone": "Dogu Yolu",
+          "distance_to_base_m": 3180.8
+        }
+      ],
+      "minimum_distance_to_base_m": 2894.3,
+      "latest_movement": {
+        "track_id": "T0006",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 3503.8,
+        "dist_now_m": 2889.8,
+        "dist_min_m": 2776.3,
+        "dist_max_m": 3508.4,
+        "approach_total_m": 614.0,
+        "approach_last60_m": 364.7,
+        "speed_now_mps": 0.25,
+        "avg_speed_mps": 0.27,
+        "max_speed_mps": 0.4,
+        "closing_speed_mps": -0.17,
+        "heading_deg": 137.6,
+        "bearing_to_base_deg": 271.6,
+        "heading_offset_deg": 134.0,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "LEAVING_BASE",
+        "path_length_m": 1450.5,
+        "net_displacement_m": 695.9,
+        "stops": [
+          {
+            "start": "12:00",
+            "end": "12:05",
+            "minutes": 5,
+            "lat": 39.924279,
+            "lon": 32.894079
+          }
+        ],
+        "stopped_minutes_total": 5
+      },
+      "movement_history": [
+        {
+          "time": "12:30",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.32,
+          "closing_speed_mps": 0.26,
+          "eta_min": 211.8,
+          "distance_to_base_m": 3254.4
+        },
+        {
+          "time": "13:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.25,
+          "closing_speed_mps": -0.17,
+          "eta_min": null,
+          "distance_to_base_m": 2889.8
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0006",
+        "behavior": "LOITERING",
+        "path_length_m": 1450.5,
+        "net_displacement_m": 695.9,
+        "path_efficiency": 0.48,
+        "heading_change_total_deg": 486.5,
+        "extent_m": 733.7,
+        "flags": [
+          "LOW_PATH_EFFICIENCY",
+          "HIGH_HEADING_CHANGE",
+          "POSSIBLE_LOITERING"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.934,
+          "heading_change_total_deg": 212.6,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "13:30",
+          "behavior": "LOITERING",
+          "path_efficiency": 0.48,
+          "heading_change_total_deg": 486.5,
+          "flags": [
+            "LOW_PATH_EFFICIENCY",
+            "HIGH_HEADING_CHANGE",
+            "POSSIBLE_LOITERING"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE",
+        "LOW_PATH_EFFICIENCY",
+        "POSSIBLE_LOITERING"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.92167N 32.89212E civarinda 1 car goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "car",
+          "matched_track_id": "T0006",
+          "match_distance_m": 2.6,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "car",
+                "observed": "car"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.36,
+                "stopped_minutes_total": 5
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 1,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "LOITERING",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "LOITERING",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.8,
+          "summary": "Track LEAVING_BASE konumunda, hızla biraz uzaklaşırken, güncel olarak düşük yol verimliliği ve yüksek yön değişimine sahip loitering davranışı sergiliyor. Ancak LEAVING_BASE durumu risk azaltıcıdır ve sadece loitering kanıtı bulunmakta. Saha raporları tutarsız ve güvenilir kabul edilmemelidir.",
+          "reasoning": [
+            "latest_movement’da hareket durumu LEAVING_BASE, bu riskleri azaltır.",
+            "latest_behavior’da loitering tespit edilmiş, düşük yol verimliliği ve yüksek yön değişimi mevcut, bu orta düzey risk göstergesidir.",
+            "current_evidence_flags’te LOITERING ve REPORT_CONTRADICTION var; REPORT_CONTRADICTION saha raporunun doğruluğunu sorgulamakta, riski artırmaz.",
+            "Geçmiş flags APPROACHING_BASE olmasına rağmen şu anda LEAVING_BASE konumunda olması nedeniyle geçerli risk artışı sağlamaz.",
+            "Hız ve diğer hareket verilerinde yüksek risk yaratacak anormal durum yok."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state: LEAVING_BASE",
+            "latest_behavior.behavior: LOITERING",
+            "current_evidence_flags: LOITERING, REPORT_CONTRADICTION",
+            "movement_history: 13:30 LEAVING_BASE",
+            "report_summary: PARTIAL with CONTRADICTED stationary claim"
+          ],
+          "uncertainties": [
+            "Loitering davranışının niyeti net değil ancak risk potansiyeli orta seviyede.",
+            "Saha raporlarının çelişkili olması gerçek durumun kesin olarak tanımlanmasını zorlaştırıyor."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0007",
+      "track_id": "T0007",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "truck",
+        "observed_classes": {
+          "truck": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.87
+      },
+      "latest_position": {
+        "lat": 39.916305,
+        "lon": 32.859967,
+        "zone": "Guneydogu Yerlesimi",
+        "distance_to_base_m": 851.9
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.902798,
+          "lon": 32.877859,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2992.8
+        },
+        {
+          "time": "12:05",
+          "lat": 39.903437,
+          "lon": 32.877115,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2897.7
+        },
+        {
+          "time": "12:10",
+          "lat": 39.904038,
+          "lon": 32.876371,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2805.6
+        },
+        {
+          "time": "12:15",
+          "lat": 39.904598,
+          "lon": 32.875627,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2716.7
+        },
+        {
+          "time": "12:20",
+          "lat": 39.905119,
+          "lon": 32.874883,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2630.8
+        },
+        {
+          "time": "12:25",
+          "lat": 39.90561,
+          "lon": 32.874139,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2547.3
+        },
+        {
+          "time": "12:30",
+          "lat": 39.906084,
+          "lon": 32.873395,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2465.2
+        },
+        {
+          "time": "12:35",
+          "lat": 39.906557,
+          "lon": 32.872651,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2383.2
+        },
+        {
+          "time": "12:40",
+          "lat": 39.907044,
+          "lon": 32.871907,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2300.1
+        },
+        {
+          "time": "12:45",
+          "lat": 39.907559,
+          "lon": 32.871163,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2214.8
+        },
+        {
+          "time": "12:50",
+          "lat": 39.908112,
+          "lon": 32.870419,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2126.5
+        },
+        {
+          "time": "12:55",
+          "lat": 39.908705,
+          "lon": 32.869676,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2035.0
+        },
+        {
+          "time": "13:00",
+          "lat": 39.909338,
+          "lon": 32.868932,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1940.3
+        },
+        {
+          "time": "13:05",
+          "lat": 39.91,
+          "lon": 32.868188,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1843.3
+        },
+        {
+          "time": "13:10",
+          "lat": 39.910679,
+          "lon": 32.867444,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1745.0
+        },
+        {
+          "time": "13:15",
+          "lat": 39.91136,
+          "lon": 32.8667,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1646.6
+        },
+        {
+          "time": "13:20",
+          "lat": 39.912027,
+          "lon": 32.865956,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1549.3
+        },
+        {
+          "time": "13:25",
+          "lat": 39.912665,
+          "lon": 32.865212,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1454.3
+        },
+        {
+          "time": "13:30",
+          "lat": 39.913266,
+          "lon": 32.864468,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1362.2
+        },
+        {
+          "time": "13:35",
+          "lat": 39.913826,
+          "lon": 32.863724,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1273.3
+        },
+        {
+          "time": "13:40",
+          "lat": 39.914347,
+          "lon": 32.86298,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1187.4
+        },
+        {
+          "time": "13:45",
+          "lat": 39.914839,
+          "lon": 32.862236,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1103.8
+        },
+        {
+          "time": "13:50",
+          "lat": 39.915313,
+          "lon": 32.861492,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1021.7
+        },
+        {
+          "time": "13:55",
+          "lat": 39.915785,
+          "lon": 32.860748,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 939.8
+        },
+        {
+          "time": "14:00",
+          "lat": 39.916273,
+          "lon": 32.860004,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 856.7
+        }
+      ],
+      "minimum_distance_to_base_m": 851.9,
+      "latest_movement": {
+        "track_id": "T0007",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 2992.8,
+        "dist_now_m": 856.7,
+        "dist_min_m": 856.7,
+        "dist_max_m": 2992.8,
+        "approach_total_m": 2136.1,
+        "approach_last60_m": 1083.7,
+        "speed_now_mps": 0.28,
+        "avg_speed_mps": 0.3,
+        "max_speed_mps": 0.33,
+        "closing_speed_mps": 0.28,
+        "heading_deg": 310.5,
+        "bearing_to_base_deg": 316.3,
+        "heading_offset_deg": 5.7,
+        "eta_min": 51.5,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 2140.9,
+        "net_displacement_m": 2136.4,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.32,
+          "closing_speed_mps": 0.32,
+          "eta_min": 152.3,
+          "distance_to_base_m": 2897.7
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.32,
+          "closing_speed_mps": 0.32,
+          "eta_min": 102.4,
+          "distance_to_base_m": 1940.3
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.28,
+          "closing_speed_mps": 0.28,
+          "eta_min": 51.5,
+          "distance_to_base_m": 856.7
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0007",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 2140.9,
+        "net_displacement_m": 2136.4,
+        "path_efficiency": 0.998,
+        "heading_change_total_deg": 30.3,
+        "extent_m": 2136.4,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.999,
+          "heading_change_total_deg": 16.9,
+          "flags": []
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.998,
+          "heading_change_total_deg": 30.3,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "13:00",
+          "source": "third_party",
+          "text": "39.90937N 32.86896E civarinda 1 truck goruldu; bolgeden hizla uzaklasiyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "truck",
+          "matched_track_id": "T0007",
+          "match_distance_m": 4.3,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 2,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "truck",
+                "observed": "truck"
+              }
+            },
+            {
+              "claim": "leaving",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "closing_speed_mps": 0.32
+              }
+            },
+            {
+              "claim": "fast",
+              "result": "CONTRADICTED",
+              "value": {
+                "speed_now_mps": 0.32
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "leaving iddiası hareket verisiyle çelişiyor.",
+            "fast iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:40",
+          "source": "official",
+          "text": "39.91436N 32.86299E civarinda 1 truck goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "truck",
+          "matched_track_id": "T0007",
+          "match_distance_m": 1.7,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "truck",
+                "observed": "truck"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.29,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.8,
+          "summary": "Araç üsse yaklaşmakta ve hareket halinde ancak davranışı normal ve durma yok.",
+          "reasoning": [
+            "latest_movement en önemli güncel veri olarak APPROACHING_BASE (üste yaklaşma) gösteriyor.",
+            "latest_behavior NORMAL_PATH; yani hareket paterni normal ve verimli.",
+            "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu risk göstergeleri arasında.",
+            "Loitering, Circling veya ani yön değişimi yok.",
+            "Raporda çelişki (REPORT_CONTRADICTION) var; raporların güvenilirliği düşük, riski artırmaz.",
+            "Araç vaqtında ve düzenli bir şekilde üsse yaklaşmakta, hız düşük ama verilen eşik yok bu nedenle yorum yapılmıyor."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = APPROACHING_BASE",
+            "latest_behavior.behavior = NORMAL_PATH",
+            "current_evidence_flags: APPROACHING_BASE, ETA_AVAILABLE",
+            "saha raporlarındaki REPORT_CONTRADICTION var ancak sensör verisi ile çeliştiği için dikkate alınmadı"
+          ],
+          "uncertainties": [
+            "Hız için uygun kritik eşik değerleri verilmemiştir.",
+            "Raporda çelişkiler mevcut, saha bilgisi belirsizliğe neden oluyor."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0008",
+      "track_id": "T0008",
+      "first_seen": "12:30",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "bus",
+        "observed_classes": {
+          "van": 1,
+          "bus": 2
+        },
+        "consistent": false,
+        "average_detection_confidence": 0.877
+      },
+      "latest_position": {
+        "lat": 39.906706,
+        "lon": 32.872328,
+        "zone": "Guneydogu Yerlesimi",
+        "distance_to_base_m": 2352.1
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.918051,
+          "lon": 32.857876,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 588.4
+        },
+        {
+          "time": "12:05",
+          "lat": 39.917419,
+          "lon": 32.858679,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 686.5
+        },
+        {
+          "time": "12:10",
+          "lat": 39.916788,
+          "lon": 32.859482,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 784.5
+        },
+        {
+          "time": "12:15",
+          "lat": 39.916156,
+          "lon": 32.860284,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 882.6
+        },
+        {
+          "time": "12:20",
+          "lat": 39.915525,
+          "lon": 32.861087,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 980.7
+        },
+        {
+          "time": "12:25",
+          "lat": 39.914893,
+          "lon": 32.86189,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1078.8
+        },
+        {
+          "time": "12:30",
+          "lat": 39.914262,
+          "lon": 32.862693,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1176.8
+        },
+        {
+          "time": "12:35",
+          "lat": 39.91363,
+          "lon": 32.863495,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1274.9
+        },
+        {
+          "time": "12:40",
+          "lat": 39.912999,
+          "lon": 32.864298,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1372.9
+        },
+        {
+          "time": "12:45",
+          "lat": 39.912367,
+          "lon": 32.865101,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1471.1
+        },
+        {
+          "time": "12:50",
+          "lat": 39.911736,
+          "lon": 32.865903,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1569.1
+        },
+        {
+          "time": "12:55",
+          "lat": 39.911104,
+          "lon": 32.866706,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1667.2
+        },
+        {
+          "time": "13:00",
+          "lat": 39.910473,
+          "lon": 32.867509,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1765.2
+        },
+        {
+          "time": "13:05",
+          "lat": 39.909841,
+          "lon": 32.868312,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1863.4
+        },
+        {
+          "time": "13:10",
+          "lat": 39.90921,
+          "lon": 32.869114,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 1961.4
+        },
+        {
+          "time": "13:15",
+          "lat": 39.908578,
+          "lon": 32.869917,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2059.5
+        },
+        {
+          "time": "13:20",
+          "lat": 39.907947,
+          "lon": 32.87072,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2157.5
+        },
+        {
+          "time": "13:25",
+          "lat": 39.907315,
+          "lon": 32.871522,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2255.6
+        },
+        {
+          "time": "13:30",
+          "lat": 39.906683,
+          "lon": 32.872325,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2353.8
+        },
+        {
+          "time": "13:35",
+          "lat": 39.906052,
+          "lon": 32.873128,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2451.8
+        },
+        {
+          "time": "13:40",
+          "lat": 39.90542,
+          "lon": 32.873931,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2549.9
+        },
+        {
+          "time": "13:45",
+          "lat": 39.904789,
+          "lon": 32.874733,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2647.9
+        },
+        {
+          "time": "13:50",
+          "lat": 39.904157,
+          "lon": 32.875536,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2746.1
+        },
+        {
+          "time": "13:55",
+          "lat": 39.903526,
+          "lon": 32.876339,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2844.1
+        },
+        {
+          "time": "14:00",
+          "lat": 39.902894,
+          "lon": 32.877142,
+          "zone": "Guneydogu Yerlesimi",
+          "distance_to_base_m": 2942.3
+        }
+      ],
+      "minimum_distance_to_base_m": 1181.3,
+      "latest_movement": {
+        "track_id": "T0008",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 588.4,
+        "dist_now_m": 2353.8,
+        "dist_min_m": 588.4,
+        "dist_max_m": 2353.8,
+        "approach_total_m": -1765.4,
+        "approach_last60_m": -1176.9,
+        "speed_now_mps": 0.33,
+        "avg_speed_mps": 0.33,
+        "max_speed_mps": 0.33,
+        "closing_speed_mps": -0.33,
+        "heading_deg": 135.7,
+        "bearing_to_base_deg": 315.7,
+        "heading_offset_deg": 180.0,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "LEAVING_BASE",
+        "path_length_m": 1765.4,
+        "net_displacement_m": 1765.4,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": -0.33,
+          "eta_min": null,
+          "distance_to_base_m": 1176.8
+        },
+        {
+          "time": "13:00",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": -0.33,
+          "eta_min": null,
+          "distance_to_base_m": 1765.2
+        },
+        {
+          "time": "13:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": -0.33,
+          "eta_min": null,
+          "distance_to_base_m": 2353.8
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0008",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1765.4,
+        "net_displacement_m": 1765.4,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 0.8,
+        "extent_m": 1765.4,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.3,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.6,
+          "flags": []
+        },
+        {
+          "time": "13:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.8,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "third_party",
+          "text": "39.91497N 32.86183E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0008",
+          "match_distance_m": 10.0,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "LEAVING_BASE",
+                "speed_now_mps": 0.33,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 1,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "CLASS_INCONSISTENCY",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "CLASS_INCONSISTENCY",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.95,
+          "summary": "Araç normal yolda LEAVING_BASE hareketinde, önemli risk göstergesi yok.",
+          "reasoning": [
+            "latest_movement harekete devam ediyor ve LEAVING_BASE durumu risk azaltıcıdır",
+            "latest_behavior NORMAL_PATH ve yüksek yol verimliliği (1.0) gösteriyor",
+            "hız düşük ama sistem tarafından anormal veya şüpheli olarak tanımlanmadı",
+            "current_evidence_flags CLASS_INCONSISTENCY ve REPORT_CONTRADICTION içeriyor ancak bunlar risk artırıcı değil, saha raporuyla sensör verisi çelişiyor ve rapor güvenilir değil"
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = LEAVING_BASE",
+            "latest_behavior.behavior = NORMAL_PATH",
+            "current_evidence_flags = [CLASS_INCONSISTENCY, REPORT_CONTRADICTION]",
+            "hareket hızı 0.33 mps, hareketsiz değil"
+          ],
+          "uncertainties": [
+            "Araç sınıfında tutarsızlık var ancak bu doğrudan risk oluşturmaz",
+            "Saha raporu hareket etmediğini iddia etti ancak sensör verisi çelişiyor"
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0009",
+      "track_id": "T0009",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "van",
+        "observed_classes": {
+          "van": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.883
+      },
+      "latest_position": {
+        "lat": 39.911728,
+        "lon": 32.853365,
+        "zone": "Guney Kapisi Yaklasimi",
+        "distance_to_base_m": 1124.7
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.898496,
+          "lon": 32.853046,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2595.7
+        },
+        {
+          "time": "12:05",
+          "lat": 39.898473,
+          "lon": 32.85312,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2598.3
+        },
+        {
+          "time": "12:10",
+          "lat": 39.898502,
+          "lon": 32.853099,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2595.1
+        },
+        {
+          "time": "12:15",
+          "lat": 39.898485,
+          "lon": 32.853112,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2597.0
+        },
+        {
+          "time": "12:20",
+          "lat": 39.898504,
+          "lon": 32.853061,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2594.8
+        },
+        {
+          "time": "12:25",
+          "lat": 39.898497,
+          "lon": 32.853043,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2595.6
+        },
+        {
+          "time": "12:30",
+          "lat": 39.89841,
+          "lon": 32.853087,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2605.3
+        },
+        {
+          "time": "12:35",
+          "lat": 39.89845,
+          "lon": 32.853143,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2600.9
+        },
+        {
+          "time": "12:40",
+          "lat": 39.8985,
+          "lon": 32.853056,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2595.3
+        },
+        {
+          "time": "12:45",
+          "lat": 39.898506,
+          "lon": 32.853066,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2594.6
+        },
+        {
+          "time": "12:50",
+          "lat": 39.899362,
+          "lon": 32.853122,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2499.4
+        },
+        {
+          "time": "12:55",
+          "lat": 39.900245,
+          "lon": 32.853137,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2401.3
+        },
+        {
+          "time": "13:00",
+          "lat": 39.901128,
+          "lon": 32.853151,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2303.1
+        },
+        {
+          "time": "13:05",
+          "lat": 39.902011,
+          "lon": 32.853166,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2204.9
+        },
+        {
+          "time": "13:10",
+          "lat": 39.902894,
+          "lon": 32.85318,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2106.7
+        },
+        {
+          "time": "13:15",
+          "lat": 39.903778,
+          "lon": 32.853195,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2008.4
+        },
+        {
+          "time": "13:20",
+          "lat": 39.904661,
+          "lon": 32.85321,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1910.3
+        },
+        {
+          "time": "13:25",
+          "lat": 39.905544,
+          "lon": 32.853224,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1812.1
+        },
+        {
+          "time": "13:30",
+          "lat": 39.906427,
+          "lon": 32.853239,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1713.9
+        },
+        {
+          "time": "13:35",
+          "lat": 39.90731,
+          "lon": 32.853253,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1615.7
+        },
+        {
+          "time": "13:40",
+          "lat": 39.908193,
+          "lon": 32.853268,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1517.6
+        },
+        {
+          "time": "13:45",
+          "lat": 39.909076,
+          "lon": 32.853283,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1419.4
+        },
+        {
+          "time": "13:50",
+          "lat": 39.909959,
+          "lon": 32.853297,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1321.3
+        },
+        {
+          "time": "13:55",
+          "lat": 39.910842,
+          "lon": 32.853312,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1223.1
+        },
+        {
+          "time": "14:00",
+          "lat": 39.911726,
+          "lon": 32.853326,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 1124.9
+        }
+      ],
+      "minimum_distance_to_base_m": 1124.7,
+      "latest_movement": {
+        "track_id": "T0009",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 2595.7,
+        "dist_now_m": 1124.9,
+        "dist_min_m": 1124.9,
+        "dist_max_m": 2605.3,
+        "approach_total_m": 1470.9,
+        "approach_last60_m": 1178.2,
+        "speed_now_mps": 0.33,
+        "avg_speed_mps": 0.21,
+        "max_speed_mps": 0.33,
+        "closing_speed_mps": 0.33,
+        "heading_deg": 0.7,
+        "bearing_to_base_deg": 358.8,
+        "heading_offset_deg": 1.9,
+        "eta_min": 57.2,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 1516.7,
+        "net_displacement_m": 1471.3,
+        "stops": [
+          {
+            "start": "12:00",
+            "end": "12:45",
+            "minutes": 45,
+            "lat": 39.898506,
+            "lon": 32.853066
+          }
+        ],
+        "stopped_minutes_total": 45
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "STATIONARY",
+          "speed_mps": 0.02,
+          "closing_speed_mps": -0.01,
+          "eta_min": null,
+          "distance_to_base_m": 2598.3
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": 0.33,
+          "eta_min": 117.3,
+          "distance_to_base_m": 2303.1
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.33,
+          "closing_speed_mps": 0.33,
+          "eta_min": 57.2,
+          "distance_to_base_m": 1124.9
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0009",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1516.7,
+        "net_displacement_m": 1471.3,
+        "path_efficiency": 0.97,
+        "heading_change_total_deg": 972.0,
+        "extent_m": 1480.8,
+        "flags": [
+          "HIGH_HEADING_CHANGE"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.866,
+          "heading_change_total_deg": 971.5,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.97,
+          "heading_change_total_deg": 972.0,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.89837N 32.85273E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0009",
+          "match_distance_m": 30.2,
+          "verdict": "SUPPORTED",
+          "supported_checks": 2,
+          "contradicted_checks": 0,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "SUPPORTED",
+              "value": {
+                "movement_state": "STATIONARY",
+                "speed_now_mps": 0.01,
+                "stopped_minutes_total": 25
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle uyumlu."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 1,
+        "CONTRADICTED": 0,
+        "PARTIAL": 0,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_SUPPORTED"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_SUPPORTED"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.85,
+          "summary": "Araç Güncel Olarak Üsse Yaklaşıyor, Normal Bir Hareket Deseni Sergiliyor.",
+          "reasoning": [
+            "Latest movement hareket durumu APPROACHING_BASE, bu yaklaşımı işaret ediyor ve risk artırıcı.",
+            "Ancak latest_behavior NORMAL_PATH ve yüksek yol verimliliği var, bu anormal bir hareket olmadığını gösteriyor.",
+            "HIGH_HEADING_CHANGE flag'i mevcut fakat behavior NORMAL_PATH olduğundan tek başına risk artırıcı değil.",
+            "Current evidence flags APPROACHING_BASE ve REPORT_SUPPORTED mevcut, rapor sensör verisi ile uyumlu ve araç uzun süre hareketsiz kalmış ancak bu hareketin göstergesi değil (stationary) ve risk seviyesini tek başına yükseltmiyor.",
+            "Araç hala üsten 1124.7 metre uzaklıkta ve ETA yaklaşık 57 dakika, bu yakın ve acil bir tehdit olmadığı anlamına gelir."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state APPROACHING_BASE",
+            "latest_behavior.behavior NORMAL_PATH",
+            "current_evidence_flags APPROACHING_BASE, REPORT_SUPPORTED",
+            "movement_state 45 dakika STATIONARY raporu ile uyumlu"
+          ],
+          "uncertainties": [
+            "Hız değerleri için karşılaştırma eşikleri verilmemiş, hızın risk üzerindeki etkisi değerlendirilemiyor.",
+            "REPORT_CONTRADICTION yok ve rapor güvenilir kabul edilmiş ancak saha raporlarının genel güvenilirliği sınırlı."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0010",
+      "track_id": "T0010",
+      "first_seen": "12:05",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "truck",
+        "observed_classes": {
+          "truck": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.847
+      },
+      "latest_position": {
+        "lat": 39.896809,
+        "lon": 32.855066,
+        "zone": "Guney Kapisi Yaklasimi",
+        "distance_to_base_m": 2788.6
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.899859,
+          "lon": 32.852576,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2444.5
+        },
+        {
+          "time": "12:05",
+          "lat": 39.899754,
+          "lon": 32.852019,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2457.5
+        },
+        {
+          "time": "12:10",
+          "lat": 39.899557,
+          "lon": 32.851505,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2481.3
+        },
+        {
+          "time": "12:15",
+          "lat": 39.899279,
+          "lon": 32.851061,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2514.5
+        },
+        {
+          "time": "12:20",
+          "lat": 39.898932,
+          "lon": 32.850708,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2555.1
+        },
+        {
+          "time": "12:25",
+          "lat": 39.898534,
+          "lon": 32.850464,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2601.0
+        },
+        {
+          "time": "12:30",
+          "lat": 39.898104,
+          "lon": 32.85034,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2649.5
+        },
+        {
+          "time": "12:35",
+          "lat": 39.897664,
+          "lon": 32.850343,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2698.2
+        },
+        {
+          "time": "12:40",
+          "lat": 39.897235,
+          "lon": 32.850472,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2744.8
+        },
+        {
+          "time": "12:45",
+          "lat": 39.896839,
+          "lon": 32.850721,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2787.1
+        },
+        {
+          "time": "12:50",
+          "lat": 39.896494,
+          "lon": 32.851079,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2823.4
+        },
+        {
+          "time": "12:55",
+          "lat": 39.896219,
+          "lon": 32.851526,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2851.9
+        },
+        {
+          "time": "13:00",
+          "lat": 39.896026,
+          "lon": 32.852042,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2871.7
+        },
+        {
+          "time": "13:05",
+          "lat": 39.895926,
+          "lon": 32.852601,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2881.8
+        },
+        {
+          "time": "13:10",
+          "lat": 39.895922,
+          "lon": 32.853174,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2882.0
+        },
+        {
+          "time": "13:15",
+          "lat": 39.896016,
+          "lon": 32.853735,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2872.1
+        },
+        {
+          "time": "13:20",
+          "lat": 39.896202,
+          "lon": 32.854255,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2852.6
+        },
+        {
+          "time": "13:25",
+          "lat": 39.896471,
+          "lon": 32.854708,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2824.4
+        },
+        {
+          "time": "13:30",
+          "lat": 39.896811,
+          "lon": 32.855073,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2788.4
+        },
+        {
+          "time": "13:35",
+          "lat": 39.897204,
+          "lon": 32.855331,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2746.2
+        },
+        {
+          "time": "13:40",
+          "lat": 39.897631,
+          "lon": 32.855469,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2699.7
+        },
+        {
+          "time": "13:45",
+          "lat": 39.898071,
+          "lon": 32.855482,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2651.1
+        },
+        {
+          "time": "13:50",
+          "lat": 39.898503,
+          "lon": 32.855367,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2602.4
+        },
+        {
+          "time": "13:55",
+          "lat": 39.898904,
+          "lon": 32.855131,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2556.5
+        },
+        {
+          "time": "14:00",
+          "lat": 39.899255,
+          "lon": 32.854786,
+          "zone": "Guney Kapisi Yaklasimi",
+          "distance_to_base_m": 2515.6
+        }
+      ],
+      "minimum_distance_to_base_m": 2450.0,
+      "latest_movement": {
+        "track_id": "T0010",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 2444.5,
+        "dist_now_m": 2788.4,
+        "dist_min_m": 2444.5,
+        "dist_max_m": 2882.0,
+        "approach_total_m": -343.9,
+        "approach_last60_m": -138.9,
+        "speed_now_mps": 0.16,
+        "avg_speed_mps": 0.16,
+        "max_speed_mps": 0.16,
+        "closing_speed_mps": 0.12,
+        "heading_deg": 39.5,
+        "bearing_to_base_deg": 356.5,
+        "heading_offset_deg": 43.0,
+        "eta_min": 387.1,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 880.9,
+        "net_displacement_m": 400.3,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "TRANSIT",
+          "speed_mps": 0.16,
+          "closing_speed_mps": -0.04,
+          "eta_min": null,
+          "distance_to_base_m": 2457.5
+        },
+        {
+          "time": "12:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.16,
+          "closing_speed_mps": -0.16,
+          "eta_min": null,
+          "distance_to_base_m": 2649.5
+        },
+        {
+          "time": "13:30",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.12,
+          "eta_min": 387.1,
+          "distance_to_base_m": 2788.4
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0010",
+        "behavior": "LOITERING",
+        "path_length_m": 880.9,
+        "net_displacement_m": 400.3,
+        "path_efficiency": 0.454,
+        "heading_change_total_deg": 216.7,
+        "extent_m": 440.8,
+        "flags": [
+          "LOW_PATH_EFFICIENCY",
+          "HIGH_HEADING_CHANGE",
+          "POSSIBLE_LOITERING"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.929,
+          "heading_change_total_deg": 63.7,
+          "flags": []
+        },
+        {
+          "time": "13:30",
+          "behavior": "LOITERING",
+          "path_efficiency": 0.454,
+          "heading_change_total_deg": 216.7,
+          "flags": [
+            "LOW_PATH_EFFICIENCY",
+            "HIGH_HEADING_CHANGE",
+            "POSSIBLE_LOITERING"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE",
+        "LOW_PATH_EFFICIENCY",
+        "POSSIBLE_LOITERING"
+      ],
+      "reports": [],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 0,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "LOITERING"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "LOITERING"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "HIGH",
+          "confidence": 0.85,
+          "summary": "Araç güncel olarak üsse yaklaşmakta ve belirgin loitering davranışı sergilemektedir.",
+          "reasoning": [
+            "latest_movement verisi güncel olarak APPROACHING_BASE durumunu ve hareket halini göstermektedir.",
+            "latest_behavior LOITERING ve düşük yol verimliliği ile yüksek yön değişimi olduğunu ortaya koymaktadır.",
+            "current_evidence_flags güncel olarak APPROACHING_BASE ve LOITERING kanıtlarını desteklemektedir.",
+            "Araç üste yaklaşık 2.8 km mesafede ve hareket halinde, bu mesafe yakın olarak değerlendirilebilir.",
+            "LEAVING_BASE durumundan sonra tekrar üsse yaklaşması risk oluşturabilir."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = APPROACHING_BASE",
+            "latest_behavior.behavior = LOITERING",
+            "current_evidence_flags içeriyor: APPROACHING_BASE, LOITERING"
+          ],
+          "uncertainties": [
+            "ETA süresi oldukça uzun (387.1 dakika), bu durum tehlike süresini uzatabilir ancak aciliyetini düşürebilir.",
+            "Saha raporu yok, sensör verileri ile doğrulama yapılmıştır, ama rapor doğrulanmamış."
+          ],
+          "recommended_attention": "PRIORITY"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0011",
+      "track_id": "T0011",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 4,
+      "vehicle_class": {
+        "canonical": "car",
+        "observed_classes": {
+          "car": 4
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.862
+      },
+      "latest_position": {
+        "lat": 39.909234,
+        "lon": 32.826884,
+        "zone": "Guneybati Yolu",
+        "distance_to_base_m": 2636.0
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.898466,
+          "lon": 32.835838,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2985.4
+        },
+        {
+          "time": "12:05",
+          "lat": 39.898915,
+          "lon": 32.835466,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2958.0
+        },
+        {
+          "time": "12:10",
+          "lat": 39.899365,
+          "lon": 32.835094,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2931.5
+        },
+        {
+          "time": "12:15",
+          "lat": 39.899814,
+          "lon": 32.834721,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2906.0
+        },
+        {
+          "time": "12:20",
+          "lat": 39.900263,
+          "lon": 32.834349,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2881.5
+        },
+        {
+          "time": "12:25",
+          "lat": 39.900712,
+          "lon": 32.833977,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2858.0
+        },
+        {
+          "time": "12:30",
+          "lat": 39.901161,
+          "lon": 32.833604,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2835.6
+        },
+        {
+          "time": "12:35",
+          "lat": 39.90161,
+          "lon": 32.833232,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2814.3
+        },
+        {
+          "time": "12:40",
+          "lat": 39.902059,
+          "lon": 32.83286,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2794.0
+        },
+        {
+          "time": "12:45",
+          "lat": 39.902508,
+          "lon": 32.832487,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2774.8
+        },
+        {
+          "time": "12:50",
+          "lat": 39.902957,
+          "lon": 32.832115,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2756.8
+        },
+        {
+          "time": "12:55",
+          "lat": 39.903406,
+          "lon": 32.831743,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2739.9
+        },
+        {
+          "time": "13:00",
+          "lat": 39.903855,
+          "lon": 32.83137,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2724.3
+        },
+        {
+          "time": "13:05",
+          "lat": 39.904304,
+          "lon": 32.830998,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2709.7
+        },
+        {
+          "time": "13:10",
+          "lat": 39.904753,
+          "lon": 32.830626,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2696.5
+        },
+        {
+          "time": "13:15",
+          "lat": 39.905202,
+          "lon": 32.830253,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2684.5
+        },
+        {
+          "time": "13:20",
+          "lat": 39.905651,
+          "lon": 32.829881,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2673.7
+        },
+        {
+          "time": "13:25",
+          "lat": 39.9061,
+          "lon": 32.829509,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2664.2
+        },
+        {
+          "time": "13:30",
+          "lat": 39.906549,
+          "lon": 32.829136,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2656.0
+        },
+        {
+          "time": "13:35",
+          "lat": 39.906998,
+          "lon": 32.828764,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2649.0
+        },
+        {
+          "time": "13:40",
+          "lat": 39.907447,
+          "lon": 32.828392,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2643.4
+        },
+        {
+          "time": "13:45",
+          "lat": 39.907896,
+          "lon": 32.828019,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2639.1
+        },
+        {
+          "time": "13:50",
+          "lat": 39.908345,
+          "lon": 32.827647,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2636.1
+        },
+        {
+          "time": "13:55",
+          "lat": 39.908794,
+          "lon": 32.827275,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2634.5
+        },
+        {
+          "time": "14:00",
+          "lat": 39.909243,
+          "lon": 32.826902,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2634.2
+        }
+      ],
+      "minimum_distance_to_base_m": 2636.0,
+      "latest_movement": {
+        "track_id": "T0011",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 2985.4,
+        "dist_now_m": 2634.2,
+        "dist_min_m": 2634.2,
+        "dist_max_m": 2985.4,
+        "approach_total_m": 351.3,
+        "approach_last60_m": 90.1,
+        "speed_now_mps": 0.2,
+        "avg_speed_mps": 0.2,
+        "max_speed_mps": 0.2,
+        "closing_speed_mps": 0.0,
+        "heading_deg": 327.5,
+        "bearing_to_base_deg": 57.9,
+        "heading_offset_deg": 90.4,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "TRANSIT",
+        "path_length_m": 1420.2,
+        "net_displacement_m": 1420.2,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "TRANSIT",
+          "speed_mps": 0.2,
+          "closing_speed_mps": 0.09,
+          "eta_min": 539.9,
+          "distance_to_base_m": 2958.0
+        },
+        {
+          "time": "12:30",
+          "state": "TRANSIT",
+          "speed_mps": 0.2,
+          "closing_speed_mps": 0.07,
+          "eta_min": null,
+          "distance_to_base_m": 2835.6
+        },
+        {
+          "time": "13:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.2,
+          "closing_speed_mps": 0.05,
+          "eta_min": null,
+          "distance_to_base_m": 2724.3
+        },
+        {
+          "time": "14:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.2,
+          "closing_speed_mps": 0.0,
+          "eta_min": null,
+          "distance_to_base_m": 2634.2
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0011",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1420.2,
+        "net_displacement_m": 1420.2,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 1.2,
+        "extent_m": 1420.2,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.3,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.6,
+          "flags": []
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 1.2,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "13:00",
+          "source": "official",
+          "text": "39.90374N 32.83137E civarinda 1 car goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "car",
+          "matched_track_id": "T0011",
+          "match_distance_m": 12.8,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "car",
+                "observed": "car"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.2,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:40",
+          "source": "official",
+          "text": "39.90748N 32.82837E civarinda 1 car goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "car",
+          "matched_track_id": "T0011",
+          "match_distance_m": 4.1,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "car",
+                "observed": "car"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.2,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.9,
+          "summary": "Araç normal yol hareketi sergilemekte ve güncel bir risk göstergesi bulunmamaktadır.",
+          "reasoning": [
+            "latest_movement alanı araç hareket halinde ve seyir halinde olduğunu göstermekte (TRANSIT, speed 0.2 m/s).",
+            "latest_behavior NORMAL_PATH olarak tanımlanmış, yani normal hareket paterni mevcut.",
+            "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının sensör verileriyle çeliştiğini ancak riskin yükselmediğini gösterir.",
+            "Güncel risk göstergeleri arasında APPROACHING_BASE, LOITERING veya CIRCLING gibi önemli risk faktörleri bulunmamakta.",
+            "Araç üsse yaklaşık 2600 metrelik bir mesafede ve bu mesafe çok yakın değil."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = TRANSIT",
+            "latest_behavior.behavior = NORMAL_PATH",
+            "current_evidence_flags = [REPORT_CONTRADICTION]",
+            "distance_to_base = 2636 m"
+          ],
+          "uncertainties": [
+            "Saha raporları hareket durumu ile çelişmekte ve kısmen güvenilmez.",
+            "ETA verisi mevcut değil."
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0012",
+      "track_id": "T0012",
+      "first_seen": "12:30",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "van",
+        "observed_classes": {
+          "van": 2,
+          "bus": 1
+        },
+        "consistent": false,
+        "average_detection_confidence": 0.79
+      },
+      "latest_position": {
+        "lat": 39.903705,
+        "lon": 32.833455,
+        "zone": "Guneybati Yolu",
+        "distance_to_base_m": 2619.6
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.905343,
+          "lon": 32.83362,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2472.6
+        },
+        {
+          "time": "12:05",
+          "lat": 39.904916,
+          "lon": 32.833295,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2526.5
+        },
+        {
+          "time": "12:10",
+          "lat": 39.90422,
+          "lon": 32.83279,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2612.9
+        },
+        {
+          "time": "12:15",
+          "lat": 39.903462,
+          "lon": 32.832146,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2712.5
+        },
+        {
+          "time": "12:20",
+          "lat": 39.902864,
+          "lon": 32.831413,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2803.7
+        },
+        {
+          "time": "12:25",
+          "lat": 39.902607,
+          "lon": 32.830649,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2868.3
+        },
+        {
+          "time": "12:30",
+          "lat": 39.902781,
+          "lon": 32.82991,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2896.5
+        },
+        {
+          "time": "12:35",
+          "lat": 39.903358,
+          "lon": 32.829255,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2888.9
+        },
+        {
+          "time": "12:40",
+          "lat": 39.904204,
+          "lon": 32.828734,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2854.8
+        },
+        {
+          "time": "12:45",
+          "lat": 39.905112,
+          "lon": 32.828388,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2808.5
+        },
+        {
+          "time": "12:50",
+          "lat": 39.90586,
+          "lon": 32.828248,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2763.2
+        },
+        {
+          "time": "12:55",
+          "lat": 39.906267,
+          "lon": 32.828331,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2728.9
+        },
+        {
+          "time": "13:00",
+          "lat": 39.906243,
+          "lon": 32.828635,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2710.6
+        },
+        {
+          "time": "13:05",
+          "lat": 39.905817,
+          "lon": 32.829148,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2708.0
+        },
+        {
+          "time": "13:10",
+          "lat": 39.90512,
+          "lon": 32.829841,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2716.3
+        },
+        {
+          "time": "13:15",
+          "lat": 39.904362,
+          "lon": 32.830672,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2724.5
+        },
+        {
+          "time": "13:20",
+          "lat": 39.903764,
+          "lon": 32.831592,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2718.9
+        },
+        {
+          "time": "13:25",
+          "lat": 39.903507,
+          "lon": 32.832544,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2686.5
+        },
+        {
+          "time": "13:30",
+          "lat": 39.903681,
+          "lon": 32.83347,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2620.8
+        },
+        {
+          "time": "13:35",
+          "lat": 39.904258,
+          "lon": 32.834313,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2525.6
+        },
+        {
+          "time": "13:40",
+          "lat": 39.905104,
+          "lon": 32.835021,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2414.6
+        },
+        {
+          "time": "13:45",
+          "lat": 39.906012,
+          "lon": 32.835554,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2308.0
+        },
+        {
+          "time": "13:50",
+          "lat": 39.90676,
+          "lon": 32.835881,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2226.7
+        },
+        {
+          "time": "13:55",
+          "lat": 39.907167,
+          "lon": 32.835987,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2186.8
+        },
+        {
+          "time": "14:00",
+          "lat": 39.907144,
+          "lon": 32.83587,
+          "zone": "Guneybati Yolu",
+          "distance_to_base_m": 2195.4
+        }
+      ],
+      "minimum_distance_to_base_m": 2619.6,
+      "latest_movement": {
+        "track_id": "T0012",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 2472.6,
+        "dist_now_m": 2620.8,
+        "dist_min_m": 2472.6,
+        "dist_max_m": 2896.5,
+        "approach_total_m": -148.2,
+        "approach_last60_m": 275.7,
+        "speed_now_mps": 0.27,
+        "avg_speed_mps": 0.27,
+        "max_speed_mps": 0.37,
+        "closing_speed_mps": 0.22,
+        "heading_deg": 76.2,
+        "bearing_to_base_deg": 39.6,
+        "heading_offset_deg": 36.6,
+        "eta_min": 199.5,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 1465.1,
+        "net_displacement_m": 185.2,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.22,
+          "closing_speed_mps": -0.09,
+          "eta_min": null,
+          "distance_to_base_m": 2896.5
+        },
+        {
+          "time": "13:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.09,
+          "closing_speed_mps": 0.06,
+          "eta_min": null,
+          "distance_to_base_m": 2710.6
+        },
+        {
+          "time": "13:30",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.27,
+          "closing_speed_mps": 0.22,
+          "eta_min": 199.5,
+          "distance_to_base_m": 2620.8
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0012",
+        "behavior": "CIRCLING",
+        "path_length_m": 1465.1,
+        "net_displacement_m": 185.2,
+        "path_efficiency": 0.126,
+        "heading_change_total_deg": 361.2,
+        "extent_m": 524.2,
+        "flags": [
+          "LOW_PATH_EFFICIENCY",
+          "HIGH_HEADING_CHANGE",
+          "POSSIBLE_LOITERING",
+          "POSSIBLE_CIRCLING"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.901,
+          "heading_change_total_deg": 79.1,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "LOITERING",
+          "path_efficiency": 0.473,
+          "heading_change_total_deg": 248.0,
+          "flags": [
+            "LOW_PATH_EFFICIENCY",
+            "HIGH_HEADING_CHANGE",
+            "POSSIBLE_LOITERING"
+          ]
+        },
+        {
+          "time": "13:30",
+          "behavior": "CIRCLING",
+          "path_efficiency": 0.126,
+          "heading_change_total_deg": 361.2,
+          "flags": [
+            "LOW_PATH_EFFICIENCY",
+            "HIGH_HEADING_CHANGE",
+            "POSSIBLE_LOITERING",
+            "POSSIBLE_CIRCLING"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE",
+        "LOW_PATH_EFFICIENCY",
+        "POSSIBLE_CIRCLING",
+        "POSSIBLE_LOITERING"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.90257N 32.83060E civarinda 1 van goruldu; bolgeden hizla uzaklasiyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0012",
+          "match_distance_m": 5.9,
+          "verdict": "PARTIAL",
+          "supported_checks": 2,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "leaving",
+              "result": "SUPPORTED",
+              "value": {
+                "movement_state": "LEAVING_BASE",
+                "closing_speed_mps": -0.22
+              }
+            },
+            {
+              "claim": "fast",
+              "result": "CONTRADICTED",
+              "value": {
+                "speed_now_mps": 0.24
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "leaving iddiası hareket verisiyle uyumlu.",
+            "fast iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:00",
+          "source": "official",
+          "text": "39.90621N 32.82867E civarinda 1 van goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "van",
+          "matched_track_id": "T0012",
+          "match_distance_m": 4.7,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "van",
+                "observed": "van"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.09,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 2,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "CIRCLING",
+        "CLASS_INCONSISTENCY",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "CIRCLING",
+        "CLASS_INCONSISTENCY",
+        "ETA_AVAILABLE",
+        "LOITERING",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "HIGH",
+          "confidence": 0.85,
+          "summary": "Track güncel olarak üsse yaklaşmakta ve dolaşma (circling) davranışı sergilemektedir. Bu iki güncel risk göstergesi bir arada olduğundan operasyonel risk yüksek olarak değerlendirilmiştir.",
+          "reasoning": [
+            "latest_movement.movement_state 'APPROACHING_BASE' olarak güncel risk göstergesidir.",
+            "latest_behavior.behavior 'CIRCLING' olup düşük yol verimliliği ve yüksek yön değişikliği ile uyumludur.",
+            "current_evidence_flags içinde 'APPROACHING_BASE' ve 'CIRCLING' güncel risk göstergeleri mevcuttur.",
+            "CLASS_INCONSISTENCY ve REPORT_CONTRADICTION risk seviyesi artırmaz, saha raporlarının güvenilirliği düşüktür.",
+            "Dolaşma (circling) ve üsse yaklaşma kombinasyonu tek başına HIGH riski doğrular."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = APPROACHING_BASE",
+            "latest_behavior.behavior = CIRCLING",
+            "current_evidence_flags içindeki APPROACHING_BASE ve CIRCLING",
+            "hareket ve davranış verilerinin uyumu"
+          ],
+          "uncertainties": [
+            "ETA 199.5 dakika ile uzak, riskin yakın ve acil olduğu söylenemez.",
+            "CLASS_INCONSISTENCY ve REPORT_CONTRADICTION saha raporlarının güvenilirliğini azaltıyor."
+          ],
+          "recommended_attention": "PRIORITY"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0013",
+      "track_id": "T0013",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "bus",
+        "observed_classes": {
+          "bus": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.923
+      },
+      "latest_position": {
+        "lat": 39.921759,
+        "lon": 32.843035,
+        "zone": "Bati Yerlesimi",
+        "distance_to_base_m": 855.0
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.923008,
+          "lon": 32.817083,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 3070.8
+        },
+        {
+          "time": "12:05",
+          "lat": 39.922968,
+          "lon": 32.818162,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2978.6
+        },
+        {
+          "time": "12:10",
+          "lat": 39.922889,
+          "lon": 32.819242,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2886.3
+        },
+        {
+          "time": "12:15",
+          "lat": 39.922779,
+          "lon": 32.820321,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2793.8
+        },
+        {
+          "time": "12:20",
+          "lat": 39.92265,
+          "lon": 32.8214,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2701.4
+        },
+        {
+          "time": "12:25",
+          "lat": 39.922518,
+          "lon": 32.82248,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2608.9
+        },
+        {
+          "time": "12:30",
+          "lat": 39.9224,
+          "lon": 32.823559,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2516.5
+        },
+        {
+          "time": "12:35",
+          "lat": 39.922308,
+          "lon": 32.824638,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2424.3
+        },
+        {
+          "time": "12:40",
+          "lat": 39.922253,
+          "lon": 32.825718,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2332.1
+        },
+        {
+          "time": "12:45",
+          "lat": 39.92224,
+          "lon": 32.826797,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2240.1
+        },
+        {
+          "time": "12:50",
+          "lat": 39.922265,
+          "lon": 32.827876,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2148.1
+        },
+        {
+          "time": "12:55",
+          "lat": 39.922321,
+          "lon": 32.828955,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2056.3
+        },
+        {
+          "time": "13:00",
+          "lat": 39.922396,
+          "lon": 32.830035,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1964.5
+        },
+        {
+          "time": "13:05",
+          "lat": 39.922474,
+          "lon": 32.831114,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1872.8
+        },
+        {
+          "time": "13:10",
+          "lat": 39.922538,
+          "lon": 32.832193,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1781.2
+        },
+        {
+          "time": "13:15",
+          "lat": 39.922576,
+          "lon": 32.833273,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1689.4
+        },
+        {
+          "time": "13:20",
+          "lat": 39.922577,
+          "lon": 32.834352,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1597.5
+        },
+        {
+          "time": "13:25",
+          "lat": 39.922537,
+          "lon": 32.835431,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1505.3
+        },
+        {
+          "time": "13:30",
+          "lat": 39.922458,
+          "lon": 32.836511,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1412.9
+        },
+        {
+          "time": "13:35",
+          "lat": 39.922347,
+          "lon": 32.83759,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1320.4
+        },
+        {
+          "time": "13:40",
+          "lat": 39.922219,
+          "lon": 32.838669,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1228.0
+        },
+        {
+          "time": "13:45",
+          "lat": 39.922087,
+          "lon": 32.839749,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1135.5
+        },
+        {
+          "time": "13:50",
+          "lat": 39.921968,
+          "lon": 32.840828,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1043.2
+        },
+        {
+          "time": "13:55",
+          "lat": 39.921877,
+          "lon": 32.841907,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 951.1
+        },
+        {
+          "time": "14:00",
+          "lat": 39.921822,
+          "lon": 32.842986,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 859.1
+        }
+      ],
+      "minimum_distance_to_base_m": 855.0,
+      "latest_movement": {
+        "track_id": "T0013",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 3070.8,
+        "dist_now_m": 859.1,
+        "dist_min_m": 859.1,
+        "dist_max_m": 3070.8,
+        "approach_total_m": 2211.7,
+        "approach_last60_m": 1105.4,
+        "speed_now_mps": 0.31,
+        "avg_speed_mps": 0.31,
+        "max_speed_mps": 0.31,
+        "closing_speed_mps": 0.31,
+        "heading_deg": 93.8,
+        "bearing_to_base_deg": 89.9,
+        "heading_offset_deg": 3.9,
+        "eta_min": 46.7,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 2221.0,
+        "net_displacement_m": 2212.9,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.31,
+          "closing_speed_mps": 0.31,
+          "eta_min": 161.7,
+          "distance_to_base_m": 2978.6
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.31,
+          "closing_speed_mps": 0.31,
+          "eta_min": 107.0,
+          "distance_to_base_m": 1964.5
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.31,
+          "closing_speed_mps": 0.31,
+          "eta_min": 46.7,
+          "distance_to_base_m": 859.1
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0013",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 2221.0,
+        "net_displacement_m": 2212.9,
+        "path_efficiency": 0.996,
+        "heading_change_total_deg": 40.4,
+        "extent_m": 2212.9,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.997,
+          "heading_change_total_deg": 20.5,
+          "flags": []
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.996,
+          "heading_change_total_deg": 40.4,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "third_party",
+          "text": "39.92252N 32.82261E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0013",
+          "match_distance_m": 11.1,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.31,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:00",
+          "source": "third_party",
+          "text": "39.92240N 32.83000E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0013",
+          "match_distance_m": 3.0,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.31,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        },
+        {
+          "time": "13:40",
+          "source": "third_party",
+          "text": "39.92199N 32.83885E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0013",
+          "match_distance_m": 29.8,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "APPROACHING_BASE",
+                "speed_now_mps": 0.31,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 3,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.85,
+          "summary": "Aracın güncel verilerine göre düzenli bir şekilde üssüne yaklaştığı tespit edildi. Hareket normal ve etkin, risk gösteren başka önemli bir bulgu yok.",
+          "reasoning": [
+            "latest_movement verileri aracın yavaş ancak sürekli ve üssüne yönelmiş hareket ettiğini gösteriyor (APPROACHING_BASE).",
+            "latest_behavior NORMAL_PATH olarak tanımlanmış; davranışta sıra dışı ya da şüpheli bir hareket yok.",
+            "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var; bunlar tek başına risk artırıcı ancak yeterli değil.",
+            "saha raporları aracın beklediğini iddia ediyor ancak sensör verileri bunu çelişkili buluyor (REPORT_CONTRADICTION), bu raporlar güvenilir değil.",
+            "Hız tek bir değer olarak düşük; hız için risk ya da anormallik ataması mevcut değil."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state: APPROACHING_BASE",
+            "latest_behavior.behavior: NORMAL_PATH",
+            "current_evidence_flags: [APPROACHING_BASE, ETA_AVAILABLE, REPORT_CONTRADICTION]",
+            "hareket sürekliliği ve yönlendirme verilerinin uyumu",
+            "saha raporları ve sensor verilerinin çelişmesi (REPORT_CONTRADICTION)"
+          ],
+          "uncertainties": [
+            "saha raporlarının güvenilir olmaması nedeniyle alandaki potansiyel bekleme durumu kesin değil.",
+            "Hız için herhangi bir referans eşiği sağlanmamış, bu nedenle ani bir hız düşüşü ya da anormallik tespiti yapılamıyor."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0014",
+      "track_id": "T0014",
+      "first_seen": "12:30",
+      "last_seen": "13:30",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "car",
+        "observed_classes": {
+          "car": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.877
+      },
+      "latest_position": {
+        "lat": 39.92244,
+        "lon": 32.823636,
+        "zone": "Bati Yerlesimi",
+        "distance_to_base_m": 2510.1
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.921986,
+          "lon": 32.84571,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 627.0
+        },
+        {
+          "time": "12:05",
+          "lat": 39.92201,
+          "lon": 32.844485,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 731.5
+        },
+        {
+          "time": "12:10",
+          "lat": 39.922034,
+          "lon": 32.84326,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 836.0
+        },
+        {
+          "time": "12:15",
+          "lat": 39.922059,
+          "lon": 32.842035,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 940.5
+        },
+        {
+          "time": "12:20",
+          "lat": 39.922083,
+          "lon": 32.84081,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1045.0
+        },
+        {
+          "time": "12:25",
+          "lat": 39.922107,
+          "lon": 32.839585,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1149.5
+        },
+        {
+          "time": "12:30",
+          "lat": 39.922131,
+          "lon": 32.838359,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1254.1
+        },
+        {
+          "time": "12:35",
+          "lat": 39.922156,
+          "lon": 32.837134,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1358.6
+        },
+        {
+          "time": "12:40",
+          "lat": 39.92218,
+          "lon": 32.835909,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1463.1
+        },
+        {
+          "time": "12:45",
+          "lat": 39.922204,
+          "lon": 32.834684,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1567.6
+        },
+        {
+          "time": "12:50",
+          "lat": 39.922228,
+          "lon": 32.833459,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1672.1
+        },
+        {
+          "time": "12:55",
+          "lat": 39.922253,
+          "lon": 32.832234,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1776.6
+        },
+        {
+          "time": "13:00",
+          "lat": 39.922277,
+          "lon": 32.831009,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1881.1
+        },
+        {
+          "time": "13:05",
+          "lat": 39.922301,
+          "lon": 32.829784,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 1985.6
+        },
+        {
+          "time": "13:10",
+          "lat": 39.922326,
+          "lon": 32.828559,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2090.1
+        },
+        {
+          "time": "13:15",
+          "lat": 39.92235,
+          "lon": 32.827334,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2194.6
+        },
+        {
+          "time": "13:20",
+          "lat": 39.922374,
+          "lon": 32.826109,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2299.1
+        },
+        {
+          "time": "13:25",
+          "lat": 39.922398,
+          "lon": 32.824884,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2403.6
+        },
+        {
+          "time": "13:30",
+          "lat": 39.922423,
+          "lon": 32.823659,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2508.1
+        },
+        {
+          "time": "13:35",
+          "lat": 39.922447,
+          "lon": 32.822434,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2612.6
+        },
+        {
+          "time": "13:40",
+          "lat": 39.922471,
+          "lon": 32.821209,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2717.1
+        },
+        {
+          "time": "13:45",
+          "lat": 39.922496,
+          "lon": 32.819984,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2821.6
+        },
+        {
+          "time": "13:50",
+          "lat": 39.92252,
+          "lon": 32.818759,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 2926.1
+        },
+        {
+          "time": "13:55",
+          "lat": 39.922544,
+          "lon": 32.817534,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 3030.6
+        },
+        {
+          "time": "14:00",
+          "lat": 39.922568,
+          "lon": 32.816309,
+          "zone": "Bati Yerlesimi",
+          "distance_to_base_m": 3135.1
+        }
+      ],
+      "minimum_distance_to_base_m": 1256.5,
+      "latest_movement": {
+        "track_id": "T0014",
+        "t_start": "12:00",
+        "t_end": "13:30",
+        "dist_start_m": 627.0,
+        "dist_now_m": 2508.1,
+        "dist_min_m": 627.0,
+        "dist_max_m": 2508.1,
+        "approach_total_m": -1881.1,
+        "approach_last60_m": -1254.0,
+        "speed_now_mps": 0.35,
+        "avg_speed_mps": 0.35,
+        "max_speed_mps": 0.35,
+        "closing_speed_mps": -0.35,
+        "heading_deg": 271.5,
+        "bearing_to_base_deg": 91.5,
+        "heading_offset_deg": 179.9,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "LEAVING_BASE",
+        "path_length_m": 1881.1,
+        "net_displacement_m": 1881.1,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.35,
+          "closing_speed_mps": -0.35,
+          "eta_min": null,
+          "distance_to_base_m": 1254.1
+        },
+        {
+          "time": "13:00",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.35,
+          "closing_speed_mps": -0.35,
+          "eta_min": null,
+          "distance_to_base_m": 1881.1
+        },
+        {
+          "time": "13:30",
+          "state": "LEAVING_BASE",
+          "speed_mps": 0.35,
+          "closing_speed_mps": -0.35,
+          "eta_min": null,
+          "distance_to_base_m": 2508.1
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0014",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 1881.1,
+        "net_displacement_m": 1881.1,
+        "path_efficiency": 1.0,
+        "heading_change_total_deg": 0.6,
+        "extent_m": 1881.1,
+        "flags": []
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.1,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.4,
+          "flags": []
+        },
+        {
+          "time": "13:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 1.0,
+          "heading_change_total_deg": 0.6,
+          "flags": []
+        }
+      ],
+      "behavior_flags": [],
+      "reports": [],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 0,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [],
+      "historical_evidence_flags": [],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.95,
+          "summary": "Araç üsse doğru hareket etmiyor, leaving_base durumunda ve hareket paterni normal, güncel risk faktörü bulunmamaktadır.",
+          "reasoning": [
+            "latest_movement hareket durumu LEAVING_BASE ve araç üsse uzaklaşmakta",
+            "latest_behavior NORMAL_PATH ve yüksek yol verimliliği gösteriyor",
+            "current_evidence_flags boş, güncel risk göstergesi yok",
+            "movement_history uyumlu ve doğal hareket paterni sergiliyor"
+          ],
+          "key_evidence": [
+            "LEAVING_BASE hareket durumu",
+            "NORMAL_PATH davranışı",
+            "current_evidence_flags'in boş olması"
+          ],
+          "uncertainties": [
+            "Saha raporu ve geçmiş kanıtlar yok ancak bu alanlar risk belirlemede öncelikli değil"
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0015",
+      "track_id": "T0015",
+      "first_seen": "12:05",
+      "last_seen": "14:00",
+      "observation_count": 4,
+      "vehicle_class": {
+        "canonical": "truck",
+        "observed_classes": {
+          "truck": 4
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.805
+      },
+      "latest_position": {
+        "lat": 39.931446,
+        "lon": 32.842836,
+        "zone": "Kuzeybati Yolu",
+        "distance_to_base_m": 1378.8
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.945606,
+          "lon": 32.828199,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3387.8
+        },
+        {
+          "time": "12:05",
+          "lat": 39.94561,
+          "lon": 32.82823,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3386.4
+        },
+        {
+          "time": "12:10",
+          "lat": 39.945622,
+          "lon": 32.828214,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3388.3
+        },
+        {
+          "time": "12:15",
+          "lat": 39.945623,
+          "lon": 32.828218,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3388.2
+        },
+        {
+          "time": "12:20",
+          "lat": 39.94559,
+          "lon": 32.828177,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3387.5
+        },
+        {
+          "time": "12:25",
+          "lat": 39.945597,
+          "lon": 32.828217,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3386.0
+        },
+        {
+          "time": "12:30",
+          "lat": 39.9456,
+          "lon": 32.828291,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3382.3
+        },
+        {
+          "time": "12:35",
+          "lat": 39.945581,
+          "lon": 32.828157,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3387.8
+        },
+        {
+          "time": "12:40",
+          "lat": 39.945632,
+          "lon": 32.828263,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3386.6
+        },
+        {
+          "time": "12:45",
+          "lat": 39.945621,
+          "lon": 32.828234,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3387.2
+        },
+        {
+          "time": "12:50",
+          "lat": 39.944668,
+          "lon": 32.829181,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3254.0
+        },
+        {
+          "time": "12:55",
+          "lat": 39.943729,
+          "lon": 32.830158,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3120.4
+        },
+        {
+          "time": "13:00",
+          "lat": 39.94279,
+          "lon": 32.831136,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2986.8
+        },
+        {
+          "time": "13:05",
+          "lat": 39.94185,
+          "lon": 32.832113,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2853.2
+        },
+        {
+          "time": "13:10",
+          "lat": 39.940911,
+          "lon": 32.833091,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2719.6
+        },
+        {
+          "time": "13:15",
+          "lat": 39.939972,
+          "lon": 32.834069,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2585.9
+        },
+        {
+          "time": "13:20",
+          "lat": 39.939033,
+          "lon": 32.835046,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2452.4
+        },
+        {
+          "time": "13:25",
+          "lat": 39.938094,
+          "lon": 32.836024,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2318.8
+        },
+        {
+          "time": "13:30",
+          "lat": 39.937155,
+          "lon": 32.837001,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2185.2
+        },
+        {
+          "time": "13:35",
+          "lat": 39.936215,
+          "lon": 32.837979,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 2051.5
+        },
+        {
+          "time": "13:40",
+          "lat": 39.935276,
+          "lon": 32.838956,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 1917.9
+        },
+        {
+          "time": "13:45",
+          "lat": 39.934337,
+          "lon": 32.839934,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 1784.3
+        },
+        {
+          "time": "13:50",
+          "lat": 39.933398,
+          "lon": 32.840912,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 1650.7
+        },
+        {
+          "time": "13:55",
+          "lat": 39.932459,
+          "lon": 32.841889,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 1517.1
+        },
+        {
+          "time": "14:00",
+          "lat": 39.93152,
+          "lon": 32.842867,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 1383.5
+        }
+      ],
+      "minimum_distance_to_base_m": 1378.8,
+      "latest_movement": {
+        "track_id": "T0015",
+        "t_start": "12:00",
+        "t_end": "14:00",
+        "dist_start_m": 3387.8,
+        "dist_now_m": 1383.5,
+        "dist_min_m": 1383.5,
+        "dist_max_m": 3388.3,
+        "approach_total_m": 2004.3,
+        "approach_last60_m": 1603.3,
+        "speed_now_mps": 0.45,
+        "avg_speed_mps": 0.28,
+        "max_speed_mps": 0.45,
+        "closing_speed_mps": 0.45,
+        "heading_deg": 141.4,
+        "bearing_to_base_deg": 141.1,
+        "heading_offset_deg": 0.3,
+        "eta_min": 51.8,
+        "moving_now": true,
+        "movement_state": "APPROACHING_BASE",
+        "path_length_m": 2048.6,
+        "net_displacement_m": 2004.3,
+        "stops": [
+          {
+            "start": "12:00",
+            "end": "12:45",
+            "minutes": 45,
+            "lat": 39.945621,
+            "lon": 32.828234
+          }
+        ],
+        "stopped_minutes_total": 45
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "STATIONARY",
+          "speed_mps": 0.01,
+          "closing_speed_mps": 0.0,
+          "eta_min": null,
+          "distance_to_base_m": 3386.4
+        },
+        {
+          "time": "12:30",
+          "state": "STATIONARY",
+          "speed_mps": 0.02,
+          "closing_speed_mps": 0.01,
+          "eta_min": null,
+          "distance_to_base_m": 3382.3
+        },
+        {
+          "time": "13:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.45,
+          "closing_speed_mps": 0.45,
+          "eta_min": 111.8,
+          "distance_to_base_m": 2986.8
+        },
+        {
+          "time": "14:00",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.45,
+          "closing_speed_mps": 0.45,
+          "eta_min": 51.8,
+          "distance_to_base_m": 1383.5
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0015",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 2048.6,
+        "net_displacement_m": 2004.3,
+        "path_efficiency": 0.978,
+        "heading_change_total_deg": 1159.3,
+        "extent_m": 2004.9,
+        "flags": [
+          "HIGH_HEADING_CHANGE"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.397,
+          "heading_change_total_deg": 551.6,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.9,
+          "heading_change_total_deg": 1159.0,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        },
+        {
+          "time": "14:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.978,
+          "heading_change_total_deg": 1159.3,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE"
+      ],
+      "reports": [
+        {
+          "time": "12:25",
+          "source": "official",
+          "text": "39.94560N 32.82820E civarinda 1 truck goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "truck",
+          "matched_track_id": "T0015",
+          "match_distance_m": 1.5,
+          "verdict": "SUPPORTED",
+          "supported_checks": 2,
+          "contradicted_checks": 0,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "truck",
+                "observed": "truck"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "SUPPORTED",
+              "value": {
+                "movement_state": "STATIONARY",
+                "speed_now_mps": 0.01,
+                "stopped_minutes_total": 25
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle uyumlu."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 1,
+        "CONTRADICTED": 0,
+        "PARTIAL": 0,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_SUPPORTED"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_SUPPORTED"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "MEDIUM",
+          "confidence": 0.85,
+          "summary": "Track, üsse yaklaşmakta olup, hareket durumu ve kanıt bayrakları uyumlu ancak davranışı normal ve durağan hareket sonrası yaklaşma var.",
+          "reasoning": [
+            "latest_movement güncel olarak APPROACHING_BASE durumunu gösteriyor ve 1378.8 m mesafede üse yaklaşmakta.",
+            "current_evidence_flags arasında APPROACHING_BASE ve ETA_AVAILABLE var, bu hareketin doğruluğunu destekliyor.",
+            "latest_behavior NORMAL_PATH ve yüksek heading değişimine rağmen path verimliliği yüksek, loitering veya şüpheli hareket yok.",
+            "Stationary duraklama raporu sensör verisiyle destekleniyor; ancak durağanlık risk değil, bekleme anlamına gelip ek risk oluşturmaz.",
+            "Saha raporu uyumlu ve hiçbir rapor çelişkisi yok, rapor doğrulanmış durumda.",
+            "Hareket hızları düşük ve stabil, olağandışı hız veya çevrimsel hareket yok."
+          ],
+          "key_evidence": [
+            "APPROACHING_BASE güncel hareket durumu",
+            "ETA_AVAILABLE kanıt bayrağı",
+            "NORMAL_PATH davranışı yüksek path verimliliğiyle",
+            "Stationary hareket ve desteklenen saha raporu"
+          ],
+          "uncertainties": [
+            "Düşük hız sebebiyle hareketin tam niyeti bilinmiyor ancak risk artırıcı değil.",
+            "Yüksek heading değişimi davranış uyarısı ancak NORMAL_PATH ile çelişmiyor."
+          ],
+          "recommended_attention": "MONITOR"
+        },
+        "error": null
+      }
+    },
+    {
+      "entity_id": "T0016",
+      "track_id": "T0016",
+      "first_seen": "12:05",
+      "last_seen": "13:00",
+      "observation_count": 3,
+      "vehicle_class": {
+        "canonical": "bus",
+        "observed_classes": {
+          "bus": 3
+        },
+        "consistent": true,
+        "average_detection_confidence": 0.87
+      },
+      "latest_position": {
+        "lat": 39.942712,
+        "lon": 32.82918,
+        "zone": "Kuzeybati Yolu",
+        "distance_to_base_m": 3087.4
+      },
+      "position_history": [
+        {
+          "time": "12:00",
+          "lat": 39.945839,
+          "lon": 32.826104,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3521.9
+        },
+        {
+          "time": "12:05",
+          "lat": 39.945471,
+          "lon": 32.825789,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3508.7
+        },
+        {
+          "time": "12:10",
+          "lat": 39.945058,
+          "lon": 32.825588,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3486.0
+        },
+        {
+          "time": "12:15",
+          "lat": 39.944622,
+          "lon": 32.82551,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3454.7
+        },
+        {
+          "time": "12:20",
+          "lat": 39.944184,
+          "lon": 32.82556,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3416.3
+        },
+        {
+          "time": "12:25",
+          "lat": 39.943764,
+          "lon": 32.825736,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3372.1
+        },
+        {
+          "time": "12:30",
+          "lat": 39.943385,
+          "lon": 32.826027,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3324.5
+        },
+        {
+          "time": "12:35",
+          "lat": 39.943065,
+          "lon": 32.82642,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3275.6
+        },
+        {
+          "time": "12:40",
+          "lat": 39.942819,
+          "lon": 32.826896,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3227.8
+        },
+        {
+          "time": "12:45",
+          "lat": 39.942659,
+          "lon": 32.827431,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3183.5
+        },
+        {
+          "time": "12:50",
+          "lat": 39.942594,
+          "lon": 32.827999,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3145.1
+        },
+        {
+          "time": "12:55",
+          "lat": 39.942627,
+          "lon": 32.828572,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3114.8
+        },
+        {
+          "time": "13:00",
+          "lat": 39.942755,
+          "lon": 32.829121,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3094.3
+        },
+        {
+          "time": "13:05",
+          "lat": 39.942974,
+          "lon": 32.829619,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3085.0
+        },
+        {
+          "time": "13:10",
+          "lat": 39.943271,
+          "lon": 32.830042,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3087.2
+        },
+        {
+          "time": "13:15",
+          "lat": 39.943633,
+          "lon": 32.83037,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3100.8
+        },
+        {
+          "time": "13:20",
+          "lat": 39.944041,
+          "lon": 32.830585,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3125.1
+        },
+        {
+          "time": "13:25",
+          "lat": 39.944475,
+          "lon": 32.830677,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3158.6
+        },
+        {
+          "time": "13:30",
+          "lat": 39.944914,
+          "lon": 32.830642,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3199.4
+        },
+        {
+          "time": "13:35",
+          "lat": 39.945337,
+          "lon": 32.830481,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3245.4
+        },
+        {
+          "time": "13:40",
+          "lat": 39.945722,
+          "lon": 32.830203,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3293.9
+        },
+        {
+          "time": "13:45",
+          "lat": 39.94605,
+          "lon": 32.829821,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3342.6
+        },
+        {
+          "time": "13:50",
+          "lat": 39.946306,
+          "lon": 32.829353,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3389.2
+        },
+        {
+          "time": "13:55",
+          "lat": 39.946476,
+          "lon": 32.828824,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3431.4
+        },
+        {
+          "time": "14:00",
+          "lat": 39.946553,
+          "lon": 32.828258,
+          "zone": "Kuzeybati Yolu",
+          "distance_to_base_m": 3467.4
+        }
+      ],
+      "minimum_distance_to_base_m": 3087.4,
+      "latest_movement": {
+        "track_id": "T0016",
+        "t_start": "12:00",
+        "t_end": "13:00",
+        "dist_start_m": 3521.9,
+        "dist_now_m": 3094.3,
+        "dist_min_m": 3094.3,
+        "dist_max_m": 3521.9,
+        "approach_total_m": 427.5,
+        "approach_last60_m": 427.5,
+        "speed_now_mps": 0.16,
+        "avg_speed_mps": 0.16,
+        "max_speed_mps": 0.16,
+        "closing_speed_mps": 0.07,
+        "heading_deg": 73.1,
+        "bearing_to_base_deg": 138.7,
+        "heading_offset_deg": 65.6,
+        "eta_min": null,
+        "moving_now": true,
+        "movement_state": "TRANSIT",
+        "path_length_m": 587.4,
+        "net_displacement_m": 428.7,
+        "stops": [],
+        "stopped_minutes_total": 0
+      },
+      "movement_history": [
+        {
+          "time": "12:05",
+          "state": "TRANSIT",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.04,
+          "eta_min": null,
+          "distance_to_base_m": 3508.7
+        },
+        {
+          "time": "12:30",
+          "state": "APPROACHING_BASE",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.16,
+          "eta_min": 349.3,
+          "distance_to_base_m": 3324.5
+        },
+        {
+          "time": "13:00",
+          "state": "TRANSIT",
+          "speed_mps": 0.16,
+          "closing_speed_mps": 0.07,
+          "eta_min": null,
+          "distance_to_base_m": 3094.3
+        }
+      ],
+      "latest_behavior": {
+        "track_id": "T0016",
+        "behavior": "NORMAL_PATH",
+        "path_length_m": 587.4,
+        "net_displacement_m": 428.7,
+        "path_efficiency": 0.73,
+        "heading_change_total_deg": 140.2,
+        "extent_m": 428.7,
+        "flags": [
+          "HIGH_HEADING_CHANGE"
+        ]
+      },
+      "behavior_history": [
+        {
+          "time": "12:30",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.929,
+          "heading_change_total_deg": 63.8,
+          "flags": []
+        },
+        {
+          "time": "13:00",
+          "behavior": "NORMAL_PATH",
+          "path_efficiency": 0.73,
+          "heading_change_total_deg": 140.2,
+          "flags": [
+            "HIGH_HEADING_CHANGE"
+          ]
+        }
+      ],
+      "behavior_flags": [
+        "HIGH_HEADING_CHANGE"
+      ],
+      "reports": [
+        {
+          "time": "13:00",
+          "source": "third_party",
+          "text": "39.94271N 32.82921E civarinda 1 bus goruldu; uzun suredir bekliyor.",
+          "report_type": "VEHICLE_OBSERVATION",
+          "vehicle_type": "bus",
+          "matched_track_id": "T0016",
+          "match_distance_m": 9.1,
+          "verdict": "PARTIAL",
+          "supported_checks": 1,
+          "contradicted_checks": 1,
+          "checks": [
+            {
+              "claim": "vehicle_type",
+              "result": "SUPPORTED",
+              "value": {
+                "reported": "bus",
+                "observed": "bus"
+              }
+            },
+            {
+              "claim": "stationary",
+              "result": "CONTRADICTED",
+              "value": {
+                "movement_state": "TRANSIT",
+                "speed_now_mps": 0.16,
+                "stopped_minutes_total": 0
+              }
+            }
+          ],
+          "reasons": [
+            "vehicle_type iddiası hareket verisiyle uyumlu.",
+            "stationary iddiası hareket verisiyle çelişiyor."
+          ]
+        }
+      ],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 1,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "current_evidence_flags": [
+        "REPORT_CONTRADICTION"
+      ],
+      "historical_evidence_flags": [
+        "APPROACHING_BASE",
+        "ETA_AVAILABLE",
+        "REPORT_CONTRADICTION"
+      ],
+      "risk": {
+        "model": "gpt-4.1-mini",
+        "assessment": {
+          "risk_level": "LOW",
+          "confidence": 0.9,
+          "summary": "Track T0016 için güncel operasyonel risk düşük seviyededir.",
+          "reasoning": [
+            "latest_movement verisi TRANSIT durumunda hareketi doğruluyor ve durağanlık yok.",
+            "latest_behavior NORMAL_PATH davranışını ve HIGH_HEADING_CHANGE ile uyumlu heading değişimi içeriyor ancak bu tek başına risk oluşturmaz.",
+            "current_evidence_flags sadece REPORT_CONTRADICTION içeriyor, bu saha raporlarının güvenilir olmadığını gösterir ve risk artırmaz.",
+            "historical_evidence_flags'da APPROACHING_BASE var ancak bu geçmişteki durumdur ve güncel risk için tek başına yeterli değil.",
+            "Araç yaklaşık 3 km uzaklıkta ve ETA bilgisi yok, acil yaklaşım durumu söz konusu değil."
+          ],
+          "key_evidence": [
+            "latest_movement.movement_state = TRANSIT, speed = 0.16 mps, hareket halinde",
+            "latest_behavior.behavior = NORMAL_PATH, flags = [HIGH_HEADING_CHANGE]",
+            "current_evidence_flags = [REPORT_CONTRADICTION], saha raporu ile sensör verisi uyuşmuyor",
+            "distance_to_base yaklaşık 3 km, yakın değil"
+          ],
+          "uncertainties": [
+            "ETA bilgisi null, yaklaşımın aciliyeti tam net değil",
+            "Saha raporu araç bekliyor iddiası CONTRADICTED olduğundan doğrulanmadı"
+          ],
+          "recommended_attention": "ROUTINE"
+        },
+        "error": null
+      }
+    }
+  ],
+  "untracked_observations": [
+    {
+      "vehicle_id": "img_000867_v1",
+      "image_id": "img_000867",
+      "capture_time": "13:00",
+      "detection": {
+        "class": "van",
+        "confidence": 0.51,
+        "bbox": [
+          854.0,
+          378.0,
+          64.0,
+          22.0
+        ],
+        "center_pixel": [
+          886.0,
+          389.0
+        ]
+      },
+      "position": {
+        "lat": 39.94106,
+        "lon": 32.879055,
+        "zone": "Kuzeydogu Kavsagi",
+        "zone_center_distance_m": 339.0,
+        "distance_to_base_m": 3079.0,
+        "bearing_to_base_deg": 226.1,
+        "bearing_from_base_deg": 46.0
+      },
+      "track": {
+        "track_id": null,
+        "match_distance_m": null
+      },
+      "movement": null,
+      "behavior": null,
+      "reports": [],
+      "report_summary": {
+        "SUPPORTED": 0,
+        "CONTRADICTED": 0,
+        "PARTIAL": 0,
+        "UNVERIFIED": 0,
+        "IRRELEVANT": 0
+      },
+      "evidence_flags": [
+        "UNTRACKED"
+      ]
+    }
+  ]
+}

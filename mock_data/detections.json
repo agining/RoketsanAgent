@@ -1,0 +1,609 @@
+[
+  {
+    "image_id": "img_000860",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.85,
+        "x": 469.0,
+        "y": 289.0,
+        "w": 43.0,
+        "h": 61.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000861",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.9,
+        "x": 547.0,
+        "y": 296.0,
+        "w": 56.0,
+        "h": 27.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000862",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.87,
+        "x": 422.0,
+        "y": 229.0,
+        "w": 51.0,
+        "h": 60.0
+      },
+      {
+        "class": "truck",
+        "confidence": 0.82,
+        "x": 375.0,
+        "y": 289.0,
+        "w": 102.0,
+        "h": 44.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000863",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.98,
+        "x": 476.0,
+        "y": 262.0,
+        "w": 74.0,
+        "h": 53.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000864",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.95,
+        "x": 497.0,
+        "y": 269.0,
+        "w": 45.0,
+        "h": 58.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000865",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.89,
+        "x": 455.0,
+        "y": 218.0,
+        "w": 56.0,
+        "h": 52.0
+      },
+      {
+        "class": "van",
+        "confidence": 0.75,
+        "x": 595.0,
+        "y": 63.0,
+        "w": 37.0,
+        "h": 66.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000866",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.9,
+        "x": 632.0,
+        "y": 339.0,
+        "w": 49.0,
+        "h": 59.0
+      },
+      {
+        "class": "van",
+        "confidence": 0.83,
+        "x": 430.0,
+        "y": 228.0,
+        "w": 69.0,
+        "h": 56.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000867",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.86,
+        "x": 458.0,
+        "y": 257.0,
+        "w": 36.0,
+        "h": 45.0
+      },
+      {
+        "class": "van",
+        "confidence": 0.51,
+        "x": 854.0,
+        "y": 378.0,
+        "w": 64.0,
+        "h": 22.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000868",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.94,
+        "x": 513.0,
+        "y": 249.0,
+        "w": 54.0,
+        "h": 51.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000869",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.83,
+        "x": 452.0,
+        "y": 265.0,
+        "w": 62.0,
+        "h": 67.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000870",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.73,
+        "x": 449.0,
+        "y": 295.0,
+        "w": 55.0,
+        "h": 39.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000871",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.92,
+        "x": 358.0,
+        "y": 237.0,
+        "w": 78.0,
+        "h": 50.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000872",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.93,
+        "x": 419.0,
+        "y": 180.0,
+        "w": 40.0,
+        "h": 54.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000873",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.79,
+        "x": 467.0,
+        "y": 217.0,
+        "w": 39.0,
+        "h": 66.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000874",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.97,
+        "x": 353.0,
+        "y": 222.0,
+        "w": 87.0,
+        "h": 67.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000875",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.88,
+        "x": 515.0,
+        "y": 257.0,
+        "w": 69.0,
+        "h": 26.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000876",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.86,
+        "x": 446.0,
+        "y": 267.0,
+        "w": 85.0,
+        "h": 60.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000877",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.89,
+        "x": 537.0,
+        "y": 291.0,
+        "w": 61.0,
+        "h": 47.0
+      },
+      {
+        "class": "bus",
+        "confidence": 0.9,
+        "x": 342.0,
+        "y": 169.0,
+        "w": 51.0,
+        "h": 70.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000878",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.87,
+        "x": 536.0,
+        "y": 299.0,
+        "w": 60.0,
+        "h": 50.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000879",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.84,
+        "x": 412.0,
+        "y": 295.0,
+        "w": 36.0,
+        "h": 43.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000880",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.74,
+        "x": 439.0,
+        "y": 197.0,
+        "w": 63.0,
+        "h": 56.0
+      },
+      {
+        "class": "truck",
+        "confidence": 0.89,
+        "x": 296.0,
+        "y": 62.0,
+        "w": 101.0,
+        "h": 66.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000881",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.87,
+        "x": 426.0,
+        "y": 231.0,
+        "w": 67.0,
+        "h": 54.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000882",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.94,
+        "x": 397.0,
+        "y": 241.0,
+        "w": 85.0,
+        "h": 55.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000883",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.78,
+        "x": 407.0,
+        "y": 212.0,
+        "w": 90.0,
+        "h": 38.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000884",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.97,
+        "x": 369.0,
+        "y": 229.0,
+        "w": 94.0,
+        "h": 32.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000885",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.84,
+        "x": 403.0,
+        "y": 286.0,
+        "w": 100.0,
+        "h": 51.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000886",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.83,
+        "x": 890.0,
+        "y": 401.0,
+        "w": 67.0,
+        "h": 64.0
+      },
+      {
+        "class": "van",
+        "confidence": 0.78,
+        "x": 449.0,
+        "y": 254.0,
+        "w": 72.0,
+        "h": 39.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000887",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.94,
+        "x": 431.0,
+        "y": 258.0,
+        "w": 63.0,
+        "h": 28.0
+      },
+      {
+        "class": "bus",
+        "confidence": 0.81,
+        "x": 89.0,
+        "y": 38.0,
+        "w": 85.0,
+        "h": 61.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000888",
+    "detections": [
+      {
+        "class": "van",
+        "confidence": 0.78,
+        "x": 415.0,
+        "y": 184.0,
+        "w": 89.0,
+        "h": 58.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000889",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.84,
+        "x": 426.0,
+        "y": 274.0,
+        "w": 39.0,
+        "h": 48.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000890",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.83,
+        "x": 522.0,
+        "y": 250.0,
+        "w": 104.0,
+        "h": 25.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000891",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.95,
+        "x": 420.0,
+        "y": 238.0,
+        "w": 59.0,
+        "h": 27.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000892",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.97,
+        "x": 379.0,
+        "y": 261.0,
+        "w": 89.0,
+        "h": 40.0
+      },
+      {
+        "class": "car",
+        "confidence": 0.78,
+        "x": 518.0,
+        "y": 262.0,
+        "w": 64.0,
+        "h": 65.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000893",
+    "detections": [
+      {
+        "class": "car",
+        "confidence": 0.9,
+        "x": 338.0,
+        "y": 249.0,
+        "w": 55.0,
+        "h": 39.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000894",
+    "detections": [
+      {
+        "class": "bus",
+        "confidence": 0.97,
+        "x": 459.0,
+        "y": 241.0,
+        "w": 57.0,
+        "h": 62.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000895",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.77,
+        "x": 479.0,
+        "y": 319.0,
+        "w": 39.0,
+        "h": 43.0
+      },
+      {
+        "class": "bus",
+        "confidence": 0.93,
+        "x": 146.0,
+        "y": 324.0,
+        "w": 67.0,
+        "h": 30.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000896",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.72,
+        "x": 768.0,
+        "y": 23.0,
+        "w": 41.0,
+        "h": 46.0
+      },
+      {
+        "class": "bus",
+        "confidence": 0.9,
+        "x": 428.0,
+        "y": 220.0,
+        "w": 89.0,
+        "h": 55.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000897",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.83,
+        "x": 341.0,
+        "y": 180.0,
+        "w": 102.0,
+        "h": 65.0
+      },
+      {
+        "class": "bus",
+        "confidence": 0.78,
+        "x": 134.0,
+        "y": 199.0,
+        "w": 70.0,
+        "h": 44.0
+      }
+    ]
+  },
+  {
+    "image_id": "img_000898",
+    "detections": []
+  },
+  {
+    "image_id": "img_000899",
+    "detections": [
+      {
+        "class": "truck",
+        "confidence": 0.9,
+        "x": 480.0,
+        "y": 195.0,
+        "w": 59.0,
+        "h": 55.0
+      }
+    ]
+  }
+]

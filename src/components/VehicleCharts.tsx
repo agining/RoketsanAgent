@@ -20,5 +20,5 @@ function MetricChart({ title, unit, data, time, stepped = false }: { title: stri
 export const VehicleCharts = memo(function VehicleCharts({ track, base, time }: { track: VehicleTrack; base: BaseLocation; time: number }) {
   const distance = useMemo(() => calculateDistanceSeries(track, base), [track, base]);
   const speed = useMemo(() => calculateTrackSpeedSeries(track), [track]);
-  return <div className="vehicle-charts"><div className="section-eyebrow">FULL TRACK · CURSOR = CURRENT TIME</div><MetricChart title="Distance to base" unit="km" data={distance} time={time} /><MetricChart title="Speed over time" unit="km/h" data={speed} time={time} stepped /></div>;
+  return <div className="vehicle-charts"><div className="section-eyebrow">TÜM ROTA · İMLEÇ = GEÇERLİ ZAMAN</div><MetricChart title="Üsse mesafe" unit="km" data={distance} time={time} /><MetricChart title="Zamana göre hız" unit="km/sa" data={speed} time={time} stepped /></div>;
 });

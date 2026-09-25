@@ -1,193 +1,402 @@
 import { useEffect, useRef, useState } from 'react';
+import { Box, Focus, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
 import * as maplibregl from 'maplibre-gl';
-import type { Map as LibreMap, StyleSpecification } from 'maplibre-gl';
+import type { GeoJSONSource, Map as LibreMap, Marker, StyleSpecification } from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import basemapStyle from './basemap-style.json';
-import { MapToolbar } from './MapToolbar';
-import { filterVehicles, vehicleSnapshot } from '../../services/vehicle-filters';
-import type { TrackingData } from '../../types/tracking';
-import { futureFeatures, trackingBounds, traveledFeatures } from '../../services/map-data';
+import { Button } from '../ui/button';
 import { useTrackingStore } from '../../store/tracking';
-import 'maplibre-gl/dist/maplibre-gl.css';
 import { usePlaybackStore } from '../../store/playback';
-import { getPositionAtTime } from '../../services/playback';
+import type { AnalysisData, AnalysisEntity, RiskLevel, UntrackedObservation } from '../../types/analysis';
+import { allTrackTrailFeatures, behaviorAtTime, formatClock, headingAtTime, movementAtTime, positionAtTime, reportsAtTime, selectedTrackEventFeatures, trackColor, trailArrowFeatures, untrackedVisibleAt } from '../../services/analysis-playback';
+import type { TrailMode } from '../../store/playback';
+import { formatAttention, formatBehavior, formatMovementState, formatRiskLevel, formatUnavailable, formatVehicleClass } from '../../services/formatters';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
-// A local style keeps operational overlays available even if basemap tiles fail.
 maplibregl.setWorkerUrl(workerUrl);
 const style = basemapStyle as unknown as StyleSpecification;
-export function OperationsMap({ data }: { data: TrackingData }) {
-  const shell = useRef<HTMLDivElement>(null);
+const riskLevels: RiskLevel[] = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL', 'UNKNOWN'];
+const riskGlyph: Record<RiskLevel, string> = { LOW: 'D', MEDIUM: 'O', HIGH: 'Y', CRITICAL: 'K', UNKNOWN: '?' };
+
+function valueRow(label: string, value: string) {
+  const row = document.createElement('span');
+  const key = document.createElement('small');
+  const content = document.createElement('b');
+  key.textContent = label;
+  content.textContent = value;
+  row.append(key, content);
+  return row;
+}
+
+function trackPopup(entity: AnalysisEntity, time: number) {
+  const assessment = entity.risk.assessment;
+  const position = positionAtTime(entity, time);
+  const movement = movementAtTime(entity, time);
+  const behavior = behaviorAtTime(entity, time);
+  const reports = reportsAtTime(entity, time);
+  const content = document.createElement('div');
+  content.className = 'analysis-map-popup';
+  const heading = document.createElement('strong');
+  heading.textContent = entity.track_id;
+  const context = document.createElement('em');
+  context.textContent = `${formatClock(time)} anındaki durum${position?.stale ? ' · son bilinen konum' : ''}`;
+  content.append(
+    heading,
+    context,
+    valueRow('Araç', formatVehicleClass(entity.vehicle_class.canonical)),
+    valueRow('Genel risk', formatRiskLevel(assessment?.risk_level ?? 'UNKNOWN')),
+    valueRow('Takip seviyesi', formatAttention(assessment?.recommended_attention ?? 'UNKNOWN')),
+    valueRow('Hareket', movement ? formatMovementState(movement.state) : formatUnavailable()),
+    valueRow('Davranış', behavior ? formatBehavior(behavior.behavior) : formatUnavailable()),
+    valueRow('Üsse mesafe', position ? `${Math.round(position.distance_to_base_m)} m` : 'Henüz gözlenmedi'),
+  );
+  if (reports.length) content.append(valueRow('Rapor olayı', `${reports.length} rapor bu zamana yakın`));
+  return content;
+}
+
+function untrackedPopup(item: UntrackedObservation, time: number) {
+  const status = untrackedVisibleAt(item, time);
+  const content = document.createElement('div');
+  content.className = 'analysis-map-popup untracked-popup';
+  const heading = document.createElement('strong');
+  heading.textContent = 'TAKİPSİZ TESPİT';
+  content.append(
+    heading,
+    valueRow('Araç', formatVehicleClass(item.detection.class)),
+    valueRow('Tespit güveni', `%${Math.round(item.detection.confidence * 100)}`),
+    valueRow('Yakalama zamanı', item.capture_time),
+    valueRow('Durum', status?.stale ? 'Geçmiş gözlem' : 'Gözlem zamanı'),
+    valueRow('Bölge', item.position.zone),
+    valueRow('Üsse mesafe', `${Math.round(item.position.distance_to_base_m)} m`),
+  );
+  return content;
+}
+
+function allBounds(analysis: AnalysisData) {
+  const bounds = new maplibregl.LngLatBounds([analysis.base.lon, analysis.base.lat], [analysis.base.lon, analysis.base.lat]);
+  analysis.zones.forEach(zone => bounds.extend([zone.center[1], zone.center[0]]));
+  analysis.entities.forEach(entity => {
+    const points = entity.position_history.length ? entity.position_history : [entity.latest_position];
+    points.forEach(point => bounds.extend([point.lon, point.lat]));
+  });
+  analysis.untracked_observations.forEach(item => bounds.extend([item.position.lon, item.position.lat]));
+  return bounds;
+}
+
+function emptyFeatureCollection() {
+  return { type: 'FeatureCollection' as const, features: [] };
+}
+
+function vehicleLabel(vehicleClass: string) {
+  if (vehicleClass === 'truck') return 'KMY';
+  if (vehicleClass === 'bus') return 'OTB';
+  if (vehicleClass === 'van') return 'VAN';
+  if (vehicleClass === 'car') return 'OTO';
+  return '?';
+}
+
+function mapView(map: LibreMap, mode: '2d' | '3d', duration = 350) {
+  map.easeTo({ pitch: mode === '3d' ? 58 : 0, bearing: mode === '3d' ? -28 : 0, duration });
+}
+
+export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
   const container = useRef<HTMLDivElement>(null);
+  const shell = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibreMap | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const visibleTrackIdsRef = useRef<ReadonlySet<string> | undefined>(visibleTrackIds);
+  const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
+  const layers = useTrackingStore(state => state.layers);
+  const trailMode = usePlaybackStore(state => state.trailMode);
+  const [mapError, setMapError] = useState('');
+  const [fullscreen, setFullscreen] = useState(false);
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
+
+  useEffect(() => { visibleTrackIdsRef.current = visibleTrackIds; }, [visibleTrackIds]);
+
   useEffect(() => {
     if (!container.current) return;
-    let map: LibreMap;
-    try {
-      map = new maplibregl.Map({ container: container.current, style, center: [data.base.lon, data.base.lat], zoom: 12, attributionControl: { compact: true } });
-    } catch { setError('The map could not start. Please enable WebGL in your browser.'); return; }
+    setMapError('');
+    const map = new maplibregl.Map({ container: container.current, style, center: [analysis.base.lon, analysis.base.lat], zoom: 12, attributionControl: false });
     mapRef.current = map;
-    const markers: maplibregl.Marker[] = [];
-    const vehicleButtons = new Map<string, HTMLButtonElement>();
-    const vehicleMarkers = new Map<string, maplibregl.Marker>();
-    const zoneMarkers: maplibregl.Marker[] = [];
-    let baseMarker: maplibregl.Marker | undefined;
-    let lastRouteUpdate = -Infinity;
-    let lastFilterTime = -Infinity;
-    let lastFilterState = useTrackingStore.getState();
-    let matching = data.tracks;
-    let visibleIds = new Set(data.tracks.map(track => track.id));
-    let hoverId: string | null = null;
-    const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 18, className: 'vehicle-tooltip' });
-    const updateTooltip = () => {
-      const track = data.tracks.find(track => track.id === hoverId);
-      if (!track || !visibleIds.has(track.id) || !useTrackingStore.getState().layers.vehicles) { hoverId = null; popup.remove(); return; }
-      const snapshot = vehicleSnapshot(track, data, usePlaybackStore.getState().currentTime);
-      if (!snapshot.position) { hoverId = null; popup.remove(); return; }
-      const content = document.createElement('div');
-      const title = document.createElement('strong'); title.textContent = track.id;
-      const details = document.createElement('span'); details.textContent = `${snapshot.position.speedKmh.toFixed(1)} km/h · ${snapshot.motion} · ${snapshot.baseTrend ?? 'NO BASE TREND'} · ${snapshot.distanceKm!.toFixed(2)} km to base`;
-      content.append(title, details); popup.setLngLat([snapshot.position.lon, snapshot.position.lat]).setDOMContent(content).addTo(map);
-    };
-    const followSelected = () => {
-      const { selectedTrackId, followVehicle } = useTrackingStore.getState();
-      if (!followVehicle || !selectedTrackId || !visibleIds.has(selectedTrackId) || !useTrackingStore.getState().layers.vehicles) return;
-      const track = data.tracks.find(track => track.id === selectedTrackId);
-      const position = track && getPositionAtTime(track, usePlaybackStore.getState().currentTime);
-      if (position) { map.stop(); map.jumpTo({ center: [position.lon, position.lat] }); }
-    };
-    const updatePositions = (force = false) => {
-      const { currentTime, isPlaying } = usePlaybackStore.getState();
-      const state = useTrackingStore.getState(), { layers } = state;
-      const filterTime = Math.floor(currentTime * 10) / 10;
-      if (force || filterTime !== lastFilterTime || state !== lastFilterState) {
-        matching = filterVehicles(data, state, filterTime).map(vehicle => vehicle.track);
-        visibleIds = new Set(matching.map(track => track.id));
-        lastFilterTime = filterTime; lastFilterState = state;
-      }
-      data.tracks.forEach(track => {
-        const marker = vehicleMarkers.get(track.id); if (!marker) return;
-        const position = getPositionAtTime(track, currentTime);
-        marker.getElement().style.display = layers.vehicles && position && visibleIds.has(track.id) ? '' : 'none';
-        if (!position) return;
-        marker.setLngLat([position.lon, position.lat]);
-        const arrow = marker.getElement().querySelector<HTMLElement>('.heading-arrow');
-        if (arrow) { arrow.style.transform = `rotate(${(position.heading ?? 0) - map.getBearing()}deg)`; arrow.style.visibility = position.heading === null ? 'hidden' : 'visible'; }
-      });
-      followSelected();
-      // Markers follow every frame; GeoJSON worker updates are limited to 20 Hz.
-      const now = performance.now();
-      if (force || !isPlaying || now - lastRouteUpdate >= 50) {
-        const source = map.getSource('traveled') as maplibregl.GeoJSONSource | undefined;
-        source?.setData(traveledFeatures(matching, currentTime));
-        (map.getSource('routes') as maplibregl.GeoJSONSource | undefined)?.setData(futureFeatures(matching, currentTime));
-        updateTooltip(); lastRouteUpdate = now;
-      }
-    };
-    const focusDuration = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 380;
-    const fit = (duration = focusDuration()) => map.fitBounds(trackingBounds(data), { padding: 65, duration, maxZoom: 15 });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
-    map.on('error', event => { console.warn('Map resource error:', event.error.message); setError('Some map tiles could not load. Track and zone overlays remain available.'); });
-    const select = (id: string) => useTrackingStore.getState().selectTrack(id);
-    const applySelection = () => {
-      const id = useTrackingStore.getState().selectedTrackId;
-      for (const layer of ['selected-route', 'selected-traveled']) if (map.getLayer(layer)) map.setFilter(layer, ['==', ['get', 'trackId'], id ?? '']);
-      vehicleButtons.forEach((button, trackId) => {
-        button.classList.toggle('selected', id === trackId);
-        button.setAttribute('aria-pressed', String(id === trackId));
-      });
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
+
+    const markers: Marker[] = [];
+    const trackMarkers = new Map<string, Marker>();
+    const untrackedMarkers = new Map<string, Marker>();
+    const byTrackId = new Map(analysis.entities.map(entity => [entity.track_id, entity]));
+    const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: 'vehicle-tooltip', offset: 16 });
+    const showPopup = (coordinates: [number, number], content: HTMLElement) => popup.setLngLat(coordinates).setDOMContent(content).addTo(map);
+    const hidePopup = () => popup.remove();
+
+    const ensureMapLayers = () => {
+      if (!map.getSource('all-track-trails')) {
+        map.addSource('all-track-trails', { type: 'geojson', data: emptyFeatureCollection() });
+        map.addLayer({ id: 'all-track-trails-casing', type: 'line', source: 'all-track-trails', paint: { 'line-color': '#061015', 'line-opacity': 0.68, 'line-width': ['+', ['get', 'width'], 2] } });
+        map.addLayer({ id: 'all-track-trails', type: 'line', source: 'all-track-trails', paint: { 'line-color': ['get', 'color'], 'line-opacity': ['get', 'opacity'], 'line-width': ['get', 'width'], 'line-dasharray': ['case', ['get', 'selected'], ['literal', [1, 0]], ['literal', [2, 1.2]]] } });
+      }
+      if (!map.getSource('trail-arrows')) {
+        map.addSource('trail-arrows', { type: 'geojson', data: emptyFeatureCollection() });
+        map.addLayer({ id: 'trail-arrows', type: 'symbol', source: 'trail-arrows', minzoom: 12, layout: { 'text-field': '▲', 'text-size': ['case', ['get', 'selected'], 12, 9], 'text-rotate': ['get', 'heading'], 'text-rotation-alignment': 'map', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': ['get', 'color'], 'text-opacity': ['get', 'opacity'], 'text-halo-color': '#071015', 'text-halo-width': 1.2 } });
+      }
+      if (!map.getSource('selected-track-events')) {
+        map.addSource('selected-track-events', { type: 'geojson', data: emptyFeatureCollection() });
+        map.addLayer({ id: 'selected-track-events', type: 'circle', source: 'selected-track-events', paint: { 'circle-radius': ['match', ['get', 'type'], 'REPORT', 5, 'STOP', 5, 4], 'circle-color': ['match', ['get', 'type'], 'REPORT', '#d4b35f', 'STOP', '#95a3a8', 'LOITERING', '#d78272', 'CIRCLING', '#c86f7d', '#9ed0bd'], 'circle-opacity': 0.95, 'circle-stroke-color': '#101a20', 'circle-stroke-width': 2 } });
+      }
+      if (!map.getLayer('operational-3d-buildings') && map.getSource('openmaptiles')) {
+        try {
+          map.addLayer({ id: 'operational-3d-buildings', type: 'fill-extrusion', source: 'openmaptiles', 'source-layer': 'building', minzoom: 14, filter: ['match', ['geometry-type'], ['MultiPolygon', 'Polygon'], true, false], paint: { 'fill-extrusion-color': '#25333a', 'fill-extrusion-opacity': 0.44, 'fill-extrusion-height': ['case', ['has', 'render_height'], ['get', 'render_height'], ['has', 'height'], ['get', 'height'], 10], 'fill-extrusion-base': ['case', ['has', 'render_min_height'], ['get', 'render_min_height'], 0] }, layout: { visibility: 'none' } });
+        } catch (error) {
+          console.warn('3D building layer unavailable:', error);
+        }
+      }
     };
+
+    const updateTrail = () => {
+      if (!map.isStyleLoaded()) return;
+      ensureMapLayers();
+      const selected = useTrackingStore.getState().selectedTrackId;
+      const entity = selected ? byTrackId.get(selected) : null;
+      const time = usePlaybackStore.getState().currentTime;
+      const mode = usePlaybackStore.getState().trailMode;
+      const visible = visibleTrackIdsRef.current;
+      (map.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(analysis.entities, time, mode, selected, visible));
+      (map.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(analysis.entities, time, mode, selected, visible));
+      (map.getSource('selected-track-events') as GeoJSONSource | undefined)?.setData(selectedTrackEventFeatures(entity ?? null, time));
+    };
+
+    const updatePlayback = () => {
+      const time = usePlaybackStore.getState().currentTime;
+      const currentLayers = useTrackingStore.getState().layers;
+      const selected = useTrackingStore.getState().selectedTrackId;
+      trackMarkers.forEach((marker, trackId) => {
+        const entity = byTrackId.get(trackId);
+        if (!entity) return;
+        const position = positionAtTime(entity, time);
+        const element = marker.getElement();
+        const passesFilter = !visibleTrackIdsRef.current || visibleTrackIdsRef.current.has(trackId);
+        const visible = currentLayers.vehicles && passesFilter && position !== null;
+        element.style.display = visible ? '' : 'none';
+        element.classList.toggle('selected', trackId === selected);
+        element.classList.toggle('context-dimmed', Boolean(selected && trackId !== selected));
+        element.classList.toggle('stale', Boolean(position?.stale));
+        element.classList.toggle('report-active', reportsAtTime(entity, time).length > 0);
+        element.setAttribute('aria-pressed', String(trackId === selected));
+        const heading = headingAtTime(entity, time);
+        if (heading !== null) element.style.setProperty('--vehicle-heading', `${heading}deg`);
+        if (position) marker.setLngLat([position.lon, position.lat]);
+      });
+      untrackedMarkers.forEach((marker, key) => {
+        const item = analysis.untracked_observations[Number(key)];
+        const status = item ? untrackedVisibleAt(item, time) : null;
+        const element = marker.getElement();
+        element.style.display = currentLayers.untracked && status ? '' : 'none';
+        element.classList.toggle('stale', Boolean(status?.stale));
+        element.classList.toggle('report-active', Boolean(status?.active));
+      });
+      updateTrail();
+    };
+
+    analysis.zones.forEach(zone => {
+      const element = document.createElement('button');
+      element.type = 'button';
+      element.className = 'zone-marker';
+      element.setAttribute('aria-label', `Focus map zone ${zone.name}`);
+      element.title = `${zone.name} · Zone center`;
+      const dot = document.createElement('i');
+      const label = document.createElement('span');
+      label.textContent = zone.name;
+      element.append(dot, label);
+      element.addEventListener('click', event => { event.stopPropagation(); map.easeTo({ center: [zone.center[1], zone.center[0]], zoom: 14, duration: 250 }); });
+      const marker = new maplibregl.Marker({ element }).setLngLat([zone.center[1], zone.center[0]]).addTo(map);
+      markers.push(marker);
+    });
+
+    const base = document.createElement('div');
+    base.className = 'base-marker';
+    base.setAttribute('role', 'img');
+    base.setAttribute('aria-label', `Base ${analysis.base.name}`);
+    const baseIcon = document.createElement('span');
+    baseIcon.textContent = '⌂';
+    const baseLabel = document.createElement('strong');
+    baseLabel.textContent = analysis.base.name;
+    base.append(baseIcon, baseLabel);
+    markers.push(new maplibregl.Marker({ element: base }).setLngLat([analysis.base.lon, analysis.base.lat]).addTo(map));
+
+    analysis.entities.forEach(entity => {
+      const risk = entity.risk.assessment?.risk_level ?? 'UNKNOWN';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `analysis-track-marker vehicle-marker risk-${risk.toLowerCase()}`;
+      button.dataset.trackId = entity.track_id;
+      button.setAttribute('aria-label', `${entity.track_id} araç detayını aç, genel risk ${formatRiskLevel(risk)}`);
+      button.setAttribute('aria-pressed', String(entity.track_id === useTrackingStore.getState().selectedTrackId));
+      const glyph = document.createElement('span');
+      glyph.className = 'marker-risk-glyph';
+      glyph.textContent = riskGlyph[risk];
+      const id = document.createElement('span');
+      id.className = 'marker-track-id';
+      id.textContent = entity.track_id;
+      const vehicle = document.createElement('span');
+      vehicle.className = `vehicle-silhouette vehicle-${entity.vehicle_class.canonical}`;
+      vehicle.setAttribute('aria-hidden', 'true');
+      const vehicleCab = document.createElement('i');
+      const vehicleText = document.createElement('b');
+      vehicleText.textContent = vehicleLabel(entity.vehicle_class.canonical);
+      vehicle.append(vehicleCab, vehicleText);
+      const eventDot = document.createElement('i');
+      eventDot.className = 'marker-event-dot';
+      button.style.setProperty('--track-color', trackColor(entity.track_id));
+      button.append(glyph, id, vehicle, eventDot);
+      const initial = positionAtTime(entity, usePlaybackStore.getState().currentTime) ?? positionAtTime(entity, usePlaybackStore.getState().minTime) ?? entity.latest_position;
+      const show = () => {
+        const time = usePlaybackStore.getState().currentTime;
+        const position = positionAtTime(entity, time);
+        if (position) showPopup([position.lon, position.lat], trackPopup(entity, time));
+      };
+      button.addEventListener('mouseenter', show);
+      button.addEventListener('focus', show);
+      button.addEventListener('mouseleave', hidePopup);
+      button.addEventListener('blur', hidePopup);
+      button.addEventListener('click', event => { event.stopPropagation(); show(); onSelectTrack(entity.track_id); });
+      const marker = new maplibregl.Marker({ element: button }).setLngLat([initial.lon, initial.lat]).addTo(map);
+      trackMarkers.set(entity.track_id, marker);
+      markers.push(marker);
+    });
+
+    analysis.untracked_observations.forEach((item, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'untracked-map-marker';
+      button.setAttribute('aria-label', `${item.capture_time} zamanlı takipsiz ${formatVehicleClass(item.detection.class)} tespiti`);
+      const glyph = document.createElement('span');
+      glyph.textContent = '?';
+      const label = document.createElement('span');
+      label.textContent = 'TAKİPSİZ';
+      button.append(glyph, label);
+      const coordinates: [number, number] = [item.position.lon, item.position.lat];
+      const show = () => showPopup(coordinates, untrackedPopup(item, usePlaybackStore.getState().currentTime));
+      button.addEventListener('mouseenter', show);
+      button.addEventListener('focus', show);
+      button.addEventListener('mouseleave', hidePopup);
+      button.addEventListener('blur', hidePopup);
+      button.addEventListener('click', event => { event.stopPropagation(); show(); });
+      const marker = new maplibregl.Marker({ element: button }).setLngLat(coordinates).addTo(map);
+      untrackedMarkers.set(String(index), marker);
+      markers.push(marker);
+    });
+
     const applyLayers = () => {
-      const { layers } = useTrackingStore.getState();
-      for (const layer of ['routes', 'selected-route', 'traveled-route', 'selected-traveled', 'route-hit-area', 'traveled-hit-area']) {
-        const segmentVisible = layer.includes('traveled') ? layers.traveled : layers.future;
-        if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', layers.routes && segmentVisible ? 'visible' : 'none');
-      }
-      zoneMarkers.forEach(marker => { marker.getElement().style.display = layers.zones ? '' : 'none'; });
-      if (baseMarker) baseMarker.getElement().style.display = layers.base ? '' : 'none';
-      updatePositions(true);
+      const current = useTrackingStore.getState().layers;
+      markers.filter(marker => marker.getElement().classList.contains('zone-marker')).forEach(marker => { marker.getElement().style.display = current.zones ? '' : 'none'; });
+      markers.filter(marker => marker.getElement().classList.contains('base-marker')).forEach(marker => { marker.getElement().style.display = current.base ? '' : 'none'; });
+      updatePlayback();
     };
-    const unsubscribe = useTrackingStore.subscribe((state, old) => {
-      if (state.selectedTrackId !== old.selectedTrackId) applySelection();
-      if (state.layers !== old.layers) applyLayers();
-      if (state.searchQuery !== old.searchQuery || state.selectedZone !== old.selectedZone || state.activeMovementStates !== old.activeMovementStates || state.minSpeed !== old.minSpeed || state.maxSpeed !== old.maxSpeed) updatePositions(true);
-      if (state.followVehicle !== old.followVehicle || state.selectedTrackId !== old.selectedTrackId) followSelected();
-      if (state.viewRequest !== old.viewRequest) {
-        if (state.viewRequest.action === 'reset' || state.viewRequest.action === 'all') { if (state.viewRequest.action === 'reset') map.jumpTo({ bearing: 0, pitch: 0 }); fit(); }
+    const fitAll = (duration = 0) => map.fitBounds(allBounds(analysis), { padding: 70, maxZoom: 15, duration });
+    const focusSelected = () => {
+      const selected = useTrackingStore.getState().selectedTrackId;
+      const entity = selected ? byTrackId.get(selected) : null;
+      const position = entity ? positionAtTime(entity, usePlaybackStore.getState().currentTime) : null;
+      if (position) map.easeTo({ center: [position.lon, position.lat], zoom: Math.max(map.getZoom(), 14), duration: 250 });
+    };
+    const unsubscribeTracking = useTrackingStore.subscribe((state, previous) => {
+      if (state.selectedTrackId !== previous.selectedTrackId) { updatePlayback(); updateTrail(); }
+      if (state.layers !== previous.layers) applyLayers();
+      if (state.viewRequest !== previous.viewRequest) {
+        if (state.viewRequest.action === 'vehicle' || state.viewRequest.action === 'route') focusSelected();
         else if (state.viewRequest.action === 'zone') {
-          const zone = data.zones.find(zone => zone.name === state.viewRequest.zoneName);
-          if (zone) map.easeTo({ center: [zone.center[1], zone.center[0]], zoom: 14, duration: focusDuration() });
-        }
-        else {
-          const track = data.tracks.find(track => track.id === state.selectedTrackId);
-          const position = track && getPositionAtTime(track, usePlaybackStore.getState().currentTime);
-          if (state.viewRequest.action === 'vehicle' && position) map.easeTo({ center: [position.lon, position.lat], zoom: Math.max(map.getZoom(), 14), duration: focusDuration() });
-          else if (track?.points.length) {
-            const bounds = new maplibregl.LngLatBounds();
-            track.points.forEach(point => bounds.extend([point.lon, point.lat]));
-            map.fitBounds(bounds, { padding: 65, duration: focusDuration(), maxZoom: 16 });
-          }
+          const zone = analysis.zones.find(item => item.name === state.viewRequest.zoneName);
+          if (zone) map.easeTo({ center: [zone.center[1], zone.center[0]], zoom: 14, duration: 250 });
+        } else {
+          if (state.viewRequest.action === 'reset') map.jumpTo({ bearing: 0, pitch: 0 });
+          fitAll(250);
         }
       }
     });
-    const unsubscribePlayback = usePlaybackStore.subscribe((state, old) => {
-      if (state.currentTime !== old.currentTime || state.isPlaying !== old.isPlaying) updatePositions();
+    const unsubscribePlayback = usePlaybackStore.subscribe((state, previous) => {
+      if (state.currentTime !== previous.currentTime || state.trailMode !== previous.trailMode) updatePlayback();
     });
-    map.on('dragstart', () => useTrackingStore.getState().setFollowVehicle(false));
-    map.on('rotate', () => updatePositions());
-    map.on('style.load', () => {
-      map.addSource('routes', { type: 'geojson', data: futureFeatures(matching, usePlaybackStore.getState().currentTime) });
-      map.addLayer({ id: 'routes', type: 'line', source: 'routes', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#739da5', 'line-width': 2, 'line-opacity': 0.22 } });
-      map.addLayer({ id: 'selected-route', type: 'line', source: 'routes', filter: ['==', ['get', 'trackId'], ''], layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#8ee3c0', 'line-width': 3, 'line-opacity': 0.4 } });
-      map.addSource('traveled', { type: 'geojson', data: traveledFeatures(data.tracks, usePlaybackStore.getState().currentTime) });
-      map.addLayer({ id: 'traveled-route', type: 'line', source: 'traveled', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#83afb5', 'line-width': 2.5, 'line-opacity': 0.9 } });
-      map.addLayer({ id: 'selected-traveled', type: 'line', source: 'traveled', filter: ['==', ['get', 'trackId'], ''], layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#a2e5c8', 'line-width': 4, 'line-opacity': 1 } });
-      // Wider invisible hit area makes routes easier to select.
-      map.addLayer({ id: 'route-hit-area', type: 'line', source: 'routes', paint: { 'line-width': 14, 'line-opacity': 0 } });
-      map.addLayer({ id: 'traveled-hit-area', type: 'line', source: 'traveled', paint: { 'line-width': 14, 'line-opacity': 0 } });
-      for (const hitLayer of ['route-hit-area', 'traveled-hit-area']) {
-      map.on('click', hitLayer, event => { const id = event.features?.[0]?.properties?.trackId; if (typeof id === 'string') select(id); });
-      map.on('mouseenter', hitLayer, () => { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', hitLayer, () => { map.getCanvas().style.cursor = ''; });
-      }
-      data.zones.forEach(zone => {
-        const element = document.createElement('button');
-        element.type = 'button'; element.className = 'zone-marker'; element.setAttribute('aria-label', `Focus map zone ${zone.name}`); element.title = `${zone.name} · Zone center`;
-        element.addEventListener('click', event => { event.stopPropagation(); useTrackingStore.getState().requestView('zone', zone.name); });
-        const dot = document.createElement('i');
-        const label = document.createElement('span'); label.textContent = zone.name;
-        element.append(dot, label);
-        const marker = new maplibregl.Marker({ element }).setLngLat([zone.center[1], zone.center[0]]).addTo(map);
-        zoneMarkers.push(marker); markers.push(marker);
-      });
-      const base = document.createElement('div'); base.className = 'base-marker';
-      const baseIcon = document.createElement('span'); baseIcon.textContent = '⌂';
-      const baseLabel = document.createElement('strong'); baseLabel.textContent = data.base.name;
-      base.append(baseIcon, baseLabel);
-      baseMarker = new maplibregl.Marker({ element: base }).setLngLat([data.base.lon, data.base.lat]).addTo(map); markers.push(baseMarker);
-      data.tracks.forEach(track => {
-        const point = track.points[0]; if (!point) return;
-        const button = document.createElement('button');
-        button.type = 'button'; button.className = 'vehicle-marker'; button.textContent = track.id;
-        const arrow = document.createElement('span'); arrow.className = 'heading-arrow'; arrow.textContent = '▲'; arrow.setAttribute('aria-hidden', 'true'); button.append(arrow);
- button.setAttribute('aria-label', `Select vehicle ${track.id}`);
-        const showTooltip = () => { hoverId = track.id; updateTooltip(); };
-        const hideTooltip = () => { hoverId = null; popup.remove(); };
-        button.addEventListener('mouseenter', showTooltip); button.addEventListener('focus', showTooltip);
-        button.addEventListener('mouseleave', hideTooltip); button.addEventListener('blur', hideTooltip);
-        button.addEventListener('click', event => { event.stopPropagation(); select(track.id); }); vehicleButtons.set(track.id, button);
-        const marker = new maplibregl.Marker({ element: button }).setLngLat([point.lon, point.lat]).addTo(map);
-        vehicleMarkers.set(track.id, marker); markers.push(marker);
-      });
-      applySelection(); applyLayers(); fit(0);
+
+    const applyZoomDetail = () => shell.current?.classList.toggle('close-vehicle-zoom', map.getZoom() >= 14.25);
+    map.on('zoom', applyZoomDetail);
+    map.once('load', () => { ensureMapLayers(); fitAll(); updatePlayback(); applyZoomDetail(); });
+    map.on('error', event => { console.warn('Map resource error:', event.error.message); setMapError('Map tiles could not be loaded. Analysis markers remain available.'); });
+    const observer = new ResizeObserver(() => map.resize());
+    observer.observe(container.current);
+    applyLayers();
+    return () => {
+      unsubscribeTracking();
+      unsubscribePlayback();
+      map.off('zoom', applyZoomDetail);
+      observer.disconnect();
+      popup.remove();
+      markers.forEach(marker => marker.remove());
+      map.remove();
+      mapRef.current = null;
+    };
+  }, [analysis, onSelectTrack]);
+
+  useEffect(() => {
+    const time = usePlaybackStore.getState().currentTime;
+    shell.current?.querySelectorAll<HTMLElement>('.analysis-track-marker').forEach(marker => {
+      const trackId = marker.dataset.trackId;
+      const entity = analysis.entities.find(item => item.track_id === trackId);
+      const temporalPosition = entity ? positionAtTime(entity, time) : null;
+      marker.style.display = layers.vehicles && temporalPosition && (!visibleTrackIds || (trackId ? visibleTrackIds.has(trackId) : false)) ? '' : 'none';
     });
-    const observer = new ResizeObserver(() => map.resize()); observer.observe(container.current);
-    return () => { unsubscribe(); unsubscribePlayback(); observer.disconnect(); popup.remove(); markers.forEach(marker => marker.remove()); map.remove(); mapRef.current = null; };
-  }, [data]);
-  return <div className="map-shell" ref={shell}>
-    <div ref={container} className="map-canvas" aria-label="Vehicle operations map" />
-    <MapToolbar target={shell} />
-    {error && <div role="status" className="map-error">{error}</div>}
-    <div className="map-legend"><span><i className="legend-route" />Traveled</span><span><i className="legend-route future" />Future</span><span><i className="legend-zone" />Zone center</span><span><i className="legend-base" />Base</span></div>
+    const selected = useTrackingStore.getState().selectedTrackId;
+    (mapRef.current?.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(analysis.entities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
+    (mapRef.current?.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(analysis.entities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
+  }, [analysis.entities, layers.vehicles, visibleTrackIds]);
+
+  useEffect(() => {
+    const change = () => setFullscreen(document.fullscreenElement === shell.current);
+    document.addEventListener('fullscreenchange', change);
+    return () => document.removeEventListener('fullscreenchange', change);
+  }, []);
+
+  const fitAll = () => mapRef.current?.fitBounds(allBounds(analysis), { padding: 70, maxZoom: 15, duration: 250 });
+  const focusSelected = () => {
+    const entity = analysis.entities.find(item => item.track_id === selectedTrackId);
+    const position = entity ? positionAtTime(entity, usePlaybackStore.getState().currentTime) : null;
+    if (position) mapRef.current?.easeTo({ center: [position.lon, position.lat], zoom: Math.max(mapRef.current.getZoom(), 14), duration: 250 });
+  };
+  const setMapMode = (mode: '2d' | '3d') => {
+    setViewMode(mode);
+    if (!mapRef.current) return;
+    mapView(mapRef.current, mode);
+    if (mapRef.current.getLayer('operational-3d-buildings')) mapRef.current.setLayoutProperty('operational-3d-buildings', 'visibility', mode === '3d' ? 'visible' : 'none');
+  };
+  const setTrailMode = (mode: TrailMode) => usePlaybackStore.getState().setTrailMode(mode);
+  const toggleFullscreen = async () => { if (!shell.current) return; if (document.fullscreenElement) await document.exitFullscreen(); else await shell.current.requestFullscreen(); };
+  const toggle = (layer: 'vehicles' | 'untracked' | 'zones' | 'base') => useTrackingStore.getState().toggleLayer(layer);
+
+  return <div className="map-shell analysis-map-shell" ref={shell}>
+    <div ref={container} className="map-canvas" aria-label="Zaman çizelgesi oynatmalı analiz haritası" />
+    <div className="map-toolbar" role="toolbar" aria-label="Harita araçları">
+      <Button variant="ghost" onClick={fitAll}><LocateFixed size={15} /><span>Tümünü göster</span></Button>
+      <Button variant="ghost" size="icon" aria-label="Seçili track'e odaklan" title="Seçili track'e odaklan" disabled={!selectedTrackId} onClick={focusSelected}><Focus size={16} /></Button>
+      <Button variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
+      <Button variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
+    </div>
+    <div className="map-visual-controls" role="toolbar" aria-label="Harita görselleştirme kontrolleri">
+      <div className="segmented-control" aria-label="Harita perspektifi">
+        <button aria-pressed={viewMode === '2d'} onClick={() => setMapMode('2d')}>2D</button>
+        <button aria-pressed={viewMode === '3d'} onClick={() => setMapMode('3d')}><Box size={12} />3D</button>
+      </div>
+      <div className="segmented-control trail-control" aria-label="Rota izi görünümü">
+        <button aria-pressed={trailMode === 'elapsed'} onClick={() => setTrailMode('elapsed')}>Gidilen</button>
+        <button aria-pressed={trailMode === 'full'} onClick={() => setTrailMode('full')}>Tüm rota</button>
+        <button aria-pressed={trailMode === 'off'} onClick={() => setTrailMode('off')}>Kapalı</button>
+      </div>
+    </div>
+    <div className="analysis-map-layers" role="group" aria-label="Harita katmanları">
+      <label><input type="checkbox" checked={layers.vehicles} onChange={() => toggle('vehicles')} />Trackler</label>
+      <label><input type="checkbox" checked={layers.untracked} onChange={() => toggle('untracked')} />Takipsiz</label>
+      <label><input type="checkbox" checked={layers.zones} onChange={() => toggle('zones')} />Bölgeler</label>
+      <label><input type="checkbox" checked={layers.base} onChange={() => toggle('base')} />Üs</label>
+    </div>
+    {mapError && <div role="status" className="map-error">{mapError}</div>}
+    <div className="map-legend analysis-map-legend"><span><i className="legend-base" />Üs</span><span><i className="legend-zone" />Bölge merkezi</span><span><i className="legend-trail" />Rota izi</span><span><i className="legend-event" />Olay</span><span><i className="legend-untracked">?</i>Takipsiz</span><span><i className="legend-stale" />Son bilinen</span>{riskLevels.map(level => <span key={level}><i className={`legend-risk risk-${level.toLowerCase()}`}>{riskGlyph[level]}</i>{formatRiskLevel(level)}</span>)}</div>
   </div>;
 }

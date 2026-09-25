@@ -49,11 +49,11 @@ describe('time interpolation', () => {
 });
 describe('playback state', () => {
   beforeEach(() => { usePlaybackStore.getState().initialize(100, 200); usePlaybackStore.getState().setSpeed(1); });
-  it('uses elapsed seconds and speed independently of frame count', () => {
-    const store = usePlaybackStore.getState(); store.togglePlaying(); store.setSpeed(15); store.advance(.5);
-    expect(usePlaybackStore.getState().currentTime).toBe(107.5);
-    store.setSpeed(60); store.advance(.5); expect(usePlaybackStore.getState().currentTime).toBe(137.5);
-    store.togglePlaying(); store.advance(2); expect(usePlaybackStore.getState().currentTime).toBe(137.5);
+  it('uses elapsed seconds, command-center speeds and simulation scale independently of frame count', () => {
+    const store = usePlaybackStore.getState(); store.togglePlaying(); store.setSpeed(2); store.advance(.5);
+    expect(usePlaybackStore.getState().currentTime).toBe(160);
+    store.setSpeed(4); store.advance(.5); expect(usePlaybackStore.getState().currentTime).toBe(200);
+    store.advance(2); expect(usePlaybackStore.getState().currentTime).toBe(200);
   });
   it('clamps seeking, pauses at end, replays and resets', () => {
     const store = usePlaybackStore.getState(); store.seek(1); expect(usePlaybackStore.getState().currentTime).toBe(100);
