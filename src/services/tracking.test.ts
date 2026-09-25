@@ -1,32 +1,361 @@
-import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
-import { parseTracksCsv, parseZones } from './tracking';
-import { routeFeatures, trackingBounds } from './map-data';
-const header = 'track_id,time,lat,lon\n';
+import {
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
+
+import {
+  loadTrackingData,
+  validateTrackingData,
+} from './tracking';
+
+import {
+  routeFeatures,
+  trackingBounds,
+} from './map-data';
+
+
+const mockTrackingData = {
+  base: {
+    name: 'Merkez Us',
+    lat: 39.92184,
+    lon: 32.85306,
+  },
+
+  zones: [
+    {
+      name: 'Kuzey Yolu',
+      center: [39.950586, 32.85306],
+    },
+
+    {
+      name: 'Dogu Yolu',
+      center: [39.92184, 32.890542],
+    },
+  ],
+
+  tracks: [
+    {
+      id: 'T0001',
+      points: [
+        {
+          time: '12:00',
+          lat: 39.95,
+          lon: 32.85,
+        },
+        {
+          time: '12:05',
+          lat: 39.94,
+          lon: 32.85,
+        },
+      ],
+    },
+
+    {
+      id: 'T0002',
+      points: [
+        {
+          time: '12:00',
+          lat: 39.91,
+          lon: 32.87,
+        },
+        {
+          time: '12:05',
+          lat: 39.915,
+          lon: 32.86,
+        },
+      ],
+    },
+  ],
+};
+
+
 describe('tracking data', () => {
-  it('groups interleaved rows and preserves first point and source order', () => {
-    const tracks = parseTracksCsv('\uFEFF' + header + 'T1,23:55,39,32\r\nT2,12:00,40,33\r\nT1,00:00,39.1,32.1\r\n');
-    expect(tracks).toEqual([{ id: 'T1', points: [{ time: '23:55', lat: 39, lon: 32 }, { time: '00:00', lat: 39.1, lon: 32.1 }] }, { id: 'T2', points: [{ time: '12:00', lat: 40, lon: 33 }] }]);
-    expect(routeFeatures(tracks).features[0].geometry.coordinates).toEqual([[32, 39], [32.1, 39.1]]);
-    expect(routeFeatures(tracks).features).toHaveLength(1);
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
-  it.each(['T1,25:00,39,32', 'T1,12:00,,32', 'T1,12:00,91,32', 'T1,12:00,39,NaN', ',12:00,39,32'])('rejects invalid row %s', row => {
-    expect(() => parseTracksCsv(header + row)).toThrow('row 2');
+
+
+  it('loads tracking data from API', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify(mockTrackingData),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    const data = await loadTrackingData();
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/api/tracking-data'),
+      expect.objectContaining({
+        method: 'GET',
+      })
+    );
+
+    expect(data.base).toEqual({
+      name: 'Merkez Us',
+      lat: 39.92184,
+      lon: 32.85306,
+    });
+
+    expect(data.zones).toHaveLength(2);
+
+    expect(data.tracks).toHaveLength(2);
+
+    expect(data.tracks[0].id).toBe('T0001');
+
+    expect(data.tracks[0].points).toHaveLength(2);
   });
-  it('rejects empty datasets, bad headers, and invalid zones', () => {
-    expect(() => parseTracksCsv(header)).toThrow('No vehicle');
-    expect(() => parseTracksCsv('id,time,lat,lon')).toThrow('header');
-    expect(() => parseZones({ base: { name: 'base', lat: 39, lon: 32 }, zones: [{ name: 'zone', center: [32, 190] }] })).toThrow();
+
+
+  it('preserves track point order returned by API', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify(mockTrackingData),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    const data = await loadTrackingData();
+
+    expect(data.tracks[0].points).toEqual([
+      {
+        time: '12:00',
+        lat: 39.95,
+        lon: 32.85,
+      },
+      {
+        time: '12:05',
+        lat: 39.94,
+        lon: 32.85,
+      },
+    ]);
   });
-  it('loads all supplied points and includes tracks, zones, and base in bounds', () => {
-    const csv = readFileSync(new URL('../../mock_data/tracks.csv', import.meta.url), 'utf8');
-    const data = { tracks: parseTracksCsv(csv), ...parseZones(JSON.parse(readFileSync(new URL('../../mock_data/zones.json', import.meta.url), 'utf8'))) };
-    expect(data.tracks.reduce((count, track) => count + track.points.length, 0)).toBe(400);
-    expect(data.zones).toHaveLength(8);
+
+
+  it('creates route features from API tracks', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify(mockTrackingData),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    const data = await loadTrackingData();
+
+    const features = routeFeatures(data.tracks);
+
+    expect(features.features).toHaveLength(2);
+
+    expect(
+      features.features[0].geometry.coordinates
+    ).toEqual([
+      [32.85, 39.95],
+      [32.85, 39.94],
+    ]);
+  });
+
+
+  it('includes tracks, zones and base in map bounds', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify(mockTrackingData),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    const data = await loadTrackingData();
+
     const bounds = trackingBounds(data);
-    for (const track of data.tracks) for (const point of track.points) {
-      expect(point.lon).toBeGreaterThanOrEqual(bounds[0][0]); expect(point.lon).toBeLessThanOrEqual(bounds[1][0]);
-      expect(point.lat).toBeGreaterThanOrEqual(bounds[0][1]); expect(point.lat).toBeLessThanOrEqual(bounds[1][1]);
+
+    for (const track of data.tracks) {
+      for (const point of track.points) {
+        expect(point.lon)
+          .toBeGreaterThanOrEqual(bounds[0][0]);
+
+        expect(point.lon)
+          .toBeLessThanOrEqual(bounds[1][0]);
+
+        expect(point.lat)
+          .toBeGreaterThanOrEqual(bounds[0][1]);
+
+        expect(point.lat)
+          .toBeLessThanOrEqual(bounds[1][1]);
+      }
     }
+
+    expect(data.base.lon)
+      .toBeGreaterThanOrEqual(bounds[0][0]);
+
+    expect(data.base.lon)
+      .toBeLessThanOrEqual(bounds[1][0]);
+
+    expect(data.base.lat)
+      .toBeGreaterThanOrEqual(bounds[0][1]);
+
+    expect(data.base.lat)
+      .toBeLessThanOrEqual(bounds[1][1]);
+  });
+
+
+  it('rejects invalid coordinates', () => {
+    expect(() =>
+      validateTrackingData({
+        ...mockTrackingData,
+
+        tracks: [
+          {
+            id: 'T1',
+            points: [
+              {
+                time: '12:00',
+                lat: 91,
+                lon: 32,
+              },
+            ],
+          },
+        ],
+      })
+    ).toThrow('Invalid point');
+  });
+
+
+  it('rejects invalid time', () => {
+    expect(() =>
+      validateTrackingData({
+        ...mockTrackingData,
+
+        tracks: [
+          {
+            id: 'T1',
+            points: [
+              {
+                time: '25:00',
+                lat: 39,
+                lon: 32,
+              },
+            ],
+          },
+        ],
+      })
+    ).toThrow('Invalid point');
+  });
+
+
+  it('rejects invalid zones', () => {
+    expect(() =>
+      validateTrackingData({
+        ...mockTrackingData,
+
+        zones: [
+          {
+            name: 'Broken Zone',
+            center: [32, 190],
+          },
+        ],
+      })
+    ).toThrow('Invalid zone coordinates');
+  });
+
+
+  it('throws when API responds with an error', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        null,
+        {
+          status: 500,
+        }
+      )
+    );
+
+    await expect(
+      loadTrackingData()
+    ).rejects.toThrow(
+      'Tracking API request failed: HTTP 500'
+    );
+  });
+
+
+  it('throws when API returns malformed JSON', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        'this-is-not-json',
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    await expect(
+      loadTrackingData()
+    ).rejects.toThrow(
+      'Tracking API geçerli JSON döndürmedi'
+    );
+  });
+
+
+  it('throws when API response structure is invalid', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          base: null,
+          zones: [],
+          tracks: [],
+        }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    );
+
+    await expect(
+      loadTrackingData()
+    ).rejects.toThrow(
+      'Invalid tracking API response'
+    );
+  });
+
+
+  it('throws a connection error when API cannot be reached', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(
+      new Error('Connection refused')
+    );
+
+    await expect(
+      loadTrackingData()
+    ).rejects.toThrow(
+      'Tracking API unavailable'
+    );
   });
 });
