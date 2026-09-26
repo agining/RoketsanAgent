@@ -2366,6 +2366,31 @@ button,select,input,textarea{color:var(--text-primary)}
 .map-agent-chat{
   min-width:min(320px,calc(100vw - 28px));
 }
+.agent-header-actions{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin-left:auto;
+}
+.agent-console>header .agent-header-actions button{
+  display:grid;
+  place-items:center;
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:5px;
+  background:transparent;
+  color:var(--text-muted, var(--theme-muted, #91a5af));
+}
+.agent-console>header .agent-header-actions button:hover:not(:disabled),
+.agent-console>header .agent-header-actions button:focus-visible:not(:disabled){
+  background:var(--theme-surface-raised, #22333b);
+  color:var(--text-primary, var(--theme-text, #dce4e8));
+}
+.agent-console>header .agent-header-actions button:disabled{
+  cursor:not-allowed;
+  opacity:.42;
+}
 .chat-panel{
   min-height:0;
 }

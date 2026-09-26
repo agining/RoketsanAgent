@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type SetStateAction } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -60,6 +60,7 @@ import hisarLogo from '@/assets/hisar-logo.png';
 import { HelpPanel } from './components/help/HelpPanel';
 
 const bottomControlGroupStorageKey = 'hisar-bottom-control-group-position-v1';
+type UtilityPanel = 'settings' | 'help' | null;
 
 function loadStoredPosition(key: string) {
   if (typeof window === 'undefined') return null;
@@ -289,8 +290,26 @@ export default function App() {
     media.addEventListener('change', apply);
     return () => media.removeEventListener('change', apply);
   }, [fontScale, themeMode]);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
+  const [activeUtilityPanel, setActiveUtilityPanel] =
+    useState<UtilityPanel>(null);
+  const settingsOpen = activeUtilityPanel === 'settings';
+  const helpOpen = activeUtilityPanel === 'help';
+  const setSettingsOpen = useCallback((value: SetStateAction<boolean>) => {
+    setActiveUtilityPanel(current => {
+      const nextOpen = typeof value === 'function'
+        ? value(current === 'settings')
+        : value;
+      return nextOpen ? 'settings' : current === 'settings' ? null : current;
+    });
+  }, []);
+  const setHelpOpen = useCallback((value: SetStateAction<boolean>) => {
+    setActiveUtilityPanel(current => {
+      const nextOpen = typeof value === 'function'
+        ? value(current === 'help')
+        : value;
+      return nextOpen ? 'help' : current === 'help' ? null : current;
+    });
+  }, []);
   const [tutorialRunId, setTutorialRunId] = useState(0);
   const [tutorialActive, setTutorialActive] = useState(false);
   const [tutorialOverlayPanel, setTutorialOverlayPanel] =
