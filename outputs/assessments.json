@@ -6148,7 +6148,7 @@
     "reasoning_steps": [
       {
         "stage": "tespit",
-        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "finding": "4 kutu → 3 araç kabul, 1 düşük güvenli kutu elendi, 3 araç izden kurtarıldı (model kaçırmış)",
         "evidence": [],
         "added_by_guardrail": true
       },
@@ -6198,12 +6198,12 @@
     "confidence": 1.0,
     "guardrail_notes": [
       "LLM devre dışı — motor şablonu kullanıldı.",
-      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'VW-TePrWQEaYVM_Ns_GTAg'}"
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'iDAcv_BCSF-35Z3L5nX1uw'}"
     ],
     "tool_calls": [],
     "trace": [],
     "model": null,
-    "assessed_at": 1790427836.4801507
+    "assessed_at": 1790435427.4500022
   },
   "img_004530": {
     "frame_id": "img_004530",
@@ -8262,13 +8262,13 @@
     "reasoning_steps": [
       {
         "stage": "tespit",
-        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "finding": "4 kutu → 3 araç kabul, 1 düşük güvenli kutu elendi, 2 araç izden kurtarıldı (model kaçırmış)",
         "evidence": [],
         "added_by_guardrail": true
       },
       {
         "stage": "konumlandirma",
-        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_001733_trk_T0206 (2635 m)",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_001733_v1 (2635 m)",
         "evidence": [],
         "added_by_guardrail": true
       },
@@ -8285,15 +8285,15 @@
         "added_by_guardrail": true
       }
     ],
-    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
+    "summary": "Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
     "vehicles": [
       {
-        "vehicle_id": "img_001733_trk_T0121",
+        "vehicle_id": "img_001733_v2",
         "risk_level": "YUKSEK",
         "engine_risk_level": "YUKSEK",
         "llm_risk_level": null,
         "scenario": "APPROACH_WITH_STOPS",
-        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
+        "explanation": "Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
         "change_reason": null,
         "evidence_report_ids": [],
         "decision": null
@@ -8314,12 +8314,12 @@
     "confidence": 1.0,
     "guardrail_notes": [
       "LLM devre dışı — motor şablonu kullanıldı.",
-      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'OdMYpXDMR7eyzgb6EuroCg'}"
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '0SqYdXvcQ4qPsBLms_GTAg'}"
     ],
     "tool_calls": [],
     "trace": [],
     "model": null,
-    "assessed_at": 1790427837.2202227
+    "assessed_at": 1790435414.1168885
   },
   "img_001643": {
     "frame_id": "img_001643",

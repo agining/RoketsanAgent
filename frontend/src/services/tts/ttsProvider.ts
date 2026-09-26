@@ -40,7 +40,7 @@ export function playTacticalAlertChime(risk: string, volume = 1.0) {
     const ctx = sharedAudioCtx;
     const now = ctx.currentTime;
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(Math.max(0.01, Math.min(1, volume * 0.45)), now);
+    gain.gain.setValueAtTime(Math.max(0.01, Math.min(1, volume * 0.24)), now);
     gain.connect(ctx.destination);
 
     if (risk === 'CRITICAL') {
@@ -96,6 +96,8 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
   private currentUtterance: SpeechSynthesisUtterance | null = null;
   private voices: SpeechSynthesisVoice[] = [];
   private activeReject: ((reason?: unknown) => void) | null = null;
+  private loggedVoiceName: string | null = null;
+  private warnedMissingTurkishVoice = false;
 
   constructor() {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -118,6 +120,23 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
     return this.voices;
   }
 
+  private async waitForVoices(): Promise<void> {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      this.loadVoices();
+      if (this.voices.some((voice) => voice.lang.toLowerCase().startsWith('tr'))) {
+        return;
+      }
+
+      await new Promise<void>((resolve) => {
+        window.setTimeout(resolve, 150);
+      });
+    }
+
+    this.loadVoices();
+  }
+
   public prewarm(): void {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     try {
@@ -133,24 +152,24 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
   private getBestTurkishVoice(): SpeechSynthesisVoice | null {
     if (!this.voices.length) this.loadVoices();
 
-    // 1. Critical for zero delay: LOCAL Turkish voice (Windows Microsoft Tolga / Emel)
-    // Avoids 1.5 - 3 second cloud network roundtrip in Chrome!
-    const localTrVoice = this.voices.find(
-      (v) => v.lang.toLowerCase().startsWith('tr') && v.localService
+    const scoreVoice = (voice: SpeechSynthesisVoice) => {
+      const lang = voice.lang.toLowerCase();
+      const name = voice.name.toLowerCase();
+      let score = 0;
+      if (lang === 'tr-tr') score += 100;
+      else if (lang.startsWith('tr')) score += 85;
+      if (voice.localService) score += 20;
+      if (voice.default) score += 8;
+      if (name.includes('tolga') || name.includes('emel')) score += 18;
+      if (name.includes('turkish') || name.includes('türkçe') || name.includes('turkce')) score += 12;
+      return score;
+    };
+
+    const turkishVoices = this.voices.filter((voice) =>
+      voice.lang.toLowerCase().startsWith('tr')
     );
-    if (localTrVoice) return localTrVoice;
 
-    // 2. Any Turkish voice (e.g. Google Türkçe)
-    const anyTrVoice = this.voices.find((v) =>
-      v.lang.toLowerCase().startsWith('tr')
-    );
-    if (anyTrVoice) return anyTrVoice;
-
-    // 3. Local system default voice (zero latency)
-    const localDefault = this.voices.find((v) => v.default && v.localService);
-    if (localDefault) return localDefault;
-
-    return this.voices.find((v) => v.default) ?? this.voices[0] ?? null;
+    return turkishVoices.sort((a, b) => scoreVoice(b) - scoreVoice(a))[0] ?? null;
   }
 
   public isSpeaking(): boolean {
@@ -175,23 +194,16 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
     this.currentUtterance = null;
   }
 
-  public speak(text: string, options: TTSOptions = {}): Promise<void> {
+  public async speak(text: string, options: TTSOptions = {}): Promise<void> {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       return Promise.resolve();
-    }
-
-    // Cancel any previous speech immediately
-    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
-      try {
-        window.speechSynthesis.cancel();
-      } catch {
-        // ignore
-      }
     }
 
     if (!text || !text.trim()) {
       return Promise.resolve();
     }
+
+    await this.waitForVoices();
 
     return new Promise<void>((resolve, reject) => {
       this.activeReject = reject;
@@ -205,14 +217,26 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
         const preferredVoice = this.getBestTurkishVoice();
         if (preferredVoice) {
           utterance.voice = preferredVoice;
+          if (this.loggedVoiceName !== preferredVoice.name) {
+            this.loggedVoiceName = preferredVoice.name;
+            this.warnedMissingTurkishVoice = false;
+            console.debug(
+              `Voice alerts using TTS voice: ${preferredVoice.name} (${preferredVoice.lang})`
+            );
+          }
+        } else if (!this.warnedMissingTurkishVoice) {
+          this.warnedMissingTurkishVoice = true;
+          console.warn(
+            'Türkçe TTS sesi bulunamadı. Tarayıcıda veya işletim sisteminde Türkçe ses paketi etkin değilse konuşma varsayılan aksanla okunabilir.'
+          );
         }
 
-        // Speed / Rate (constrained between 1.0 and 2.5 for snappy military tempo)
-        const targetRate = options.rate ?? 1.45;
-        utterance.rate = Math.max(0.9, Math.min(2.5, targetRate));
+        // Turkish browser voices become hard to parse above normal speed.
+        const targetRate = options.rate ?? 0.88;
+        utterance.rate = Math.max(0.72, Math.min(1.08, targetRate));
 
         // Pitch & Volume
-        utterance.pitch = options.pitch ?? 1.0;
+        utterance.pitch = options.pitch ?? 0.96;
         utterance.volume = options.volume ?? 1.0;
 
         utterance.onend = () => {

@@ -19,6 +19,7 @@ export function VoiceAlertCard({ onSelectTrack }: { onSelectTrack: (trackId: str
       activeAlert.lon !== null && activeAlert.lat !== null ? [activeAlert.lon, activeAlert.lat] : undefined;
     if (activeAlert.trackId) {
       useTrackingStore.getState().lockOntoTrack(activeAlert.trackId, coord);
+      onSelectTrack(activeAlert.trackId);
       setLocked(true);
     } else if (coord) {
       useTrackingStore.getState().requestView('coordinate', undefined, coord);

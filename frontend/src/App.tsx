@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -9,9 +9,13 @@ import {
   Crosshair,
   FileDown,
   LoaderCircle,
+  Moon,
+  Sun,
   RefreshCw,
   Search,
   UserCheck,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 
 import { OperationsMap } from './components/map/OperationsMap';
@@ -26,8 +30,10 @@ import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
 import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
 import { Button } from './components/ui/button';
+import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
 
 import { useAnalysis } from './hooks/useAnalysis';
+import { useVoiceAlerts } from './hooks/useVoiceAlerts';
 
 import { api, API_BASE_URL, apiUrl } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
@@ -37,6 +43,7 @@ import type { AnalysisData } from './types/analysis';
 
 import { usePlaybackStore } from './store/playback';
 import { useTrackingStore } from './store/tracking';
+import { useVoiceAlertsStore } from './store/voiceAlerts';
 import { useWatchlistStore } from './store/watchlist';
 import { useWorkspaceStore } from './store/workspace';
 
@@ -96,6 +103,21 @@ function InitialState({
 
 export default function App() {
   const analysis = useAnalysis();
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try { return localStorage.getItem('hisar-theme') === 'light' ? 'light' : 'dark'; }
+    catch { return 'dark'; }
+  });
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('hisar-theme', theme); } catch { /* Private storage may be unavailable. */ }
+  }, [theme]);
+  const themeToggle = (
+    <button className="theme-toggle" type="button" aria-label={theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'}
+      title={theme === 'dark' ? 'Açık tema' : 'Koyu tema'} aria-pressed={theme === 'light'}
+      onClick={() => setTheme(current => current === 'dark' ? 'light' : 'dark')}>
+      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  );
 
   const [sidebarOpen, setSidebarOpen] = useState(
     () => typeof window !== 'undefined' && window.innerWidth >= 900,
@@ -133,6 +155,19 @@ export default function App() {
   );
 
   const data = analysis.data;
+  useVoiceAlerts(data);
+
+  const voiceAlertsEnabled = useVoiceAlertsStore(
+    state => state.enabled,
+  );
+
+  const voiceAlertsSpeaking = useVoiceAlertsStore(
+    state => state.isSpeaking,
+  );
+
+  const toggleVoiceAlerts = useVoiceAlertsStore(
+    state => state.toggleEnabled,
+  );
 
   const visibleTrackIds = useMemo(
     () =>
@@ -278,6 +313,7 @@ export default function App() {
               <small>OPERATIONS CENTER</small>
             </span>
           </div>
+          {themeToggle}
         </header>
 
         <InitialState
@@ -398,6 +434,30 @@ export default function App() {
           </span>
         </span>
 
+        <button
+          className={`voice-alert-toggle ${
+            voiceAlertsEnabled ? 'on' : ''
+          } ${voiceAlertsSpeaking ? 'speaking' : ''}`}
+          role="switch"
+          aria-checked={voiceAlertsEnabled}
+          onClick={toggleVoiceAlerts}
+          title={
+            voiceAlertsEnabled
+              ? 'Sesli tehdit bildirimlerini kapat'
+              : 'Sesli tehdit bildirimlerini aç'
+          }
+        >
+          {voiceAlertsEnabled ? (
+            <Volume2 size={13} />
+          ) : (
+            <VolumeX size={13} />
+          )}
+
+          <span>
+            {voiceAlertsEnabled ? 'Ses açık' : 'Ses kapalı'}
+          </span>
+        </button>
+
         <div className="watch-notification-anchor">
           <button
             className={`watch-notification-trigger ${
@@ -513,6 +573,8 @@ export default function App() {
           <span>PDF Raporu Al</span>
         </button>
 
+        {themeToggle}
+
         <button
           className="map-refresh"
           onClick={analysis.reload}
@@ -578,6 +640,8 @@ export default function App() {
         />
 
         <Timeline analysis={data} />
+
+        <VoiceAlertCard onSelectTrack={selectTrack} />
 
         {selectedEntity && inspectorOpen && (
           <div

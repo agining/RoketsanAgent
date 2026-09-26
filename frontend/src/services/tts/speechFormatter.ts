@@ -8,14 +8,14 @@ import type { ApiAssessment } from '../../types/api';
 export function sanitizeSpeechText(text: string): string {
   if (!text) return '';
   return text
-    .replace(/\bm\/s\b/gi, ' metre bölü saniye')
-    .replace(/\bkm\/s\b/gi, ' kilometre bölü saat')
-    .replace(/\bkm\b/gi, ' kilometre')
-    .replace(/\bm\b/gi, ' metre')
-    .replace(/\bdk\b/gi, ' dakika')
-    .replace(/\bsn\b/gi, ' saniye')
+    .replace(/(\d+(?:[.,]\d+)?)\s*m\/s\b/gi, '$1 metre bölü saniye')
+    .replace(/(\d+(?:[.,]\d+)?)\s*km\/s\b/gi, '$1 kilometre bölü saat')
+    .replace(/(\d+(?:[.,]\d+)?)\s*km\b/gi, '$1 kilometre')
+    .replace(/(\d+(?:[.,]\d+)?)\s*m\b/gi, '$1 metre')
+    .replace(/(\d+(?:[.,]\d+)?)\s*dk\b/gi, '$1 dakika')
+    .replace(/(\d+(?:[.,]\d+)?)\s*sn\b/gi, '$1 saniye')
     .replace(/\bETA\b/gi, 'tahmini varış süresi')
-    .replace(/\bT(\d{2,4})\b/g, 'T $1') // E.g., T0106 -> "T 0106" for natural pronunciation
+    .replace(/\bT0*(\d{2,4})\b/g, 'takip numarası $1')
     .replace(/\bimg_0*(\d+)/gi, 'kare $1')
     .replace(/[_]/g, ' ')
     .replace(/\s+/g, ' ')
@@ -44,13 +44,14 @@ export const SCENARIO_SPEECH_NAMES: Record<string, string> = {
 };
 
 /**
- * Formats a tactical analysis alert into a punchy, ultra-concise Turkish spoken alert.
- * Spoken in ~0.6 - 1.0 second so playback never lags behind the real-time simulation clock.
+ * Formats a tactical analysis alert into a short but intelligible Turkish spoken alert.
  */
 export function formatAlertForSpeech(alert: AnalysisAlert, extraCount = 0): string {
-  const riskIntro = alert.risk_level === 'CRITICAL' ? 'Kritik!' :
-                    alert.risk_level === 'HIGH' ? 'Yüksek Risk!' : 'Dikkat!';
-  const targetId = alert.track_id ? `T ${alert.track_id.replace(/^T0*/, '')}` : (alert.vehicle_id ? 'hedef' : 'araç');
+  const riskIntro = alert.risk_level === 'CRITICAL' ? 'Kritik uyarı.' :
+                    alert.risk_level === 'HIGH' ? 'Yüksek risk uyarısı.' : 'Dikkat.';
+  const targetId = alert.track_id
+    ? `Takip numarası ${alert.track_id.replace(/^T0*/, '')}`
+    : (alert.vehicle_id ? 'Hedef araç' : 'Araç');
   const vehicleType = alert.label ? VEHICLE_NAMES[alert.label] ?? '' : '';
 
   let action = '';
@@ -60,10 +61,12 @@ export function formatAlertForSpeech(alert: AnalysisAlert, extraCount = 0): stri
     action = sanitizeSpeechText(alert.reason).split('.')[0].slice(0, 30);
   }
 
-  const vehicleStr = vehicleType ? ` ${vehicleType}` : '';
-  const extraNotice = extraCount > 0 ? ` artı ${extraCount} hedef` : '';
+  const vehicleStr = vehicleType ? `, ${vehicleType}` : '';
+  const zoneText = alert.zone ? ` Bölge: ${sanitizeSpeechText(alert.zone)}.` : '';
+  const extraNotice = extraCount > 0 ? ` Ayrıca ${extraCount} hedef daha var.` : '';
 
-  return `${riskIntro} ${targetId}${vehicleStr}, ${action}.${extraNotice}`.replace(/\s+/g, ' ').trim();
+  const actionText = action ? ` Durum: ${action}.` : '';
+  return `${riskIntro} ${targetId}${vehicleStr}.${zoneText}${actionText}${extraNotice}`.replace(/\s+/g, ' ').trim();
 }
 
 /**

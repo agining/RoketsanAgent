@@ -7,22 +7,39 @@ import { formatAlertForSpeech } from '../services/tts/speechFormatter';
 import { clockSeconds, RISK_WEIGHT } from '../services/analysis-playback';
 import type { AnalysisAlert, AnalysisData } from '../types/analysis';
 
+const CHIME_TO_SPEECH_DELAY_MS = 420;
+const BETWEEN_ALERTS_DELAY_MS = 650;
+const CARD_LINGER_MS = 4500;
+const MAX_QUEUED_ALERTS = 3;
+
 /**
- * Snappy tactical speech rates for real-time synchronization with playback.
+ * Keep Turkish browser TTS intelligible even when playback is accelerated.
+ * Some voices sound much faster than their nominal rate, so stay conservative.
  */
 function getSpeechRate(speed: PlaybackSpeed): number {
   switch (speed) {
     case 0.5:
-      return 1.2;
+      return 0.82;
     case 1:
-      return 1.45; // Snappy tactical military tempo (~0.6 - 0.9s per alert)
+      return 0.88;
     case 2:
-      return 1.85;
+      return 0.95;
     case 4:
-      return 2.2;
+      return 1.02;
     default:
-      return 1.45;
+      return 0.88;
   }
+}
+
+function wait(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+interface QueuedVoiceAlert {
+  alert: ActiveVoiceAlert;
+  text: string;
 }
 
 export function useVoiceAlerts(
@@ -48,16 +65,23 @@ export function useVoiceAlerts(
   const speedRef = useRef<PlaybackSpeed>(playbackSpeed);
   const volumeRef = useRef<number>(volume);
   const enabledRef = useRef<boolean>(enabled);
+  const isPlayingRef = useRef<boolean>(isPlaying);
   const autoLockRef = useRef<boolean>(autoLock);
   const lingerTimeoutRef = useRef<number | null>(null);
+  const queueRef = useRef<QueuedVoiceAlert[]>([]);
+  const processingQueueRef = useRef(false);
+  const queueRunRef = useRef(0);
 
   useEffect(() => { speedRef.current = playbackSpeed; }, [playbackSpeed]);
   useEffect(() => { volumeRef.current = volume; }, [volume]);
   useEffect(() => { enabledRef.current = enabled; }, [enabled]);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
   useEffect(() => { autoLockRef.current = autoLock; }, [autoLock]);
 
   // Clean stop helper
   const flushAndStop = () => {
+    queueRunRef.current += 1;
+    queueRef.current = [];
     if (lingerTimeoutRef.current !== null) {
       window.clearTimeout(lingerTimeoutRef.current);
       lingerTimeoutRef.current = null;
@@ -66,6 +90,98 @@ export function useVoiceAlerts(
     setQueueCount(0);
     setActiveAlert(null);
     setSpeaking(false);
+  };
+
+  const processQueue = async () => {
+    if (processingQueueRef.current) return;
+
+    processingQueueRef.current = true;
+    const runId = queueRunRef.current;
+
+    try {
+      while (
+        queueRef.current.length > 0 &&
+        enabledRef.current &&
+        isPlayingRef.current &&
+        runId === queueRunRef.current
+      ) {
+        const next = queueRef.current.shift();
+        if (!next) break;
+
+        setQueueCount(queueRef.current.length);
+
+        if (lingerTimeoutRef.current !== null) {
+          window.clearTimeout(lingerTimeoutRef.current);
+          lingerTimeoutRef.current = null;
+        }
+
+        setActiveAlert(next.alert);
+        setSpeaking(true);
+
+        playTacticalAlertChime(next.alert.risk, volumeRef.current);
+        await wait(CHIME_TO_SPEECH_DELAY_MS);
+
+        if (
+          !enabledRef.current ||
+          !isPlayingRef.current ||
+          runId !== queueRunRef.current
+        ) {
+          break;
+        }
+
+        await provider.speak(next.text, {
+          rate: getSpeechRate(speedRef.current),
+          volume: volumeRef.current,
+          lang: 'tr-TR',
+        }).catch((err: unknown) => {
+          const isStopped = err instanceof Error && (err.message === 'TTS_STOPPED' || err.message.includes('canceled'));
+          if (!isStopped) {
+            console.debug('Voice alert speech notice:', err);
+          }
+        });
+
+        if (runId !== queueRunRef.current) {
+          break;
+        }
+
+        setSpeaking(false);
+        lingerTimeoutRef.current = window.setTimeout(() => {
+          if (runId === queueRunRef.current) {
+            setActiveAlert(null);
+          }
+          lingerTimeoutRef.current = null;
+        }, CARD_LINGER_MS);
+
+        if (queueRef.current.length > 0) {
+          await wait(BETWEEN_ALERTS_DELAY_MS);
+        }
+      }
+    } finally {
+      processingQueueRef.current = false;
+      setQueueCount(queueRef.current.length);
+    }
+  };
+
+  const enqueueAlert = (item: QueuedVoiceAlert) => {
+    if (queueRef.current.length >= MAX_QUEUED_ALERTS) {
+      const weakestIndex = queueRef.current.reduce((weakest, current, index, items) => {
+        const currentWeight = RISK_WEIGHT[current.alert.risk] ?? 0;
+        const weakestWeight = RISK_WEIGHT[items[weakest].alert.risk] ?? 0;
+        return currentWeight < weakestWeight ? index : weakest;
+      }, 0);
+
+      const incomingWeight = RISK_WEIGHT[item.alert.risk] ?? 0;
+      const weakestWeight = RISK_WEIGHT[queueRef.current[weakestIndex].alert.risk] ?? 0;
+
+      if (incomingWeight > weakestWeight) {
+        queueRef.current.splice(weakestIndex, 1, item);
+      }
+    } else {
+      queueRef.current.push(item);
+    }
+
+    setQueueCount(queueRef.current.length);
+    void processQueue();
   };
 
   // 1. Handle explicit stopRequested from store (e.g. user clicked Sesi Kes / Durdur)
@@ -152,10 +268,7 @@ export function useVoiceAlerts(
     const primaryAlert = newAlerts[0];
     const extraCount = newAlerts.length - 1;
 
-    // 1. Play zero-latency tactical earcon chime immediately (<1ms)
-    playTacticalAlertChime(primaryAlert.risk_level, volumeRef.current);
-
-    // 2. Build active alert payload
+    // Build active alert payload
     const id = `${primaryAlert.time}_${primaryAlert.track_id ?? primaryAlert.vehicle_id ?? primaryAlert.zone}`;
     const text = formatAlertForSpeech(primaryAlert, extraCount);
 
@@ -188,39 +301,7 @@ export function useVoiceAlerts(
       }
     }
 
-    // 4. Update UI card immediately
-    if (lingerTimeoutRef.current !== null) {
-      window.clearTimeout(lingerTimeoutRef.current);
-      lingerTimeoutRef.current = null;
-    }
-    setActiveAlert(activeAlertObj);
-    setSpeaking(true);
-    setQueueCount(0);
-
-    // 5. Preemptively speak current alert immediately (ZERO QUEUE DELAY!)
-    // In fast simulation, previous alerts are cut immediately so operator is ALWAYS in sync with timeline
-    provider.stop();
-    const rate = getSpeechRate(speedRef.current);
-    provider.speak(text, {
-      rate,
-      volume: volumeRef.current,
-      lang: 'tr-TR',
-    }).catch((err: unknown) => {
-      const isStopped = err instanceof Error && (err.message === 'TTS_STOPPED' || err.message.includes('canceled'));
-      if (!isStopped) {
-        console.debug('Voice alert speech notice:', err);
-      }
-    }).finally(() => {
-      setSpeaking(false);
-      // Keep active card visible for 3.5 seconds after speaking so user can read/click lock
-      if (lingerTimeoutRef.current !== null) {
-        window.clearTimeout(lingerTimeoutRef.current);
-      }
-      lingerTimeoutRef.current = window.setTimeout(() => {
-        setActiveAlert(null);
-        lingerTimeoutRef.current = null;
-      }, 3500);
-    });
+    enqueueAlert({ alert: activeAlertObj, text });
   }, [currentTime, isPlaying, enabled, minRisk, analysis]);
 
   // Cleanup on unmount
