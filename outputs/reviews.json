@@ -1,0 +1,12 @@
+{
+  "img_006574_v1": {
+    "level": "YUKSEK",
+    "analyst": "Bugrahan",
+    "note": "Bir kademe yeterli, sürekli izlemede kalsın",
+    "at": 1790370840.9598377,
+    "frame_id": "img_006574",
+    "engine_level": "DUSUK",
+    "llm_level": "YUKSEK",
+    "rule": "fazla_yukseltme"
+  }
+}
