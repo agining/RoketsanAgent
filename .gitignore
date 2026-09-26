@@ -5,5 +5,4 @@ seed_test.py
 test_hilti.py
 asama2_notebook/
 stage2_agentic_demo/
-__pycache__/
-*.pyc
+predictions.json
