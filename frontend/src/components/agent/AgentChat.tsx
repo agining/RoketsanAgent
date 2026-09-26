@@ -51,7 +51,7 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
     window.addEventListener('pointerup', stop, { once: true });
   };
 
-  return <section className="agent-console agent-chat map-agent-chat" aria-label="Ajan sohbeti" style={{ width: `min(${agentWidth}px, calc(100vw - 28px))` }}>
+  return <section className="agent-console agent-chat map-agent-chat" data-tour="agent-panel" aria-label="Ajan sohbeti" style={{ width: `min(${agentWidth}px, calc(100vw - 28px))` }}>
     <div className="panel-resize-handle left-edge" role="separator" aria-orientation="vertical" aria-label="Ajan paneli genişliği" onPointerDown={startResize} />
     <header><span><Bot size={15} /><b>AJAN SOHBETİ</b>{frameId && <small>bağlam: {frameId}</small>}</span><button aria-label="Ajan panelini kapat" onClick={onClose}><X size={15} /></button></header>
     <div className="chat-panel">

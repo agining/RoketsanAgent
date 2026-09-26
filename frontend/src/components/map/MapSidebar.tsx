@@ -348,6 +348,7 @@ export function MapSidebar({
     return (
       <button
         className="map-sidebar-rail"
+        data-tour="map-sidebar"
         aria-label="Harita panelini aç"
         title="Harita panelini aç"
         onClick={() => setOpen(true)}
@@ -362,6 +363,7 @@ export function MapSidebar({
     <aside
       ref={panelRef}
       className="map-sidebar"
+      data-tour="map-sidebar"
       aria-label="Harita paneli"
       style={{ left: sidebarLayout.x, top: sidebarLayout.y, width: sidebarLayout.width }}
     >

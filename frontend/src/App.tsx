@@ -25,9 +25,11 @@ import {
   initialMapFilters,
   type MapFilterState,
 } from './components/map/MapSidebar';
+import type { MapOverlayPanel } from './components/map/MapOverlays';
 import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
 import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
+import { AppTutorial } from './components/tutorial/AppTutorial';
 import { Button } from './components/ui/button';
 import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
 
@@ -289,6 +291,10 @@ export default function App() {
   }, [fontScale, themeMode]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [tutorialRunId, setTutorialRunId] = useState(0);
+  const [tutorialActive, setTutorialActive] = useState(false);
+  const [tutorialOverlayPanel, setTutorialOverlayPanel] =
+    useState<MapOverlayPanel | undefined>(undefined);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [bottomOpen, setBottomOpen] = useState(false);
@@ -598,6 +604,13 @@ export default function App() {
 
   useEffect(() => startPlaybackClock(), []);
 
+  const startTutorial = useCallback(() => {
+    setSettingsOpen(false);
+    setHelpOpen(false);
+    setNotificationsOpen(false);
+    setTutorialRunId(current => current + 1);
+  }, []);
+
   if (!data) {
     return (
       <div className="map-first-shell">
@@ -612,6 +625,7 @@ export default function App() {
           <button
             className="settings-trigger"
             type="button"
+            data-tour="settings"
             aria-label="Ayarları aç"
             aria-expanded={settingsOpen}
             onClick={() => setSettingsOpen(open => !open)}
@@ -621,6 +635,7 @@ export default function App() {
           <button
             className="help-trigger"
             type="button"
+            data-tour="help"
             aria-label="Yardım"
             title="Yardım"
             aria-expanded={helpOpen}
@@ -637,7 +652,7 @@ export default function App() {
           onToggleHumanReview={() => void toggleHumanReview()}
           summary={null}
         />
-        <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+        <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} onStartTutorial={startTutorial} />
 
         <InitialState
           error={
@@ -744,6 +759,7 @@ export default function App() {
               className={`watch-notification-trigger ${
                 unreadNotifications ? 'active' : ''
               }`}
+              data-tour="notifications"
               aria-expanded={notificationsOpen}
               aria-label={`İzleme listesi bildirimleri${
                 unreadNotifications
@@ -858,6 +874,7 @@ export default function App() {
         <button
           className="settings-trigger"
           type="button"
+          data-tour="settings"
           aria-label="Ayarları aç"
           aria-expanded={settingsOpen}
           onClick={() => setSettingsOpen(open => !open)}
@@ -868,6 +885,7 @@ export default function App() {
         <button
           className="help-trigger"
           type="button"
+          data-tour="help"
           aria-label="Yardım"
           title="Yardım"
           aria-expanded={helpOpen}
@@ -907,7 +925,28 @@ export default function App() {
         onToggleHumanReview={() => void toggleHumanReview()}
         summary={data.summary}
       />
-      <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} onStartTutorial={startTutorial} />
+
+      <AppTutorial
+        ready={Boolean(data)}
+        runId={tutorialRunId}
+        bottomOpen={bottomOpen}
+        helpOpen={helpOpen}
+        notificationsOpen={notificationsOpen}
+        settingsOpen={settingsOpen}
+        sidebarOpen={sidebarOpen}
+        bottomControlsPosition={bottomControlsPosition}
+        timelineCompact={timelineCompact}
+        setBottomOpen={setBottomOpen}
+        setBottomControlsPosition={setBottomControlsPosition}
+        setHelpOpen={setHelpOpen}
+        setNotificationsOpen={setNotificationsOpen}
+        setSettingsOpen={setSettingsOpen}
+        setSidebarOpen={setSidebarOpen}
+        setTimelineCompact={useTimelineStore.getState().setCompact}
+        setTourActive={setTutorialActive}
+        setTourOverlayPanel={setTutorialOverlayPanel}
+      />
 
       <main
         className={`map-first-workspace ${
@@ -943,10 +982,13 @@ export default function App() {
           selectedFrameId={
             selectedEntity?.frame_id ?? null
           }
+          tourActive={tutorialActive}
+          tourPanel={tutorialOverlayPanel}
         />
 
         <div
           ref={bottomControlsRef}
+          data-tour="track-list"
           className={`bottom-control-group ${bottomControlsPosition ? 'dragged' : ''}`}
           style={bottomControlsPosition ? { left: bottomControlsPosition.x, top: bottomControlsPosition.y, right: 'auto', bottom: 'auto' } : undefined}
         >

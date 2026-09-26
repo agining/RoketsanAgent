@@ -22,6 +22,7 @@ export function Timeline({ analysis, onDragHandlePointerDown }: { analysis: Anal
 
   return <section
     className={`timeline playback-timeline ${compact ? 'compact' : ''}`}
+    data-tour="timeline"
     aria-label="Zaman çizelgesi oynatma kontrolleri"
   >
     <div className="timeline-actions">
