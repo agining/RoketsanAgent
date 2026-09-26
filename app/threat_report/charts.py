@@ -19,14 +19,14 @@ from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import Circle, Polygon, Rectangle  # noqa: E402
 
 from .theme import (BASELINE, CHART_DPI, HAIRLINE, INK, INK_2, MUTED, PANEL, RISK_COLORS, SURFACE,  # noqa: E402
-                    TRACK_CONTEXT, font_dir, risk_label)
+                    TRACK_CONTEXT, FONT_FILES, font_dir, risk_label)
 
 MARKERS = {"DUSUK": "o", "ORTA": "^", "YUKSEK": "D", "KRITIK": "s"}   # şekil de seviyeyi taşır
-for _f in ("DejaVuSans.ttf", "DejaVuSans-Bold.ttf"):
+for _f in (FONT_FILES["Body"], FONT_FILES["Body-Bold"]):
     font_manager.fontManager.addfont(str(font_dir() / _f))
 
 RC = {
-    "font.family": "DejaVu Sans", "font.size": 7.0, "axes.titlesize": 7.6, "axes.titleweight": "bold",
+    "font.family": font_manager.FontProperties(fname=str(font_dir() / FONT_FILES["Body"])).get_name(), "font.size": 7.0, "axes.titlesize": 7.6, "axes.titleweight": "bold",
     "axes.titlelocation": "left", "axes.titlecolor": INK, "axes.labelsize": 6.6, "axes.labelcolor": INK_2,
     "xtick.labelsize": 6.2, "ytick.labelsize": 6.2, "xtick.color": MUTED, "ytick.color": MUTED,
     "axes.edgecolor": BASELINE, "axes.linewidth": 0.6, "axes.facecolor": SURFACE, "figure.facecolor": "white",

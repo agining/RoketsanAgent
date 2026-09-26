@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-THEME_VERSION = "1.0"
+THEME_VERSION = "1.1"
 ORG_NAME = os.getenv("REPORT_ORG_NAME", "HİSAR")
 REPORT_TITLE = "Tehdit Değerlendirme Raporu"
 REPORT_SUBTITLE = "Merkez Üs çevresi · şüpheli araç dosyaları"
@@ -112,10 +112,10 @@ def font_dir() -> Path:
 
 
 FONT_FILES = {
-    "Body": "DejaVuSans.ttf",
-    "Body-Bold": "DejaVuSans-Bold.ttf",
-    "Body-Italic": "DejaVuSans-Oblique.ttf",
-    "Body-BoldItalic": "DejaVuSans-BoldOblique.ttf",
+    "Body": "DejaVuSansMono.ttf",
+    "Body-Bold": "DejaVuSansMono-Bold.ttf",
+    "Body-Italic": "DejaVuSansMono-Oblique.ttf",
+    "Body-BoldItalic": "DejaVuSansMono-BoldOblique.ttf",
     "Mono": "DejaVuSansMono.ttf",
     "Mono-Bold": "DejaVuSansMono-Bold.ttf",
 }
