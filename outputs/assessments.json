@@ -5695,5 +5695,3181 @@
     "trace": [],
     "model": null,
     "assessed_at": 1790370238.7315817
+  },
+  "img_005978": {
+    "frame_id": "img_005978",
+    "risk_level": "ORTA",
+    "engine_risk_level": "ORTA",
+    "llm_risk_level": null,
+    "headline": "Guneybati Yolu — ORTA: T0079 APPROACHING",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 8 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneybati Yolu bölgesinde, merkezi üsse 2.5 km; üsse en yakın araç img_005978_trk_T0036 (2533 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "8/8 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0079 (60 dk'da 1176 m, ETA ~10 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski ORTA — T0079: APPROACHING; raporlar: 3 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 9°), son 60 dk yaklaşma 1176 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005978_trk_T0079",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 9°), son 60 dk yaklaşma 1176 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R019",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 1)."
+      },
+      {
+        "report_id": "R053",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0153 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R124",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Resmi dost teyidi var ancak eşleşen araç devriye örüntüsünde değil; risk otomatik düşürülmedi, analist onayı gerekir."
+      }
+    ],
+    "recommended_actions": [
+      "img_005978_trk_T0079 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'jpcHOA6vQBuTiDvnEuroCg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.3318486
+  },
+  "img_008333": {
+    "frame_id": "img_008333",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Kuzeydogu Kavsagi — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeydogu Kavsagi bölgesinde, merkezi üsse 2.6 km; üsse en yakın araç img_008333_trk_T0064 (2645 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0062 (60 dk'da 5177 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R075",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_008333 karesindeki None (T0062) ile çekim anında (10:10) örtüşüyor, ancak araç rapor saatinde (09:35) iz kaydına göre ~6182 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'o-WbJS6sQlmLCdVbvEOTxA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.341129
+  },
+  "img_005368": {
+    "frame_id": "img_005368",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Dogu Yolu — YUKSEK: T0070 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Dogu Yolu bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_005368_trk_T0070 (2661 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0096 (60 dk'da 4903 m, ETA ~18 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0070: APPROACH_WITH_STOPS; raporlar: 4 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2187 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2661 m. Mevcut hızla ETA ≈ 20.8 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4903 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2674 m. Mevcut hızla ETA ≈ 17.5 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005368_trk_T0070",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2187 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2661 m. Mevcut hızla ETA ≈ 20.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_005368_trk_T0096",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4903 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2674 m. Mevcut hızla ETA ≈ 17.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R004",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      },
+      {
+        "report_id": "R008",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_005368 karesindeki None (T0147) ile çekim anında (10:25) örtüşüyor, ancak araç rapor saatinde (10:00) iz kaydına göre ~5854 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R049",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0096 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R081",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0019 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0070 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0096 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'x4950dpYQeufnzfsvEOTxA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.3901188
+  },
+  "img_000267": {
+    "frame_id": "img_000267",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Dogu Yolu — YUKSEK: T0134 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Dogu Yolu bölgesinde, merkezi üsse 3.6 km; üsse en yakın araç img_000267_trk_T0134 (3603 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0226 (60 dk'da 3734 m, ETA ~14 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0134: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 destekler",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2377 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3603 m. Mevcut hızla ETA ≈ 19.0 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3733 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3678 m. Mevcut hızla ETA ≈ 14.5 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_000267_trk_T0134",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2377 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3603 m. Mevcut hızla ETA ≈ 19.0 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_000267_trk_T0226",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3733 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3678 m. Mevcut hızla ETA ≈ 14.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R052",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0045 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R082",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_000267 karesindeki None (T0226) ile çekim anında (10:15) örtüşüyor, ancak araç rapor saatinde (08:50) iz kaydına göre ~4009 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R093",
+        "verdict": "destekler",
+        "explanation": "Konum, tip (None) ve davranış tespit/iz verisiyle tutarlı; araç DUSUK riskli (PARKED)."
+      }
+    ],
+    "recommended_actions": [
+      "T0134 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0226 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '4Gs1o0hpTtyFBkMLALIuDA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.4037788
+  },
+  "img_006673": {
+    "frame_id": "img_006673",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneydogu Yerlesimi — YUKSEK: T0091 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneydogu Yerlesimi bölgesinde, merkezi üsse 1.8 km; üsse en yakın araç img_006673_trk_T0043 (1765 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0102 (60 dk'da 6142 m, ETA ~11 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0091: APPROACH_WITH_STOPS; raporlar: 3 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4262 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1869 m. Mevcut hızla ETA ≈ 9.5 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3224 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 12°, üsse mesafe 1803 m. Mevcut hızla ETA ≈ 5.7 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 6142 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 11°, üsse mesafe 1830 m. Mevcut hızla ETA ≈ 11.4 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_006673_trk_T0091",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4262 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1869 m. Mevcut hızla ETA ≈ 9.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_006673_trk_T0095",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3224 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 12°, üsse mesafe 1803 m. Mevcut hızla ETA ≈ 5.7 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_006673_trk_T0102",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 6142 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 11°, üsse mesafe 1830 m. Mevcut hızla ETA ≈ 11.4 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_006673_trk_T0109",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3088 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1841 m. Mevcut hızla ETA ≈ 18.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R005",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0109 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      },
+      {
+        "report_id": "R117",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_006673 karesindeki None (T0095) ile çekim anında (10:30) örtüşüyor, ancak araç rapor saatinde (09:50) iz kaydına göre ~3250 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı. Ayrıca 'olağan' nitelendirmesi aracın güncel durumuyla (YUKSEK, APPROACH_WITH_STOPS) çelişiyor; rapor güven verici kanıt olarak kullanılmamalı."
+      },
+      {
+        "report_id": "R122",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_006673 karesindeki None (T0102) ile çekim anında (10:30) örtüşüyor, ancak araç rapor saatinde (10:10) iz kaydına göre ~2435 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0091 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0095 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0102 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0109 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'iejsFjIzSVu6aK-hw9P4nw'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.4628136
+  },
+  "img_006388": {
+    "frame_id": "img_006388",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Kuzeybati Yolu — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 1.6 km; üsse en yakın araç img_006388_trk_T0174 (1592 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0184 (60 dk'da 4043 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 1 celisir, 2 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R001",
+        "verdict": "celisir",
+        "explanation": "'Kuzeybati Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0112 (YUKSEK), T0136 (YUKSEK), T0144 (YUKSEK)."
+      },
+      {
+        "report_id": "R009",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 2)."
+      },
+      {
+        "report_id": "R044",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0026 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'VW-TePrWQEaYVM_Ns_GTAg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.4801507
+  },
+  "img_004530": {
+    "frame_id": "img_004530",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guney Kapisi Yaklasimi — YUKSEK: T0089 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 7 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guney Kapisi Yaklasimi bölgesinde, merkezi üsse 1.7 km; üsse en yakın araç img_004530_trk_T0165 (1655 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "7/7 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0151 (60 dk'da 3918 m, ETA ~7 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0089: APPROACH_WITH_STOPS; raporlar: 3 kismen_uyumlu, 1 ilgisiz, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2971 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1728 m. Mevcut hızla ETA ≈ 10.2 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3918 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1759 m. Mevcut hızla ETA ≈ 6.7 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3874 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 17°, üsse mesafe 1655 m. Mevcut hızla ETA ≈ 5.8 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004530_trk_T0089",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2971 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1728 m. Mevcut hızla ETA ≈ 10.2 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004530_trk_T0151",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3918 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1759 m. Mevcut hızla ETA ≈ 6.7 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004530_trk_T0165",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3874 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 17°, üsse mesafe 1655 m. Mevcut hızla ETA ≈ 5.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R048",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004530 karesindeki None (T0089) ile çekim anında (10:45) örtüşüyor, ancak araç rapor saatinde (09:45) iz kaydına göre ~4043 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R094",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0016 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R097",
+        "verdict": "ilgisiz",
+        "explanation": "'Guney Kapisi Yaklasimi' bölgesinde rapor saatine yakın tehdit bulunmuyor; genel durum bildirimi, karar etkisi yok."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      },
+      {
+        "report_id": "R133",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0016 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0089 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0151 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0165 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'erh6ShktRE65bqxynbOCzg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.5115805
+  },
+  "img_008589": {
+    "frame_id": "img_008589",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Dogu Yolu — YUKSEK: T0046 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Dogu Yolu bölgesinde, merkezi üsse 5.4 km; üsse en yakın araç img_008589_trk_T0046 (5391 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0161 (60 dk'da 2305 m, ETA ~58 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0046: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1882 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5391 m. Mevcut hızla ETA ≈ 58.9 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2305 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5404 m. Mevcut hızla ETA ≈ 58.3 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 1°), son 60 dk yaklaşma 1002 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_008589_trk_T0046",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1882 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5391 m. Mevcut hızla ETA ≈ 58.9 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_008589_trk_T0161",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2305 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5404 m. Mevcut hızla ETA ≈ 58.3 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_008589_trk_T0082",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 1°), son 60 dk yaklaşma 1002 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R113",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_008589 karesindeki None (T0191) ile çekim anında (10:40) örtüşüyor, ancak araç rapor saatinde (10:10) iz kaydına göre ~4652 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0046 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0161 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "img_008589_trk_T0082 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '-UnpcqCgSPe-SFoGss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.5246196
+  },
+  "img_005672": {
+    "frame_id": "img_005672",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneybati Yolu — YUKSEK: T0063 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneybati Yolu bölgesinde, merkezi üsse 1.7 km; üsse en yakın araç img_005672_trk_T0163 (1693 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0063 (60 dk'da 5376 m, ETA ~7 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0063: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 5376 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1739 m. Mevcut hızla ETA ≈ 6.8 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse 1704 m mesafede ~28 m'lik alanda döngü (yol/yer değiştirme oranı 3.1). 2 duraklama, toplam 115 dk hareketsiz. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2022 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1693 m. Mevcut hızla ETA ≈ 10.3 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005672_trk_T0063",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 5376 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1739 m. Mevcut hızla ETA ≈ 6.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_005672_trk_T0108",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "LOITER_NEAR_BASE",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse 1704 m mesafede ~28 m'lik alanda döngü (yol/yer değiştirme oranı 3.1). 2 duraklama, toplam 115 dk hareketsiz.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_005672_trk_T0163",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2022 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1693 m. Mevcut hızla ETA ≈ 10.3 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R134",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0108 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0063 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0108 sürekli izlemeye alınsın (LOITER_NEAR_BASE).",
+      "T0163 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'mdBHJ_Q6SN-TDMBK0-QtfA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.588166
+  },
+  "img_006591": {
+    "frame_id": "img_006591",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Bati Yerlesimi — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Bati Yerlesimi bölgesinde, merkezi üsse 2.6 km; üsse en yakın araç img_006591_trk_T0219 (2546 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0118 (60 dk'da 2123 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R050",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      },
+      {
+        "report_id": "R135",
+        "verdict": "celisir",
+        "explanation": "'Bati Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0104 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'IFRGSDoHTUOcKhf0nTga3g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.6062052
+  },
+  "img_005359": {
+    "frame_id": "img_005359",
+    "risk_level": "ORTA",
+    "engine_risk_level": "ORTA",
+    "llm_risk_level": null,
+    "headline": "Guneydogu Yerlesimi — ORTA: T0085 APPROACHING",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneydogu Yerlesimi bölgesinde, merkezi üsse 5.4 km; üsse en yakın araç img_005359_trk_T0148 (5349 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0195 (60 dk'da 744 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski ORTA — T0085: APPROACHING; raporlar: 2 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 663 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005359_trk_T0085",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 663 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R036",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0148 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      },
+      {
+        "report_id": "R109",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_005359 karesindeki None (T0148) ile çekim anında (11:30) örtüşüyor, ancak araç rapor saatinde (11:00) iz kaydına göre ~5253 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "img_005359_trk_T0085 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'PKKW7bXNS1e5siLvm3z_FQ'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.6266909
+  },
+  "img_000926": {
+    "frame_id": "img_000926",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeydogu Kavsagi — YUKSEK: T0168 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeydogu Kavsagi bölgesinde, merkezi üsse 1.6 km; üsse en yakın araç img_000926_trk_T0154 (1650 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0168 (60 dk'da 4699 m, ETA ~7 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0168: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4699 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1660 m. Mevcut hızla ETA ≈ 6.6 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2925 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1687 m. Mevcut hızla ETA ≈ 10.3 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_000926_trk_T0168",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4699 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1660 m. Mevcut hızla ETA ≈ 6.6 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_000926_trk_T0185",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2925 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1687 m. Mevcut hızla ETA ≈ 10.3 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R077",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_000926 karesindeki None (T0168) ile çekim anında (11:35) örtüşüyor, ancak araç rapor saatinde (10:40) iz kaydına göre ~4727 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0168 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0185 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'yTCGR0rlTE6jAOwfss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.6381845
+  },
+  "img_000531": {
+    "frame_id": "img_000531",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneybati Yolu — YUKSEK: T0098 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 8 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneybati Yolu bölgesinde, merkezi üsse 4.5 km; üsse en yakın araç img_000531_trk_T0098 (4359 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "8/8 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0113 (60 dk'da 2627 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0098: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2027 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4359 m. Mevcut hızla ETA ≈ 22.4 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 30°), son 60 dk yaklaşma 1093 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_000531_trk_T0098",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2027 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4359 m. Mevcut hızla ETA ≈ 22.4 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_000531_trk_T0189",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 30°), son 60 dk yaklaşma 1093 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R045",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_000531 karesindeki None (T0189) ile çekim anında (12:05) örtüşüyor, ancak araç rapor saatinde (11:40) iz kaydına göre ~1407 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R131",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_000531 karesindeki None (T0098) ile çekim anında (12:05) örtüşüyor, ancak araç rapor saatinde (10:15) iz kaydına göre ~4337 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0098 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "img_000531_trk_T0189 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'goXWtki4S_CYrU7dvEOTxA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.702838
+  },
+  "img_005561": {
+    "frame_id": "img_005561",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guney Kapisi Yaklasimi — YUKSEK: T0042 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guney Kapisi Yaklasimi bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_005561_trk_T0025 (2716 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0042 (60 dk'da 3170 m, ETA ~30 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0042: APPROACH_WITH_STOPS; raporlar: 1 ilgisiz, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3171 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 28°, üsse mesafe 2716 m. Mevcut hızla ETA ≈ 29.8 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005561_trk_T0042",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3171 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 28°, üsse mesafe 2716 m. Mevcut hızla ETA ≈ 29.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R097",
+        "verdict": "ilgisiz",
+        "explanation": "'Guney Kapisi Yaklasimi' bölgesinde rapor saatine yakın tehdit bulunmuyor; genel durum bildirimi, karar etkisi yok."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0042 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'oZHpAHq9R7inGwK65nX1uw'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.7244887
+  },
+  "img_003464": {
+    "frame_id": "img_003464",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzey Yolu — YUKSEK: T0001 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzey Yolu bölgesinde, merkezi üsse 2.6 km; üsse en yakın araç img_003464_trk_T0028 (2612 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0135 (60 dk'da 4264 m, ETA ~10 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0001: APPROACH_WITH_STOPS; raporlar: 1 celisir, 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2993 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2636 m. Mevcut hızla ETA ≈ 11.5 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4172 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2612 m. Mevcut hızla ETA ≈ 12.2 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4264 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 19°, üsse mesafe 2653 m. Mevcut hızla ETA ≈ 10.1 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_003464_trk_T0001",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2993 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2636 m. Mevcut hızla ETA ≈ 11.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_003464_trk_T0028",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4172 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2612 m. Mevcut hızla ETA ≈ 12.2 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_003464_trk_T0135",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4264 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 19°, üsse mesafe 2653 m. Mevcut hızla ETA ≈ 10.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      },
+      {
+        "report_id": "R100",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_003464 karesindeki None (T0135) ile çekim anında (12:15) örtüşüyor, ancak araç rapor saatinde (11:40) iz kaydına göre ~2550 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0001 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0028 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0135 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '8iPBUOMlQqWLzJnj0-QtfA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.740751
+  },
+  "img_004388": {
+    "frame_id": "img_004388",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzey Yolu — YUKSEK: T0137 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzey Yolu bölgesinde, merkezi üsse 3.6 km; üsse en yakın araç img_004388_trk_T0137 (3648 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0132 (60 dk'da 3740 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0137: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2784 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3648 m. Mevcut hızla ETA ≈ 16.8 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2405 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 10°, üsse mesafe 3671 m. Mevcut hızla ETA ≈ 22.5 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004388_trk_T0137",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2784 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3648 m. Mevcut hızla ETA ≈ 16.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004388_trk_T0141",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2405 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 10°, üsse mesafe 3671 m. Mevcut hızla ETA ≈ 22.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R058",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004388 karesindeki None (T0137) ile çekim anında (12:55) örtüşüyor, ancak araç rapor saatinde (11:50) iz kaydına göre ~4505 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      },
+      {
+        "report_id": "R103",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      }
+    ],
+    "recommended_actions": [
+      "T0137 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0141 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'nyFt6-NmRNaM7R_Lss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.7540798
+  },
+  "img_000733": {
+    "frame_id": "img_000733",
+    "risk_level": "ORTA",
+    "engine_risk_level": "ORTA",
+    "llm_risk_level": null,
+    "headline": "Guney Kapisi Yaklasimi — ORTA: T0124 APPROACHING",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guney Kapisi Yaklasimi bölgesinde, merkezi üsse 3.5 km; üsse en yakın araç img_000733_trk_T0190 (3464 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0072 (60 dk'da 2955 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski ORTA — T0124: APPROACHING; raporlar: 2 kismen_uyumlu, 1 ilgisiz, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1463 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_000733_trk_T0124",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1463 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R051",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0190 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R097",
+        "verdict": "ilgisiz",
+        "explanation": "'Guney Kapisi Yaklasimi' bölgesinde rapor saatine yakın tehdit bulunmuyor; genel durum bildirimi, karar etkisi yok."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      },
+      {
+        "report_id": "R112",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_000733 karesindeki None (T0124) ile çekim anında (13:00) örtüşüyor, ancak araç rapor saatinde (12:15) iz kaydına göre ~1555 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "img_000733_trk_T0124 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'uH5_QuV3TFScszcT7fhULg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.82943
+  },
+  "img_004512": {
+    "frame_id": "img_004512",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeydogu Kavsagi — YUKSEK: T0100 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeydogu Kavsagi bölgesinde, merkezi üsse 4.4 km; üsse en yakın araç img_004512_trk_T0186 (4462 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0100 (60 dk'da 3046 m, ETA ~23 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0100: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3046 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4470 m. Mevcut hızla ETA ≈ 23.2 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2150 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4462 m. Mevcut hızla ETA ≈ 22.6 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004512_trk_T0100",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3046 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4470 m. Mevcut hızla ETA ≈ 23.2 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004512_trk_T0186",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2150 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4462 m. Mevcut hızla ETA ≈ 22.6 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R079",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004512 karesindeki None (T0186) ile çekim anında (13:05) örtüşüyor, ancak araç rapor saatinde (12:35) iz kaydına göre ~3444 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0100 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0186 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'N9abvgBATlGhjlQJN8N_Fg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.8477075
+  },
+  "img_003189": {
+    "frame_id": "img_003189",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeybati Yolu — YUKSEK: T0007 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 3.5 km; üsse en yakın araç img_003189_trk_T0007 (3456 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0007 (60 dk'da 3963 m, ETA ~20 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0007: APPROACH_WITH_STOPS; raporlar: 1 celisir, 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3963 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3456 m. Mevcut hızla ETA ≈ 20.5 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2422 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3476 m. Mevcut hızla ETA ≈ 26.9 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_003189_trk_T0007",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3963 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3456 m. Mevcut hızla ETA ≈ 20.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_003189_trk_T0041",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2422 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3476 m. Mevcut hızla ETA ≈ 26.9 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R001",
+        "verdict": "celisir",
+        "explanation": "'Kuzeybati Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0112 (YUKSEK), T0136 (YUKSEK), T0144 (YUKSEK)."
+      },
+      {
+        "report_id": "R038",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_003189 karesindeki None (T0041) ile çekim anında (13:20) örtüşüyor, ancak araç rapor saatinde (12:25) iz kaydına göre ~4007 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0007 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0041 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'Jbnm0kFCRWCukGqnvEOTxA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.8590631
+  },
+  "img_003839": {
+    "frame_id": "img_003839",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzey Yolu — YUKSEK: T0183 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzey Yolu bölgesinde, merkezi üsse 1.8 km; üsse en yakın araç img_003839_trk_T0183 (1742 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0183 (60 dk'da 3316 m, ETA ~7 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0183: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3315 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 37°, üsse mesafe 1742 m. Mevcut hızla ETA ≈ 6.9 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_003839_trk_T0183",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3315 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 37°, üsse mesafe 1742 m. Mevcut hızla ETA ≈ 6.9 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R000",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0182 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R088",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0115 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0183 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'uW4scp5KQmGkvQ1Rw9P4nw'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.8660257
+  },
+  "img_005611": {
+    "frame_id": "img_005611",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Bati Yerlesimi — YUKSEK: T0106 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Bati Yerlesimi bölgesinde, merkezi üsse 4.4 km; üsse en yakın araç img_005611_trk_T0038 (4295 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0123 (60 dk'da 2603 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0106: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1910 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4431 m. Mevcut hızla ETA ≈ 25.4 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_005611_trk_T0106",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1910 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4431 m. Mevcut hızla ETA ≈ 25.4 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R070",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_005611 karesindeki None (T0093) ile çekim anında (13:45) örtüşüyor, ancak araç rapor saatinde (12:50) iz kaydına göre ~3889 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R135",
+        "verdict": "celisir",
+        "explanation": "'Bati Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0104 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0106 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'NusUkYiZSFmU-mUe0-QtfA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.9485664
+  },
+  "img_002900": {
+    "frame_id": "img_002900",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Bati Yerlesimi — YUKSEK: T0027 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Bati Yerlesimi bölgesinde, merkezi üsse 1.6 km; üsse en yakın araç img_002900_trk_T0069 (1553 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0069 (60 dk'da 5258 m, ETA ~4 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0027: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4355 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1613 m. Mevcut hızla ETA ≈ 6.4 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 5258 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1553 m. Mevcut hızla ETA ≈ 4.1 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4822 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1631 m. Mevcut hızla ETA ≈ 5.1 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_002900_trk_T0027",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4355 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1613 m. Mevcut hızla ETA ≈ 6.4 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_002900_trk_T0069",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 5258 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1553 m. Mevcut hızla ETA ≈ 4.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_002900_trk_T0188",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4822 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 1631 m. Mevcut hızla ETA ≈ 5.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R067",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_002900 karesindeki None (T0188) ile çekim anında (13:50) örtüşüyor, ancak araç rapor saatinde (12:15) iz kaydına göre ~2627 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R135",
+        "verdict": "celisir",
+        "explanation": "'Bati Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0104 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0027 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0069 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0188 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'SxBfkMWIRfSH_Lkn2JZdWA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.9679463
+  },
+  "img_002256": {
+    "frame_id": "img_002256",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeybati Yolu — YUKSEK: T0088 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 8 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 4.5 km; üsse en yakın araç img_002256_trk_T0088 (4442 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "8/8 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0088 (60 dk'da 3359 m, ETA ~23 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0088: APPROACH_WITH_STOPS; raporlar: 1 celisir, 3 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3359 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4442 m. Mevcut hızla ETA ≈ 22.8 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2999 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4521 m. Mevcut hızla ETA ≈ 41.5 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2987 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4446 m. Mevcut hızla ETA ≈ 26.1 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_002256_trk_T0088",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3359 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4442 m. Mevcut hızla ETA ≈ 22.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_002256_trk_T0169",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2999 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4521 m. Mevcut hızla ETA ≈ 41.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_002256_trk_T0199",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2987 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4446 m. Mevcut hızla ETA ≈ 26.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R001",
+        "verdict": "celisir",
+        "explanation": "'Kuzeybati Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0112 (YUKSEK), T0136 (YUKSEK), T0144 (YUKSEK)."
+      },
+      {
+        "report_id": "R025",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_002256 karesindeki None (T0071) ile çekim anında (14:05) örtüşüyor, ancak araç rapor saatinde (13:50) iz kaydına göre ~1705 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R043",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0199 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R106",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0114 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0088 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0169 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0199 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'XAoMuPYiSiyXtE6_21mRUA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.9810455
+  },
+  "img_002661": {
+    "frame_id": "img_002661",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzey Yolu — YUKSEK: T0010 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzey Yolu bölgesinde, merkezi üsse 4.4 km; üsse en yakın araç img_002661_trk_T0145 (4370 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0010 (60 dk'da 2094 m, ETA ~22 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0010: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2094 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 6°, üsse mesafe 4401 m. Mevcut hızla ETA ≈ 21.6 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1473 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_002661_trk_T0010",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2094 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 6°, üsse mesafe 4401 m. Mevcut hızla ETA ≈ 21.6 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_002661_trk_T0145",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1473 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R057",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      },
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      },
+      {
+        "report_id": "R102",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0053 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0010 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "img_002661_trk_T0145 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'CqpLSIwyQ_u31npVN8N_Fg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427836.9887657
+  },
+  "img_004416": {
+    "frame_id": "img_004416",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneydogu Yerlesimi — YUKSEK: T0142 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneydogu Yerlesimi bölgesinde, merkezi üsse 4.5 km; üsse en yakın araç img_004416_trk_T0162 (4449 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0162 (60 dk'da 2366 m, ETA ~22 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0142: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2283 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4449 m. Mevcut hızla ETA ≈ 27.3 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2366 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4449 m. Mevcut hızla ETA ≈ 21.7 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004416_trk_T0142",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2283 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4449 m. Mevcut hızla ETA ≈ 27.3 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004416_trk_T0162",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2366 m yaklaştı, 2 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4449 m. Mevcut hızla ETA ≈ 21.7 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R037",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0142 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0162 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '3uVwvgQGTTyFTwN8ALIuDA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.0691524
+  },
+  "img_008562": {
+    "frame_id": "img_008562",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneydogu Yerlesimi — YUKSEK: T0194 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneydogu Yerlesimi bölgesinde, merkezi üsse 3.5 km; üsse en yakın araç img_008562_trk_T0176 (3480 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0194 (60 dk'da 3855 m, ETA ~18 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0194: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3855 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3489 m. Mevcut hızla ETA ≈ 17.8 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_008562_trk_T0194",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3855 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3489 m. Mevcut hızla ETA ≈ 17.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R028",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0194 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R090",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0128 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0194 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'RuMnDifqQNaWYqG65nX1uw'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.0884244
+  },
+  "img_003880": {
+    "frame_id": "img_003880",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Kuzeydogu Kavsagi — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeydogu Kavsagi bölgesinde, merkezi üsse 5.4 km; üsse en yakın araç img_003880_trk_T0103 (5422 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 1 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R022",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0021 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R042",
+        "verdict": "celisir",
+        "explanation": "Koordinat img_003880 karesinin içinde (çekim 14:35), fakat karede bu noktada araç yok ve rapor saatinde yakından geçen bir iz de bulunmuyor."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'NLXGIAQSQzWAwwxjss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.099927
+  },
+  "img_008001": {
+    "frame_id": "img_008001",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Dogu Yolu — YUKSEK: T0149 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 7 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Dogu Yolu bölgesinde, merkezi üsse 4.4 km; üsse en yakın araç img_008001_trk_T0164 (4328 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "7/7 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0054 (60 dk'da 2251 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0149: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1811 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4329 m. Mevcut hızla ETA ≈ 28.5 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1020 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_008001_trk_T0149",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1811 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4329 m. Mevcut hızla ETA ≈ 28.5 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_008001_trk_T0018",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1020 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R105",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_008001 karesindeki None (T0018) ile çekim anında (14:25) örtüşüyor, ancak araç rapor saatinde (12:25) iz kaydına göre ~5942 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      },
+      {
+        "report_id": "R116",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_008001 karesindeki None (T0222) ile çekim anında (14:25) örtüşüyor, ancak araç rapor saatinde (13:15) iz kaydına göre ~3355 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0149 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "img_008001_trk_T0018 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'vgGey8cwRRCO4Rc97fhULg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.1107981
+  },
+  "img_003201": {
+    "frame_id": "img_003201",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Guney Kapisi Yaklasimi — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guney Kapisi Yaklasimi bölgesinde, merkezi üsse 5.4 km; üsse en yakın araç img_003201_trk_T0213 (5406 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0156 (60 dk'da 456 m, ETA ~33 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 3 kismen_uyumlu, 1 ilgisiz, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R018",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0080 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R097",
+        "verdict": "ilgisiz",
+        "explanation": "'Guney Kapisi Yaklasimi' bölgesinde rapor saatine yakın tehdit bulunmuyor; genel durum bildirimi, karar etkisi yok."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      },
+      {
+        "report_id": "R128",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_003201 karesindeki None (T0156) ile çekim anında (14:55) örtüşüyor, ancak araç rapor saatinde (13:55) iz kaydına göre ~457 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R129",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_003201 karesindeki None (T0213) ile çekim anında (14:55) örtüşüyor, ancak araç rapor saatinde (13:15) iz kaydına göre ~3350 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'X95zcM0bTLGY5Ubi5nX1uw'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.185583
+  },
+  "img_007171": {
+    "frame_id": "img_007171",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeydogu Kavsagi — YUKSEK: T0052 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeydogu Kavsagi bölgesinde, merkezi üsse 3.4 km; üsse en yakın araç img_007171_trk_T0177 (3434 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0052 (60 dk'da 3158 m, ETA ~17 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0052: APPROACH_WITH_STOPS; raporlar: 1 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3157 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 25°, üsse mesafe 3466 m. Mevcut hızla ETA ≈ 17.0 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1044 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_007171_trk_T0052",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3157 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 25°, üsse mesafe 3466 m. Mevcut hızla ETA ≈ 17.0 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_007171_trk_T0177",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1044 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R055",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0130 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0052 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "img_007171_trk_T0177 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'K1rCnv3jRISEHYnC8Hk9cQ'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.2073352
+  },
+  "img_001733": {
+    "frame_id": "img_001733",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Kuzeybati Yolu — YUKSEK: T0121 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_001733_trk_T0206 (2635 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0121 (60 dk'da 3242 m, ETA ~20 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0121: APPROACH_WITH_STOPS; raporlar: 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_001733_trk_T0121",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 3242 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2676 m. Mevcut hızla ETA ≈ 20.3 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R001",
+        "verdict": "celisir",
+        "explanation": "'Kuzeybati Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0112 (YUKSEK), T0136 (YUKSEK), T0144 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0121 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'OdMYpXDMR7eyzgb6EuroCg'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.2202227
+  },
+  "img_001643": {
+    "frame_id": "img_001643",
+    "risk_level": "ORTA",
+    "engine_risk_level": "ORTA",
+    "llm_risk_level": null,
+    "headline": "Kuzey Yolu — ORTA: T0094 APPROACHING",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzey Yolu bölgesinde, merkezi üsse 5.3 km; üsse en yakın araç img_001643_trk_T0084 (5322 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0094 (60 dk'da 522 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski ORTA — T0094: APPROACHING; raporlar: 2 kismen_uyumlu, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 12°), son 60 dk yaklaşma 522 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_001643_trk_T0094",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 12°), son 60 dk yaklaşma 522 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R014",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0005 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R024",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum/tip tutarlı ancak araç sayısı tutmuyor: uyumsuz (bulunan 0)."
+      },
+      {
+        "report_id": "R098",
+        "verdict": "celisir",
+        "explanation": "'Kuzey Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0001 (YUKSEK), T0028 (YUKSEK), T0135 (YUKSEK), T0100 (YUKSEK), T0186 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "img_001643_trk_T0094 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'Mzg_ThpKSgOalNLqvEOTxA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.2279816
+  },
+  "img_001230": {
+    "frame_id": "img_001230",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneydogu Yerlesimi — YUKSEK: T0131 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneydogu Yerlesimi bölgesinde, merkezi üsse 2.7 km; üsse en yakın araç img_001230_trk_T0031 (2684 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0031 (60 dk'da 3213 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0131: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1917 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2695 m. Mevcut hızla ETA ≈ 14.8 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_001230_trk_T0131",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1917 m yaklaştı, 4 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 2695 m. Mevcut hızla ETA ≈ 14.8 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R006",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_001230 karesindeki None (T0131) ile çekim anında (15:15) örtüşüyor, ancak araç rapor saatinde (14:15) iz kaydına göre ~3194 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R086",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_001230 karesindeki None (T0031) ile çekim anında (15:15) örtüşüyor, ancak araç rapor saatinde (14:15) iz kaydına göre ~3863 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R096",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0091 (YUKSEK), T0095 (YUKSEK), T0102 (YUKSEK), T0109 (YUKSEK), T0185 (YUKSEK)."
+      },
+      {
+        "report_id": "R108",
+        "verdict": "celisir",
+        "explanation": "'Guneydogu Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0192 (YUKSEK), T0162 (YUKSEK), T0149 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0131 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'TEBxoFyuRaWBsJF721mRUA'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.3059468
+  },
+  "img_001147": {
+    "frame_id": "img_001147",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guneybati Yolu — YUKSEK: T0078 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 4 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneybati Yolu bölgesinde, merkezi üsse 3.5 km; üsse en yakın araç img_001147_trk_T0078 (3522 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "4/4 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0078 (60 dk'da 4431 m, ETA ~19 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0078: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4431 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3522 m. Mevcut hızla ETA ≈ 19.1 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_001147_trk_T0078",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 4431 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 3522 m. Mevcut hızla ETA ≈ 19.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R021",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_001147 karesindeki None (T0078) ile çekim anında (15:20) örtüşüyor, ancak araç rapor saatinde (13:50) iz kaydına göre ~5001 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R054",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_001147 karesindeki None (T0078) ile çekim anında (15:20) örtüşüyor, ancak araç rapor saatinde (14:25) iz kaydına göre ~6949 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0078 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'nq2npSdRRTG3Pwa08Hk9cQ'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.324655
+  },
+  "img_006444": {
+    "frame_id": "img_006444",
+    "risk_level": "DUSUK",
+    "engine_risk_level": "DUSUK",
+    "llm_risk_level": null,
+    "headline": "Guneybati Yolu — DUSUK: tehdit yok",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 3 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guneybati Yolu bölgesinde, merkezi üsse 5.3 km; üsse en yakın araç img_006444_trk_T0157 (5273 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "3/3 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0157 (60 dk'da 8 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski DUSUK; raporlar: 2 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede risk unsuru bulunmadı.",
+    "vehicles": [],
+    "reports": [
+      {
+        "report_id": "R060",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_006444 karesindeki None (T0075) ile çekim anında (15:35) örtüşüyor, ancak araç rapor saatinde (14:50) iz kaydına göre ~2259 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R083",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0157 izi bu noktada; davranış belirtilmemis, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      }
+    ],
+    "recommended_actions": [
+      "Rutin izlemeye devam."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'o3bYSLyJRk6KSJRgss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.337269
+  },
+  "img_007664": {
+    "frame_id": "img_007664",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Guney Kapisi Yaklasimi — YUKSEK: T0210 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 5 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Guney Kapisi Yaklasimi bölgesinde, merkezi üsse 4.5 km; üsse en yakın araç img_007664_trk_T0034 (4501 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "5/5 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0210 (60 dk'da 2944 m, ETA ~27 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0210: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 1 ilgisiz, 1 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2943 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4510 m. Mevcut hızla ETA ≈ 26.7 dk — yakın takip gerekir.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_007664_trk_T0210",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 2943 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 4510 m. Mevcut hızla ETA ≈ 26.7 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R073",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_007664 karesindeki None (T0004) ile çekim anında (15:25) örtüşüyor, ancak araç rapor saatinde (14:35) iz kaydına göre ~4234 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R097",
+        "verdict": "ilgisiz",
+        "explanation": "'Guney Kapisi Yaklasimi' bölgesinde rapor saatine yakın tehdit bulunmuyor; genel durum bildirimi, karar etkisi yok."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      },
+      {
+        "report_id": "R123",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_007664 karesindeki None (T0210) ile çekim anında (15:25) örtüşüyor, ancak araç rapor saatinde (14:40) iz kaydına göre ~4362 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "T0210 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': '9P6Uq740QX6UkaEyss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.3450506
+  },
+  "img_004318": {
+    "frame_id": "img_004318",
+    "risk_level": "YUKSEK",
+    "engine_risk_level": "YUKSEK",
+    "llm_risk_level": null,
+    "headline": "Bati Yerlesimi — YUKSEK: T0022 APPROACH_WITH_STOPS",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 7 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Bati Yerlesimi bölgesinde, merkezi üsse 5.2 km; üsse en yakın araç img_004318_trk_T0152 (5170 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "7/7 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0081 (60 dk'da 1680 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski YUKSEK — T0022: APPROACH_WITH_STOPS; raporlar: 2 kismen_uyumlu, 2 celisir",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1516 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5214 m. Mevcut hızla ETA ≈ 52.1 dk — yakın takip gerekir. Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1680 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 44°, üsse mesafe 5201 m.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004318_trk_T0022",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1516 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 0°, üsse mesafe 5214 m. Mevcut hızla ETA ≈ 52.1 dk — yakın takip gerekir.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      },
+      {
+        "vehicle_id": "img_004318_trk_T0081",
+        "risk_level": "YUKSEK",
+        "engine_risk_level": "YUKSEK",
+        "llm_risk_level": null,
+        "scenario": "APPROACH_WITH_STOPS",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Son 60 dk'da üsse 1680 m yaklaştı, 3 adet ≥15 dk duraklama. Yönelim sapması 44°, üsse mesafe 5201 m.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R101",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004318 karesindeki None (T0022) ile çekim anında (15:45) örtüşüyor, ancak araç rapor saatinde (15:15) iz kaydına göre ~3217 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R104",
+        "verdict": "celisir",
+        "explanation": "'Guney Kapisi Yaklasimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0081 (YUKSEK)."
+      },
+      {
+        "report_id": "R132",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004318 karesindeki None (T0073) ile çekim anında (15:45) örtüşüyor, ancak araç rapor saatinde (14:40) iz kaydına göre ~4823 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      },
+      {
+        "report_id": "R135",
+        "verdict": "celisir",
+        "explanation": "'Bati Yerlesimi' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0104 (YUKSEK)."
+      }
+    ],
+    "recommended_actions": [
+      "T0022 sürekli izlemeye alınsın (APPROACH_WITH_STOPS).",
+      "T0081 sürekli izlemeye alınsın (APPROACH_WITH_STOPS)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'HR7yv78NTnuEw5LnnTga3g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.4239771
+  },
+  "img_004423": {
+    "frame_id": "img_004423",
+    "risk_level": "ORTA",
+    "engine_risk_level": "ORTA",
+    "llm_risk_level": null,
+    "headline": "Kuzeybati Yolu — ORTA: T0083 APPROACHING",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "0 kutu → 0 araç kabul, 6 araç izden kurtarıldı (model kaçırmış)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Kare Kuzeybati Yolu bölgesinde, merkezi üsse 5.2 km; üsse en yakın araç img_004423_trk_T0083 (5167 m)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "hareket",
+        "finding": "6/6 araç bir hareket kaydına eşlendi; en hızlı yaklaşan T0083 (60 dk'da 1497 m, ETA ~30 dk)",
+        "evidence": [],
+        "added_by_guardrail": true
+      },
+      {
+        "stage": "risk",
+        "finding": "Kare riski ORTA — T0083: APPROACHING; raporlar: 1 celisir, 2 kismen_uyumlu",
+        "evidence": [],
+        "added_by_guardrail": true
+      }
+    ],
+    "summary": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1497 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_004423_trk_T0083",
+        "risk_level": "ORTA",
+        "engine_risk_level": "ORTA",
+        "llm_risk_level": null,
+        "scenario": "APPROACHING",
+        "explanation": "Karede izi var ama tespit yok — model bu aracı kaçırmış olabilir. Üsse yönelmiş hareket (sapma 0°), son 60 dk yaklaşma 1497 m. Bilinen bir tehdit örüntüsüne uymuyor; izlenmeli.",
+        "change_reason": null,
+        "evidence_report_ids": [],
+        "decision": null
+      }
+    ],
+    "reports": [
+      {
+        "report_id": "R001",
+        "verdict": "celisir",
+        "explanation": "'Kuzeybati Yolu' için 'trafik normal' deniyor, ancak rapor saatine yakın bölgede tehdit var: T0112 (YUKSEK), T0136 (YUKSEK), T0144 (YUKSEK)."
+      },
+      {
+        "report_id": "R039",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Rapor saatinde T0076 izi bu noktada; davranış uyumlu, ancak araç karede tespit edilmediği (yalnızca iz) için araç tipi doğrulanamadı."
+      },
+      {
+        "report_id": "R126",
+        "verdict": "kismen_uyumlu",
+        "explanation": "Konum ve tip img_004423 karesindeki None (T0143) ile çekim anında (15:50) örtüşüyor, ancak araç rapor saatinde (14:50) iz kaydına göre ~6126 m uzakta. Rapor büyük olasılıkla farklı bir zamana ait gözlemi aktarıyor; davranış iddiası bu nedenle tespitle karşılaştırılamadı."
+      }
+    ],
+    "recommended_actions": [
+      "img_004423_trk_T0083 için ek gözlem / kimlik teyidi iste."
+    ],
+    "injection_report_ids": [],
+    "disagreement": null,
+    "confidence": 1.0,
+    "guardrail_notes": [
+      "LLM devre dışı — motor şablonu kullanıldı.",
+      "LLM hatası: OpenAIModelNotFoundError: Error code: 404 - {'status': 'error', 'code': 404, 'message': 'Application not found', 'request_id': 'uixlcTAGSOqi5ixRss7a6g'}"
+    ],
+    "tool_calls": [],
+    "trace": [],
+    "model": null,
+    "assessed_at": 1790427837.4394495
   }
 }
