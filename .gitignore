@@ -6,3 +6,6 @@ test_hilti.py
 asama2_notebook/
 stage2_agentic_demo/
 predictions.json
+YOLO_outputs
+*.pyc
+*.pt
