@@ -62,6 +62,16 @@ import { HelpPanel } from './components/help/HelpPanel';
 const bottomControlGroupStorageKey = 'hisar-bottom-control-group-position-v1';
 type UtilityPanel = 'settings' | 'help' | null;
 
+function demoReportEnabled() {
+  const envValue = String(import.meta.env.VITE_DEMO_REPORT ?? '').toLowerCase();
+  if (envValue === '1' || envValue === 'true' || envValue === 'yes') return true;
+  try {
+    return window.localStorage.getItem('hisar-demo-report') === 'true';
+  } catch {
+    return false;
+  }
+}
+
 function loadStoredPosition(key: string) {
   if (typeof window === 'undefined') return null;
   try {
@@ -331,6 +341,11 @@ export default function App() {
   const timelineCompact = useTimelineStore(state => state.compact);
   const bottomControlsRef = useRef<HTMLDivElement>(null);
   const [bottomControlsPosition, setBottomControlsPosition] = useState<{ x: number; y: number } | null>(() => loadStoredPosition(bottomControlGroupStorageKey));
+  const bottomControlsPositionRef = useRef(bottomControlsPosition);
+
+  useEffect(() => {
+    bottomControlsPositionRef.current = bottomControlsPosition;
+  }, [bottomControlsPosition]);
 
   const selectedTrackId = useTrackingStore(
     state => state.selectedTrackId,
@@ -366,30 +381,6 @@ export default function App() {
     window.addEventListener('pointerup', stop, { once: true });
   };
 
-  useEffect(() => {
-    if (!bottomControlsPosition) return undefined;
-    const clampCurrent = () => {
-      const element = bottomControlsRef.current;
-      const parent = element?.parentElement;
-      if (!element || !parent) return;
-      const parentRect = parent.getBoundingClientRect();
-      const rect = element.getBoundingClientRect();
-      const next = {
-        x: Math.min(Math.max(8, bottomControlsPosition.x), Math.max(8, parentRect.width - rect.width - 8)),
-        y: Math.min(Math.max(8, bottomControlsPosition.y), Math.max(8, parentRect.height - rect.height - 8)),
-      };
-      if (next.x === bottomControlsPosition.x && next.y === bottomControlsPosition.y) return;
-      setBottomControlsPosition(next);
-      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
-    };
-    const frame = window.requestAnimationFrame(clampCurrent);
-    window.addEventListener('resize', clampCurrent);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('resize', clampCurrent);
-    };
-  }, [bottomControlsPosition, bottomOpen, timelineCompact]);
-
   const startBottomControlsDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
     const element = bottomControlsRef.current;
     const parent = element?.parentElement;
@@ -408,10 +399,14 @@ export default function App() {
     });
     const move = (moveEvent: PointerEvent) => {
       const next = clamp(initial.x + moveEvent.clientX - startX, initial.y + moveEvent.clientY - startY);
+      bottomControlsPositionRef.current = next;
       setBottomControlsPosition(next);
-      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
     };
     const stop = () => {
+      const finalPosition = bottomControlsPositionRef.current;
+      if (finalPosition) {
+        try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(finalPosition)); } catch { /* localStorage may be unavailable. */ }
+      }
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', stop);
     };
@@ -431,6 +426,42 @@ export default function App() {
     reviews: { ...rawData.reviews, human_review: humanReview },
   } : null, [humanReview, rawData]);
   useVoiceAlerts(data);
+
+  useEffect(() => {
+    if (!data) return undefined;
+    const keepReachableIfFullyOutside = () => {
+      const position = bottomControlsPositionRef.current;
+      const element = bottomControlsRef.current;
+      const parent = element?.parentElement;
+      if (!position || !element || !parent) return;
+      const parentRect = parent.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const visibleEdge = 24;
+      let x = position.x;
+      let y = position.y;
+
+      if (rect.right < parentRect.left + visibleEdge) x = 8;
+      else if (rect.left > parentRect.right - visibleEdge) x = Math.max(8, parentRect.width - rect.width - 8);
+
+      if (rect.bottom < parentRect.top + visibleEdge) y = 8;
+      else if (rect.top > parentRect.bottom - visibleEdge) y = Math.max(8, parentRect.height - rect.height - 8);
+
+      if (x === position.x && y === position.y) return;
+      const next = { x, y };
+      bottomControlsPositionRef.current = next;
+      setBottomControlsPosition(next);
+    };
+
+    window.addEventListener('resize', keepReachableIfFullyOutside);
+    const observer = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(keepReachableIfFullyOutside);
+    if (bottomControlsRef.current) observer?.observe(bottomControlsRef.current);
+    return () => {
+      window.removeEventListener('resize', keepReachableIfFullyOutside);
+      observer?.disconnect();
+    };
+  }, [data]);
 
   const activeEntities = useMemo(
     () => activeTrackEntities(data?.entities ?? []),
@@ -545,10 +576,11 @@ export default function App() {
   };
 
   const openPdfReport = () => {
+    const path = demoReportEnabled()
+      ? '/api/threat-report/demo-download'
+      : '/api/threat-report/download?min_risk=YUKSEK';
     window.open(
-      apiUrl(
-        '/api/threat-report/download?min_risk=YUKSEK',
-      ),
+      apiUrl(path),
       '_blank',
       'noopener,noreferrer',
     );
@@ -954,10 +986,8 @@ export default function App() {
         notificationsOpen={notificationsOpen}
         settingsOpen={settingsOpen}
         sidebarOpen={sidebarOpen}
-        bottomControlsPosition={bottomControlsPosition}
         timelineCompact={timelineCompact}
         setBottomOpen={setBottomOpen}
-        setBottomControlsPosition={setBottomControlsPosition}
         setHelpOpen={setHelpOpen}
         setNotificationsOpen={setNotificationsOpen}
         setSettingsOpen={setSettingsOpen}

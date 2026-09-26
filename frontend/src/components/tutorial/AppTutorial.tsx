@@ -4,8 +4,6 @@ import type { MapOverlayPanel } from '../map/MapOverlays';
 import 'driver.js/dist/driver.css';
 
 const tutorialCompletedKey = 'hisar-tutorial-completed';
-const bottomControlGroupStorageKey = 'hisar-bottom-control-group-position-v1';
-
 type TutorialStepKey =
   | 'welcome'
   | 'map-sidebar'
@@ -25,8 +23,6 @@ type TutorialStepKey =
 
 type TutorialSnapshot = {
   bottomOpen: boolean;
-  bottomControlsPosition: { x: number; y: number } | null;
-  bottomControlsStoredPosition: string | null;
   helpOpen: boolean;
   notificationsOpen: boolean;
   settingsOpen: boolean;
@@ -38,14 +34,12 @@ export type AppTutorialProps = {
   ready: boolean;
   runId: number;
   bottomOpen: boolean;
-  bottomControlsPosition: { x: number; y: number } | null;
   helpOpen: boolean;
   notificationsOpen: boolean;
   settingsOpen: boolean;
   sidebarOpen: boolean;
   timelineCompact: boolean;
   setBottomOpen: (open: boolean) => void;
-  setBottomControlsPosition: (position: { x: number; y: number } | null) => void;
   setHelpOpen: (open: boolean) => void;
   setNotificationsOpen: (open: boolean) => void;
   setSettingsOpen: (open: boolean) => void;
@@ -261,14 +255,12 @@ export function AppTutorial({
   ready,
   runId,
   bottomOpen,
-  bottomControlsPosition,
   helpOpen,
   notificationsOpen,
   settingsOpen,
   sidebarOpen,
   timelineCompact,
   setBottomOpen,
-  setBottomControlsPosition,
   setHelpOpen,
   setNotificationsOpen,
   setSettingsOpen,
@@ -282,8 +274,6 @@ export function AppTutorial({
   const snapshotRef = useRef<TutorialSnapshot | null>(null);
   const latestStateRef = useRef<TutorialSnapshot>({
     bottomOpen,
-    bottomControlsPosition,
-    bottomControlsStoredPosition: null,
     helpOpen,
     notificationsOpen,
     settingsOpen,
@@ -296,21 +286,13 @@ export function AppTutorial({
   useEffect(() => {
     latestStateRef.current = {
       bottomOpen,
-      bottomControlsPosition,
-      bottomControlsStoredPosition: (() => {
-        try {
-          return window.localStorage.getItem(bottomControlGroupStorageKey);
-        } catch {
-          return null;
-        }
-      })(),
       helpOpen,
       notificationsOpen,
       settingsOpen,
       sidebarOpen,
       timelineCompact,
     };
-  }, [bottomControlsPosition, bottomOpen, helpOpen, notificationsOpen, settingsOpen, sidebarOpen, timelineCompact]);
+  }, [bottomOpen, helpOpen, notificationsOpen, settingsOpen, sidebarOpen, timelineCompact]);
 
   useEffect(() => {
     if (!ready) return;
@@ -346,21 +328,11 @@ export function AppTutorial({
       setTourActive(false);
       if (snapshot) {
         setBottomOpen(snapshot.bottomOpen);
-        setBottomControlsPosition(snapshot.bottomControlsPosition);
         setHelpOpen(snapshot.helpOpen);
         setNotificationsOpen(snapshot.notificationsOpen);
         setSettingsOpen(snapshot.settingsOpen);
         setSidebarOpen(snapshot.sidebarOpen);
         setTimelineCompact(snapshot.timelineCompact);
-        try {
-          if (snapshot.bottomControlsStoredPosition === null) {
-            window.localStorage.removeItem(bottomControlGroupStorageKey);
-          } else {
-            window.localStorage.setItem(bottomControlGroupStorageKey, snapshot.bottomControlsStoredPosition);
-          }
-        } catch {
-          /* localStorage may be unavailable. */
-        }
       }
       snapshotRef.current = null;
     };
@@ -433,7 +405,6 @@ export function AppTutorial({
     ready,
     runId,
     setBottomOpen,
-    setBottomControlsPosition,
     setHelpOpen,
     setNotificationsOpen,
     setSettingsOpen,
