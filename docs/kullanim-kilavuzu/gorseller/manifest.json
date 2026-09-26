@@ -1,0 +1,46 @@
+{
+  "captured_at": "2026-09-26T18:14:02.271Z",
+  "url": "http://127.0.0.1:5173/",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1.5,
+  "method": "Playwright / Chromium; isolated temporary profile; server writes and report generation blocked",
+  "screenshots": [
+    "ana-ekran.png",
+    "acik-tema.png",
+    "ust-cubuk.png",
+    "harita-araclari.png",
+    "harita-gorunum.png",
+    "zaman-cizelgesi.png",
+    "sol-panel.png",
+    "harita-filtreleri.png",
+    "katman-kutulari.png",
+    "pdf-dugmesi.png",
+    "ses-dugmesi.png",
+    "panel-basligi.png",
+    "genel-kontroller.png",
+    "panel-ac.png",
+    "panel-kapali.png",
+    "ozet-paneli.png",
+    "ozet-sayaclar.png",
+    "liste-paneli.png",
+    "onay-paneli.png",
+    "ajan-paneli.png",
+    "bildirim-paneli.png",
+    "kayit-tablosu.png",
+    "detay-paneli.png",
+    "detay-kontrolleri.png",
+    "detay-ust.png",
+    "gozlem-paneli.png",
+    "kare-goruntusu.png",
+    "uc-boyutlu-gorunum.png"
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "notes": [
+    "Ses geçici profilde kapalı; sunucu ayarları değiştirilmedi.",
+    "Boş paneller gerçek mevcut durumu gösterir; örnek karar veya bildirim üretilmedi."
+  ]
+}

@@ -2779,3 +2779,125 @@ button,select,input,textarea{color:var(--text-primary)}
   }
 }
 @media (prefers-reduced-motion: reduce) { .theme-toggle { transition: none; } }
+
+/* Distant map: small lights with a larger invisible click target. */
+.far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker){
+  --marker-light:#b5c4ce;
+  --marker-size:8px;
+  width:24px!important;
+  min-width:24px!important;
+  height:24px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible;
+  z-index:1;
+}
+.far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker)>*{display:none!important}
+.far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker)::before{
+  content:"";
+  position:absolute;
+  left:50%;top:50%;
+  width:var(--marker-size);height:var(--marker-size);
+  transform:translate(-50%,-50%);
+  box-sizing:border-box;
+  border:1px solid color-mix(in srgb,var(--marker-light) 55%,white);
+  border-radius:50%;
+  background:var(--marker-light);
+  box-shadow:0 0 5px var(--marker-light),0 0 11px color-mix(in srgb,var(--marker-light) 40%,transparent);
+  pointer-events:none;
+  transition:width .15s,height .15s,box-shadow .15s;
+}
+.far-vehicle-zoom .risk-low{--marker-light:#72d7a8}
+.far-vehicle-zoom .risk-medium{--marker-light:#edd16c}
+.far-vehicle-zoom .risk-high{--marker-light:#ffab73;--marker-size:10px;z-index:3}
+.far-vehicle-zoom .risk-critical{--marker-light:#ff7889;--marker-size:12px;z-index:4}
+.far-vehicle-zoom .untracked-map-marker::before{
+  background:transparent;
+  border:2px dashed var(--marker-light);
+  box-shadow:0 0 5px color-mix(in srgb,var(--marker-light) 55%,transparent);
+}
+.far-vehicle-zoom .untracked-map-marker.filtered{opacity:.35;z-index:0}
+.far-vehicle-zoom .analysis-track-marker.context-dimmed{opacity:.55}
+.far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker).stale{opacity:.45}
+.far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker):is(:hover,:focus-visible){z-index:6;opacity:1}
+.far-vehicle-zoom .analysis-track-marker.selected{--marker-size:13px;z-index:7;opacity:1}
+.far-vehicle-zoom .analysis-track-marker.selected::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border:1px solid var(--marker-light);
+  border-radius:50%;
+  box-shadow:0 0 7px color-mix(in srgb,var(--marker-light) 45%,transparent);
+  pointer-events:none;
+  animation:map-selection-glow 2s ease-in-out infinite;
+}
+@keyframes map-selection-glow{0%,100%{opacity:.9;scale:1}50%{opacity:.35;scale:1.22}}
+:root[data-theme="light"] .far-vehicle-zoom .risk-low{--marker-light:#087e58}
+:root[data-theme="light"] .far-vehicle-zoom .risk-medium{--marker-light:#a67c08}
+:root[data-theme="light"] .far-vehicle-zoom .risk-high{--marker-light:#c45619}
+:root[data-theme="light"] .far-vehicle-zoom .risk-critical{--marker-light:#c32643}
+:root[data-theme="light"] .far-vehicle-zoom .risk-unknown{--marker-light:#536b7b}
+:root[data-theme="light"] .far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker){
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+:root[data-theme="light"] .far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker)::before{
+  border-color:var(--marker-light);
+  box-shadow:0 0 0 2px #ffffffdf,0 0 7px color-mix(in srgb,var(--marker-light) 25%,transparent);
+}
+@media(prefers-reduced-motion:reduce){
+  .far-vehicle-zoom .analysis-track-marker.selected::after{animation:none}
+  .far-vehicle-zoom :is(.analysis-track-marker,.untracked-map-marker)::before{transition:none}
+}
+
+/* Pre-rendered vehicle models: eight headings, no runtime 3D renderer. */
+.analysis-map-shell .has-vehicle-model{
+  --vehicle-risk:#8ca1ae;
+  width:44px!important;min-width:44px!important;height:44px!important;
+  padding:0!important;border:0!important;border-radius:50%;
+  background:transparent!important;box-shadow:none!important;overflow:visible;
+}
+.analysis-map-shell .has-vehicle-model.risk-low{--vehicle-risk:#53bd95}
+.analysis-map-shell .has-vehicle-model.risk-medium{--vehicle-risk:#dfb843}
+.analysis-map-shell .has-vehicle-model.risk-high{--vehicle-risk:#ef894b}
+.analysis-map-shell .has-vehicle-model.risk-critical{--vehicle-risk:#eb526d}
+.analysis-map-shell .has-vehicle-model > :is(.marker-risk-glyph,.marker-track-id,.vehicle-silhouette){display:none!important}
+.analysis-map-shell .has-vehicle-model > .vehicle-model{
+  display:block!important;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 2px #0008);
+}
+.analysis-map-shell .has-vehicle-model::before{
+  content:"";position:absolute;left:50%;top:60%;width:68%;height:40%;
+  transform:translate(-50%,-50%);border:1.5px solid var(--vehicle-risk);
+  border-radius:50%;background:color-mix(in srgb,var(--vehicle-risk) 12%,transparent);
+  box-shadow:none!important;pointer-events:none;
+}
+.analysis-map-shell.far-vehicle-zoom .has-vehicle-model{width:30px!important;min-width:30px!important;height:30px!important}
+.analysis-map-shell.close-vehicle-zoom .has-vehicle-model{width:52px!important;min-width:52px!important;height:52px!important}
+.analysis-map-shell .has-vehicle-model.selected{z-index:7;opacity:1}
+.analysis-map-shell .has-vehicle-model.selected > .vehicle-model{scale:1.2}
+.analysis-map-shell .has-vehicle-model.selected::after{
+  content:"";position:absolute;inset:0;border:2px solid #fff;
+  border-radius:50%;box-shadow:0 0 0 1px #26343ecc;pointer-events:none;animation:none;
+}
+.analysis-map-shell .has-vehicle-model:is(:hover,:focus-visible){z-index:8;opacity:1}
+.analysis-map-shell .has-vehicle-model:focus-visible{outline:2px solid var(--vehicle-risk);outline-offset:3px}
+:root[data-theme="light"] .analysis-map-shell .has-vehicle-model::before{border-color:var(--vehicle-risk);background:color-mix(in srgb,var(--vehicle-risk) 12%,white)}
+
+.analysis-map-shell .has-vehicle-model > .vehicle-unknown-badge{
+  display:grid!important;place-items:center;position:absolute;z-index:2;
+  top:0;right:0;width:15px;height:15px;border-radius:50%;
+  background:#33434f;color:#fff;border:1px solid #ced8df;
+  font:700 11px/1 sans-serif;pointer-events:none;
+}
+.analysis-map-shell.far-vehicle-zoom .has-vehicle-model > .vehicle-unknown-badge{
+  width:12px;height:12px;font-size:9px;top:-2px;right:-2px;
+}
+.analysis-map-shell .has-vehicle-model > .untracked-status-text{display:none!important}
+.analysis-map-shell .untracked-map-marker.has-vehicle-model::before{border-style:dashed}
+.analysis-map-shell .untracked-map-marker.has-vehicle-model.filtered{opacity:.35}
+.analysis-map-shell .untracked-map-marker.has-vehicle-model:is(:hover,:focus-visible){opacity:1}
