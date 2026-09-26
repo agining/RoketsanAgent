@@ -1,7 +1,8 @@
 # Roketsan DEMO
 
 ## Çalıştırmak için
-python=>3.11
+python=>3.11 
+nodejs
 
 ```bash
 pip install -r requirements.txt
