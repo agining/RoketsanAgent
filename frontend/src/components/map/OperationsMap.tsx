@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, Focus, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
 import * as maplibregl from 'maplibre-gl';
-import type { GeoJSONSource, Map as LibreMap, Marker, StyleSpecification } from 'maplibre-gl';
+import type { ExpressionSpecification, GeoJSONSource, Map as LibreMap, Marker, StyleSpecification } from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import basemapStyle from './basemap-style.json';
 import { Button } from '../ui/button';
@@ -15,6 +15,51 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 maplibregl.setWorkerUrl(workerUrl);
 const style = basemapStyle as unknown as StyleSpecification;
+/** Change paint only: theme switches preserve camera, selection, sources and playback. */
+function applyMapTheme(map: LibreMap) {
+  const light = document.documentElement.dataset.theme === 'light';
+  for (const layer of style.layers) {
+    if (!map.getLayer(layer.id) || !('paint' in layer) || !layer.paint) continue;
+    for (const [property, original] of Object.entries(layer.paint)) {
+      if (!property.endsWith('-color')) continue;
+      let value = original;
+      if (light) {
+        const id = layer.id;
+        if (property === 'text-halo-color') value = '#f8faf9';
+        else if (property === 'text-color') value = id.includes('water') ? '#477888' : '#647887';
+        else if (layer.type === 'background') value = '#eaf0f2';
+        else if (id.includes('water')) value = '#bddbe3';
+        else if (id.includes('wood') || id.includes('park')) value = '#d5e5da';
+        else if (id.includes('ice') || id.includes('glacier')) value = '#f5fafb';
+        else if (id.includes('building')) value = '#d9e2e7';
+        else if (id.includes('residential')) value = '#e4ebef';
+        else if (id.includes('boundary')) value = '#aebfc8';
+        else if (id.includes('railway')) value = id.includes('dash') ? '#edf2f4' : '#bac9d1';
+        else if (id.includes('casing')) value = '#cedae1';
+        else if (id.includes('motorway')) value = '#f5ecd7';
+        else if (layer.type === 'line') value = '#ffffff';
+        else value = '#e1e9ed';
+      }
+      map.setPaintProperty(layer.id, property as Parameters<LibreMap['setPaintProperty']>[1], value);
+    }
+  }
+  const paints: [string, string, string, string][] = [
+    ['all-track-trails-casing', 'line-color', '#ffffff', '#061015'],
+    ['trail-arrows', 'text-halo-color', '#ffffff', '#071015'],
+    ['selected-track-events', 'circle-stroke-color', '#ffffff', '#101a20'],
+    ['operational-3d-buildings', 'fill-extrusion-color', '#b7c9d2', '#25333a'],
+  ];
+  for (const [id, property, day, night] of paints) {
+    if (map.getLayer(id)) map.setPaintProperty(id, property as Parameters<LibreMap['setPaintProperty']>[1], light ? day : night);
+  }
+  // A darker version of the existing trail palette remains legible on the light basemap.
+  const trailColor: ExpressionSpecification = light ? ['match', ['get', 'color'],
+    '#9ed0bd', '#16796a', '#d5b96f', '#976d1b', '#82aac8', '#336f9c', '#c98572', '#ab5b42',
+    '#b895d6', '#8159a6', '#7fc7c0', '#257f89', '#e0a36f', '#ac6928', '#a7bd78', '#647c2c', '#337c71'] : ['get', 'color'];
+  if (map.getLayer('all-track-trails')) map.setPaintProperty('all-track-trails', 'line-color', trailColor);
+  if (map.getLayer('trail-arrows')) map.setPaintProperty('trail-arrows', 'text-color', trailColor);
+}
+
 const riskLevels: RiskLevel[] = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL', 'UNKNOWN'];
 const riskGlyph: Record<RiskLevel, string> = { LOW: 'D', MEDIUM: 'O', HIGH: 'Y', CRITICAL: 'K', UNKNOWN: '?' };
 
@@ -124,6 +169,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     const map = new maplibregl.Map({ container: container.current, style, center: savedCamera?.center ?? [analysis.base.lon, analysis.base.lat], zoom: savedCamera?.zoom ?? 12, bearing: savedCamera?.bearing ?? 0, pitch: savedCamera?.pitch ?? 0, attributionControl: false });
     const restoredCamera = savedCamera !== null;
     mapRef.current = map;
+    map.once('style.load', () => applyMapTheme(map));
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
@@ -331,7 +377,9 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     map.on('zoom', applyZoomDetail);
     const saveCamera = () => { const center = map.getCenter(); savedCamera = { center: [center.lng, center.lat], zoom: map.getZoom(), bearing: map.getBearing(), pitch: map.getPitch() }; };
     map.on('moveend', saveCamera);
-    map.once('load', () => { ensureMapLayers(); if (!restoredCamera) fitAll(); updatePlayback(); applyZoomDetail(); });
+    const themeObserver = new MutationObserver(() => { if (map.getLayer('background')) applyMapTheme(map); });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    map.once('load', () => { ensureMapLayers(); applyMapTheme(map); if (!restoredCamera) fitAll(); updatePlayback(); applyZoomDetail(); });
     map.on('error', event => { console.warn('Map resource error:', event.error.message); setMapError('Harita altlığı yüklenemedi. Analiz işaretleri kullanılmaya devam ediyor.'); });
     const observer = new ResizeObserver(() => map.resize());
     observer.observe(container.current);
@@ -344,6 +392,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       observer.disconnect();
       popup.remove();
       markers.forEach(marker => marker.remove());
+      themeObserver.disconnect();
       map.remove();
       mapRef.current = null;
     };

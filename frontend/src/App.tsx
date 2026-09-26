@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -9,6 +9,8 @@ import {
   Crosshair,
   FileDown,
   LoaderCircle,
+  Moon,
+  Sun,
   RefreshCw,
   Search,
   UserCheck,
@@ -101,6 +103,21 @@ function InitialState({
 
 export default function App() {
   const analysis = useAnalysis();
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try { return localStorage.getItem('hisar-theme') === 'light' ? 'light' : 'dark'; }
+    catch { return 'dark'; }
+  });
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('hisar-theme', theme); } catch { /* Private storage may be unavailable. */ }
+  }, [theme]);
+  const themeToggle = (
+    <button className="theme-toggle" type="button" aria-label={theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'}
+      title={theme === 'dark' ? 'Açık tema' : 'Koyu tema'} aria-pressed={theme === 'light'}
+      onClick={() => setTheme(current => current === 'dark' ? 'light' : 'dark')}>
+      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  );
 
   const [sidebarOpen, setSidebarOpen] = useState(
     () => typeof window !== 'undefined' && window.innerWidth >= 900,
@@ -296,6 +313,7 @@ export default function App() {
               <small>OPERATIONS CENTER</small>
             </span>
           </div>
+          {themeToggle}
         </header>
 
         <InitialState
@@ -554,6 +572,8 @@ export default function App() {
           <FileDown size={14} />
           <span>PDF Raporu Al</span>
         </button>
+
+        {themeToggle}
 
         <button
           className="map-refresh"

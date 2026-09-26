@@ -1683,14 +1683,14 @@ export function TrackDetail({
                 >
                   <CartesianGrid
                     vertical={false}
-                    stroke="#293940"
+                    stroke="var(--theme-border, #293940)"
                     strokeDasharray="2 4"
                   />
 
                   <XAxis
                     dataKey="time"
                     tick={{
-                      fill: '#81949d',
+                      fill: 'var(--theme-muted, #81949d)',
                       fontSize: 7,
                     }}
                     axisLine={false}
@@ -1700,7 +1700,7 @@ export function TrackDetail({
                   <YAxis
                     dataKey="dist_to_base_m"
                     tick={{
-                      fill: '#81949d',
+                      fill: 'var(--theme-muted, #81949d)',
                       fontSize: 7,
                     }}
                     axisLine={false}
@@ -1710,9 +1710,9 @@ export function TrackDetail({
                   <Tooltip
                     contentStyle={{
                       background:
-                        '#142027',
+                        'var(--theme-surface, #142027)',
                       border:
-                        '1px solid #3c4f58',
+                        '1px solid var(--theme-border, #3c4f58)',
                       borderRadius: 4,
                       fontSize: 8,
                     }}
@@ -1727,11 +1727,11 @@ export function TrackDetail({
                   <Line
                     type="monotone"
                     dataKey="dist_to_base_m"
-                    stroke="#85baa6"
+                    stroke="var(--theme-accent, #85baa6)"
                     strokeWidth={2}
                     dot={{
                       r: 2,
-                      fill: '#a5d8c3',
+                      fill: 'var(--theme-accent, #a5d8c3)',
                     }}
                     isAnimationActive={
                       false
