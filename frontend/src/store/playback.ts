@@ -12,7 +12,7 @@ interface PlaybackState {
   setSpeed: (speed: PlaybackSpeed) => void; advance: (seconds: number) => void;
 }
 export const usePlaybackStore = create<PlaybackState>((set) => ({
-  currentTime: 0, isPlaying: false, playbackSpeed: 1, minTime: 0, maxTime: 0, trailMode: 'elapsed',
+  currentTime: 0, isPlaying: false, playbackSpeed: 1, minTime: 0, maxTime: 0, trailMode: 'off',
   initialize: (minTime, maxTime) => set(state => {
     const rangeChanged = state.minTime !== minTime || state.maxTime !== maxTime;
     return { minTime, maxTime, currentTime: rangeChanged ? minTime : Math.max(minTime, Math.min(maxTime, state.currentTime)), isPlaying: false };

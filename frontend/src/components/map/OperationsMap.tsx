@@ -16,6 +16,29 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 maplibregl.setWorkerUrl(workerUrl);
 const style = basemapStyle as unknown as StyleSpecification;
 const visualControlsStorageKey = 'hisar-map-visual-controls-position-v1';
+const FAR_MARKER_ZOOM = 12.5;
+const CLOSE_MARKER_ZOOM = 14.25;
+const vehicleSprites = import.meta.glob('../../assets/vehicles/*.webp', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+function vehicleSprite(type: string, heading: number, risk: RiskLevel) {
+  const direction = ((Math.round(heading / 45) % 8) + 8) % 8;
+  return vehicleSprites[`../../assets/vehicles/${type}-${risk}-${direction}.webp`] ?? vehicleSprites[`../../assets/vehicles/unknown-${risk}-${direction}.webp`];
+}
+function appendVehicleModel(button: HTMLButtonElement, type: string, risk: RiskLevel, heading = 0) {
+  button.classList.add('has-vehicle-model');
+  const image = document.createElement('img');
+  image.className = 'vehicle-model';
+  image.src = vehicleSprite(type, heading, risk);
+  image.alt = '';
+  image.draggable = false;
+  button.append(image);
+  if (!['car', 'van', 'truck', 'bus'].includes(type)) {
+    const badge = document.createElement('span');
+    badge.className = 'vehicle-unknown-badge';
+    badge.textContent = '?';
+    badge.setAttribute('aria-hidden', 'true');
+    button.append(badge);
+  }
+}
 /** Change paint only: theme switches preserve camera, selection, sources and playback. */
 function applyMapTheme(map: LibreMap) {
   const light = document.documentElement.dataset.theme === 'light';
@@ -279,12 +302,25 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     const ensureMapLayers = () => {
       if (!map.getSource('all-track-trails')) {
         map.addSource('all-track-trails', { type: 'geojson', data: emptyFeatureCollection() });
-        map.addLayer({ id: 'all-track-trails-casing', type: 'line', source: 'all-track-trails', paint: { 'line-color': '#061015', 'line-opacity': 0.68, 'line-width': ['+', ['get', 'width'], 2] } });
-        map.addLayer({ id: 'all-track-trails', type: 'line', source: 'all-track-trails', paint: { 'line-color': ['get', 'color'], 'line-opacity': ['get', 'opacity'], 'line-width': ['get', 'width'], 'line-dasharray': ['case', ['get', 'selected'], ['literal', [1, 0]], ['literal', [2, 1.2]]] } });
+        map.addLayer({ id: 'all-track-trails-casing', type: 'line', source: 'all-track-trails', paint: {
+          'line-color': '#061015',
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], FAR_MARKER_ZOOM,
+            ['case', ['get', 'selected'], 0.68, 0], 13.25, ['case', ['get', 'selected'], 0.68, 0.18]],
+          'line-width': ['interpolate', ['linear'], ['zoom'], FAR_MARKER_ZOOM,
+            ['case', ['get', 'selected'], 4, 1], 13.25, ['+', ['get', 'width'], 2]],
+        } });
+        map.addLayer({ id: 'all-track-trails', type: 'line', source: 'all-track-trails', paint: {
+          'line-color': ['get', 'color'],
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], FAR_MARKER_ZOOM,
+            ['case', ['get', 'selected'], 0.98, ['*', ['get', 'opacity'], 0.18]], 13.25, ['get', 'opacity']],
+          'line-width': ['interpolate', ['linear'], ['zoom'], FAR_MARKER_ZOOM,
+            ['case', ['get', 'selected'], 2.8, 0.65], 13.25, ['get', 'width']],
+          'line-dasharray': ['case', ['get', 'selected'], ['literal', [1, 0]], ['literal', [2, 1.2]]],
+        } });
       }
       if (!map.getSource('trail-arrows')) {
         map.addSource('trail-arrows', { type: 'geojson', data: emptyFeatureCollection() });
-        map.addLayer({ id: 'trail-arrows', type: 'symbol', source: 'trail-arrows', minzoom: 12, layout: { 'text-field': '▲', 'text-size': ['case', ['get', 'selected'], 12, 9], 'text-rotate': ['get', 'heading'], 'text-rotation-alignment': 'map', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': ['get', 'color'], 'text-opacity': ['get', 'opacity'], 'text-halo-color': '#071015', 'text-halo-width': 1.2 } });
+        map.addLayer({ id: 'trail-arrows', type: 'symbol', source: 'trail-arrows', minzoom: FAR_MARKER_ZOOM, layout: { 'text-field': '▲', 'text-size': ['case', ['get', 'selected'], 12, 9], 'text-rotate': ['get', 'heading'], 'text-rotation-alignment': 'map', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': ['get', 'color'], 'text-opacity': ['get', 'opacity'], 'text-halo-color': '#071015', 'text-halo-width': 1.2 } });
       }
       if (!map.getSource('selected-track-events')) {
         map.addSource('selected-track-events', { type: 'geojson', data: emptyFeatureCollection() });
@@ -331,6 +367,9 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
         element.setAttribute('aria-pressed', String(trackId === selected));
         const heading = headingAtTime(entity, time);
         if (heading !== null) element.style.setProperty('--vehicle-heading', `${heading}deg`);
+        const sprite = vehicleSprite(entity.vehicle_class, (heading ?? 0) - map.getBearing(), entity.risk_level);
+        const image = element.querySelector<HTMLImageElement>('.vehicle-model');
+        if (image && sprite && image.getAttribute('src') !== sprite) image.src = sprite;
         if (position) marker.setLngLat([position.lon, position.lat]);
         if (position && trackId === selected && useTrackingStore.getState().followVehicle) map.jumpTo({ center: [position.lon, position.lat] });
       });
@@ -377,7 +416,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       button.type = 'button';
       button.className = `analysis-track-marker vehicle-marker risk-${risk.toLowerCase()}`;
       button.dataset.trackId = entity.track_id;
-      button.setAttribute('aria-label', `${entity.track_id} araç detayını aç, genel risk ${formatRiskLevel(risk)}`);
+      button.setAttribute('aria-label', `${entity.track_id} ${formatVehicleClass(entity.vehicle_class)} araç detayını aç, genel risk ${formatRiskLevel(risk)}`);
       button.setAttribute('aria-pressed', String(entity.track_id === useTrackingStore.getState().selectedTrackId));
       const glyph = document.createElement('span');
       glyph.className = 'marker-risk-glyph';
@@ -395,6 +434,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       const eventDot = document.createElement('i');
       eventDot.className = 'marker-event-dot';
       button.style.setProperty('--track-color', trackColor(entity.track_id));
+      appendVehicleModel(button, entity.vehicle_class, risk);
       button.append(glyph, id, vehicle, eventDot);
       const initial = positionAtTime(entity, usePlaybackStore.getState().currentTime) ?? entity.points[0] ?? analysis.base;
       const show = () => {
@@ -423,9 +463,12 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       button.className = `untracked-map-marker risk-${item.risk_level.toLowerCase()}${item.filtered ? ' filtered' : ''}`;
       button.dataset.vehicleId = item.vehicle_id;
       button.setAttribute('aria-label', `${item.capture_time} zamanlı izsiz ${formatVehicleClass(item.label)} tespiti, risk ${formatRiskLevel(item.risk_level)}`);
+      appendVehicleModel(button, item.label, item.risk_level, 45);
       const glyph = document.createElement('span');
+      glyph.className = 'untracked-status-text';
       glyph.textContent = item.risk_level === 'LOW' || item.risk_level === 'UNKNOWN' ? '?' : riskGlyph[item.risk_level];
       const label = document.createElement('span');
+      label.className = 'untracked-status-text';
       label.textContent = item.filtered ? 'ELENDİ' : 'İZSİZ';
       button.append(glyph, label);
       const coordinates: [number, number] = [item.lon, item.lat];
@@ -477,8 +520,23 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       if (state.currentTime !== previous.currentTime || state.trailMode !== previous.trailMode) updatePlayback();
     });
 
-    const applyZoomDetail = () => shell.current?.classList.toggle('close-vehicle-zoom', map.getZoom() >= 14.25);
+    const applyZoomDetail = () => {
+      const zoom = map.getZoom();
+      shell.current?.classList.toggle('far-vehicle-zoom', zoom < FAR_MARKER_ZOOM);
+      shell.current?.classList.toggle('close-vehicle-zoom', zoom >= CLOSE_MARKER_ZOOM);
+    };
     map.on('zoom', applyZoomDetail);
+    const updateVehicleDirections = () => {
+      const time = usePlaybackStore.getState().currentTime;
+      trackMarkers.forEach((marker, id) => {
+        const entity = byTrackId.get(id);
+        if (!entity) return;
+        const image = marker.getElement().querySelector<HTMLImageElement>('.vehicle-model');
+        const src = vehicleSprite(entity.vehicle_class, (headingAtTime(entity, time) ?? 0) - map.getBearing(), entity.risk_level);
+        if (image && src && image.getAttribute('src') !== src) image.src = src;
+      });
+    };
+    map.on('rotate', updateVehicleDirections);
     const saveCamera = () => { const center = map.getCenter(); savedCamera = { center: [center.lng, center.lat], zoom: map.getZoom(), bearing: map.getBearing(), pitch: map.getPitch() }; };
     map.on('moveend', saveCamera);
     const themeObserver = new MutationObserver(() => { if (map.getLayer('background')) applyMapTheme(map); });
@@ -492,6 +550,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       unsubscribeTracking();
       unsubscribePlayback();
       map.off('zoom', applyZoomDetail);
+      map.off('rotate', updateVehicleDirections);
       map.off('moveend', saveCamera);
       gestureEvents.off('dragstart', markGesture);
       gestureEvents.off('dragend', releaseGesture);
