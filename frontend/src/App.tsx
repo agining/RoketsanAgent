@@ -12,6 +12,8 @@ import {
   RefreshCw,
   Search,
   UserCheck,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 
 import { OperationsMap } from './components/map/OperationsMap';
@@ -26,8 +28,10 @@ import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
 import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
 import { Button } from './components/ui/button';
+import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
 
 import { useAnalysis } from './hooks/useAnalysis';
+import { useVoiceAlerts } from './hooks/useVoiceAlerts';
 
 import { api, API_BASE_URL, apiUrl } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
@@ -37,6 +41,7 @@ import type { AnalysisData } from './types/analysis';
 
 import { usePlaybackStore } from './store/playback';
 import { useTrackingStore } from './store/tracking';
+import { useVoiceAlertsStore } from './store/voiceAlerts';
 import { useWatchlistStore } from './store/watchlist';
 import { useWorkspaceStore } from './store/workspace';
 
@@ -133,6 +138,19 @@ export default function App() {
   );
 
   const data = analysis.data;
+  useVoiceAlerts(data);
+
+  const voiceAlertsEnabled = useVoiceAlertsStore(
+    state => state.enabled,
+  );
+
+  const voiceAlertsSpeaking = useVoiceAlertsStore(
+    state => state.isSpeaking,
+  );
+
+  const toggleVoiceAlerts = useVoiceAlertsStore(
+    state => state.toggleEnabled,
+  );
 
   const visibleTrackIds = useMemo(
     () =>
@@ -398,6 +416,30 @@ export default function App() {
           </span>
         </span>
 
+        <button
+          className={`voice-alert-toggle ${
+            voiceAlertsEnabled ? 'on' : ''
+          } ${voiceAlertsSpeaking ? 'speaking' : ''}`}
+          role="switch"
+          aria-checked={voiceAlertsEnabled}
+          onClick={toggleVoiceAlerts}
+          title={
+            voiceAlertsEnabled
+              ? 'Sesli tehdit bildirimlerini kapat'
+              : 'Sesli tehdit bildirimlerini aç'
+          }
+        >
+          {voiceAlertsEnabled ? (
+            <Volume2 size={13} />
+          ) : (
+            <VolumeX size={13} />
+          )}
+
+          <span>
+            {voiceAlertsEnabled ? 'Ses açık' : 'Ses kapalı'}
+          </span>
+        </button>
+
         <div className="watch-notification-anchor">
           <button
             className={`watch-notification-trigger ${
@@ -578,6 +620,8 @@ export default function App() {
         />
 
         <Timeline analysis={data} />
+
+        <VoiceAlertCard onSelectTrack={selectTrack} />
 
         {selectedEntity && inspectorOpen && (
           <div

@@ -264,6 +264,146 @@
 }
 .pdf-report-download:hover:not(:disabled) { border-color: #637b72; background: #21322e; color: #d5e3dd; }
 
+.voice-alert-toggle {
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #34454c;
+  border-radius: 5px;
+  background: #172228;
+  color: #93a6ad;
+  padding: 0 9px;
+  font-size: 7px;
+  white-space: nowrap;
+}
+.voice-alert-toggle:hover { border-color: #637b72; background: #21322e; color: #d5e3dd; }
+.voice-alert-toggle.on { border-color: #527567; background: #1b302a; color: #c6e3d6; }
+.voice-alert-toggle.speaking svg { animation: voice-speaking-pulse .9s ease-in-out infinite; }
+
+.voice-alert-panel {
+  position: absolute;
+  right: 14px;
+  bottom: 114px;
+  z-index: 38;
+  width: min(390px, calc(100vw - 28px));
+  border: 1px solid #43565f;
+  border-left-width: 3px;
+  border-radius: 7px;
+  background: #111d23f5;
+  box-shadow: 0 16px 44px #0009;
+  backdrop-filter: blur(9px);
+  overflow: hidden;
+  animation: voice-alert-in .16s ease-out;
+}
+.map-first-workspace.detail-open .voice-alert-panel { right: 444px; }
+.voice-alert-panel.risk-medium { border-left-color: #d0b24d; }
+.voice-alert-panel.risk-high { border-left-color: #df7840; }
+.voice-alert-panel.risk-critical { border-left-color: #dc515b; }
+.voice-alert-header,
+.voice-alert-footer {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+}
+.voice-alert-header { border-bottom: 1px solid #2c3d44; background: #16242b; }
+.voice-alert-footer { border-top: 1px solid #2c3d44; }
+.voice-alert-badge,
+.voice-alert-target,
+.voice-alert-stop-btn,
+.voice-lock-btn,
+.voice-autolock-toggle,
+.voice-queue-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.voice-alert-badge span {
+  font-size: 7px;
+  letter-spacing: .7px;
+  color: #e2d39b;
+}
+.voice-alert-badge time,
+.voice-queue-pill {
+  font: 8px ui-monospace,SFMono-Regular,Menlo,monospace;
+  color: #8297a0;
+}
+.voice-alert-stop-btn,
+.voice-lock-btn {
+  height: 27px;
+  flex-shrink: 0;
+  border: 1px solid #3b4e56;
+  border-radius: 4px;
+  background: #1a2a31;
+  color: #b7c8cf;
+  padding: 0 8px;
+  font-size: 7px;
+}
+.voice-alert-stop-btn:hover { border-color: #7a424b; color: #efb1b6; background: #2c2025; }
+.voice-lock-btn:hover,
+.voice-lock-btn.locked { border-color: #668a79; color: #d4eadf; background: #233a33; }
+.voice-alert-body { padding: 10px; }
+.voice-alert-target strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 11px ui-monospace,SFMono-Regular,Menlo,monospace;
+  color: #edf4f5;
+}
+.voice-alert-target .target-type,
+.voice-alert-target .target-zone {
+  flex-shrink: 0;
+  font-size: 7px;
+  color: #91a6ae;
+}
+.voice-alert-reason {
+  margin: 8px 0 0;
+  font-size: 8px;
+  line-height: 1.55;
+  color: #b9c7cc;
+}
+.voice-alert-telemetry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+.voice-alert-telemetry span {
+  padding: 5px 7px;
+  border: 1px solid #31454d;
+  border-radius: 4px;
+  background: #17252b;
+  font-size: 7px;
+  color: #91a5ad;
+}
+.voice-alert-telemetry b { color: #dce8eb; }
+.voice-autolock-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 7px;
+  color: #9caeb5;
+}
+.voice-autolock-toggle input { accent-color: #9ed0bd; }
+.voice-queue-pill {
+  padding: 4px 6px;
+  border-radius: 9px;
+  background: #26333a;
+}
+.speaking-pulse { animation: voice-speaking-pulse .8s ease-in-out infinite; }
+@keyframes voice-speaking-pulse {
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@keyframes voice-alert-in {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
 .map-first-brand.hisar-brand {
   min-width: 220px;
   gap: 10px;
@@ -286,6 +426,10 @@
 @media(max-width:800px) {
   .pdf-report-download span { display: none; }
   .pdf-report-download { width: 32px; padding: 0; }
+  .voice-alert-toggle span { display: none; }
+  .voice-alert-toggle { width: 32px; padding: 0; }
+  .voice-alert-panel { right: 8px; bottom: 112px; }
+  .map-first-workspace.detail-open .voice-alert-panel { right: 8px; }
   .map-first-brand.hisar-brand { min-width: 0; }
   .map-first-brand.hisar-brand img { height: 34px; max-width: 112px; }
   .map-first-brand.hisar-brand > span { display: none; }

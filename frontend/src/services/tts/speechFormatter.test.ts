@@ -33,9 +33,10 @@ describe('speechFormatter', () => {
     };
 
     const text = formatAlertForSpeech(mockAlert);
-    expect(text).toContain('Kritik!');
-    expect(text).toContain('T 106');
+    expect(text).toContain('Kritik uyarı.');
+    expect(text).toContain('Takip numarası 106');
     expect(text).toContain('minibüs');
+    expect(text).toContain('Bölge: Güney Kapısı Yaklaşımı.');
     expect(text).toContain('hızlı yaklaşma');
   });
 });
