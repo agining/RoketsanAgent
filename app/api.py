@@ -15,6 +15,11 @@ motorun kendi seviyesi `engine_risk_level`, kararın nasıl çıktığı `decisi
   POST /api/reviews/{vehicle_id}        ← {"level": "ORTA", "analyst": "ad", "note": "..."}
   DELETE /api/reviews/{vehicle_id}      → analist kararını geri al
 Özellik kapalıyken karar tablosunun otomatik sonucu uygulanır ve analist kararları yok sayılır (silinmez).
+
+Tehdit raporu (PDF, sabit tema):
+  POST /api/threat-report                ← {"min_risk":"YUKSEK"} | {"levels":["KRITIK"]}  → özet + pdf_url
+  GET  /api/threat-report/download?min_risk=KRITIK   → üretip PDF'i doğrudan döndürür
+  GET  /api/threat-report/preview · GET /api/threat-report · GET /api/threat-report/{id|latest}[/pdf]
 """
 from __future__ import annotations
 
@@ -33,6 +38,7 @@ from .config import RISK_ORDER, settings
 from .geo import min_to_hhmm
 from .service import ReviewError, service
 from .steps import pipeline_steps
+from .threat_report.routes import router as threat_report_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -49,6 +55,8 @@ app.add_middleware(
     allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000").split(","),
     allow_methods=["*"], allow_headers=["*"],
 )
+# Tehdit raporu (PDF): POST /api/threat-report, GET /api/threat-report/download?min_risk=… (bkz. threat_report/routes.py)
+app.include_router(threat_report_router)
 
 
 def _frame_or_404(frame_id: str):

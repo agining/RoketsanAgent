@@ -252,3 +252,40 @@ def untracked_margin(label: str, dist_m: float, th: Thresholds, risk: str) -> di
         rise = [f"Neredeyse ORTA (UNTRACKED): {c.describe()}" for c in conds if c.near_miss(tol)]
         return _margin([], rise, "ORTA" if rise else None)
     return _margin([], [])
+
+
+# ------------------------------------------------------------------ açıklama (PDF raporu / arayüz)
+def _cond_view(c: Cond, tol: float) -> dict:
+    """Tek koşulun okunabilir hâli: değer, eşik, sağlandı mı, eşiğe ne kadar yakın."""
+    if c.op == "true":
+        value, thr = ("evet" if c.value else "hayır"), "evet"
+    else:
+        if c.value is None:
+            value = "—"
+        elif isinstance(c.value, int) and not isinstance(c.value, bool):
+            value = f"{c.value}{c.unit}"          # sayım koşulları (duraklama sayısı vb.) tam sayı
+        else:
+            value = f"{c.value:.{c.nd}f}{c.unit}"
+        thr = f"{_OP_SYMBOL[c.op]} {c.thr:g}{c.unit}"
+    return {"name": c.name, "value": value, "threshold": thr, "ok": c.ok(),
+            "near_miss": c.near_miss(tol), "barely": c.barely(tol)}
+
+
+def explain_tracked(f: TrackFeatures, th: Thresholds) -> list[dict]:
+    """Her kuralın koşulları, değerleri ve sonucu — öncelik sırasıyla. Sınıflandırmayla aynı kural listesini
+    (_tracked_rules) kullanır; rapordaki tablo motorun gerçekte uyguladığı kuralla birebir aynıdır.
+    matched: senaryoyu belirleyen (ilk eşleşen) kural. Sonraki kurallar değerlendirilmez ama gösterilir."""
+    out, winner_seen = [], False
+    for r in _tracked_rules(f, th):
+        ok = r.matches()
+        out.append({"scenario": r.scenario, "risk": r.risk, "all_ok": ok, "matched": ok and not winner_seen,
+                    "conds": [_cond_view(c, th.margin_tol) for c in r.conds]})
+        winner_seen = winner_seen or ok
+    return out
+
+
+def explain_untracked(label: str, dist_m: float, th: Thresholds) -> list[dict]:
+    conds = _untracked_conds(label, dist_m, th)
+    ok = any(c.ok() for c in conds)
+    return [{"scenario": "UNTRACKED", "risk": "ORTA", "all_ok": ok, "matched": ok, "any_of": True,
+             "conds": [_cond_view(c, th.margin_tol) for c in conds]}]
