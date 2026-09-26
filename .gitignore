@@ -9,3 +9,6 @@ predictions.json
 YOLO_outputs
 *.pyc
 *.pt
+.env
+__pycache__/
+*.pyc
