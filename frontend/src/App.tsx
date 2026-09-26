@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertTriangle, BrainCircuit, CircleAlert, Clock3, Crosshair, LoaderCircle, RefreshCw, Search, UserCheck } from 'lucide-react';
+import { AlertTriangle, Bell, BrainCircuit, CheckCheck, CircleAlert, Clock3, Crosshair, FileDown, LoaderCircle, RefreshCw, Search, UserCheck } from 'lucide-react';
 import { OperationsMap } from './components/map/OperationsMap';
 import { MapOverlays } from './components/map/MapOverlays';
 import { MapSidebar, entityMatchesMapFilters, initialMapFilters, type MapFilterState } from './components/map/MapSidebar';
@@ -8,13 +8,15 @@ import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
 import { Button } from './components/ui/button';
 import { useAnalysis } from './hooks/useAnalysis';
-import { api, API_BASE_URL } from './services/api';
+import { api, API_BASE_URL, apiUrl } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
 import type { AnalysisData } from './types/analysis';
 import { startPlaybackClock } from './services/playback-clock';
 import { usePlaybackStore } from './store/playback';
 import { useTrackingStore } from './store/tracking';
+import { useWatchlistStore } from './store/watchlist';
 import { useWorkspaceStore } from './store/workspace';
+import hisarLogo from '@/assets/hisar-logo.png';
 
 function formatTimestamp(value: string) {
   const date = new Date(value);
@@ -32,8 +34,12 @@ export default function App() {
   const [filters, setFilters] = useState<MapFilterState>(initialMapFilters);
   const [togglingReview, setTogglingReview] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
   const inspectorOpen = useWorkspaceStore(state => state.inspectorOpen);
+  const watchTrackIds = useWatchlistStore(state => state.trackIds);
+  const notifications = useWatchlistStore(state => state.notifications);
+  const unreadNotifications = notifications.filter(item => !item.read).length;
   const playbackTime = usePlaybackStore(state => Math.floor(state.currentTime));
   const data = analysis.data;
   const visibleTrackIds = useMemo(() => new Set(data?.entities.filter(entity => entityMatchesMapFilters(entity, filters)).map(entity => entity.track_id) ?? []), [data, filters]);
@@ -56,29 +62,41 @@ export default function App() {
     catch (cause) { setActionError(cause instanceof Error ? cause.message : 'Ayar değiştirilemedi.'); }
     finally { setTogglingReview(false); }
   };
+  const openPdfReport = () => window.open(apiUrl('/api/threat-report/download?min_risk=YUKSEK'), '_blank', 'noopener,noreferrer');
 
   useEffect(() => {
     if (selectedTrackId && data && !data.entities.some(entity => entity.track_id === selectedTrackId)) useTrackingStore.getState().selectTrack(null);
   }, [data, selectedTrackId]);
+  useEffect(() => {
+    if (data) useWatchlistStore.getState().applyAnalysis(data.entities, data.generated_at);
+  }, [data?.generated_at, data, watchTrackIds]);
   useEffect(() => {
     const clearSelection = (event: KeyboardEvent) => { if (event.key === 'Escape' && !event.defaultPrevented) useTrackingStore.getState().selectTrack(null); };
     window.addEventListener('keydown', clearSelection); return () => window.removeEventListener('keydown', clearSelection);
   }, []);
   useEffect(() => startPlaybackClock(), []);
 
-  if (!data) return <div className="map-first-shell"><header className="map-first-topbar"><div className="map-first-brand"><Crosshair size={18} /><span>ATLAS<small>OPERATIONS CENTER</small></span></div></header><InitialState error={analysis.status === 'error' ? analysis.error : null} retry={analysis.reload} /></div>;
+  if (!data) return <div className="map-first-shell"><header className="map-first-topbar"><div className="map-first-brand hisar-brand"><img src={hisarLogo} alt="HİSAR" /><span>HİSAR<small>OPERATIONS CENTER</small></span></div></header><InitialState error={analysis.status === 'error' ? analysis.error : null} retry={analysis.reload} /></div>;
 
   const error = analysis.status === 'error' ? `Yenileme başarısız: ${analysis.error}` : actionError;
   return <div className="map-first-shell">
     <header className="map-first-topbar">
-      <div className="map-first-brand"><Crosshair size={18} /><span>ATLAS<small>OPERATIONS CENTER</small></span></div>
+      <div className="map-first-brand hisar-brand"><img src={hisarLogo} alt="HİSAR" /><span>HİSAR<small>OPERATIONS CENTER</small></span></div>
       <div className="map-top-stat timestamp"><Clock3 size={13} /><span><small>SON ANALİZ</small><strong>{formatTimestamp(data.generated_at)}</strong></span></div>
       <div className="map-top-stat"><span><small>İZ</small><strong>{data.summary.tracks}</strong></span></div>
       <div className={`map-top-stat risk-total ${highCritical ? 'active' : ''}`}><AlertTriangle size={13} /><span><small>YÜKSEK / KRİTİK</small><strong>{highCritical}</strong></span></div>
       <div className={`map-top-stat pending-total ${data.summary.pending_reviews ? 'active' : ''}`}><UserCheck size={13} /><span><small>ONAY BEKLEYEN</small><strong>{data.summary.pending_reviews}</strong></span></div>
       <button className={`human-review-toggle ${data.human_review ? 'on' : ''}`} role="switch" aria-checked={data.human_review} disabled={togglingReview} onClick={() => void toggleHumanReview()} title="Açıkken motor ile LLM'in ayrıştığı kararlar analist onayına düşer">{togglingReview ? <LoaderCircle size={13} className="spinning" /> : <UserCheck size={13} />}<span>Son söz insanda</span><i /></button>
       <span className={`llm-badge ${data.summary.llm_enabled ? 'on' : ''}`} title={data.summary.llm_enabled ? `Model: ${data.summary.model ?? '—'}` : "API'de OPENAI_API_KEY tanımlı değil"}><BrainCircuit size={13} /><span>{data.summary.llm_enabled ? 'LLM açık' : 'LLM kapalı'}</span></span>
+      <div className="watch-notification-anchor">
+        <button className={`watch-notification-trigger ${unreadNotifications ? 'active' : ''}`} aria-expanded={notificationsOpen} aria-label={`İzleme listesi bildirimleri${unreadNotifications ? `, ${unreadNotifications} okunmamış` : ''}`} onClick={() => setNotificationsOpen(open => !open)}><Bell size={14} />{unreadNotifications > 0 && <b>{unreadNotifications}</b>}</button>
+        {notificationsOpen && <div className="watch-notification-panel">
+          <header><span><Bell size={13} />Bildirimler</span><button disabled={!unreadNotifications} onClick={() => useWatchlistStore.getState().markAllRead()}><CheckCheck size={12} />Tümünü okundu işaretle</button></header>
+          <div>{notifications.length ? notifications.slice(0, 20).map(item => <button key={item.id} className={`${item.read ? 'read' : ''} severity-${item.severity}`} onClick={() => { useWatchlistStore.getState().markRead(item.id); selectTrack(item.trackId); setNotificationsOpen(false); }}><span><strong>{item.trackId}</strong><small>{item.type} · {formatTimestamp(item.at)}</small></span><p>{item.message}</p></button>) : <p>Henüz watchlist bildirimi yok.</p>}</div>
+        </div>}
+      </div>
       <button className="map-top-search" onClick={() => { setSidebarOpen(true); requestAnimationFrame(() => document.querySelector<HTMLInputElement>('[aria-label="Harita araç kayıtlarında ara"]')?.focus()); }}><Search size={13} /><span>İz ara</span></button>
+      <button className="pdf-report-download" onClick={openPdfReport} aria-label="PDF tehdit raporunu yeni sekmede aç"><FileDown size={14} /><span>PDF Raporu Al</span></button>
       <button className="map-refresh" onClick={analysis.reload} disabled={analysis.status === 'loading'} aria-label="Analiz verisini yenile"><RefreshCw size={14} className={analysis.status === 'loading' ? 'spinning' : ''} /><span>{analysis.status === 'loading' ? 'Yenileniyor…' : 'Yenile'}</span></button>
     </header>
     <main className={`map-first-workspace ${sidebarOpen ? 'sidebar-open' : ''} ${selectedEntity && inspectorOpen ? 'detail-open' : ''}`}>

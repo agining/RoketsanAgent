@@ -247,3 +247,311 @@
 .map-priority-popover button > span:last-child b.risk-medium { color: #dac16f; }
 .map-priority-popover button > span:last-child b.risk-high { color: #e8996a; }
 .map-priority-popover button > span:last-child b.risk-critical { color: #ec8189; }
+
+.pdf-report-download {
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #34454c;
+  border-radius: 5px;
+  background: #172228;
+  color: #a9bbc2;
+  padding: 0 10px;
+  font-size: 7px;
+  white-space: nowrap;
+}
+.pdf-report-download:hover:not(:disabled) { border-color: #637b72; background: #21322e; color: #d5e3dd; }
+
+.map-first-brand.hisar-brand {
+  min-width: 220px;
+  gap: 10px;
+}
+.map-first-brand.hisar-brand img {
+  display: block;
+  width: auto;
+  height: 38px;
+  max-width: 150px;
+  object-fit: contain;
+  padding: 2px 0;
+  flex-shrink: 0;
+}
+.map-first-brand.hisar-brand > span {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #dce6e9;
+}
+
+@media(max-width:800px) {
+  .pdf-report-download span { display: none; }
+  .pdf-report-download { width: 32px; padding: 0; }
+  .map-first-brand.hisar-brand { min-width: 0; }
+  .map-first-brand.hisar-brand img { height: 34px; max-width: 112px; }
+  .map-first-brand.hisar-brand > span { display: none; }
+}
+
+/* Track detail readability layer */
+:root {
+  --atlas-control: #18262d;
+  --atlas-control-hover: #22333b;
+  --atlas-control-active: #28423a;
+  --atlas-border: #2d3e45;
+  --atlas-text-strong: #eef5f6;
+  --atlas-muted: #91a4ac;
+  --atlas-accent: #9ed0bd;
+}
+
+.entity-track-detail {
+  --detail-scale: 1;
+  --detail-body: calc(10px * var(--detail-scale));
+  --detail-small: calc(8px * var(--detail-scale));
+  --detail-label: calc(9px * var(--detail-scale));
+  --detail-value: calc(12px * var(--detail-scale));
+  --detail-heading: calc(13px * var(--detail-scale));
+  font-size: var(--detail-body);
+}
+.entity-track-detail.detail-font-large { --detail-scale: 1.16; }
+.entity-track-detail.detail-font-xlarge { --detail-scale: 1.32; }
+.entity-track-detail,
+.entity-track-detail * { overflow-wrap: anywhere; }
+.entity-track-detail .details-heading {
+  top: 0;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-bottom: 7px;
+}
+.entity-track-detail .details-heading > .section-eyebrow { margin-right: auto; }
+.detail-font-cycle { position: relative; }
+.entity-track-detail.detail-font-large .detail-font-cycle,
+.entity-track-detail.detail-font-xlarge .detail-font-cycle { color: #c7e5d7; background: #28423a; }
+.entity-track-detail.detail-font-xlarge .detail-font-cycle::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #9ed0bd;
+}
+.entity-detail-section-toggle {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+}
+.entity-detail-section-toggle svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #8fa3ad;
+  transition: transform .14s ease;
+}
+.entity-detail-section.collapsed .entity-detail-section-toggle svg { transform: rotate(-90deg); }
+.entity-detail-section-toggle span {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.entity-detail-section-toggle h2 { margin: 0; }
+.entity-detail-section-toggle small {
+  color: var(--atlas-muted);
+  font-size: var(--detail-small);
+  line-height: 1.45;
+  text-align: right;
+}
+.entity-detail-section-body { margin-top: 9px; }
+.entity-detail-section.collapsed { padding-bottom: 12px; }
+.entity-track-detail .section-eyebrow { font-size: max(9px, var(--detail-small)); }
+.entity-track-detail .entity-detail-title small,
+.entity-track-detail .entity-detail-title em,
+.entity-track-detail .entity-detail-section-toggle small,
+.entity-track-detail .entity-empty-note,
+.entity-track-detail .field-report-disclaimer,
+.entity-track-detail .assessment-actions small,
+.entity-track-detail .report-reasons span,
+.entity-track-detail details,
+.entity-track-detail .frame-image figcaption { font-size: var(--detail-small); line-height: 1.65; }
+.entity-track-detail .entity-detail-title strong { font-size: calc(16px * var(--detail-scale)); line-height: 1.25; }
+.entity-track-detail .entity-detail-section h2,
+.entity-track-detail .assessment-list h3,
+.entity-track-detail .chart-heading h3 { font-size: var(--detail-heading); line-height: 1.35; }
+.entity-track-detail .entity-detail-grid dt,
+.entity-track-detail .entity-history-table th,
+.entity-track-detail .entity-report-check span { font-size: var(--detail-label); line-height: 1.45; }
+.entity-track-detail .entity-detail-grid dd,
+.entity-track-detail .entity-history-table td,
+.entity-track-detail .assessment-list p,
+.entity-track-detail .risk-assessment-summary,
+.entity-track-detail .entity-report-list p,
+.entity-track-detail .unknown-assessment,
+.entity-track-detail .entity-analysis-error,
+.entity-track-detail .entity-quality-warning,
+.entity-track-detail .review-card,
+.entity-track-detail .review-card p,
+.entity-track-detail .review-note,
+.entity-track-detail .review-status { font-size: var(--detail-value); line-height: 1.65; }
+.entity-track-detail .entity-risk,
+.entity-track-detail .vehicle-actions button,
+.entity-track-detail .assessment-actions > button { font-size: max(10px, calc(10px * var(--detail-scale))); }
+.entity-track-detail .entity-detail-grid,
+.entity-track-detail .review-compare,
+.entity-track-detail .speed-fields { grid-template-columns: repeat(auto-fit, minmax(min(142px, 100%), 1fr)); }
+.entity-track-detail .entity-history-table,
+.entity-track-detail .entity-report-list,
+.entity-track-detail .assessment-list { min-width: 0; }
+.entity-track-detail .entity-history-table table { white-space: normal; }
+.entity-track-detail .entity-detail-section,
+.entity-track-detail .assessment-list,
+.entity-track-detail .entity-report-list article,
+.entity-track-detail .review-card { height: auto; }
+
+@media (max-width: 580px) {
+  .entity-detail-section-toggle span { display: block; }
+  .entity-detail-section-toggle small { display: block; margin-top: 3px; text-align: left; }
+}
+
+/* Watchlist */
+.watchlist-toggle-button[aria-pressed="true"] { box-shadow: 0 0 0 2px #9ed0bd24; }
+.watchlist-panel { display: flex; flex-direction: column; gap: 5px; }
+.watchlist-panel article {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px;
+  align-items: stretch;
+  border: 1px solid #2e4047;
+  border-radius: 5px;
+  background: #17242a;
+}
+.watchlist-panel article.active { border-color: #6f927f; background: #20342e; }
+.watchlist-row-main {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: #bccbd0;
+  padding: 8px;
+  text-align: left;
+}
+.watchlist-row-main > span { min-width: 0; flex: 1; }
+.watchlist-row-main strong { display: block; font: 8px monospace; color: #e0e8ea; }
+.watchlist-row-main small { display: block; margin-top: 3px; overflow-wrap: anywhere; font-size: 6px; line-height: 1.45; color: #8398a1; }
+.watchlist-row-main em { flex-shrink: 0; }
+.watchlist-remove {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  border: 0;
+  border-left: 1px solid #2e4047;
+  border-radius: 0 5px 5px 0;
+  background: transparent;
+  color: #94a8b0;
+}
+.watchlist-remove:hover { background: #2e1f23; color: #ef9aa3; }
+.watchlist-panel > p { margin: 9px 0; font-size: 7px; line-height: 1.6; color: #71858e; }
+.watch-notification-anchor { position: relative; }
+.watch-notification-trigger {
+  position: relative;
+  width: 32px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #34454c;
+  border-radius: 5px;
+  background: #172228;
+  color: #93a6ad;
+}
+.watch-notification-trigger.active { border-color: #715d33; color: #efd27e; background: #27251b; }
+.watch-notification-trigger b {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  min-width: 15px;
+  height: 15px;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+  border: 1px solid #2b1f10;
+  border-radius: 8px;
+  background: #d8bc6a;
+  color: #1d1b12;
+  font: 8px monospace;
+}
+.watch-notification-panel {
+  position: absolute;
+  right: 0;
+  top: 38px;
+  z-index: 60;
+  width: 340px;
+  border: 1px solid #3c4f57;
+  border-radius: 7px;
+  background: #121e24f7;
+  box-shadow: 0 15px 40px #0009;
+  overflow: hidden;
+}
+.watch-notification-panel header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  border-bottom: 1px solid #2d3e45;
+}
+.watch-notification-panel header span,
+.watch-notification-panel header button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b9c8cd;
+  font-size: 8px;
+}
+.watch-notification-panel header button {
+  border: 0;
+  background: transparent;
+  color: #a9cabc;
+}
+.watch-notification-panel header button:disabled { opacity: .45; cursor: default; }
+.watch-notification-panel > div {
+  max-height: 350px;
+  overflow: auto;
+  padding: 6px;
+}
+.watch-notification-panel > div > button {
+  width: 100%;
+  display: block;
+  margin-bottom: 5px;
+  padding: 8px;
+  border: 1px solid #2f424a;
+  border-left-width: 3px;
+  border-radius: 5px;
+  background: #17242a;
+  color: #c6d2d7;
+  text-align: left;
+}
+.watch-notification-panel > div > button.read { opacity: .68; }
+.watch-notification-panel > div > button.severity-warning { border-left-color: #d0b24d; }
+.watch-notification-panel > div > button.severity-critical { border-left-color: #dc515b; }
+.watch-notification-panel > div > button span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.watch-notification-panel strong { font: 8px monospace; color: #e0e8ea; }
+.watch-notification-panel small { font-size: 6px; color: #7d919a; }
+.watch-notification-panel p { margin: 5px 0 0; font-size: 7px; line-height: 1.5; color: #aebdc3; }
+.watch-notification-panel > div > p { margin: 12px; text-align: center; color: #82959e; }
+
+@media (max-width: 800px) {
+  .watch-notification-panel { right: -42px; width: min(340px, calc(100vw - 16px)); }
+}

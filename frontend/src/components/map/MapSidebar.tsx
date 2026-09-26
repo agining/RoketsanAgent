@@ -1,9 +1,10 @@
-import { ChevronLeft, ChevronRight, Filter, Layers3, MapPin, Radar, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, Filter, Layers3, MapPin, Radar, Search, Trash2 } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useMemo } from 'react';
 import type { AnalysisData, AnalysisEntity, AnalysisVehicle, RiskLevel } from '../../types/analysis';
 import { useTrackingStore, type MapLayer } from '../../store/tracking';
 import { usePlaybackStore } from '../../store/playback';
+import { useWatchlistStore } from '../../store/watchlist';
 import { clockSeconds } from '../../services/analysis-playback';
 import { formatAllOption, formatMeters, formatPercent, formatRiskLevel, formatScenario, formatVehicleClass } from '../../services/formatters';
 
@@ -48,10 +49,14 @@ export function MapSidebar({ analysis, filters, setFilters, open, setOpen, onSel
 }) {
   const layers = useTrackingStore(state => state.layers);
   const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
+  const watchIds = useWatchlistStore(state => state.trackIds);
+  const removeWatch = useWatchlistStore(state => state.remove);
   const vehicles = useMemo(() => [...new Set(analysis.entities.map(entity => entity.vehicle_class))].sort(), [analysis.entities]);
   const scenarios = useMemo(() => [...new Set(analysis.entities.map(entity => entity.scenario).filter((value): value is string => Boolean(value)))].sort(), [analysis.entities]);
   const matches = useMemo(() => analysis.entities.filter(entity => entityMatchesMapFilters(entity, filters))
     .sort((a, b) => riskRank[b.risk_level] - riskRank[a.risk_level] || a.track_id.localeCompare(b.track_id)), [analysis.entities, filters]);
+  const watched = useMemo(() => watchIds.map(trackId => analysis.entities.find(entity => entity.track_id === trackId)).filter((entity): entity is AnalysisEntity => Boolean(entity))
+    .sort((a, b) => riskRank[b.risk_level] - riskRank[a.risk_level] || a.track_id.localeCompare(b.track_id)), [analysis.entities, watchIds]);
   const untracked = useMemo(() => [...analysis.untracked].sort((a, b) => riskRank[b.risk_level] - riskRank[a.risk_level] || a.capture_time.localeCompare(b.capture_time)), [analysis.untracked]);
   const update = <K extends keyof MapFilterState>(key: K, value: MapFilterState[K]) => setFilters(current => ({ ...current, [key]: value }));
   if (!open) return <button className="map-sidebar-rail" aria-label="Harita panelini aç" title="Harita panelini aç" onClick={() => setOpen(true)}><Layers3 size={17} /><ChevronRight size={14} /></button>;
@@ -71,6 +76,7 @@ export function MapSidebar({ analysis, filters, setFilters, open, setOpen, onSel
         <div className="map-filter-result"><span>{matches.length} / {analysis.entities.length} iz görünür</span><button onClick={() => setFilters(initialMapFilters)}>Temizle</button></div>
         <div className="map-track-shortlist">{matches.slice(0, 8).map(entity => <button className={selectedTrackId === entity.track_id ? 'active' : ''} key={entity.track_id} onClick={() => onSelectTrack(entity.track_id)}><span><strong>{entity.track_id}</strong><small>{formatVehicleClass(entity.vehicle_class)} · {entity.zone ?? 'Bölge yok'}{entity.scenario ? ` · ${formatScenario(entity.scenario)}` : ''}</small></span><em className={`entity-risk risk-${entity.risk_level.toLowerCase()}`}>{formatRiskLevel(entity.risk_level)}</em></button>)}{!matches.length && <p>Bu filtrelerle eşleşen iz yok.</p>}</div>
       </section>
+      <section><h2><Eye size={12} />İzleme Listesi <b>{watched.length}</b></h2><div className="watchlist-panel">{watched.map(entity => <article key={entity.track_id} className={selectedTrackId === entity.track_id ? 'active' : ''}><button className="watchlist-row-main" onClick={() => onSelectTrack(entity.track_id)}><span><strong>{entity.track_id}</strong><small>{formatVehicleClass(entity.vehicle_class)} · {entity.scenario ? formatScenario(entity.scenario) : 'Durum yok'}</small><small>{entity.zone ?? 'Bölge yok'} · üsse {formatMeters(entity.distance_to_base_m)} · {entity.last_seen}</small></span><em className={`entity-risk risk-${entity.risk_level.toLowerCase()}`}>{formatRiskLevel(entity.risk_level)}</em></button><button className="watchlist-remove" aria-label={`${entity.track_id} izleme listesinden çıkar`} title="İzlemeden çıkar" onClick={() => removeWatch(entity.track_id)}><Trash2 size={12} /></button></article>)}{!watched.length && <p>İzleme listesi boş. Sağ panelden bir aracı izlemeye al.</p>}</div></section>
       <section><h2><MapPin size={12} />Bölgeler</h2><div className="map-zone-list">{analysis.zones.map(zone => <button key={zone.name} onClick={() => useTrackingStore.getState().requestView('zone', zone.name)}><span>{zone.name}</span><ChevronRight size={12} /></button>)}</div></section>
       <section><h2><Radar size={12} />İzsiz tespitler <b>{analysis.untracked.length}</b></h2><div className="map-untracked-list">{untracked.map(item => <article key={item.vehicle_id} role="button" tabIndex={0} aria-label={`${item.vehicle_id} tespitine git`} onClick={() => focusDetection(item)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); focusDetection(item); } }}><strong>{formatVehicleClass(item.label)} <em className={`entity-risk risk-${item.risk_level.toLowerCase()}`}>{formatRiskLevel(item.risk_level)}</em></strong><time>{item.capture_time}</time><span>{item.zone} · {item.frame_id}</span><small>{item.filtered ? 'Düşük güven — risk hesabına katılmadı · ' : ''}{formatPercent(item.confidence)} tespit güveni · üsse {formatMeters(item.distance_to_base_m)}</small></article>)}{!untracked.length && <p>İzsiz tespit yok.</p>}</div></section>
     </div>

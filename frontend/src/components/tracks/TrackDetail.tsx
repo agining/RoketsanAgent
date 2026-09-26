@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, BrainCircuit, Clock3, Crosshair, Focus, LoaderCircle, PanelRightClose, Route, ShieldAlert, ShieldCheck, X } from 'lucide-react';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { AlertTriangle, BrainCircuit, ChevronDown, Clock3, Crosshair, Focus, LoaderCircle, PanelRightClose, Route, Search, ShieldAlert, ShieldCheck, X } from 'lucide-react';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { AnalysisData, AnalysisEntity, AnalysisVehicle } from '../../types/analysis';
 import { toRiskLevel } from '../../types/analysis';
@@ -8,6 +8,7 @@ import { api } from '../../services/api';
 import { useTrackingStore } from '../../store/tracking';
 import { useWorkspaceStore } from '../../store/workspace';
 import { usePlaybackStore } from '../../store/playback';
+import { useWatchlistStore } from '../../store/watchlist';
 import { clockSeconds, distanceAtTime, formatClock, positionAtTime, reportsUntil } from '../../services/analysis-playback';
 import {
   formatCheckKey, formatCheckValue, formatDecisionStatus, formatDegrees, formatDistTrend, formatEpoch, formatMeters, formatMinutes,
@@ -18,8 +19,28 @@ import { Button } from '../ui/button';
 import { ReportVerdictBadge } from '../reports/ReportVerdictBadge';
 import { ReviewCard } from '../review/ReviewCard';
 
-function DetailSection({ title, meta, children }: { title: string; meta?: string; children: React.ReactNode }) {
-  return <section className="entity-detail-section"><header><h2>{title}</h2>{meta && <span>{meta}</span>}</header>{children}</section>;
+const detailFontOptions = [
+  { key: 'normal', label: 'Varsayılan' },
+  { key: 'large', label: 'Büyük' },
+  { key: 'xlarge', label: 'Çok büyük' },
+] as const;
+type DetailFontSize = typeof detailFontOptions[number]['key'];
+
+function nextDetailFontSize(current: DetailFontSize): DetailFontSize {
+  const index = detailFontOptions.findIndex(option => option.key === current);
+  return detailFontOptions[(index + 1) % detailFontOptions.length].key;
+}
+
+function DetailSection({ title, meta, children, defaultOpen = true }: { title: string; meta?: string; children: React.ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const panelId = useId();
+  return <section className={`entity-detail-section ${open ? 'open' : 'collapsed'}`}>
+    <button className="entity-detail-section-toggle" type="button" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen(current => !current)}>
+      <ChevronDown size={14} aria-hidden="true" />
+      <span><h2>{title}</h2>{meta && <small>{meta}</small>}</span>
+    </button>
+    {open && <div id={panelId} className="entity-detail-section-body">{children}</div>}
+  </section>;
 }
 
 function Grid({ rows }: { rows: Array<[string, string]> }) {
@@ -88,10 +109,15 @@ function AssessmentSection({ analysis, entity, onChanged }: { analysis: Analysis
 }
 
 export function TrackDetail({ analysis, entity, playbackTime, onChanged }: { analysis: AnalysisData; entity: AnalysisEntity; playbackTime?: number; onChanged: () => void }) {
+  const [detailFontSize, setDetailFontSize] = useState<DetailFontSize>(() => {
+    if (typeof window === 'undefined') return 'normal';
+    const stored = window.localStorage.getItem('track-detail-font-size');
+    return detailFontOptions.some(option => option.key === stored) ? stored as DetailFontSize : 'normal';
+  });
   const select = useTrackingStore(state => state.selectTrack);
-  const follow = useTrackingStore(state => state.followVehicle);
-  const setFollow = useTrackingStore(state => state.setFollowVehicle);
   const requestView = useTrackingStore(state => state.requestView);
+  const watching = useWatchlistStore(state => state.trackIds.includes(entity.track_id));
+  const toggleWatch = useWatchlistStore(state => state.toggle);
   const analyst = useWorkspaceStore(state => state.analyst);
   const apiTrack = useApiTrack(entity.track_id, analysis.generated_at);
   const time = playbackTime ?? clockSeconds(entity.last_seen);
@@ -107,12 +133,14 @@ export function TrackDetail({ analysis, entity, playbackTime, onChanged }: { ana
   const currentDistance = distanceAtTime(distancePoints, time);
   const minimumDistance = distancePoints.length ? Math.min(...distancePoints.map(point => point.dist_to_base_m)) : null;
   const riskClass = entity.risk_level.toLowerCase();
+  const detailFontLabel = detailFontOptions.find(option => option.key === detailFontSize)?.label ?? 'Varsayılan';
+  useEffect(() => { window.localStorage.setItem('track-detail-font-size', detailFontSize); }, [detailFontSize]);
 
-  return <aside className="vehicle-details entity-track-detail" aria-label="Araç detayları">
-    <div className="details-heading"><span className="section-eyebrow">İZ DETAYI</span><span className="entity-detail-heading-actions"><Button variant="ghost" size="icon" aria-label="Detay panelini daralt" onClick={() => useWorkspaceStore.getState().toggleInspector()}><PanelRightClose size={15} /></Button><Button variant="ghost" size="icon" aria-label="İz seçimini temizle" onClick={() => select(null)}><X size={16} /></Button></span></div>
+  return <aside className={`vehicle-details entity-track-detail detail-font-${detailFontSize}`} aria-label="Araç detayları">
+    <div className="details-heading"><span className="section-eyebrow">İZ DETAYI</span><span className="entity-detail-heading-actions"><Button variant="ghost" size="icon" className="detail-font-cycle" aria-label={`Yazı boyutu: ${detailFontLabel}. Değiştirmek için tıkla`} title={`Yazı boyutu: ${detailFontLabel}`} onClick={() => setDetailFontSize(current => nextDetailFontSize(current))}><Search size={15} /></Button><Button variant="ghost" size="icon" aria-label="Detay panelini daralt" onClick={() => useWorkspaceStore.getState().toggleInspector()}><PanelRightClose size={15} /></Button><Button variant="ghost" size="icon" aria-label="İz seçimini temizle" onClick={() => select(null)}><X size={16} /></Button></span></div>
     <div className="entity-detail-title"><span><Route size={18} /></span><div><small>{formatClock(time)} · {formatSource(entity.source)}</small><strong>{entity.track_id}</strong><em>{formatVehicleClass(entity.vehicle_class)}{position?.stale ? ' · son bilinen konum' : ''}</em></div><span className={`entity-risk risk-${riskClass}`}>{formatRiskLevel(entity.risk_level)}</span></div>
     <div className="vehicle-actions">
-      <Button variant={follow ? 'default' : 'outline'} aria-pressed={follow} onClick={() => setFollow(!follow)}><Crosshair size={13} />Takip et</Button>
+      <Button className="watchlist-toggle-button" variant={watching ? 'default' : 'outline'} aria-pressed={watching} title={watching ? 'İzlemeden çıkar' : 'İzlemeye al'} onClick={() => toggleWatch(entity.track_id)}><Crosshair size={13} />{watching ? 'İzleniyor' : 'İzlemeye al'}</Button>
       <Button variant="outline" onClick={() => requestView('vehicle')}><Focus size={13} />Haritada odaklan</Button>
       {entity.observed_at && <Button variant="outline" onClick={() => { usePlaybackStore.getState().seek(clockSeconds(entity.observed_at!)); requestView('vehicle'); }}><Clock3 size={13} />Gözlem anına git ({entity.observed_at})</Button>}
     </div>
