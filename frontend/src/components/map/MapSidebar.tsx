@@ -9,8 +9,8 @@ import {
   Search,
   Trash2,
 } from 'lucide-react';
-import type { Dispatch, SetStateAction } from 'react';
-import { useMemo } from 'react';
+import type { Dispatch, PointerEvent as ReactPointerEvent, SetStateAction } from 'react';
+import { useMemo, useRef } from 'react';
 
 import type {
   AnalysisData,
@@ -23,6 +23,7 @@ import {
   useTrackingStore,
   type MapLayer,
 } from '../../store/tracking';
+import { usePanelLayoutStore } from '../../store/panelLayout';
 import { usePlaybackStore } from '../../store/playback';
 import { useWatchlistStore } from '../../store/watchlist';
 
@@ -130,6 +131,8 @@ const riskOption = (value: RiskLevel | 'ALL') =>
     ? formatAllOption()
     : formatRiskLevel(value);
 
+const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+
 const riskRank: Record<RiskLevel, number> = {
   CRITICAL: 4,
   HIGH: 3,
@@ -167,6 +170,10 @@ export function MapSidebar({
   setOpen: (open: boolean) => void;
   onSelectTrack: (trackId: string) => void;
 }) {
+  const panelRef = useRef<HTMLElement | null>(null);
+  const sidebarLayout = usePanelLayoutStore(state => state.sidebar);
+  const setSidebarPosition = usePanelLayoutStore(state => state.setSidebarPosition);
+  const setSidebarWidth = usePanelLayoutStore(state => state.setSidebarWidth);
   const layers = useTrackingStore(
     state => state.layers,
   );
@@ -281,6 +288,57 @@ export function MapSidebar({
     }));
   };
 
+  const startDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('button,input,select,textarea,a,label')) return;
+    const panel = panelRef.current;
+    const parent = panel?.parentElement;
+    if (!panel || !parent) return;
+    event.preventDefault();
+    const parentRect = parent.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startLeft = sidebarLayout.x;
+    const startTop = sidebarLayout.y;
+    const width = panel.offsetWidth;
+    const height = panel.offsetHeight;
+    const move = (moveEvent: PointerEvent) => {
+      const maxX = Math.max(8, parentRect.width - width - 8);
+      const maxY = Math.max(8, parentRect.height - Math.min(height, 120));
+      setSidebarPosition(
+        clamp(startLeft + moveEvent.clientX - startX, 8, maxX),
+        clamp(startTop + moveEvent.clientY - startY, 8, maxY),
+      );
+    };
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop, { once: true });
+  };
+
+  const startResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const panel = panelRef.current;
+    const parent = panel?.parentElement;
+    if (!panel || !parent) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const parentRect = parent.getBoundingClientRect();
+    const startX = event.clientX;
+    const startWidth = sidebarLayout.width;
+    const move = (moveEvent: PointerEvent) => {
+      const maxWidth = Math.max(230, parentRect.width - sidebarLayout.x - 16);
+      setSidebarWidth(clamp(startWidth + moveEvent.clientX - startX, 230, Math.min(420, maxWidth)));
+    };
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop, { once: true });
+  };
+
   if (!open) {
     return (
       <button
@@ -297,10 +355,12 @@ export function MapSidebar({
 
   return (
     <aside
+      ref={panelRef}
       className="map-sidebar"
       aria-label="Harita paneli"
+      style={{ left: sidebarLayout.x, top: sidebarLayout.y, width: sidebarLayout.width }}
     >
-      <header>
+      <header onPointerDown={startDrag}>
         <span>
           <Layers3 size={15} />
           <strong>Harita Paneli</strong>
@@ -314,6 +374,7 @@ export function MapSidebar({
           <ChevronLeft size={16} />
         </button>
       </header>
+      <div className="panel-resize-handle right-edge" role="separator" aria-orientation="vertical" aria-label="Harita paneli genişliği" onPointerDown={startResize} />
 
       <div className="map-sidebar-scroll">
         <section>

@@ -34,6 +34,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from pydantic import BaseModel, Field
 
 from .config import RISK_ORDER, settings
+from .answer_formatting import clean_markdown
 from .risk import __doc__ as RISK_POLICY_DOC
 from .risk import max_risk
 from .steps import TraceBuilder, agent_trace, pipeline_steps, steps_as_reasoning
@@ -136,6 +137,25 @@ KURALLAR
    canlı gösterilir; kısa ve somut tut.
 9. FrameAssessment.reasoning_steps alanını dört adım için sırayla doldur (tespit, konumlandirma, hareket,
    risk); her adımda bulguyu ve dayandığın kimlikleri yaz.
+
+SERBEST SOHBET ÇIKTI KURALLARI
+1. Önce soru tipini seç: tek araç, karşılaştırma, risk özeti, bölge özeti, rapor değerlendirmesi, "neden",
+   "ne yapmalıyım", genel durum, takip/iz geçmişi, belirsizlik/veri kalitesi veya serbest soru.
+2. Yanıta doğrudan 1-3 cümlelik sonuçla başla. Gerekirse sonra ayrıntı ekle.
+3. Her soruya aynı şablonu uygulama. Uygunsa ##/### başlık, kısa maddeler, numaralı eylem listesi veya kısa
+   düz metin kullan. Tabloyu yalnızca 2+ kaydı satır/sütun olarak karşılaştırmak anlamlıysa kullan.
+4. Boş ya da eksik değerleri yazma: None, null, undefined, NaN, boş parantez, boş köşeli parantez, boş kalın
+   metin, art arda ayraç veya anlamsız tablo satırı görünmemeli. Bilgi gerçekten önemliyse doğal ifade kullan:
+   "mevcut veride yok", "görsel teyit yok" gibi.
+5. Kimlik gösterirken fallback kullan: track_id varsa onu, yoksa vehicle_id, o da yoksa "Bilinmeyen iz".
+   Ama her eksik alan için "Bilinmiyor" yazma; gereksiz alanı çıkar.
+6. Riskleri kullanıcıya DÜŞÜK, ORTA, YÜKSEK, KRİTİK olarak göster. Motor/LLM/analist kararlarını karıştırma;
+   gerekiyorsa "Motor değerlendirmesi", "Ajan/LLM değerlendirmesi", "Analist kararı", "Nihai risk" diye ayır.
+7. Sayıları okunabilir yaz: metre tam veya anlamlı yuvarlanmış, süre 1 ondalık, yüzde %91,3 biçiminde, açı 125,6°.
+8. Aynı bilgiyi tekrarlama. En fazla 5-6 kritik madde ver; düşük değerli ayrıntıları çıkar.
+9. Belirsizliği kesin hüküm gibi yazma: "mevcut verilere göre", "muhtemelen", "rapor kısmen uyumlu",
+   "bu veri tek başına yeterli değil" gibi ifadeler kullan.
+10. Kullanıcı istemedikçe raw JSON, property adı, enum adı, tool adı, cache/prompt/token bilgisi gösterme.
 """
 
 
@@ -298,7 +318,8 @@ def _assess_prompt(frame_id: str) -> str:
 def _last_answer(msgs) -> str:
     for m in reversed(msgs):
         if m.type == "ai" and not m.tool_calls:
-            return m.text if isinstance(m.text, str) else m.content
+            text = m.text if isinstance(m.text, str) else m.content
+            return clean_markdown(text)
     return ""
 
 

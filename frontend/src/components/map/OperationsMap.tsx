@@ -149,6 +149,32 @@ function mapView(map: LibreMap, mode: '2d' | '3d', duration = 350) {
   map.easeTo({ pitch: mode === '3d' ? 58 : 0, bearing: mode === '3d' ? -28 : 0, duration });
 }
 
+type MapInteractionExtensions = LibreMap & {
+  setMaxPitch?: (pitch: number) => void;
+  touchPitch?: { enable: () => void; disable: () => void };
+  touchZoomRotate?: { enable: () => void; enableRotation?: () => void; disableRotation?: () => void };
+};
+
+function configureMapInteractions(map: LibreMap, mode: '2d' | '3d') {
+  const extended = map as MapInteractionExtensions;
+  map.dragPan.enable();
+  map.scrollZoom.enable();
+  map.doubleClickZoom.enable();
+  map.boxZoom.enable();
+  map.keyboard.enable();
+  extended.touchZoomRotate?.enable();
+  extended.setMaxPitch?.(70);
+  if (mode === '3d') {
+    map.dragRotate.enable();
+    extended.touchZoomRotate?.enableRotation?.();
+    extended.touchPitch?.enable();
+  } else {
+    map.dragRotate.disable();
+    extended.touchZoomRotate?.disableRotation?.();
+    extended.touchPitch?.disable();
+  }
+}
+
 export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
   const container = useRef<HTMLDivElement>(null);
   const shell = useRef<HTMLDivElement>(null);
@@ -171,7 +197,26 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     mapRef.current = map;
     map.once('style.load', () => applyMapTheme(map));
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
-    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
+    configureMapInteractions(map, '2d');
+    let mapGestureInProgress = false;
+    let gestureResetTimer: number | null = null;
+    const markGesture = () => {
+      if (gestureResetTimer !== null) window.clearTimeout(gestureResetTimer);
+      gestureResetTimer = null;
+      mapGestureInProgress = true;
+    };
+    const releaseGesture = () => {
+      if (gestureResetTimer !== null) window.clearTimeout(gestureResetTimer);
+      gestureResetTimer = window.setTimeout(() => { mapGestureInProgress = false; gestureResetTimer = null; }, 90);
+    };
+    const gestureEvents = map as unknown as { on: (type: string, listener: () => void) => void; off: (type: string, listener: () => void) => void };
+    gestureEvents.on('dragstart', markGesture);
+    gestureEvents.on('dragend', releaseGesture);
+    gestureEvents.on('rotatestart', markGesture);
+    gestureEvents.on('rotateend', releaseGesture);
+    gestureEvents.on('pitchstart', markGesture);
+    gestureEvents.on('pitchend', releaseGesture);
 
     const markers: Marker[] = [];
     const trackMarkers = new Map<string, Marker>();
@@ -311,7 +356,12 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       button.addEventListener('focus', show);
       button.addEventListener('mouseleave', hidePopup);
       button.addEventListener('blur', hidePopup);
-      button.addEventListener('click', event => { event.stopPropagation(); show(); onSelectTrack(entity.track_id); });
+      button.addEventListener('click', event => {
+        event.stopPropagation();
+        if (mapGestureInProgress) return;
+        show();
+        onSelectTrack(entity.track_id);
+      });
       const marker = new maplibregl.Marker({ element: button }).setLngLat([initial.lon, initial.lat]).addTo(map);
       trackMarkers.set(entity.track_id, marker);
       markers.push(marker);
@@ -334,7 +384,11 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       button.addEventListener('focus', show);
       button.addEventListener('mouseleave', hidePopup);
       button.addEventListener('blur', hidePopup);
-      button.addEventListener('click', event => { event.stopPropagation(); show(); });
+      button.addEventListener('click', event => {
+        event.stopPropagation();
+        if (mapGestureInProgress) return;
+        show();
+      });
       const marker = new maplibregl.Marker({ element: button }).setLngLat(coordinates).addTo(map);
       untrackedMarkers.set(String(index), marker);
       markers.push(marker);
@@ -389,6 +443,13 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       unsubscribePlayback();
       map.off('zoom', applyZoomDetail);
       map.off('moveend', saveCamera);
+      gestureEvents.off('dragstart', markGesture);
+      gestureEvents.off('dragend', releaseGesture);
+      gestureEvents.off('rotatestart', markGesture);
+      gestureEvents.off('rotateend', releaseGesture);
+      gestureEvents.off('pitchstart', markGesture);
+      gestureEvents.off('pitchend', releaseGesture);
+      if (gestureResetTimer !== null) window.clearTimeout(gestureResetTimer);
       observer.disconnect();
       popup.remove();
       markers.forEach(marker => marker.remove());
@@ -426,6 +487,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
   const setMapMode = (mode: '2d' | '3d') => {
     setViewMode(mode);
     if (!mapRef.current) return;
+    configureMapInteractions(mapRef.current, mode);
     mapView(mapRef.current, mode);
     if (mapRef.current.getLayer('operational-3d-buildings')) mapRef.current.setLayoutProperty('operational-3d-buildings', 'visibility', mode === '3d' ? 'visible' : 'none');
   };

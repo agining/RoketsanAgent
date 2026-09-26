@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -8,14 +8,15 @@ import {
   Clock3,
   Crosshair,
   FileDown,
+  HelpCircle,
   LoaderCircle,
-  Moon,
-  Sun,
+  Settings,
   RefreshCw,
   Search,
   UserCheck,
   Volume2,
   VolumeX,
+  X,
 } from 'lucide-react';
 
 import { OperationsMap } from './components/map/OperationsMap';
@@ -37,17 +38,26 @@ import { useVoiceAlerts } from './hooks/useVoiceAlerts';
 
 import { api, API_BASE_URL, apiUrl } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
+import { formatScenario, formatVehicleClass } from './services/formatters';
 import { startPlaybackClock } from './services/playback-clock';
 
 import type { AnalysisData } from './types/analysis';
 
 import { usePlaybackStore } from './store/playback';
+import { usePanelLayoutStore } from './store/panelLayout';
+import {
+  useSettingsStore,
+  type FontScale,
+  type ThemeMode,
+} from './store/settings';
+import { useTimelineStore } from './store/timeline';
 import { useTrackingStore } from './store/tracking';
 import { useVoiceAlertsStore } from './store/voiceAlerts';
 import { useWatchlistStore } from './store/watchlist';
 import { useWorkspaceStore } from './store/workspace';
 
 import hisarLogo from '@/assets/hisar-logo.png';
+import { HelpPanel } from './components/help/HelpPanel';
 
 function formatTimestamp(value: string) {
   const date = new Date(value);
@@ -101,27 +111,146 @@ function InitialState({
   );
 }
 
+const themeOptions: { value: ThemeMode; label: string }[] = [
+  { value: 'light', label: 'Açık' },
+  { value: 'dark', label: 'Koyu' },
+  { value: 'system', label: 'Sistem' },
+];
+
+const fontScaleOptions: { value: FontScale; label: string }[] = [
+  { value: 0.85, label: 'Küçük' },
+  { value: 1, label: 'Normal' },
+  { value: 1.15, label: 'Büyük' },
+  { value: 1.3, label: 'Çok büyük' },
+];
+
+function SettingsPanel({
+  open,
+  onClose,
+  togglingReview,
+  humanReviewDisabled,
+  onToggleHumanReview,
+}: {
+  open: boolean;
+  onClose: () => void;
+  togglingReview: boolean;
+  humanReviewDisabled: boolean;
+  onToggleHumanReview: () => void;
+}) {
+  const themeMode = useSettingsStore(state => state.themeMode);
+  const setThemeMode = useSettingsStore(state => state.setThemeMode);
+  const fontScale = useSettingsStore(state => state.fontScale);
+  const setFontScale = useSettingsStore(state => state.setFontScale);
+  const humanReview = useSettingsStore(state => state.humanReview);
+
+  if (!open) return null;
+
+  return (
+    <section className="settings-panel" aria-label="Ayarlar paneli">
+      <header>
+        <span>
+          <Settings size={14} />
+          Ayarlar
+        </span>
+
+        <button type="button" aria-label="Ayarlar panelini kapat" onClick={onClose}>
+          <X size={14} />
+        </button>
+      </header>
+
+      <div className="settings-panel-body">
+        <section>
+          <h2>Görünüm</h2>
+
+          <div className="settings-field">
+            <span>Tema</span>
+
+            <div className="settings-segmented" role="radiogroup" aria-label="Tema seçimi">
+              {themeOptions.map(option => (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={themeMode === option.value}
+                  onClick={() => setThemeMode(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="settings-field">
+            <span>Yazı boyutu</span>
+
+            <div className="settings-segmented" role="radiogroup" aria-label="Yazı boyutu">
+              {fontScaleOptions.map(option => (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={fontScale === option.value}
+                  onClick={() => setFontScale(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Operasyon</h2>
+
+          <button
+            className={`settings-switch ${humanReview ? 'on' : ''}`}
+            type="button"
+            role="switch"
+            aria-checked={humanReview}
+            disabled={humanReviewDisabled || togglingReview}
+            onClick={onToggleHumanReview}
+          >
+            <span>
+              <b>Son söz insanda</b>
+              <small>Motor ile LLM ayrışırsa karar analist onayına düşer.</small>
+            </span>
+
+            {togglingReview ? <LoaderCircle size={14} className="spinning" /> : <i />}
+          </button>
+        </section>
+      </div>
+    </section>
+  );
+}
+
 export default function App() {
   const analysis = useAnalysis();
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    try { return localStorage.getItem('hisar-theme') === 'light' ? 'light' : 'dark'; }
-    catch { return 'dark'; }
-  });
+  const themeMode = useSettingsStore(state => state.themeMode);
+  const setThemeMode = useSettingsStore(state => state.setThemeMode);
+  const fontScale = useSettingsStore(state => state.fontScale);
+  const humanReview = useSettingsStore(state => state.humanReview);
+  const setHumanReview = useSettingsStore(state => state.setHumanReview);
   useLayoutEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    try { localStorage.setItem('hisar-theme', theme); } catch { /* Private storage may be unavailable. */ }
-  }, [theme]);
-  const themeToggle = (
-    <button className="theme-toggle" type="button" aria-label={theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'}
-      title={theme === 'dark' ? 'Açık tema' : 'Koyu tema'} aria-pressed={theme === 'light'}
-      onClick={() => setTheme(current => current === 'dark' ? 'light' : 'dark')}>
-      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-    </button>
-  );
+    const resolve = () => themeMode === 'system'
+      ? window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+      : themeMode;
+    const apply = () => {
+      const next = resolve();
+      document.documentElement.dataset.theme = next;
+      document.documentElement.dataset.themeMode = themeMode;
+      document.documentElement.style.setProperty('--ui-font-scale', String(fontScale));
+      try { localStorage.setItem('hisar-theme', next); } catch { /* Private storage may be unavailable. */ }
+    };
+    apply();
+    if (themeMode !== 'system') return undefined;
+    const media = window.matchMedia('(prefers-color-scheme: light)');
+    media.addEventListener('change', apply);
+    return () => media.removeEventListener('change', apply);
+  }, [fontScale, themeMode]);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
-  const [sidebarOpen, setSidebarOpen] = useState(
-    () => typeof window !== 'undefined' && window.innerWidth >= 900,
-  );
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [bottomOpen, setBottomOpen] = useState(false);
   const [filters, setFilters] =
     useState<MapFilterState>(initialMapFilters);
@@ -129,6 +258,12 @@ export default function App() {
   const [togglingReview, setTogglingReview] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+  const [trackSearch, setTrackSearch] = useState('');
+  const [trackSearchOpen, setTrackSearchOpen] = useState(false);
+  const detailWidth = usePanelLayoutStore(state => state.detailWidth);
+  const setDetailWidth = usePanelLayoutStore(state => state.setDetailWidth);
+  const timelineCompact = useTimelineStore(state => state.compact);
 
   const selectedTrackId = useTrackingStore(
     state => state.selectedTrackId,
@@ -150,11 +285,31 @@ export default function App() {
     item => !item.read,
   ).length;
 
+  const startDetailResize = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const startX = event.clientX;
+    const startWidth = detailWidth;
+    const move = (moveEvent: PointerEvent) => setDetailWidth(startWidth + startX - moveEvent.clientX);
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop, { once: true });
+  };
+
   const playbackTime = usePlaybackStore(state =>
     Math.floor(state.currentTime),
   );
 
-  const data = analysis.data;
+  const rawData = analysis.data;
+  const data = useMemo(() => rawData ? {
+    ...rawData,
+    human_review: humanReview,
+    summary: { ...rawData.summary, human_review: humanReview },
+    reviews: { ...rawData.reviews, human_review: humanReview },
+  } : null, [humanReview, rawData]);
   useVoiceAlerts(data);
 
   const voiceAlertsEnabled = useVoiceAlertsStore(
@@ -180,6 +335,20 @@ export default function App() {
       ),
     [data, filters],
   );
+
+  const trackSearchResults = useMemo(() => {
+    const query = trackSearch.trim().toLocaleLowerCase('tr-TR');
+    if (!data || !query) return [];
+    return data.entities
+      .filter(entity => [
+        entity.track_id,
+        entity.vehicle?.vehicle_id ?? '',
+        entity.vehicle_class,
+        entity.zone ?? '',
+        entity.scenario ? formatScenario(entity.scenario) : '',
+      ].some(value => value.toLocaleLowerCase('tr-TR').includes(query)))
+      .slice(0, 8);
+  }, [data, trackSearch]);
 
   const selectedEntity =
     data?.entities.find(
@@ -231,16 +400,25 @@ export default function App() {
     useTrackingStore.getState().requestView('vehicle');
   }, []);
 
+  const chooseSearchResult = useCallback((trackId: string) => {
+    selectTrack(trackId);
+    setTrackSearchOpen(false);
+    setTrackSearch('');
+  }, [selectTrack]);
+
   const toggleHumanReview = async () => {
-    if (!data) return;
+    if (!rawData) return;
 
     setTogglingReview(true);
     setActionError(null);
+    const next = !humanReview;
+    setHumanReview(next);
 
     try {
-      await api.setHumanReview(!data.human_review);
+      await api.setHumanReview(next);
       analysis.reload();
     } catch (cause) {
+      setHumanReview(rawData.human_review);
       setActionError(
         cause instanceof Error
           ? cause.message
@@ -260,6 +438,10 @@ export default function App() {
       'noopener,noreferrer',
     );
   };
+
+  useEffect(() => {
+    if (rawData) setHumanReview(rawData.human_review);
+  }, [rawData, setHumanReview]);
 
   useEffect(() => {
     if (
@@ -285,6 +467,7 @@ export default function App() {
     const clearSelection = (event: KeyboardEvent) => {
       if (
         event.key === 'Escape' &&
+        !notificationsOpen &&
         !event.defaultPrevented
       ) {
         useTrackingStore.getState().selectTrack(null);
@@ -300,6 +483,27 @@ export default function App() {
       );
   }, []);
 
+  useEffect(() => {
+    if (!notificationsOpen) return undefined;
+
+    const closeOnOutside = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Node && notificationsRef.current?.contains(target)) return;
+      setNotificationsOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !event.defaultPrevented) setNotificationsOpen(false);
+    };
+
+    document.addEventListener('pointerdown', closeOnOutside);
+    document.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [notificationsOpen]);
+
   useEffect(() => startPlaybackClock(), []);
 
   if (!data) {
@@ -313,8 +517,34 @@ export default function App() {
               <small>OPERATIONS CENTER</small>
             </span>
           </div>
-          {themeToggle}
+          <button
+            className="settings-trigger"
+            type="button"
+            aria-label="Ayarları aç"
+            aria-expanded={settingsOpen}
+            onClick={() => setSettingsOpen(open => !open)}
+          >
+            <Settings size={16} />
+          </button>
+          <button
+            className="help-trigger"
+            type="button"
+            aria-label="Yardım"
+            title="Yardım"
+            aria-expanded={helpOpen}
+            onClick={() => setHelpOpen(open => !open)}
+          >
+            <HelpCircle size={16} />
+          </button>
         </header>
+        <SettingsPanel
+          open={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          togglingReview={togglingReview}
+          humanReviewDisabled
+          onToggleHumanReview={() => void toggleHumanReview()}
+        />
+        <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
 
         <InitialState
           error={
@@ -393,29 +623,6 @@ export default function App() {
           </span>
         </div>
 
-        <button
-          className={`human-review-toggle ${
-            data.human_review ? 'on' : ''
-          }`}
-          role="switch"
-          aria-checked={data.human_review}
-          disabled={togglingReview}
-          onClick={() => void toggleHumanReview()}
-          title="Açıkken motor ile LLM'in ayrıştığı kararlar analist onayına düşer"
-        >
-          {togglingReview ? (
-            <LoaderCircle
-              size={13}
-              className="spinning"
-            />
-          ) : (
-            <UserCheck size={13} />
-          )}
-
-          <span>Son söz insanda</span>
-          <i />
-        </button>
-
         <span
           className={`llm-badge ${
             data.summary.llm_enabled ? 'on' : ''
@@ -458,7 +665,7 @@ export default function App() {
           </span>
         </button>
 
-        <div className="watch-notification-anchor">
+        <div className="watch-notification-anchor" ref={notificationsRef}>
           <button
             className={`watch-notification-trigger ${
               unreadNotifications ? 'active' : ''
@@ -546,23 +753,47 @@ export default function App() {
           )}
         </div>
 
-        <button
-          className="map-top-search"
-          onClick={() => {
-            setSidebarOpen(true);
-
-            requestAnimationFrame(() =>
-              document
-                .querySelector<HTMLInputElement>(
-                  '[aria-label="Harita araç kayıtlarında ara"]',
-                )
-                ?.focus(),
-            );
-          }}
-        >
+        <div className="map-top-search" role="search">
           <Search size={13} />
-          <span>İz ara</span>
-        </button>
+          <input
+            aria-label="İz ara"
+            placeholder="İz ara"
+            value={trackSearch}
+            onChange={event => {
+              setTrackSearch(event.target.value);
+              setTrackSearchOpen(true);
+            }}
+            onFocus={() => setTrackSearchOpen(true)}
+            onBlur={() => window.setTimeout(() => setTrackSearchOpen(false), 120)}
+            onKeyDown={event => {
+              if (event.key === 'Enter' && trackSearchResults[0]) {
+                event.preventDefault();
+                chooseSearchResult(trackSearchResults[0].track_id);
+              }
+              if (event.key === 'Escape') {
+                setTrackSearchOpen(false);
+                event.currentTarget.blur();
+              }
+            }}
+          />
+          {trackSearchOpen && trackSearch.trim() && (
+            <div className="map-top-search-results" role="listbox">
+              {trackSearchResults.length ? trackSearchResults.map(entity => (
+                <button
+                  key={entity.track_id}
+                  type="button"
+                  role="option"
+                  onMouseDown={event => event.preventDefault()}
+                  onClick={() => chooseSearchResult(entity.track_id)}
+                >
+                  <strong>{entity.track_id}</strong>
+                  <span>{formatVehicleClass(entity.vehicle_class)} · {entity.zone ?? 'Bölge yok'}</span>
+                  <small>{entity.scenario ? formatScenario(entity.scenario) : 'Senaryo yok'}</small>
+                </button>
+              )) : <p>Sonuç yok.</p>}
+            </div>
+          )}
+        </div>
 
         <button
           className="pdf-report-download"
@@ -573,7 +804,26 @@ export default function App() {
           <span>PDF Raporu Al</span>
         </button>
 
-        {themeToggle}
+        <button
+          className="settings-trigger"
+          type="button"
+          aria-label="Ayarları aç"
+          aria-expanded={settingsOpen}
+          onClick={() => setSettingsOpen(open => !open)}
+        >
+          <Settings size={15} />
+        </button>
+
+        <button
+          className="help-trigger"
+          type="button"
+          aria-label="Yardım"
+          title="Yardım"
+          aria-expanded={helpOpen}
+          onClick={() => setHelpOpen(open => !open)}
+        >
+          <HelpCircle size={15} />
+        </button>
 
         <button
           className="map-refresh"
@@ -598,6 +848,15 @@ export default function App() {
         </button>
       </header>
 
+      <SettingsPanel
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        togglingReview={togglingReview}
+        humanReviewDisabled={!rawData}
+        onToggleHumanReview={() => void toggleHumanReview()}
+      />
+      <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+
       <main
         className={`map-first-workspace ${
           sidebarOpen ? 'sidebar-open' : ''
@@ -605,7 +864,8 @@ export default function App() {
           selectedEntity && inspectorOpen
             ? 'detail-open'
             : ''
-        }`}
+        } ${timelineCompact ? 'timeline-compact' : 'timeline-full'}`}
+        style={{ '--map-detail-width': `${detailWidth}px` } as CSSProperties}
       >
         <OperationsMap
           analysis={data}
@@ -624,6 +884,8 @@ export default function App() {
 
         <MapOverlays
           analysis={data}
+          filters={filters}
+          setFilters={setFilters}
           onSelectTrack={selectTrack}
           onChanged={analysis.reload}
           selectedFrameId={
@@ -659,7 +921,9 @@ export default function App() {
           <aside
             className="map-detail-drawer"
             aria-label={`${selectedEntity.track_id} araç detay paneli`}
+            style={{ width: `min(${detailWidth}px, 100vw)` }}
           >
+            <div className="panel-resize-handle left-edge" role="separator" aria-orientation="vertical" aria-label="Detay paneli genişliği" onPointerDown={startDetailResize} />
             <TrackDetail
               analysis={data}
               entity={selectedEntity}

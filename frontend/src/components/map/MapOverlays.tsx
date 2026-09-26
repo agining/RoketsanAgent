@@ -1,5 +1,5 @@
 import { Activity, Bot, BrainCircuit, ChevronRight, LoaderCircle, ShieldAlert, UserCheck, X } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import type { AnalysisAlert, AnalysisData, RiskLevel } from '../../types/analysis';
 import { api } from '../../services/api';
 import { clockSeconds } from '../../services/analysis-playback';
@@ -9,12 +9,15 @@ import { useTrackingStore } from '../../store/tracking';
 import { useWorkspaceStore } from '../../store/workspace';
 import { ReviewCard } from '../review/ReviewCard';
 import { AgentChat } from '../agent/AgentChat';
+import type { MapFilterState } from './MapSidebar';
 
 type Panel = 'summary' | 'priority' | 'reviews' | 'chat' | null;
 const levels = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'] as const satisfies readonly RiskLevel[];
+const riskOptions = ['ALL', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL', 'UNKNOWN'] as const;
 
-export function MapOverlays({ analysis, onSelectTrack, onChanged, selectedFrameId }: {
-  analysis: AnalysisData; onSelectTrack: (trackId: string) => void; onChanged: () => void; selectedFrameId: string | null;
+export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onChanged, selectedFrameId }: {
+  analysis: AnalysisData; filters: MapFilterState; setFilters: Dispatch<SetStateAction<MapFilterState>>;
+  onSelectTrack: (trackId: string) => void; onChanged: () => void; selectedFrameId: string | null;
 }) {
   const [panel, setPanel] = useState<Panel>(null);
   const [assessing, setAssessing] = useState(false);
@@ -23,7 +26,12 @@ export function MapOverlays({ analysis, onSelectTrack, onChanged, selectedFrameI
   const setAnalyst = useWorkspaceStore(state => state.setAnalyst);
   const summary = analysis.summary;
   const pending = analysis.reviews.items.filter(item => !item.review);
+  const vehicleOptions = useMemo(() => [...new Set(analysis.entities.map(entity => entity.vehicle_class))].sort(), [analysis.entities]);
+  const scenarioOptions = useMemo(() => [...new Set(analysis.entities.map(entity => entity.scenario).filter((value): value is string => Boolean(value)))].sort(), [analysis.entities]);
+  const zoneOptions = useMemo(() => [...new Set(analysis.entities.map(entity => entity.zone).filter((value): value is string => Boolean(value)))].sort(), [analysis.entities]);
+  const activeFilters = [filters.risk, filters.vehicleClass, filters.scenario, filters.zone].filter(value => value !== 'ALL').length;
   const toggle = (value: Panel) => setPanel(current => current === value ? null : value);
+  const updateFilter = <K extends keyof MapFilterState>(key: K, value: MapFilterState[K]) => setFilters(current => ({ ...current, [key]: value }));
 
   const openAlert = (alert: AnalysisAlert) => {
     usePlaybackStore.getState().seek(clockSeconds(alert.time));
@@ -39,6 +47,13 @@ export function MapOverlays({ analysis, onSelectTrack, onChanged, selectedFrameI
   };
 
   return <div className="map-floating-overlays">
+    <div className="map-quick-filters" aria-label="Hızlı harita filtreleri">
+      <label className={filters.risk !== 'ALL' ? 'active' : ''}><span>Risk</span><select aria-label="Risk filtresi" value={filters.risk} onChange={event => updateFilter('risk', event.target.value as MapFilterState['risk'])}>{riskOptions.map(option => <option key={option} value={option}>{option === 'ALL' ? 'Tümü' : formatRiskLevel(option)}</option>)}</select></label>
+      <label className={filters.vehicleClass !== 'ALL' ? 'active' : ''}><span>Araç</span><select aria-label="Araç filtresi" value={filters.vehicleClass} onChange={event => updateFilter('vehicleClass', event.target.value)}><option value="ALL">Tümü</option>{vehicleOptions.map(option => <option key={option} value={option}>{formatVehicleClass(option)}</option>)}</select></label>
+      <label className={filters.scenario !== 'ALL' ? 'active' : ''}><span>Senaryo</span><select aria-label="Senaryo filtresi" value={filters.scenario} onChange={event => updateFilter('scenario', event.target.value)}><option value="ALL">Tümü</option>{scenarioOptions.map(option => <option key={option} value={option}>{formatScenario(option)}</option>)}</select></label>
+      <label className={filters.zone !== 'ALL' ? 'active' : ''}><span>Bölge</span><select aria-label="Bölge filtresi" value={filters.zone} onChange={event => updateFilter('zone', event.target.value)}><option value="ALL">Tümü</option>{zoneOptions.map(option => <option key={option} value={option}>{option}</option>)}</select></label>
+      {activeFilters > 0 && <button type="button" onClick={() => setFilters(current => ({ ...current, risk: 'ALL', vehicleClass: 'ALL', scenario: 'ALL', zone: 'ALL' }))}>Temizle <b>{activeFilters}</b></button>}
+    </div>
     <div className="map-overlay-actions">
       <button aria-expanded={panel === 'summary'} onClick={() => toggle('summary')}><Activity size={14} />Operasyon Özeti</button>
       <button aria-expanded={panel === 'priority'} onClick={() => toggle('priority')}><ShieldAlert size={14} />Öncelikli Araçlar <b>{analysis.alerts.length}</b></button>
