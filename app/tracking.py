@@ -79,6 +79,12 @@ class TrackFeatures:
     angular_sweep_deg: float = 0.0   # üs etrafında taranan toplam açı
     dist_trend: str = ""             # "azaliyor" / "artiyor" / "once_azalip_sonra_artiyor" / "sabit"
     initial_wait_min: int = 0        # başlangıçtaki hareketsiz süre
+    # --- gidiş-dönüş / yakınlık öznitelikleri (hepsi t_ref'e kadar olan noktalardan; gelecek sızıntısı yok)
+    window_min: int = 0              # izin t_ref'e kadar kapsadığı süre
+    dist_min_time: str = ""          # üsse en yakın olunan an
+    approach_to_min_m: float = 0.0   # başlangıç − en yakın mesafe (dışarıdan ne kadar sokuldu)
+    retreat_from_min_m: float = 0.0  # şimdi − en yakın mesafe (en yakın noktadan ne kadar geri çekildi)
+    dwell_near_min_min: int = 0      # en yakın noktanın dwell_band_m bandında geçen süre
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -172,6 +178,10 @@ def compute_features(tr: Track, ds: Dataset, th: Thresholds, t_ref: int | None =
 
     initial_wait = stops[0].minutes if stops and stops[0].start == min_to_hhmm(pts[0].t) else 0
 
+    # en yakın nokta çevresinde geçen süre: iki ucu da bantta olan ardışık örnek aralıklarının toplamı
+    band = dists[i_min] + th.dwell_band_m
+    dwell = sum(b.t - a.t for a, b, da, db in zip(pts, pts[1:], dists, dists[1:]) if da <= band and db <= band)
+
     return TrackFeatures(
         track_id=tr.track_id, t_start=min_to_hhmm(pts[0].t), t_end=min_to_hhmm(now.t),
         dist_now_m=dists[-1], dist_start_m=dists[0], dist_min_m=min(dists), dist_max_m=max(dists),
@@ -184,6 +194,9 @@ def compute_features(tr: Track, ds: Dataset, th: Thresholds, t_ref: int | None =
         net_displacement_m=haversine_m(pts[0].lat, pts[0].lon, now.lat, now.lon),
         extent_m=extent, radius_cv=cv, angular_sweep_deg=sweep, dist_trend=trend,
         initial_wait_min=initial_wait,
+        window_min=now.t - pts[0].t, dist_min_time=min_to_hhmm(pts[i_min].t),
+        approach_to_min_m=dists[0] - dists[i_min], retreat_from_min_m=dists[-1] - dists[i_min],
+        dwell_near_min_min=dwell,
     )
 
 

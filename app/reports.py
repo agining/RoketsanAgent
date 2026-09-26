@@ -33,6 +33,10 @@ INJECTION_PATTERNS = [
 ]
 STATIONARY_WORDS = ["hareketsiz", "konuslanmis", "duruyor", "park halinde", "bekliyor", "sabit duruyor"]
 MOVING_WORDS = ["ilerliyor", "hareket halinde", "seyir halinde", "gidiyor", "geciyor", "hizla", "yaklasiyor"]
+# Devriye örüntüsü sayılan motor senaryoları (resmi dost teyidi bunlarda riski düşürebilir)
+PATROL_SCENARIOS = {"FRIENDLY_PATROL", "PATROL_FAR"}
+# İz yoksa, rapor saatindeki hareket durumunu senaryodan tahmin ederken "duruyor" sayılanlar
+STATIONARY_SCENARIOS = {"PARKED", "UNTRACKED", "STATIC_NEAR_BASE"}
 NORMAL_WORDS = ["hareketleri olagan", "olagan disi bir durum yok", "transit geciyor", "supheli bir durum yok"]
 
 
@@ -337,7 +341,7 @@ class ReportVerifier:
         spd = _speed_at(track, t) if track else None
         mv_before, mv_around = _motion_state(track, t, self.th.stop_radius_m) if track else (None, None)
         if mv_before is None and mv_around is None and veh:
-            mv_before = mv_around = scenario not in ("PARKED", "UNTRACKED")
+            mv_before = mv_around = scenario not in STATIONARY_SCENARIOS
         v.checks["konum"] = "uyumlu"
         v.checks["mesafe_m"] = round(min(x for x in (d_cap, d_rep) if x is not None), 1)
         v.checks["tip"] = self._type_check(p, label)
@@ -373,7 +377,7 @@ class ReportVerifier:
         if p.friendly_claim:
             confirmed = v.source == "official" and p.friendly_confirmed_wording
             v.checks["dost_iddiasi"] = "resmi teyitli" if confirmed else "teyitsiz (üçüncü taraf / teyit ifadesi yok)"
-            if confirmed and scenario == "FRIENDLY_PATROL":
+            if confirmed and scenario in PATROL_SCENARIOS:
                 v.verdict, v.report_type, v.affects_risk = "destekler", "DOST_TEYITLI", True
                 v.summary = (f"Resmi kaynak, kimlik teyitli dost devriye bildirimi; rapor saatinde {tid} izi ile "
                              f"~{v.checks['mesafe_m']} m içinde eşleşti ve iz sabit yarıçaplı devriye örüntüsünde. "

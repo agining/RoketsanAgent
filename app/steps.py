@@ -53,13 +53,19 @@ def pipeline_steps(state, frame_id: str) -> list[dict]:
     vs = [state.vehicles[v] for v in fr["vehicle_ids"]]
     det = [v for v in vs if v["source"] == "detection"]
     kept = [v for v in det if not v["filtered"]]
-    filt = [v for v in det if v["filtered"]]
+    dups = [v for v in det if v["scenario"] == "DUPLICATE_BOX"]
+    filt = [v for v in det if v["filtered"] and v["scenario"] != "DUPLICATE_BOX"]
+    lowc = [v for v in kept if v.get("low_conf_corroborated")]
     missed = [v for v in vs if v["source"] == "track_only"]
     active = [v for v in vs if not v["filtered"]]
 
     # ---- 01 Tespit
     by_label = Counter(v["label"] for v in kept)
     s1 = f"{len(det)} kutu → {len(kept)} araç kabul"
+    if dups:
+        s1 += f", {len(dups)} kopya kutu birleştirildi"
+    if lowc:
+        s1 += f", {len(lowc)} düşük güvenli kutu izle doğrulanıp kabul edildi"
     if filt:
         s1 += f", {len(filt)} düşük güvenli kutu elendi"
     if missed:
@@ -68,7 +74,9 @@ def pipeline_steps(state, frame_id: str) -> list[dict]:
         "detector": state.detector,
         "by_label": dict(by_label),
         "detections": [{"vehicle_id": v["vehicle_id"], "label": v["label"], "confidence": v["confidence"],
-                        "bbox": v["bbox"], "filtered": v["filtered"]} for v in det],
+                        "bbox": v["bbox"], "filtered": v["filtered"], "duplicate_of": v.get("duplicate_of"),
+                        "alt_labels": v.get("alt_labels") or [],
+                        "low_conf_corroborated": v.get("low_conf_corroborated", False)} for v in det],
         "missed_from_tracks": [{"vehicle_id": v["vehicle_id"], "track_id": v["track_id"]} for v in missed],
     })
 

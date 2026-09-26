@@ -2,10 +2,11 @@
 
 Nihai seviye nasıl belirlenir (her araç için):
   1) "Son söz insanda" AÇIK ve analist bu araç için karar verdiyse → analistin seviyesi
-  2) LLM değerlendirmesinde karar varsa → açıkken decision.review_level, kapalıyken decision.auto_level
-  3) Hiçbiri yoksa → motorun seviyesi
-Motor durumu (self.state) hiç değiştirilmez. Değerlendirmeler ham hâliyle saklanır; ayar değişince LLM yeniden
-çalışmaz, sadece present() sonucu değişir. Ayar ve analist kararları outputs/ altında kalıcıdır.
+  2) Fusion/adjudicator kararı varsa → decision.auto_level / review_level
+  3) Fusion yoksa ilk motor+LLM karar tablosu; o da yoksa motor seviyesi
+Deterministik motor state içinde korunur fakat fusion-v2'de nihai seviyenin zorunlu alt sınırı değildir. Böylece
+motorun false-positive/false-negative kararları ikinci aşamada iki yönlü düzeltilebilir. Değerlendirmeler ham
+hâliyle saklanır; ayar değişince LLM yeniden çalışmaz, yalnız present() sonucu değişir.
 """
 from __future__ import annotations
 
@@ -23,6 +24,9 @@ from .risk import max_risk
 from .steps import pipeline_steps
 
 log = logging.getLogger("roketsan")
+
+# Cache yapısı/fusion karar mantığı değiştiğinde bu değeri artır. Eski assessment cache otomatik atılır.
+ASSESSMENT_SCHEMA_VERSION = "fusion-v3"  # v3: yeni motor kural seti + gruplu/net fusion kanıt kapısı
 
 
 class ReviewError(Exception):
@@ -77,7 +81,15 @@ class Service:
         path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def _load_cache(self) -> None:
-        self.assessments = self._read_json(self.cache_path, {})
+        raw = self._read_json(self.cache_path, {})
+        # Eski kod sürümünün motor+LLM sonuçlarını yeni fusion sistemiyle karıştırma.
+        self.assessments = {
+            fid: a for fid, a in raw.items()
+            if isinstance(a, dict) and a.get("assessment_schema_version") == ASSESSMENT_SCHEMA_VERSION
+        }
+        stale = len(raw) - len(self.assessments) if isinstance(raw, dict) else 0
+        if stale:
+            log.warning("%d eski assessment cache kaydı fusion şema sürümüyle uyuşmadığı için yok sayıldı.", stale)
         self.reviews = self._read_json(self.reviews_path, {})
         self.human_review = bool(self._read_json(self.runtime_path, {}).get("human_review",
                                                                             settings.human_review_default))
@@ -96,6 +108,7 @@ class Service:
         return self.analyzer.ds
 
     def _store(self, frame_id: str, res: dict) -> dict:
+        res["assessment_schema_version"] = ASSESSMENT_SCHEMA_VERSION
         res["assessed_at"] = time.time()
         self.assessments[frame_id] = res
         self._save_cache()
@@ -362,21 +375,30 @@ class Service:
         final = [self.frame_final(fid, dmap)["level"] for fid in self.state.frames]
         decided = set(dmap) | {v for v in self.reviews if v in self.state.vehicles}
         statuses = [self.vehicle_final(vid, dmap)["status"] for vid in decided]
+        fusion_actions = [d.get("fusion_action") for d in dmap.values() if d.get("fusion_action")]
         return {
             "frames": len(self.state.frames),
             "frame_risk_counts": {l: final.count(l) for l in RISK_ORDER},
             "engine_frame_risk_counts": {l: engine.count(l) for l in RISK_ORDER},
             "human_review": self.human_review,
             "decisions": {s: statuses.count(s) for s in sorted(set(statuses))},
+            "fusion_actions": {a: fusion_actions.count(a) for a in sorted(set(fusion_actions))},
             "pending_reviews": statuses.count("onay_bekliyor"),
             "vehicles": len(self.state.vehicles),
-            "filtered_detections": sum(1 for v in self.state.vehicles.values() if v["filtered"]),
+            "filtered_detections": sum(1 for v in self.state.vehicles.values()
+                                       if v["filtered"] and v["scenario"] != "DUPLICATE_BOX"),
+            "duplicate_boxes_merged": sum(1 for v in self.state.vehicles.values() if v["scenario"] == "DUPLICATE_BOX"),
+            "low_conf_corroborated": sum(1 for v in self.state.vehicles.values() if v.get("low_conf_corroborated")),
             "missed_detections_recovered": sum(1 for v in self.state.vehicles.values() if v["source"] == "track_only"),
             "offframe_tracks": len(self.state.offframe_track_ids),
             "report_verdicts": {k: sum(1 for r in self.state.reports if r["verdict"] == k)
                                 for k in ["destekler", "celisir", "kismen_uyumlu", "dogrulanamaz", "ilgisiz", "manipulasyon"]},
             "assessed_frames": len(self.assessments),
+            "assessment_schema_version": ASSESSMENT_SCHEMA_VERSION,
             "llm_enabled": settings.llm_enabled, "model": settings.openai_model if settings.llm_enabled else None,
+            "fusion_enabled": bool(settings.llm_enabled and settings.fusion_enabled),
+            "fusion_model": (settings.fusion_model or settings.openai_model)
+                            if settings.llm_enabled and settings.fusion_enabled else None,
             "detector": self.state.detector, "generated_at": self.state.generated_at,
         }
 

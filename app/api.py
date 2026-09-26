@@ -3,10 +3,11 @@
 Çalıştırma:  uvicorn app.api:app --reload --port 8000
 Swagger:     http://localhost:8000/docs
 
-Seviyeler: yanıtlardaki `risk_level` NİHAİ seviyedir (motor + LLM ortak kararı, açıksa analist kararı);
-motorun kendi seviyesi `engine_risk_level`, kararın nasıl çıktığı `decision_status` alanındadır:
+Seviyeler: yanıtlardaki `risk_level` NİHAİ seviyedir (motor + ilk LLM + fusion/adjudicator, açıksa analist kararı).
+Motorun kendi seviyesi `engine_risk_level`, kararın nasıl çıktığı `decision_status` alanındadır. Fusion motoru
+hem yükseltebilir hem düşürebilir:
   motor · uzlasi · llm_yukseltti · fazla_yukseltme · motor_kesin · llm_dusurdu · belirsiz · reddedildi ·
-  llm_belirtmedi · onay_bekliyor · analist_karari
+  llm_belirtmedi · fusion_yukseltti · fusion_dusurdu · fusion_sinirlandi · onay_bekliyor · analist_karari
 
 "Son söz insanda" özelliği:
   GET  /api/settings                    → {"human_review": bool}
