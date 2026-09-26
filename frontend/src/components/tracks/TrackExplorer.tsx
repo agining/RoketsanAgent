@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import type { AnalysisData, AnalysisEntity, ObservationSource, RiskLevel } from '../../types/analysis';
 import { clockMinutes } from '../../services/analysisService';
 import { formatAllOption, formatDecisionStatus, formatKm, formatMinutes, formatRiskLevel, formatScenario, formatSource, formatSpeed, formatUnavailable, formatVehicleClass } from '../../services/formatters';
+import { activeTrackEntities } from '../../services/trackFilters';
 
 type SortKey = 'risk' | 'distance' | 'observed' | 'eta';
 const riskLevels: Array<RiskLevel | 'ALL'> = ['ALL', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL', 'UNKNOWN'];
@@ -26,14 +27,15 @@ export function TrackExplorer({ analysis, selectedTrackId, onSelectTrack }: { an
   const [sortKey, setSortKey] = useState<SortKey>('risk');
   const [descending, setDescending] = useState(true);
   const unique = (values: Array<string | null>) => [...new Set(values.filter((value): value is string => Boolean(value)))].sort();
-  const vehicleClasses = useMemo(() => unique(analysis.entities.map(entity => entity.vehicle_class)), [analysis.entities]);
-  const zones = useMemo(() => unique(analysis.entities.map(entity => entity.zone)), [analysis.entities]);
-  const scenarios = useMemo(() => unique(analysis.entities.map(entity => entity.scenario)), [analysis.entities]);
-  const decisions = useMemo(() => unique(analysis.entities.map(entity => entity.decision_status)), [analysis.entities]);
+  const activeEntities = useMemo(() => activeTrackEntities(analysis.entities), [analysis.entities]);
+  const vehicleClasses = useMemo(() => unique(activeEntities.map(entity => entity.vehicle_class)), [activeEntities]);
+  const zones = useMemo(() => unique(activeEntities.map(entity => entity.zone)), [activeEntities]);
+  const scenarios = useMemo(() => unique(activeEntities.map(entity => entity.scenario)), [activeEntities]);
+  const decisions = useMemo(() => unique(activeEntities.map(entity => entity.decision_status)), [activeEntities]);
 
   const entities = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('tr-TR');
-    const filtered = analysis.entities.filter(entity => {
+    const filtered = activeEntities.filter(entity => {
       if (normalized && ![entity.track_id, entity.vehicle_class, entity.zone ?? '', entity.frame_id ?? '', entity.vehicle?.vehicle_id ?? ''].some(value => value.toLocaleLowerCase('tr-TR').includes(normalized))) return false;
       if (riskFilter !== 'ALL' && entity.risk_level !== riskFilter) return false;
       if (scenarioFilter !== 'ALL' && entity.scenario !== scenarioFilter) return false;
@@ -53,11 +55,11 @@ export function TrackExplorer({ analysis, selectedTrackId, onSelectTrack }: { an
       if (sortKey === 'eta') delta = eta(a) === eta(b) ? 0 : eta(a) < eta(b) ? -1 : 1;
       return (descending ? -delta : delta) || a.track_id.localeCompare(b.track_id);
     });
-  }, [analysis.entities, contradictionsOnly, decisionFilter, descending, query, riskFilter, scenarioFilter, sortKey, sourceFilter, vehicleFilter, zoneFilter]);
+  }, [activeEntities, contradictionsOnly, decisionFilter, descending, query, riskFilter, scenarioFilter, sortKey, sourceFilter, vehicleFilter, zoneFilter]);
 
   const clearFilters = () => { setQuery(''); setRiskFilter('ALL'); setScenarioFilter('ALL'); setDecisionFilter('ALL'); setVehicleFilter('ALL'); setZoneFilter('ALL'); setSourceFilter('ALL'); setContradictionsOnly(false); };
   return <article className="dashboard-panel track-explorer" aria-label="Tüm iz kayıtları listesi">
-    <header><div><span className="panel-kicker">TÜM İZ KAYITLARI</span><h2>API'nin analiz ettiği izler</h2></div><span className="panel-total">{entities.length} / {analysis.entities.length} kayıt</span></header>
+    <header><div><span className="panel-kicker">TÜM İZ KAYITLARI</span><h2>API'nin analiz ettiği izler</h2></div><span className="panel-total">{entities.length} / {activeEntities.length} kayıt</span></header>
     <div className="track-explorer-toolbar">
       <label className="track-search"><Search size={14} /><input aria-label="Analiz edilen iz kayıtlarında ara" value={query} onChange={event => setQuery(event.target.value)} placeholder="İz, araç, kare veya bölge" /></label>
       <SelectFilter label="Risk" value={riskFilter} options={riskLevels} format={formatRiskLevel} onChange={setRiskFilter} />

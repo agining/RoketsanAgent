@@ -1,5 +1,5 @@
-import { Maximize2, Minimize2, Pause, Play, RotateCcw, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { GripVertical, Maximize2, Minimize2, Pause, Play, RotateCcw, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import { useEffect, useMemo, type PointerEvent as ReactPointerEvent } from 'react';
 import { Button } from './ui/button';
 import { playbackSpeeds, usePlaybackStore, type PlaybackSpeed, type TrailMode } from '../store/playback';
 import { useTimelineStore } from '../store/timeline';
@@ -7,7 +7,7 @@ import { useVoiceAlertsStore } from '../store/voiceAlerts';
 import type { AnalysisData } from '../types/analysis';
 import { analysisPlaybackBounds, formatClock, timelineEvents } from '../services/analysis-playback';
 
-export function Timeline({ analysis }: { analysis: AnalysisData }) {
+export function Timeline({ analysis, onDragHandlePointerDown }: { analysis: AnalysisData; onDragHandlePointerDown?: (event: ReactPointerEvent<HTMLButtonElement>) => void }) {
   const state = usePlaybackStore();
   const compact = useTimelineStore(state => state.compact);
   const toggleCompact = useTimelineStore(state => state.toggleCompact);
@@ -20,8 +20,12 @@ export function Timeline({ analysis }: { analysis: AnalysisData }) {
 
   useEffect(() => { usePlaybackStore.getState().initialize(bounds.minTime, bounds.maxTime); }, [bounds.minTime, bounds.maxTime]);
 
-  return <section className={`timeline playback-timeline ${compact ? 'compact' : ''}`} aria-label="Zaman çizelgesi oynatma kontrolleri">
+  return <section
+    className={`timeline playback-timeline ${compact ? 'compact' : ''}`}
+    aria-label="Zaman çizelgesi oynatma kontrolleri"
+  >
     <div className="timeline-actions">
+      <button className="timeline-drag-handle" type="button" aria-label="Alt kontrol grubunu taşı" title="Alt kontrol grubunu taşı" onPointerDown={onDragHandlePointerDown}><GripVertical size={14} /></button>
       {!compact && <Button variant="ghost" size="icon" aria-label="Oynatımı başa al" title="Başa al" onClick={state.restart}><RotateCcw size={15} /></Button>}
       {!compact && <Button variant="ghost" size="icon" aria-label="Önceki zaman adımı" title="Önceki 5 dakika" onClick={state.stepPrevious}><SkipBack size={16} /></Button>}
       <Button variant="outline" size="icon" disabled={state.minTime === state.maxTime} aria-label={state.isPlaying ? 'Oynatımı duraklat' : 'Oynatımı başlat'} title={state.isPlaying ? 'Duraklat' : 'Oynat'} onClick={state.togglePlaying}>{state.isPlaying ? <Pause size={16} /> : <Play size={16} />}</Button>

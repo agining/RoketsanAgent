@@ -38,6 +38,7 @@ import { api, API_BASE_URL, apiUrl } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
 import { formatScenario, formatVehicleClass } from './services/formatters';
 import { startPlaybackClock } from './services/playback-clock';
+import { activeTrackEntities, isActiveTrackEntity } from './services/trackFilters';
 
 import type { AnalysisData } from './types/analysis';
 
@@ -55,6 +56,20 @@ import { useWorkspaceStore } from './store/workspace';
 
 import hisarLogo from '@/assets/hisar-logo.png';
 import { HelpPanel } from './components/help/HelpPanel';
+
+const bottomControlGroupStorageKey = 'hisar-bottom-control-group-position-v1';
+
+function loadStoredPosition(key: string) {
+  if (typeof window === 'undefined') return null;
+  try {
+    const stored = window.localStorage.getItem(key);
+    if (!stored) return null;
+    const parsed = JSON.parse(stored) as { x?: unknown; y?: unknown };
+    return typeof parsed.x === 'number' && typeof parsed.y === 'number' ? { x: parsed.x, y: parsed.y } : null;
+  } catch {
+    return null;
+  }
+}
 
 function formatTimestamp(value: string) {
   const date = new Date(value);
@@ -289,6 +304,8 @@ export default function App() {
   const detailWidth = usePanelLayoutStore(state => state.detailWidth);
   const setDetailWidth = usePanelLayoutStore(state => state.setDetailWidth);
   const timelineCompact = useTimelineStore(state => state.compact);
+  const bottomControlsRef = useRef<HTMLDivElement>(null);
+  const [bottomControlsPosition, setBottomControlsPosition] = useState<{ x: number; y: number } | null>(() => loadStoredPosition(bottomControlGroupStorageKey));
 
   const selectedTrackId = useTrackingStore(
     state => state.selectedTrackId,
@@ -324,6 +341,59 @@ export default function App() {
     window.addEventListener('pointerup', stop, { once: true });
   };
 
+  useEffect(() => {
+    if (!bottomControlsPosition) return undefined;
+    const clampCurrent = () => {
+      const element = bottomControlsRef.current;
+      const parent = element?.parentElement;
+      if (!element || !parent) return;
+      const parentRect = parent.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const next = {
+        x: Math.min(Math.max(8, bottomControlsPosition.x), Math.max(8, parentRect.width - rect.width - 8)),
+        y: Math.min(Math.max(8, bottomControlsPosition.y), Math.max(8, parentRect.height - rect.height - 8)),
+      };
+      if (next.x === bottomControlsPosition.x && next.y === bottomControlsPosition.y) return;
+      setBottomControlsPosition(next);
+      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
+    };
+    const frame = window.requestAnimationFrame(clampCurrent);
+    window.addEventListener('resize', clampCurrent);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('resize', clampCurrent);
+    };
+  }, [bottomControlsPosition, bottomOpen, timelineCompact]);
+
+  const startBottomControlsDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const element = bottomControlsRef.current;
+    const parent = element?.parentElement;
+    if (!element || !parent) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const parentRect = parent.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const initial = bottomControlsPosition ?? { x: rect.left - parentRect.left, y: rect.top - parentRect.top };
+    const clamp = (x: number, y: number) => ({
+      x: Math.min(Math.max(8, x), Math.max(8, parentRect.width - rect.width - 8)),
+      y: Math.min(Math.max(8, y), Math.max(8, parentRect.height - rect.height - 8)),
+    });
+    const move = (moveEvent: PointerEvent) => {
+      const next = clamp(initial.x + moveEvent.clientX - startX, initial.y + moveEvent.clientY - startY);
+      setBottomControlsPosition(next);
+      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
+    };
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop, { once: true });
+  };
+
   const playbackTime = usePlaybackStore(state =>
     Math.floor(state.currentTime),
   );
@@ -337,22 +407,27 @@ export default function App() {
   } : null, [humanReview, rawData]);
   useVoiceAlerts(data);
 
+  const activeEntities = useMemo(
+    () => activeTrackEntities(data?.entities ?? []),
+    [data],
+  );
+
   const visibleTrackIds = useMemo(
     () =>
       new Set(
-        data?.entities
+        activeEntities
           .filter(entity =>
             entityMatchesMapFilters(entity, filters),
           )
-          .map(entity => entity.track_id) ?? [],
+          .map(entity => entity.track_id),
       ),
-    [data, filters],
+    [activeEntities, filters],
   );
 
   const trackSearchResults = useMemo(() => {
     const query = trackSearch.trim().toLocaleLowerCase('tr-TR');
     if (!data || !query) return [];
-    return data.entities
+    return activeEntities
       .filter(entity => [
         entity.track_id,
         entity.vehicle?.vehicle_id ?? '',
@@ -361,10 +436,10 @@ export default function App() {
         entity.scenario ? formatScenario(entity.scenario) : '',
       ].some(value => value.toLocaleLowerCase('tr-TR').includes(query)))
       .slice(0, 8);
-  }, [data, trackSearch]);
+  }, [activeEntities, data, trackSearch]);
 
   const selectedEntity =
-    data?.entities.find(
+    activeEntities.find(
       entity => entity.track_id === selectedTrackId,
     ) ?? null;
 
@@ -392,6 +467,8 @@ export default function App() {
     const entity = dataRef.current?.entities.find(
       item => item.track_id === trackId,
     );
+
+    if (!entity || !isActiveTrackEntity(entity)) return;
 
     const target =
       entity?.observed_at ?? entity?.first_seen;
@@ -461,7 +538,9 @@ export default function App() {
       selectedTrackId &&
       data &&
       !data.entities.some(
-        entity => entity.track_id === selectedTrackId,
+        entity =>
+          entity.track_id === selectedTrackId &&
+          isActiveTrackEntity(entity),
       )
     ) {
       useTrackingStore.getState().selectTrack(null);
@@ -473,8 +552,8 @@ export default function App() {
 
     useWatchlistStore
       .getState()
-      .applyAnalysis(data.entities, data.generated_at);
-  }, [data, watchTrackIds]);
+      .applyAnalysis(activeEntities, data.generated_at);
+  }, [activeEntities, data, watchTrackIds]);
 
   useEffect(() => {
     const clearSelection = (event: KeyboardEvent) => {
@@ -866,15 +945,21 @@ export default function App() {
           }
         />
 
-        <BottomTrackPanel
-          analysis={data}
-          selectedTrackId={selectedTrackId}
-          onSelectTrack={selectTrack}
-          open={bottomOpen}
-          setOpen={setBottomOpen}
-        />
+        <div
+          ref={bottomControlsRef}
+          className={`bottom-control-group ${bottomControlsPosition ? 'dragged' : ''}`}
+          style={bottomControlsPosition ? { left: bottomControlsPosition.x, top: bottomControlsPosition.y, right: 'auto', bottom: 'auto' } : undefined}
+        >
+          <BottomTrackPanel
+            analysis={data}
+            selectedTrackId={selectedTrackId}
+            onSelectTrack={selectTrack}
+            open={bottomOpen}
+            setOpen={setBottomOpen}
+          />
 
-        <Timeline analysis={data} />
+          <Timeline analysis={data} onDragHandlePointerDown={startBottomControlsDrag} />
+        </div>
 
         <VoiceAlertCard onSelectTrack={selectTrack} />
 

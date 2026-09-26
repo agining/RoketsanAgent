@@ -28,6 +28,7 @@ import { usePlaybackStore } from '../../store/playback';
 import { useWatchlistStore } from '../../store/watchlist';
 
 import { clockSeconds } from '../../services/analysis-playback';
+import { activeTrackEntities } from '../../services/trackFilters';
 
 import {
   formatAllOption,
@@ -189,24 +190,28 @@ export function MapSidebar({
   const removeWatch = useWatchlistStore(
     state => state.remove,
   );
+  const activeEntities = useMemo(
+    () => activeTrackEntities(analysis.entities),
+    [analysis.entities],
+  );
 
   const vehicles = useMemo(
     () =>
       [
         ...new Set(
-          analysis.entities.map(
+          activeEntities.map(
             entity => entity.vehicle_class,
           ),
         ),
       ].sort(),
-    [analysis.entities],
+    [activeEntities],
   );
 
   const scenarios = useMemo(
     () =>
       [
         ...new Set(
-          analysis.entities
+          activeEntities
             .map(entity => entity.scenario)
             .filter(
               (value): value is string =>
@@ -214,12 +219,12 @@ export function MapSidebar({
             ),
         ),
       ].sort(),
-    [analysis.entities],
+    [activeEntities],
   );
 
   const matches = useMemo(
     () =>
-      analysis.entities
+      activeEntities
         .filter(entity =>
           entityMatchesMapFilters(
             entity,
@@ -234,14 +239,14 @@ export function MapSidebar({
               b.track_id,
             ),
         ),
-    [analysis.entities, filters],
+    [activeEntities, filters],
   );
 
   const watched = useMemo(
     () =>
       watchIds
         .map(trackId =>
-          analysis.entities.find(
+          activeEntities.find(
             entity =>
               entity.track_id === trackId,
           ),
@@ -260,7 +265,7 @@ export function MapSidebar({
               b.track_id,
             ),
         ),
-    [analysis.entities, watchIds],
+    [activeEntities, watchIds],
   );
 
   const untracked = useMemo(
@@ -541,7 +546,7 @@ export function MapSidebar({
           <div className="map-filter-result">
             <span>
               {matches.length} /{' '}
-              {analysis.entities.length} iz
+              {activeEntities.length} iz
               görünür
             </span>
 
