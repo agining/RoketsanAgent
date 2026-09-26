@@ -36,9 +36,9 @@ export function ReviewCard({ item, humanReview, analyst, onChanged, compact = fa
     {item.note && <p className="review-note">{item.note}</p>}
     {item.review && <div className="review-decided"><UserCheck size={13} /><span>Analist kararı: <b>{formatRiskLevel(toRiskLevel(item.review.level))}</b> · {item.review.analyst} · {formatEpoch(item.review.at)}{item.review.note ? ` — ${item.review.note}` : ''}</span><button disabled={busy} onClick={() => void run(() => api.undoReview(item.vehicle_id))}><Undo2 size={12} />Geri al</button></div>}
     {humanReview ? <div className="review-form">
-      <div className="review-options" role="radiogroup" aria-label={`${item.vehicle_id} için seviye`}>{options.map(option => <button key={option} role="radio" aria-checked={level === option} className={`risk-${toRiskLevel(option).toLowerCase()}`} onClick={() => setLevel(option)}>{formatRiskLevel(toRiskLevel(option))}</button>)}</div>
-      <input aria-label="Analist notu" placeholder="Not (isteğe bağlı)" value={note} onChange={event => setNote(event.target.value)} />
-      <button className="review-submit" disabled={busy} onClick={() => void run(() => api.decideReview(item.vehicle_id, { level, analyst: analyst.trim() || null, note: note.trim() || null }))}>{busy ? <LoaderCircle size={12} className="spinning" /> : <Check size={12} />}{item.review ? 'Kararı güncelle' : 'Kararı kaydet'}</button>
+      <div className="review-options" data-guide="review-levels" role="radiogroup" aria-label={`${item.vehicle_id} için seviye`}>{options.map(option => <button key={option} role="radio" aria-checked={level === option} className={`risk-${toRiskLevel(option).toLowerCase()}`} onClick={() => setLevel(option)}>{formatRiskLevel(toRiskLevel(option))}</button>)}</div>
+      <input data-guide="review-note" aria-label="Analist notu" placeholder="Not (isteğe bağlı)" value={note} onChange={event => setNote(event.target.value)} />
+      <button className="review-submit" data-guide="review-submit" disabled={busy} onClick={() => void run(() => api.decideReview(item.vehicle_id, { level, analyst: analyst.trim() || null, note: note.trim() || null }))}>{busy ? <LoaderCircle size={12} className="spinning" /> : <Check size={12} />}{item.review ? 'Kararı güncelle' : 'Kararı kaydet'}</button>
     </div> : <p className="review-disabled">"Son söz insanda" kapalı: karar tablosunun otomatik sonucu uygulanıyor.</p>}
     {error && <p className="review-error" role="alert">{error}</p>}
   </article>;

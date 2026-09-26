@@ -388,16 +388,16 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     <div ref={container} className="map-canvas" aria-label="Zaman çizelgesi oynatmalı analiz haritası" />
     <div className="map-toolbar" role="toolbar" aria-label="Harita araçları">
       <Button variant="ghost" onClick={fitAll}><LocateFixed size={15} /><span>Tümünü göster</span></Button>
-      <Button variant="ghost" size="icon" aria-label="Seçili track'e odaklan" title="Seçili track'e odaklan" disabled={!selectedTrackId} onClick={focusSelected}><Focus size={16} /></Button>
-      <Button variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
-      <Button variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
+      <Button data-guide="map-focus-selected" variant="ghost" size="icon" aria-label="Seçili track'e odaklan" title="Seçili track'e odaklan" disabled={!selectedTrackId} onClick={focusSelected}><Focus size={16} /></Button>
+      <Button data-guide="map-reset-view" variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
+      <Button data-guide="map-fullscreen" variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
     </div>
     <div className="map-visual-controls" role="toolbar" aria-label="Harita görselleştirme kontrolleri">
-      <div className="segmented-control" aria-label="Harita perspektifi">
+      <div className="segmented-control" data-guide="map-view-mode" aria-label="Harita perspektifi">
         <button aria-pressed={viewMode === '2d'} onClick={() => setMapMode('2d')}>2D</button>
         <button aria-pressed={viewMode === '3d'} onClick={() => setMapMode('3d')}><Box size={12} />3D</button>
       </div>
-      <div className="segmented-control trail-control" aria-label="Rota izi görünümü">
+      <div className="segmented-control trail-control" data-guide="map-trail-mode" aria-label="Rota izi görünümü">
         <button aria-pressed={trailMode === 'elapsed'} onClick={() => setTrailMode('elapsed')}>Gidilen</button>
         <button aria-pressed={trailMode === 'full'} onClick={() => setTrailMode('full')}>Tüm rota</button>
         <button aria-pressed={trailMode === 'off'} onClick={() => setTrailMode('off')}>Kapalı</button>

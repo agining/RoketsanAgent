@@ -285,6 +285,7 @@ export function MapSidebar({
     return (
       <button
         className="map-sidebar-rail"
+        data-guide="sidebar-open"
         aria-label="Harita panelini aç"
         title="Harita panelini aç"
         onClick={() => setOpen(true)}
@@ -298,6 +299,7 @@ export function MapSidebar({
   return (
     <aside
       className="map-sidebar"
+      data-guide="sidebar"
       aria-label="Harita paneli"
     >
       <header>
@@ -307,6 +309,7 @@ export function MapSidebar({
         </span>
 
         <button
+          data-guide="sidebar-collapse"
           aria-label="Harita panelini daralt"
           title="Harita panelini daralt"
           onClick={() => setOpen(false)}
@@ -316,7 +319,7 @@ export function MapSidebar({
       </header>
 
       <div className="map-sidebar-scroll">
-        <section>
+        <section data-guide="sidebar-layers">
           <h2>
             <Layers3 size={12} />
             Katmanlar
@@ -348,7 +351,7 @@ export function MapSidebar({
             İz filtreleri
           </h2>
 
-          <label className="map-filter-search">
+          <label className="map-filter-search" data-guide="sidebar-search">
             <Search size={13} />
             <input
               aria-label="Harita araç kayıtlarında ara"
@@ -364,7 +367,7 @@ export function MapSidebar({
           </label>
 
           <div className="map-filter-grid">
-            <label>
+            <label data-guide="filter-risk">
               <span>Risk</span>
 
               <select
@@ -389,7 +392,7 @@ export function MapSidebar({
               </select>
             </label>
 
-            <label>
+            <label data-guide="filter-vehicle">
               <span>Araç</span>
 
               <select
@@ -420,7 +423,7 @@ export function MapSidebar({
               </select>
             </label>
 
-            <label className="wide">
+            <label className="wide" data-guide="filter-scenario">
               <span>Senaryo</span>
 
               <select
@@ -448,7 +451,7 @@ export function MapSidebar({
               </select>
             </label>
 
-            <label className="wide">
+            <label className="wide" data-guide="filter-zone">
               <span>Bölge</span>
 
               <select
@@ -485,6 +488,7 @@ export function MapSidebar({
             </span>
 
             <button
+              data-guide="filter-clear"
               onClick={() =>
                 setFilters(initialMapFilters)
               }
@@ -493,7 +497,7 @@ export function MapSidebar({
             </button>
           </div>
 
-          <div className="map-track-shortlist">
+          <div className="map-track-shortlist" data-guide="sidebar-track-list">
             {matches
               .slice(0, 8)
               .map(entity => (
@@ -549,7 +553,7 @@ export function MapSidebar({
           </div>
         </section>
 
-        <section>
+        <section data-guide="sidebar-watchlist">
           <h2>
             <Eye size={12} />
             İzleme Listesi{' '}
@@ -637,7 +641,7 @@ export function MapSidebar({
           </div>
         </section>
 
-        <section>
+        <section data-guide="sidebar-zones">
           <h2>
             <MapPin size={12} />
             Bölgeler
@@ -663,7 +667,7 @@ export function MapSidebar({
           </div>
         </section>
 
-        <section>
+        <section data-guide="sidebar-untracked">
           <h2>
             <Radar size={12} />
             İzsiz tespitler{' '}

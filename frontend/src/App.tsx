@@ -29,6 +29,8 @@ import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
 import { Button } from './components/ui/button';
 import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
+import { GuideOverlay } from './components/guide/GuideOverlay';
+import { VoiceGuideButton } from './components/guide/VoiceGuideButton';
 
 import { useAnalysis } from './hooks/useAnalysis';
 import { useVoiceAlerts } from './hooks/useVoiceAlerts';
@@ -346,6 +348,7 @@ export default function App() {
         </div>
 
         <div
+          data-guide="topbar-high-critical"
           className={`map-top-stat risk-total ${
             highCritical ? 'active' : ''
           }`}
@@ -359,6 +362,7 @@ export default function App() {
         </div>
 
         <div
+          data-guide="topbar-pending"
           className={`map-top-stat pending-total ${
             data.summary.pending_reviews
               ? 'active'
@@ -376,6 +380,7 @@ export default function App() {
         </div>
 
         <button
+          data-guide="topbar-human-review"
           className={`human-review-toggle ${
             data.human_review ? 'on' : ''
           }`}
@@ -417,6 +422,7 @@ export default function App() {
         </span>
 
         <button
+          data-guide="topbar-voice-alerts"
           className={`voice-alert-toggle ${
             voiceAlertsEnabled ? 'on' : ''
           } ${voiceAlertsSpeaking ? 'speaking' : ''}`}
@@ -442,6 +448,7 @@ export default function App() {
 
         <div className="watch-notification-anchor">
           <button
+            data-guide="topbar-notifications"
             className={`watch-notification-trigger ${
               unreadNotifications ? 'active' : ''
             }`}
@@ -463,7 +470,7 @@ export default function App() {
           </button>
 
           {notificationsOpen && (
-            <div className="watch-notification-panel">
+            <div className="watch-notification-panel" data-guide="notifications-panel">
               <header>
                 <span>
                   <Bell size={13} />
@@ -529,6 +536,7 @@ export default function App() {
         </div>
 
         <button
+          data-guide="topbar-search"
           className="map-top-search"
           onClick={() => {
             setSidebarOpen(true);
@@ -546,7 +554,10 @@ export default function App() {
           <span>İz ara</span>
         </button>
 
+        <VoiceGuideButton />
+
         <button
+          data-guide="topbar-pdf-report"
           className="pdf-report-download"
           onClick={openPdfReport}
           aria-label="PDF tehdit raporunu yeni sekmede aç"
@@ -556,6 +567,7 @@ export default function App() {
         </button>
 
         <button
+          data-guide="topbar-refresh"
           className="map-refresh"
           onClick={analysis.reload}
           disabled={analysis.status === 'loading'}
@@ -637,6 +649,7 @@ export default function App() {
 
         {selectedEntity && inspectorOpen && (
           <aside
+            data-guide="detail-panel"
             className="map-detail-drawer"
             aria-label={`${selectedEntity.track_id} araç detay paneli`}
           >
@@ -684,6 +697,8 @@ export default function App() {
           </div>
         )}
       </main>
+
+      <GuideOverlay />
     </div>
   );
 }

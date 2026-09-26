@@ -112,7 +112,9 @@ function DetailSection({
   meta,
   children,
   defaultOpen = true,
+  guideId,
 }: {
+  guideId?: string;
   title: string;
   meta?: string;
   children: React.ReactNode;
@@ -123,6 +125,7 @@ function DetailSection({
 
   return (
     <section
+      data-guide={guideId}
       className={`entity-detail-section ${
         open ? 'open' : 'collapsed'
       }`}
@@ -374,7 +377,7 @@ function AssessmentSection({
 
   if (!frameId) {
     return (
-      <DetailSection title="Ajan Değerlendirmesi">
+      <DetailSection guideId="detail-assessment" title="Ajan Değerlendirmesi">
         <p className="entity-empty-note">
           Bu iz hiçbir karede
           görünmüyor; API onu motorla
@@ -423,6 +426,7 @@ function AssessmentSection({
 
   return (
     <DetailSection
+      guideId="detail-assessment"
       title="Ajan Değerlendirmesi"
       meta={
         assessment
@@ -444,6 +448,7 @@ function AssessmentSection({
 
       <div className="assessment-actions">
         <button
+          data-guide="detail-assess"
           disabled={busy}
           onClick={() =>
             void run(
@@ -834,6 +839,7 @@ export function TrackDetail({
             variant="ghost"
             size="icon"
             className="detail-font-cycle"
+            data-guide="detail-font"
             aria-label={`Yazı boyutu: ${detailFontLabel}. Değiştirmek için tıkla`}
             title={`Yazı boyutu: ${detailFontLabel}`}
             onClick={() =>
@@ -852,6 +858,7 @@ export function TrackDetail({
             variant="ghost"
             size="icon"
             aria-label="Detay panelini daralt"
+            data-guide="detail-collapse"
             onClick={() =>
               useWorkspaceStore
                 .getState()
@@ -867,6 +874,7 @@ export function TrackDetail({
             variant="ghost"
             size="icon"
             aria-label="İz seçimini temizle"
+            data-guide="detail-close"
             onClick={() =>
               select(null)
             }
@@ -916,6 +924,7 @@ export function TrackDetail({
       <div className="vehicle-actions">
         <Button
           className="watchlist-toggle-button"
+          data-guide="detail-watch"
           variant={
             watching
               ? 'default'
@@ -947,6 +956,7 @@ export function TrackDetail({
               : 'outline'
           }
           aria-pressed={follow}
+          data-guide="detail-follow"
           onClick={() =>
             setFollow(!follow)
           }
@@ -957,6 +967,7 @@ export function TrackDetail({
 
         <Button
           variant="outline"
+          data-guide="detail-focus"
           onClick={() =>
             requestView('vehicle')
           }
@@ -968,6 +979,7 @@ export function TrackDetail({
         {entity.observed_at && (
           <Button
             variant="outline"
+            data-guide="detail-observed"
             onClick={() => {
               usePlaybackStore
                 .getState()
@@ -1053,6 +1065,7 @@ export function TrackDetail({
         )}
 
       <DetailSection
+        guideId="detail-risk"
         title="Risk Kararı"
         meta={formatDecisionStatus(
           entity.decision_status,
@@ -1144,6 +1157,7 @@ export function TrackDetail({
       </DetailSection>
 
       <DetailSection
+        guideId="detail-scenario"
         title="Senaryo ve Gerekçeler"
         meta={
           entity.scenario
@@ -1497,6 +1511,7 @@ export function TrackDetail({
       </DetailSection>
 
       <DetailSection
+        guideId="detail-reports"
         title="Saha Raporları"
         meta={`${visibleReports.length}/${entity.reports.length} rapor · ${formatClock(time)} anına kadar`}
       >
@@ -1623,6 +1638,7 @@ export function TrackDetail({
       </DetailSection>
 
       <DetailSection
+        guideId="detail-distance"
         title="Mesafe Geçmişi"
         meta={
           apiTrack.data

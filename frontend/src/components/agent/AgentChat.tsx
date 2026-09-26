@@ -1,7 +1,8 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { Bot, LoaderCircle, Send, X } from 'lucide-react';
+import { Bot, LoaderCircle, Mic, Send, Square, X } from 'lucide-react';
 import type { AnalysisData } from '../../types/analysis';
 import { api } from '../../services/api';
+import { useSpeechToText } from '../../hooks/useSpeechToText';
 import { clockSeconds } from '../../services/analysis-playback';
 import { usePlaybackStore } from '../../store/playback';
 import { useTrackingStore } from '../../store/tracking';
@@ -19,6 +20,8 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const llmEnabled = analysis.summary.llm_enabled;
+  const speech = useSpeechToText(text => setInput(current => current.trim() ? `${current.trimEnd()} ${text}` : text));
+  const speechLabel = speech.state === 'recording' ? 'Ses kaydını durdur' : 'Sesle yaz';
 
   const focus = (id: string) => {
     const entity = analysis.entities.find(item => item.track_id === id);
@@ -45,7 +48,7 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
     } finally { setLoading(false); }
   };
 
-  return <section className="agent-console agent-chat map-agent-chat" aria-label="Ajan sohbeti">
+  return <section className="agent-console agent-chat map-agent-chat" data-guide="agent-chat" aria-label="Ajan sohbeti">
     <header><span><Bot size={15} /><b>AJAN SOHBETİ</b>{frameId && <small>bağlam: {frameId}</small>}</span><button aria-label="Ajan panelini kapat" onClick={onClose}><X size={15} /></button></header>
     <div className="chat-panel">
       {!llmEnabled && <p className="agent-note">API'de LLM kapalı (OPENAI_API_KEY tanımlı değil); sohbet 503 döner.</p>}
@@ -55,8 +58,12 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
         {!messages.length && <div className="agent-empty">Araçlar, kareler veya raporlar hakkında sorun. Yanıtlar API'deki ajandan gelir.</div>}
         {loading && <div className="agent-loading"><LoaderCircle size={15} className="spinning" />Ajan yanıtlıyor…</div>}
         {error && <div className="agent-error" role="alert">{error}</div>}
+        {speech.state === 'loading-model' && <div className="agent-loading"><LoaderCircle size={15} className="spinning" />Konuşma modeli yükleniyor (ilk seferde uzun sürebilir)…</div>}
+        {speech.state === 'recording' && <div className="agent-loading voice-recording"><span className="voice-dot" />Dinleniyor… bitirmek için ■ düğmesine basın</div>}
+        {speech.state === 'transcribing' && <div className="agent-loading"><LoaderCircle size={15} className="spinning" />Ses metne çevriliyor…</div>}
+        {speech.error && <div className="agent-error" role="alert">{speech.error}</div>}
       </div>
-      <form onSubmit={event => void submit(event)}><textarea value={input} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void submit(); } }} placeholder="Ajana sorun…" aria-label="Ajan mesajı" rows={2} /><button aria-label="Ajan mesajını gönder" disabled={loading || !input.trim()}><Send size={14} /></button></form>
+      <form onSubmit={event => void submit(event)}><textarea data-guide="chat-input" value={input} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void submit(); } }} placeholder="Ajana sorun…" aria-label="Ajan mesajı" rows={2} /><button type="button" data-guide="chat-mic" className={`voice-input${speech.state === 'recording' ? ' recording' : ''}`} aria-label={speechLabel} title={speechLabel} aria-pressed={speech.state === 'recording'} disabled={speech.busy} onClick={speech.toggle}>{speech.busy ? <LoaderCircle size={14} className="spinning" /> : speech.state === 'recording' ? <Square size={12} /> : <Mic size={14} />}</button><button data-guide="chat-send" aria-label="Ajan mesajını gönder" disabled={loading || !input.trim()}><Send size={14} /></button></form>
     </div>
   </section>;
 }

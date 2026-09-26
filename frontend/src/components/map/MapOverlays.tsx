@@ -40,13 +40,13 @@ export function MapOverlays({ analysis, onSelectTrack, onChanged, selectedFrameI
 
   return <div className="map-floating-overlays">
     <div className="map-overlay-actions">
-      <button aria-expanded={panel === 'summary'} onClick={() => toggle('summary')}><Activity size={14} />Operasyon Özeti</button>
-      <button aria-expanded={panel === 'priority'} onClick={() => toggle('priority')}><ShieldAlert size={14} />Öncelikli Araçlar <b>{analysis.alerts.length}</b></button>
-      <button aria-expanded={panel === 'reviews'} onClick={() => toggle('reviews')}><UserCheck size={14} />Analist Onayı {pending.length > 0 && <b>{pending.length}</b>}</button>
-      <button aria-expanded={panel === 'chat'} onClick={() => toggle('chat')}><Bot size={14} />Ajan</button>
+      <button data-guide="overlay-summary" aria-expanded={panel === 'summary'} onClick={() => toggle('summary')}><Activity size={14} />Operasyon Özeti</button>
+      <button data-guide="overlay-priority" aria-expanded={panel === 'priority'} onClick={() => toggle('priority')}><ShieldAlert size={14} />Öncelikli Araçlar <b>{analysis.alerts.length}</b></button>
+      <button data-guide="overlay-reviews" aria-expanded={panel === 'reviews'} onClick={() => toggle('reviews')}><UserCheck size={14} />Analist Onayı {pending.length > 0 && <b>{pending.length}</b>}</button>
+      <button data-guide="overlay-chat" aria-expanded={panel === 'chat'} onClick={() => toggle('chat')}><Bot size={14} />Ajan</button>
     </div>
 
-    {panel === 'summary' && <section className="map-summary-popover" aria-label="Operasyon özeti"><header><span><Activity size={14} />Operasyon Özeti</span><button aria-label="Operasyon özetini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
+    {panel === 'summary' && <section className="map-summary-popover" data-guide="summary-panel" aria-label="Operasyon özeti"><header><span><Activity size={14} />Operasyon Özeti</span><button aria-label="Operasyon özetini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
       <div className="compact-distributions">
         <div><h3>Kare riski (nihai)</h3>{levels.map(level => <span key={level}><i className={`risk-${level.toLowerCase()}`} />{formatRiskLevel(level)}<b>{summary.frame_risk_counts[level]}</b></span>)}</div>
         <div><h3>Kare riski (motor)</h3>{levels.map(level => <span key={level}><i className={`risk-${level.toLowerCase()}`} />{formatRiskLevel(level)}<b>{summary.engine_frame_risk_counts[level]}</b></span>)}</div>
@@ -61,21 +61,21 @@ export function MapOverlays({ analysis, onSelectTrack, onChanged, selectedFrameI
       {Object.keys(summary.decisions).length > 0 && <div className="compact-distributions single"><div><h3>Karar durumları</h3>{Object.entries(summary.decisions).map(([status, count]) => <span key={status}>{formatDecisionStatus(status)}<b>{count}</b></span>)}</div></div>}
       <div className="summary-llm">
         <span><BrainCircuit size={13} />{summary.llm_enabled ? `LLM açık · ${summary.model ?? 'model bilinmiyor'}` : 'LLM kapalı — API motor şablonunu kullanır'} · dedektör: {summary.detector || '—'}</span>
-        <button disabled={assessing} onClick={() => void assessAll()}>{assessing ? <LoaderCircle size={12} className="spinning" /> : <BrainCircuit size={12} />}Riskli kareleri ajanla değerlendir</button>
+        <button data-guide="summary-assess-all" disabled={assessing} onClick={() => void assessAll()}>{assessing ? <LoaderCircle size={12} className="spinning" /> : <BrainCircuit size={12} />}Riskli kareleri ajanla değerlendir</button>
         {assessMessage && <small role="status">{assessMessage}</small>}
       </div>
     </section>}
 
-    {panel === 'priority' && <section className="map-priority-popover" aria-label="Öncelikli araç kayıtları"><header><span><ShieldAlert size={14} />Öncelikli Araçlar · ORTA ve üzeri</span><button aria-label="Öncelikli araç listesini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
+    {panel === 'priority' && <section className="map-priority-popover" data-guide="priority-panel" aria-label="Öncelikli araç kayıtları"><header><span><ShieldAlert size={14} />Öncelikli Araçlar · ORTA ve üzeri</span><button aria-label="Öncelikli araç listesini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
       {analysis.alerts.length ? <div>{analysis.alerts.map((alert, index) => <button key={`${alert.kind}-${alert.vehicle_id ?? alert.track_id}-${index}`} onClick={() => openAlert(alert)}>
         <span><strong>{alert.track_id ?? alert.vehicle_id}</strong><small>{alert.label ? `${formatVehicleClass(alert.label)} · ` : ''}{alert.zone} · {alert.time}{alert.kind === 'offframe_track' ? ' · kare dışı' : ''} · {formatScenario(alert.scenario)}</small><em>{alert.reason}</em>{alert.decision_status !== 'motor' && <small className="alert-decision">{formatDecisionStatus(alert.decision_status)}</small>}</span>
         <span><b className={`risk-${alert.risk_level.toLowerCase()}`}>{formatRiskLevel(alert.risk_level)}</b><small>{formatMeters(alert.distance_to_base_m)}{alert.eta_min != null ? ` · ETA ${formatMinutes(alert.eta_min)}` : ''}</small><ChevronRight size={13} /></span>
       </button>)}</div> : <p>Bu analizde ORTA veya üzeri riskli araç yok.</p>}
     </section>}
 
-    {panel === 'reviews' && <section className="map-priority-popover map-review-popover" aria-label="Analist onayı"><header><span><UserCheck size={14} />Son söz insanda · {analysis.human_review ? 'AÇIK' : 'KAPALI'}</span><button aria-label="Analist onayı panelini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
+    {panel === 'reviews' && <section className="map-priority-popover map-review-popover" data-guide="reviews-panel" aria-label="Analist onayı"><header><span><UserCheck size={14} />Son söz insanda · {analysis.human_review ? 'AÇIK' : 'KAPALI'}</span><button aria-label="Analist onayı panelini kapat" onClick={() => setPanel(null)}><X size={14} /></button></header>
       <div className="review-panel-body">
-        <label className="review-analyst"><span>Analist</span><input aria-label="Analist adı" placeholder="Adınız" value={analyst} onChange={event => setAnalyst(event.target.value)} /></label>
+        <label className="review-analyst" data-guide="review-analyst"><span>Analist</span><input aria-label="Analist adı" placeholder="Adınız" value={analyst} onChange={event => setAnalyst(event.target.value)} /></label>
         {analysis.reviews.items.length ? analysis.reviews.items.map(item => <ReviewCard key={`${item.vehicle_id}-${item.review?.at ?? 'pending'}-${item.current_level}`} item={item} humanReview={analysis.human_review} analyst={analyst} onChanged={onChanged} />)
           : <p className="review-empty">Analist onayı gerektiren karar yok. Kararlar, ajan bir kareyi değerlendirdiğinde motor ile LLM ayrışırsa burada görünür.</p>}
       </div>
