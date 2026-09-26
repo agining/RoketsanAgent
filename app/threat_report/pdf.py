@@ -2,9 +2,9 @@
 her çalıştırma aynı iskeleti üretir; boş bölümler "Kayıt yok." ile yine görünür.
 
 Sayfa düzeni (A4 dikey):
-  Kapak → 1 Yönetici özeti → 2 Durum haritası → 3 Karar yöntemi → 4 Araç dosyaları (her araç yeni sayfa:
-  01 Tespit ve konumlandırma · 02 Hareket analizi · 03 Risk analizi ve karar) → 5 İnsan onayı →
-  6 Saha raporu bütünlüğü → 7 Ek: üretim bilgileri
+  Kapak → 1 Yönetici özeti → 2 Durum haritası → 3 Karar yöntemi →
+  4 Kompakt araç değerlendirme kayıtları → 5 İnsan onayı → 6 Saha raporu bütünlüğü →
+  7 Ek: üretim bilgileri. Araç kayıtları yeni sayfa zorlamaz; karar için gerekli bilgiler özetlenir.
 """
 from __future__ import annotations
 
@@ -157,7 +157,7 @@ class VehicleHeader(Flowable):
         c.rect(0, 0, 3.2 * mm, self.h, fill=1, stroke=0)
         x = 7 * mm
         c.setFillColor(C(INK_2)); c.setFont("Body-Bold", 6.8)
-        c.drawString(x, self.h - 5.6 * mm, f"ARAÇ DOSYASI #{f['index']} / {self.total}")
+        c.drawString(x, self.h - 5.6 * mm, f"ARAÇ DEĞERLENDİRME #{f['index']} / {self.total}")
         ident = f["track_id"] or f["vehicle_id"]
         title = f"{ident} · {LABEL_TR.get(f['label'], f['label'] or 'tip bilinmiyor')}"
         if f["vehicle_id"] and f["track_id"]:
@@ -427,7 +427,7 @@ def _cover(data, ctx) -> list:
     out.append(kv_table(pairs, (46 * mm, None)))
     out.append(Spacer(1, 6 * mm))
     out.append(P("İçindekiler", "h3"))
-    toc = ["1  Yönetici özeti", "2  Durum haritası", "3  Karar yöntemi", f"4  Araç dosyaları ({n})",
+    toc = ["1  Yönetici özeti", "2  Durum haritası", "3  Karar yöntemi", f"4  Araç değerlendirme kayıtları ({n})",
            "5  İnsan onayı", "6  Saha raporu bütünlüğü", "7  Ek: üretim bilgileri"]
     out += [P(t, "small") for t in toc]
     return out
@@ -459,8 +459,15 @@ def _executive(data, ctx) -> list:
     out += bullets(ex["key_findings"])
     out.append(P("Öncelikli eylemler", "h3"))
     out += bullets(ex["priorities"], numbered=True)
-    out.append(P("Şüpheli araç listesi", "h3"))
-    out.append(_summary_table(vs) if vs else P("Seçilen filtrede şüpheli araç yok.", "small"))
+    out.append(P("Öncelikli araç görünümü", "h3"))
+    if vs:
+        preview = vs[:12]
+        out.append(_summary_table(preview))
+        if len(vs) > len(preview):
+            out.append(P(f"Yönetici özetinde ilk {len(preview)} kayıt gösterilir; kalan {len(vs) - len(preview)} kayıt "
+                         "Bölüm 4'te yer alır.", "tiny"))
+    else:
+        out.append(P("Seçilen filtrede şüpheli araç yok.", "small"))
     out.append(Spacer(1, 2 * mm))
     out.append(two_col([P("Karar süreci", "h3"), P(ex["decision_process"], "small")],
                        [P("Saha raporu bütünlüğü", "h3"), P(ex["report_integrity"], "small")]))
@@ -598,127 +605,67 @@ def _features_pairs(f: dict) -> list:
 
 
 def _vehicle(f: dict, data: dict, ctx: dict) -> list:
-    th = ctx["thresholds"]
+    """Kompakt araç kaydı.
+
+    Karar/veri yapısını değiştirmez; yalnızca PDF'teki tekrarlı denetim dökümlerini
+    yönetici düzeyi bir özete indirger. Ayrıntılı kural ve karar zinciri verileri
+    ``data`` içinde aynen kalır.
+    """
     vn = ctx["vehicle_narr"][f["key"]]
     n = vn["narrative"]
     total = len(data["vehicles"])
     ident = f["track_id"] or f["vehicle_id"]
-    out = [PageBreak(), Bookmark(f"#{f['index']} {ident} — {risk_label(f['final_level'])}", f"v{f['index']}", 1),
-           VehicleHeader(f, total), Spacer(1, 2.5 * mm)]
+    fe = f.get("features") or {}
+
+    # Yeni sayfa zorlaması yok: sayfada yeterli alan varsa sonraki kayıt aynı sayfada başlar.
+    out = [CondPageBreak(78 * mm),
+           Bookmark(f"#{f['index']} {ident} - {risk_label(f['final_level'])}", f"v{f['index']}", 1),
+           VehicleHeader(f, total), Spacer(1, 2 * mm)]
+
     d, rv = f.get("decision"), f.get("review")
     if f["status"] == "onay_bekliyor":
         opts = ", ".join(risk_label(x) for x in (d or {}).get("options") or [])
-        out += [banner(f"ANALİST ONAYI BEKLİYOR — gösterilen seviye geçicidir. Seçenekler: {opts}. "
-                       f"({(d or {}).get('rule_label')})", RISK_COLORS["ORTA"]), Spacer(1, 2 * mm)]
+        out += [banner(f"ANALİST ONAYI BEKLİYOR - geçici seviye. Seçenekler: {opts}.",
+                       RISK_COLORS["ORTA"]), Spacer(1, 1.5 * mm)]
     elif rv:
-        out += [banner(f"Analist kararı: {risk_label(rv['level'])} — {rv.get('analyst') or 'analist'}, "
-                       f"{rv.get('at_text') or ''}" + (f" · Not: {rv['note']}" if rv.get("note") else ""), ACCENT),
-                Spacer(1, 2 * mm)]
-    fe = f.get("features") or {}
-    if f["track"]:
-        tiles = [(km(f["dist_to_base_m"]), "üsse mesafe (çekim)"), (num(fe.get("eta_min"), " dk"), "ETA"),
-                 (num(fe.get("speed_now_mps"), " m/s", 1), "hız (son 10 dk)"),
-                 (num(fe.get("heading_offset_deg"), "°"), "üsse yönelim sapması"),
-                 (num(fe.get("approach_last60_m"), " m"), "son 60 dk yaklaşma")]
-    else:
-        nt = f.get("nearest_track") or {}
-        tiles = [(km(f["dist_to_base_m"]), "üsse mesafe"), (f"{f['bearing_from_base_deg']:.0f}°", "üsten kerteriz"),
-                 (f"{f['confidence']:.2f}" if f.get("confidence") is not None else "—", "tespit güveni"),
-                 (nt.get("track_id") or "—", "olası iz"), (num(nt.get("dist_m"), " m", 1), "olası ize uzaklık")]
-    out += [kpi_tiles(tiles), Spacer(1, 3 * mm)]
+        out += [banner(f"Analist kararı: {risk_label(rv['level'])}"
+                       + (f" - {rv.get('analyst')}" if rv.get("analyst") else ""), ACCENT),
+                Spacer(1, 1.5 * mm)]
 
-    # değerlendirme özeti (LLM / şablon)
-    summ = [P(f"<b>{esc(n['headline'])}</b>", "body", raw=True), P("Neden şüpheli?", "h3")] + bullets(n["why_suspicious"])
-    summ.append(P(f"Metin kaynağı: {ctx['source_tag'](vn)}", "tiny"))
-    out.append(box(summ))
+    conf = f"{f['confidence']:.2f}" if f.get("confidence") is not None else "-"
+    eta = num(fe.get("eta_min"), " dk", 1)
+    speed = num(fe.get("speed_now_mps"), " m/s", 1)
+    track = f["track_id"] or "eşleşmedi"
+    compact_rows = [
+        ["Araç", f"{LABEL_TR.get(f['label'], f['label'] or 'tip bilinmiyor')} / {conf}",
+         "Bölge", f["zone"], "Üsse", km(f["dist_to_base_m"])],
+        ["İz", track, "Senaryo", f["scenario_label"], "ETA / hız", f"{eta} / {speed}"],
+    ]
+    out.append(table(compact_rows, [16 * mm, 36 * mm, 16 * mm, 38 * mm, 18 * mm, CONTENT_W - 124 * mm],
+                     header=False, style="cell"))
+    out.append(Spacer(1, 1.5 * mm))
 
-    # 01 tespit ve konumlandırma
-    out += subsection("01", "Tespit ve konumlandırma")
-    det = kv_table(_detection_pairs(f), (28 * mm, (CONTENT_W - 3 * mm) / 2 - 28 * mm))
-    if f.get("frame"):
-        png, real = ctx["frame_png"][f["key"]]
-        left = [img(png, "frame", (CONTENT_W - 3 * mm) / 2),
-                P("Gerçek kare görüntüsü üzerine tespit kutusu." if real else
-                  "Görüntü dosyası bulunamadı; kare şematik, piksel konumları gerçektir. Gri kutular: karedeki diğer "
-                  "araçlar.", "tiny")]
-        out.append(two_col(left, det))
-    else:
-        out.append(det)
+    out.append(P(n["headline"], "lead"))
+    out += bullets((n.get("why_suspicious") or [])[:3])
 
-    # 02 hareket analizi
-    out += subsection("02", "Hareket analizi")
-    half = (CONTENT_W - 3 * mm) / 2
-    if f["track"]:
-        out.append(two_col(img(ctx["path_png"][f["key"]], "path", half), img(ctx["ts_png"][f["key"]], "timeseries", half)))
-        out.append(P(n["movement_story"], "body"))
-        stops = fe.get("stops") or []
-        right = [P("Duraklamalar", "h3")]
-        if stops:
-            rows = [["Başlangıç", "Bitiş", "Süre", "Üsse"]] + [[s["start"], s["end"], f"{s['minutes']} dk",
-                                                                km(s["dist_to_base_m"])] for s in stops]
-            right.append(table(rows, [20 * mm, 16 * mm, 16 * mm, half - 52 * mm]))
-        else:
-            right.append(P(f"≥ {th.stop_min_minutes} dk duraklama yok.", "small"))
-        feats = kv_table(_features_pairs(f), (27 * mm, half - 27 * mm))
-        out.append(two_col([P("Hareket öznitelikleri", "h3"), feats], right))
-        ac = f["track"].get("after_capture")
-        if ac:
-            out.append(P(f"Not: iz çekimden sonra {ac['until']}'e kadar sürüyor (bu aralıkta üsse en yakın "
-                         f"{km(ac['min_dist_m'])}). Seviye çekim anındaki davranışa göredir.", "tiny"))
-    else:
-        nt = f.get("nearest_track") or {}
-        h = nt.get("hypothesis")
-        right = [P("İz durumu", "h3"),
-                 P("Bu araç için hareket kaydı eşleşmedi; hız, yön ve duraklama bilinmiyor. Seviye yalnızca mesafe "
-                   "eşiğine dayanır.", "small")]
-        if h:
-            right += [P("Olası iz (hipotez)", "h3"),
-                      kv_table([("İz", f"{nt['track_id']} · çekim anında {nt['dist_m']:.1f} m"),
-                                ("Atandığı kayıt", nt.get("assigned_to") or "—"),
-                                ("Motorun o iz için yorumu", f"{h['scenario_label']} ({risk_label(h['risk'])})"),
-                                ("İzin üsse mesafesi", km(h["dist_now_m"])),
-                                ("Son 60 dk yaklaşma", num(h.get("approach_last60_m"), " m"))],
-                               (27 * mm, half - 27 * mm)),
-                      P("Bilgi amaçlıdır; nihai seviyeyi değiştirmez. Bire bir iz eşleştirmesi nedeniyle aynı araç "
-                        "daha önceki bir karede kaydedilmiş olabilir — analist doğrulaması önerilir.", "tiny")]
-        out.append(two_col(img(ctx["path_png"][f["key"]], "path", half), right))
-        out.append(P(n["movement_story"], "body"))
+    movement = (n.get("movement_story") or "").strip()
+    rationale = (n.get("decision_rationale") or "").strip()
+    if movement or rationale:
+        out.append(P("Hareket ve karar özeti", "h3"))
+        out.append(P(" ".join(x for x in [movement, rationale] if x), "small"))
 
-    # 03 risk analizi ve karar
-    out += subsection("03", "Risk analizi ve karar")
-    rows, cmds = _rule_rows(f)
-    out.append(P("Kural değerlendirmesi — neden bu senaryo, neden daha yüksek değil", "h3"))
-    out.append(table(rows, [44 * mm, 44 * mm, 24 * mm, 26 * mm, CONTENT_W - 138 * mm], extra=cmds))
-    out.append(P("Karar zinciri", "h3"))
-    rows, cmds = [["Aşama", "Seviye", "Açıklama"]], []
-    for i, c in enumerate(f["decision_chain"], 1):
-        rows.append([c["stage"], level_cell(c["level"])[0] if c["level"] else "—", c["detail"]])
-        cmds += level_cmds(1, i, c["level"])
-    cmds.append(("LINEABOVE", (0, len(rows) - 1), (-1, len(rows) - 1), 0.8, C(INK_2)))
-    out.append(table(rows, [34 * mm, 22 * mm, CONTENT_W - 56 * mm], extra=cmds))
-    out.append(P("Karar gerekçesi", "h3"))
-    out.append(P(n["decision_rationale"], "body"))
+    report_text = (n.get("report_assessment") or "").strip()
+    if report_text:
+        out.append(P("Saha raporu değerlendirmesi", "h3"))
+        out.append(P(report_text, "small"))
 
-    out.append(P("Saha raporları", "h3"))
-    reps = f.get("related_reports") or []
-    if reps:
-        rows, cmds = [["Rapor", "Saat", "Kaynak", "Motor hükmü", "Motor özeti / rapor metni (güvenilmez veri)"]], []
-        for r in reps:
-            txt = [P(r["summary"], "cell"), P(f"“{r['text']}”", "cellm")]
-            if r["injection"]:
-                txt.append(P("⚠ Talimat içeriyor — uygulanmadı.", "cellb"))
-            rows.append([r["report_id"], r["time"], SOURCE_LABELS.get(r["source"], r["source"]),
-                         VERDICT_LABELS.get(r["verdict"], r["verdict"]), txt])
-        out.append(table(rows, [14 * mm, 12 * mm, 20 * mm, 22 * mm, CONTENT_W - 68 * mm]))
-    else:
-        out.append(P("Bu araçla eşleşen saha raporu yok.", "small"))
-    out.append(P(n["report_assessment"], "body"))
+    uncertainties = (n.get("uncertainties") or [])[:2]
+    actions = (n.get("recommended_actions") or [])[:3]
+    if uncertainties or actions:
+        out.append(_paired_lists("Kritik belirsizlikler", uncertainties, "Önerilen eylemler", actions))
 
-    out.append(_paired_lists("Belirsizlikler", n["uncertainties"], "Önerilen eylemler", n["recommended_actions"]))
-    notes = vn.get("notes") or []
-    notes += (f.get("assessment") or {}).get("guardrail_notes") or []
-    if notes:
-        out.append(P("Korkuluk notları: " + " · ".join(notes), "tiny"))
+    out.append(P(f"Metin kaynağı: {ctx['source_tag'](vn)}", "tiny"))
+    out += [Spacer(1, 3 * mm), _rule(), Spacer(1, 3 * mm)]
     return out
 
 
@@ -813,7 +760,13 @@ def _appendix(data, ctx) -> list:
                      zebra=True))
     notes = ctx["all_notes"]
     out.append(P("Korkuluk notları", "h3"))
-    out += bullets(notes[:40]) if notes else [P("Kayıt yok.", "small")]
+    if notes:
+        shown = notes[:12]
+        out += bullets(shown)
+        if len(notes) > len(shown):
+            out.append(P(f"{len(notes) - len(shown)} ek teknik not rapor görünümünde tekrar edilmedi.", "tiny"))
+    else:
+        out.append(P("Kayıt yok.", "small"))
     return out
 
 
@@ -834,13 +787,11 @@ def render_pdf(path, data: dict, ctx: dict) -> int:
                           PageTemplate("body", [body], onPage=_on_body(meta))])
     story = [Bookmark("Kapak", "cover", 0)] + _cover(data, ctx) + [NextPageTemplate("body"), PageBreak()]
     story += _executive(data, ctx) + _situation(data, ctx) + _methodology(data, ctx)
-    story += [PageBreak()] + section("4", f"Araç dosyaları ({len(data['vehicles'])})", "sec4")
-    story.append(P("Her dosya brief'teki ajan akışını izler: 01 tespit ve konumlandırma → 02 hareket analizi → "
-                   "03 risk analizi ve karar. Dosyalar nihai seviye (yüksekten düşüğe), sonra ETA ve üsse mesafeye "
-                   "göre sıralıdır.", "body"))
-    if data["vehicles"]:
-        story.append(_summary_table(data["vehicles"]))
-    else:
+    story += [PageBreak()] + section("4", f"Araç değerlendirme kayıtları ({len(data['vehicles'])})", "sec4")
+    story.append(P("Kayıtlar nihai risk seviyesi, ETA ve üsse mesafeye göre sıralıdır. Her kayıt yalnızca karar için "
+                   "gerekli tespit, hareket, saha raporu ve eylem özetini içerir; tekrar eden teknik denetim dökümleri "
+                   "rapor görünümüne alınmaz.", "body"))
+    if not data["vehicles"]:
         story.append(P("Seçilen filtrede şüpheli araç yok.", "small"))
     for f in data["vehicles"]:
         story += _vehicle(f, data, ctx)
