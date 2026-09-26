@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Box, Focus, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { Box, Focus, GripVertical, Info, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
 import * as maplibregl from 'maplibre-gl';
 import type { ExpressionSpecification, GeoJSONSource, Map as LibreMap, Marker, StyleSpecification } from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
@@ -15,6 +15,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 maplibregl.setWorkerUrl(workerUrl);
 const style = basemapStyle as unknown as StyleSpecification;
+const visualControlsStorageKey = 'hisar-map-visual-controls-position-v1';
 /** Change paint only: theme switches preserve camera, selection, sources and playback. */
 function applyMapTheme(map: LibreMap) {
   const light = document.documentElement.dataset.theme === 'light';
@@ -178,6 +179,8 @@ function configureMapInteractions(map: LibreMap, mode: '2d' | '3d') {
 export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
   const container = useRef<HTMLDivElement>(null);
   const shell = useRef<HTMLDivElement>(null);
+  const visualControls = useRef<HTMLDivElement>(null);
+  const legend = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibreMap | null>(null);
   const visibleTrackIdsRef = useRef<ReadonlySet<string> | undefined>(visibleTrackIds);
   const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
@@ -186,8 +189,55 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
   const [mapError, setMapError] = useState('');
   const [fullscreen, setFullscreen] = useState(false);
   const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
+  const [legendOpen, setLegendOpen] = useState(false);
+  const [visualControlsPosition, setVisualControlsPosition] = useState<{ x: number; y: number } | null>(() => {
+    try {
+      if (typeof window === 'undefined') return null;
+      const stored = localStorage.getItem(visualControlsStorageKey);
+      if (!stored) return null;
+      const parsed = JSON.parse(stored) as { x?: unknown; y?: unknown };
+      return typeof parsed.x === 'number' && typeof parsed.y === 'number' ? { x: parsed.x, y: parsed.y } : null;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => { visibleTrackIdsRef.current = visibleTrackIds; }, [visibleTrackIds]);
+
+  useEffect(() => {
+    if (!legendOpen) return undefined;
+    const closeOnOutside = (event: PointerEvent) => {
+      if (!legend.current?.contains(event.target as Node)) setLegendOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setLegendOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOnOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [legendOpen]);
+
+  useEffect(() => {
+    if (!visualControlsPosition) return undefined;
+    const clampCurrent = () => {
+      if (!shell.current || !visualControls.current) return;
+      const shellRect = shell.current.getBoundingClientRect();
+      const panelRect = visualControls.current.getBoundingClientRect();
+      const next = {
+        x: Math.min(Math.max(8, visualControlsPosition.x), Math.max(8, shellRect.width - panelRect.width - 8)),
+        y: Math.min(Math.max(8, visualControlsPosition.y), Math.max(8, shellRect.height - panelRect.height - 8)),
+      };
+      if (next.x === visualControlsPosition.x && next.y === visualControlsPosition.y) return;
+      setVisualControlsPosition(next);
+      try { localStorage.setItem(visualControlsStorageKey, JSON.stringify(next)); } catch { /* Storage may be unavailable. */ }
+    };
+    clampCurrent();
+    window.addEventListener('resize', clampCurrent);
+    return () => window.removeEventListener('resize', clampCurrent);
+  }, [visualControlsPosition]);
 
   useEffect(() => {
     if (!container.current) return;
@@ -494,6 +544,32 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
   const setTrailMode = (mode: TrailMode) => usePlaybackStore.getState().setTrailMode(mode);
   const toggleFullscreen = async () => { if (!shell.current) return; if (document.fullscreenElement) await document.exitFullscreen(); else await shell.current.requestFullscreen(); };
   const toggle = (layer: 'vehicles' | 'untracked' | 'zones' | 'base') => useTrackingStore.getState().toggleLayer(layer);
+  const startVisualControlsDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (!shell.current || !visualControls.current) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const shellRect = shell.current.getBoundingClientRect();
+    const panelRect = visualControls.current.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const initial = visualControlsPosition ?? { x: panelRect.left - shellRect.left, y: panelRect.top - shellRect.top };
+    const clamp = (x: number, y: number) => ({
+      x: Math.min(Math.max(8, x), Math.max(8, shellRect.width - panelRect.width - 8)),
+      y: Math.min(Math.max(8, y), Math.max(8, shellRect.height - panelRect.height - 8)),
+    });
+    const move = (moveEvent: PointerEvent) => {
+      const next = clamp(initial.x + moveEvent.clientX - startX, initial.y + moveEvent.clientY - startY);
+      setVisualControlsPosition(next);
+      try { localStorage.setItem(visualControlsStorageKey, JSON.stringify(next)); } catch { /* Storage may be unavailable. */ }
+    };
+    const stop = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', stop);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', stop, { once: true });
+  };
 
   return <div className="map-shell analysis-map-shell" ref={shell}>
     <div ref={container} className="map-canvas" aria-label="Zaman çizelgesi oynatmalı analiz haritası" />
@@ -503,7 +579,16 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       <Button variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
       <Button variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
     </div>
-    <div className="map-visual-controls" role="toolbar" aria-label="Harita görselleştirme kontrolleri">
+    <div
+      className={`map-visual-controls ${visualControlsPosition ? 'dragged' : ''}`}
+      ref={visualControls}
+      role="toolbar"
+      aria-label="Harita görselleştirme kontrolleri"
+      style={visualControlsPosition ? { left: visualControlsPosition.x, top: visualControlsPosition.y, right: 'auto' } : undefined}
+    >
+      <button className="map-visual-drag-handle" type="button" aria-label="Harita görünüm kontrollerini taşı" onPointerDown={startVisualControlsDrag}>
+        <GripVertical size={14} />
+      </button>
       <div className="segmented-control" aria-label="Harita perspektifi">
         <button aria-pressed={viewMode === '2d'} onClick={() => setMapMode('2d')}>2D</button>
         <button aria-pressed={viewMode === '3d'} onClick={() => setMapMode('3d')}><Box size={12} />3D</button>
@@ -521,6 +606,11 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       <label><input type="checkbox" checked={layers.base} onChange={() => toggle('base')} />Üs</label>
     </div>
     {mapError && <div role="status" className="map-error">{mapError}</div>}
-    <div className="map-legend analysis-map-legend"><span><i className="legend-base" />Üs</span><span><i className="legend-zone" />Bölge merkezi</span><span><i className="legend-trail" />Rota izi</span><span><i className="legend-event" />Olay</span><span><i className="legend-untracked">?</i>İzsiz tespit</span><span><i className="legend-stale" />Son bilinen</span>{riskLevels.map(level => <span key={level}><i className={`legend-risk risk-${level.toLowerCase()}`}>{riskGlyph[level]}</i>{formatRiskLevel(level)}</span>)}</div>
+    <div className="map-legend-menu" ref={legend}>
+      <button className="map-legend-toggle" type="button" aria-label="Harita legendını aç" aria-expanded={legendOpen} title="Legend" onClick={() => setLegendOpen(open => !open)}><Info size={15} /></button>
+      {legendOpen && <div className="map-legend analysis-map-legend" role="dialog" aria-label="Harita legendı">
+        <span><i className="legend-base" />Üs</span><span><i className="legend-zone" />Bölge merkezi</span><span><i className="legend-trail" />Rota izi</span><span><i className="legend-event" />Olay</span><span><i className="legend-untracked">?</i>İzsiz tespit</span><span><i className="legend-stale" />Son bilinen</span>{riskLevels.map(level => <span key={level}><i className={`legend-risk risk-${level.toLowerCase()}`}>{riskGlyph[level]}</i>{formatRiskLevel(level)}</span>)}
+      </div>}
+    </div>
   </div>;
 }

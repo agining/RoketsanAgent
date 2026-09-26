@@ -1,8 +1,9 @@
-import { Maximize2, Minimize2, Pause, Play, RotateCcw, SkipBack, SkipForward } from 'lucide-react';
+import { Maximize2, Minimize2, Pause, Play, RotateCcw, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { Button } from './ui/button';
 import { playbackSpeeds, usePlaybackStore, type PlaybackSpeed, type TrailMode } from '../store/playback';
 import { useTimelineStore } from '../store/timeline';
+import { useVoiceAlertsStore } from '../store/voiceAlerts';
 import type { AnalysisData } from '../types/analysis';
 import { analysisPlaybackBounds, formatClock, timelineEvents } from '../services/analysis-playback';
 
@@ -10,6 +11,9 @@ export function Timeline({ analysis }: { analysis: AnalysisData }) {
   const state = usePlaybackStore();
   const compact = useTimelineStore(state => state.compact);
   const toggleCompact = useTimelineStore(state => state.toggleCompact);
+  const voiceAlertsEnabled = useVoiceAlertsStore(state => state.enabled);
+  const voiceAlertsSpeaking = useVoiceAlertsStore(state => state.isSpeaking);
+  const toggleVoiceAlerts = useVoiceAlertsStore(state => state.toggleEnabled);
   const bounds = useMemo(() => analysisPlaybackBounds(analysis), [analysis]);
   const events = useMemo(() => timelineEvents(analysis), [analysis]);
   const range = Math.max(1, state.maxTime - state.minTime);
@@ -26,6 +30,7 @@ export function Timeline({ analysis }: { analysis: AnalysisData }) {
       {!compact && <span className="timeline-label">DURUM ZAMANI</span>}
       {!compact && <label className="speed-select">Hız<select aria-label="Oynatma hızı" value={state.playbackSpeed} onChange={event => state.setSpeed(Number(event.target.value) as PlaybackSpeed)}>{playbackSpeeds.map(speed => <option value={speed} key={speed}>{speed}x</option>)}</select></label>}
       {!compact && <label className="speed-select trail-select">İz<select aria-label="Rota izi modu" value={state.trailMode} onChange={event => state.setTrailMode(event.target.value as TrailMode)}><option value="elapsed">Gidilen rota</option><option value="full">Tüm rota</option><option value="off">Kapalı</option></select></label>}
+      <Button variant="ghost" size="icon" className={`timeline-voice-toggle ${voiceAlertsEnabled ? 'on' : ''} ${voiceAlertsSpeaking ? 'speaking' : ''}`} role="switch" aria-checked={voiceAlertsEnabled} aria-label={voiceAlertsEnabled ? 'Ses açık' : 'Ses kapalı'} title={voiceAlertsEnabled ? 'Ses açık' : 'Ses kapalı'} onClick={toggleVoiceAlerts}>{voiceAlertsEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}</Button>
       <Button variant="ghost" size="icon" className="timeline-compact-toggle" aria-label={compact ? 'Timeline genişlet' : 'Timeline küçült'} title={compact ? 'Timeline genişlet' : 'Timeline küçült'} onClick={toggleCompact}>{compact ? <Maximize2 size={14} /> : <Minimize2 size={14} />}</Button>
     </div>
     <div className="timeline-scrubber">

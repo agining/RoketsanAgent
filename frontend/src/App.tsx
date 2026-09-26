@@ -14,8 +14,6 @@ import {
   RefreshCw,
   Search,
   UserCheck,
-  Volume2,
-  VolumeX,
   X,
 } from 'lucide-react';
 
@@ -52,7 +50,6 @@ import {
 } from './store/settings';
 import { useTimelineStore } from './store/timeline';
 import { useTrackingStore } from './store/tracking';
-import { useVoiceAlertsStore } from './store/voiceAlerts';
 import { useWatchlistStore } from './store/watchlist';
 import { useWorkspaceStore } from './store/workspace';
 
@@ -130,12 +127,14 @@ function SettingsPanel({
   togglingReview,
   humanReviewDisabled,
   onToggleHumanReview,
+  summary,
 }: {
   open: boolean;
   onClose: () => void;
   togglingReview: boolean;
   humanReviewDisabled: boolean;
   onToggleHumanReview: () => void;
+  summary?: AnalysisData['summary'] | null;
 }) {
   const themeMode = useSettingsStore(state => state.themeMode);
   const setThemeMode = useSettingsStore(state => state.setThemeMode);
@@ -196,6 +195,32 @@ function SettingsPanel({
                 </button>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Sistem</h2>
+
+          <div className="settings-status-card" aria-label="Model durumu">
+            <span>
+              <BrainCircuit size={15} />
+              <b>Model durumu</b>
+            </span>
+
+            <dl>
+              <div>
+                <dt>LLM durumu</dt>
+                <dd>
+                  <i className={summary?.llm_enabled ? 'on' : ''} />
+                  {summary ? (summary.llm_enabled ? 'Açık' : 'Kapalı') : 'Bilinmiyor'}
+                </dd>
+              </div>
+
+              <div>
+                <dt>Aktif model</dt>
+                <dd>{summary?.model ?? 'Model yok'}</dd>
+              </div>
+            </dl>
           </div>
         </section>
 
@@ -311,18 +336,6 @@ export default function App() {
     reviews: { ...rawData.reviews, human_review: humanReview },
   } : null, [humanReview, rawData]);
   useVoiceAlerts(data);
-
-  const voiceAlertsEnabled = useVoiceAlertsStore(
-    state => state.enabled,
-  );
-
-  const voiceAlertsSpeaking = useVoiceAlertsStore(
-    state => state.isSpeaking,
-  );
-
-  const toggleVoiceAlerts = useVoiceAlertsStore(
-    state => state.toggleEnabled,
-  );
 
   const visibleTrackIds = useMemo(
     () =>
@@ -543,6 +556,7 @@ export default function App() {
           togglingReview={togglingReview}
           humanReviewDisabled
           onToggleHumanReview={() => void toggleHumanReview()}
+          summary={null}
         />
         <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
 
@@ -623,136 +637,6 @@ export default function App() {
           </span>
         </div>
 
-        <span
-          className={`llm-badge ${
-            data.summary.llm_enabled ? 'on' : ''
-          }`}
-          title={
-            data.summary.llm_enabled
-              ? `Model: ${data.summary.model ?? '—'}`
-              : "API'de OPENAI_API_KEY tanımlı değil"
-          }
-        >
-          <BrainCircuit size={13} />
-          <span>
-            {data.summary.llm_enabled
-              ? 'LLM açık'
-              : 'LLM kapalı'}
-          </span>
-        </span>
-
-        <button
-          className={`voice-alert-toggle ${
-            voiceAlertsEnabled ? 'on' : ''
-          } ${voiceAlertsSpeaking ? 'speaking' : ''}`}
-          role="switch"
-          aria-checked={voiceAlertsEnabled}
-          onClick={toggleVoiceAlerts}
-          title={
-            voiceAlertsEnabled
-              ? 'Sesli tehdit bildirimlerini kapat'
-              : 'Sesli tehdit bildirimlerini aç'
-          }
-        >
-          {voiceAlertsEnabled ? (
-            <Volume2 size={13} />
-          ) : (
-            <VolumeX size={13} />
-          )}
-
-          <span>
-            {voiceAlertsEnabled ? 'Ses açık' : 'Ses kapalı'}
-          </span>
-        </button>
-
-        <div className="watch-notification-anchor" ref={notificationsRef}>
-          <button
-            className={`watch-notification-trigger ${
-              unreadNotifications ? 'active' : ''
-            }`}
-            aria-expanded={notificationsOpen}
-            aria-label={`İzleme listesi bildirimleri${
-              unreadNotifications
-                ? `, ${unreadNotifications} okunmamış`
-                : ''
-            }`}
-            onClick={() =>
-              setNotificationsOpen(open => !open)
-            }
-          >
-            <Bell size={14} />
-
-            {unreadNotifications > 0 && (
-              <b>{unreadNotifications}</b>
-            )}
-          </button>
-
-          {notificationsOpen && (
-            <div className="watch-notification-panel">
-              <header>
-                <span>
-                  <Bell size={13} />
-                  Bildirimler
-                </span>
-
-                <button
-                  disabled={!unreadNotifications}
-                  onClick={() =>
-                    useWatchlistStore
-                      .getState()
-                      .markAllRead()
-                  }
-                >
-                  <CheckCheck size={12} />
-                  Tümünü okundu işaretle
-                </button>
-              </header>
-
-              <div>
-                {notifications.length ? (
-                  notifications
-                    .slice(0, 20)
-                    .map(item => (
-                      <button
-                        key={item.id}
-                        className={`${
-                          item.read ? 'read' : ''
-                        } severity-${item.severity}`}
-                        onClick={() => {
-                          useWatchlistStore
-                            .getState()
-                            .markRead(item.id);
-
-                          selectTrack(item.trackId);
-                          setNotificationsOpen(false);
-                        }}
-                      >
-                        <span>
-                          <strong>
-                            {item.trackId}
-                          </strong>
-
-                          <small>
-                            {item.type} ·{' '}
-                            {formatTimestamp(
-                              item.at,
-                            )}
-                          </small>
-                        </span>
-
-                        <p>{item.message}</p>
-                      </button>
-                    ))
-                ) : (
-                  <p>
-                    Henüz watchlist bildirimi yok.
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
         <div className="map-top-search" role="search">
           <Search size={13} />
           <input
@@ -776,6 +660,94 @@ export default function App() {
               }
             }}
           />
+          <div className="watch-notification-anchor" ref={notificationsRef}>
+            <button
+              className={`watch-notification-trigger ${
+                unreadNotifications ? 'active' : ''
+              }`}
+              aria-expanded={notificationsOpen}
+              aria-label={`İzleme listesi bildirimleri${
+                unreadNotifications
+                  ? `, ${unreadNotifications} okunmamış`
+                  : ''
+              }`}
+              onClick={() =>
+                setNotificationsOpen(open => !open)
+              }
+              type="button"
+            >
+              <Bell size={14} />
+
+              {unreadNotifications > 0 && (
+                <b>{unreadNotifications}</b>
+              )}
+            </button>
+
+            {notificationsOpen && (
+              <div className="watch-notification-panel">
+                <header>
+                  <span>
+                    <Bell size={13} />
+                    Bildirimler
+                  </span>
+
+                  <button
+                    disabled={!unreadNotifications}
+                    onClick={() =>
+                      useWatchlistStore
+                        .getState()
+                        .markAllRead()
+                    }
+                  >
+                    <CheckCheck size={12} />
+                    Tümünü okundu işaretle
+                  </button>
+                </header>
+
+                <div>
+                  {notifications.length ? (
+                    notifications
+                      .slice(0, 20)
+                      .map(item => (
+                        <button
+                          key={item.id}
+                          className={`${
+                            item.read ? 'read' : ''
+                          } severity-${item.severity}`}
+                          onClick={() => {
+                            useWatchlistStore
+                              .getState()
+                              .markRead(item.id);
+
+                            selectTrack(item.trackId);
+                            setNotificationsOpen(false);
+                          }}
+                        >
+                          <span>
+                            <strong>
+                              {item.trackId}
+                            </strong>
+
+                            <small>
+                              {item.type} ·{' '}
+                              {formatTimestamp(
+                                item.at,
+                              )}
+                            </small>
+                          </span>
+
+                          <p>{item.message}</p>
+                        </button>
+                      ))
+                  ) : (
+                    <p>
+                      Henüz watchlist bildirimi yok.
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
           {trackSearchOpen && trackSearch.trim() && (
             <div className="map-top-search-results" role="listbox">
               {trackSearchResults.length ? trackSearchResults.map(entity => (
@@ -854,6 +826,7 @@ export default function App() {
         togglingReview={togglingReview}
         humanReviewDisabled={!rawData}
         onToggleHumanReview={() => void toggleHumanReview()}
+        summary={data.summary}
       />
       <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
 

@@ -111,15 +111,21 @@ function DetailSection({
   title,
   meta,
   children,
-  defaultOpen = true,
+  defaultOpen = false,
+  resetKey,
 }: {
   title: string;
   meta?: string;
   children: React.ReactNode;
   defaultOpen?: boolean;
+  resetKey?: string;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const panelId = useId();
+
+  useEffect(() => {
+    setOpen(defaultOpen);
+  }, [defaultOpen, resetKey]);
 
   return (
     <section
@@ -374,7 +380,7 @@ function AssessmentSection({
 
   if (!frameId) {
     return (
-      <DetailSection title="Ajan Değerlendirmesi">
+      <DetailSection title="Ajan Değerlendirmesi" resetKey={entity.track_id}>
         <p className="entity-empty-note">
           Bu iz hiçbir karede
           görünmüyor; API onu motorla
@@ -432,6 +438,7 @@ function AssessmentSection({
             }`
           : frameId
       }
+      resetKey={entity.track_id}
     >
       {!analysis.summary.llm_enabled && (
         <p className="field-report-disclaimer">
@@ -1057,6 +1064,7 @@ export function TrackDetail({
         meta={formatDecisionStatus(
           entity.decision_status,
         )}
+        resetKey={entity.track_id}
       >
         <div className="risk-assessment-head">
           <span
@@ -1152,6 +1160,7 @@ export function TrackDetail({
               )
             : formatUnavailable()
         }
+        resetKey={entity.track_id}
       >
         {entity.risk_reasons
           .length ? (
@@ -1181,6 +1190,7 @@ export function TrackDetail({
               }`
             : formatUnavailable()
         }
+        resetKey={entity.track_id}
       >
         {vehicle ? (
           <>
@@ -1285,6 +1295,7 @@ export function TrackDetail({
             ? `${features.t_start}–${features.t_end} penceresi`
             : formatUnavailable()
         }
+        resetKey={entity.track_id}
       >
         {features ? (
           <>
@@ -1451,6 +1462,7 @@ export function TrackDetail({
             ? formatClock(time)
             : 'İz henüz başlamadı'
         }
+        resetKey={entity.track_id}
       >
         {position ? (
           <Grid
@@ -1499,6 +1511,7 @@ export function TrackDetail({
       <DetailSection
         title="Saha Raporları"
         meta={`${visibleReports.length}/${entity.reports.length} rapor · ${formatClock(time)} anına kadar`}
+        resetKey={entity.track_id}
       >
         <p className="field-report-disclaimer">
           <AlertTriangle size={12} />
@@ -1631,6 +1644,7 @@ export function TrackDetail({
               ? 'Yükleniyor…'
               : formatUnavailable()
         }
+        resetKey={entity.track_id}
       >
         {apiTrack.error && (
           <div
@@ -1819,6 +1833,7 @@ export function TrackDetail({
             <DetailSection
               title="Motor Adımları"
               meta={frame.frame_id}
+              resetKey={entity.track_id}
             >
               <div className="assessment-list">
                 {frame.pipeline_steps.map(
