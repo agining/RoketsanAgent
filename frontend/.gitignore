@@ -1,0 +1,32 @@
+# Frontend dependencies and generated output
+node_modules/
+dist/
+.vite/
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
+blob-report/
+
+# Local environment values; examples may be versioned
+.env
+.env.*
+!.env.example
+
+# IDE / operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Generated temporary files and logs
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
