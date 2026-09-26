@@ -12,3 +12,10 @@ npm ci & npm run dev
 
 Arayüz localhost:5173
 API arayüz localhost:8000
+
+```bash
+python run_pipeline.py                          # deterministik analiz → outputs/analysis.json
+python run_pipeline.py --agent --min-risk ORTA  # riskli kareler için ajan → outputs/assessments.json
+python run_pipeline.py --chat "T0122 neden yüksek riskli?"
+uvicorn app.api:app --reload --port 8000        # React için API, dokümantasyon: /docs
+```
