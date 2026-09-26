@@ -42,13 +42,16 @@ test('track marker opens the API detail with decision, features and reports', as
   for (const heading of ['Risk Kararı', 'Senaryo ve Gerekçeler', 'Gözlem', 'Hareket Öznitelikleri', 'Ajan Değerlendirmesi', 'Anlık Konum', 'Saha Raporları', 'Mesafe Geçmişi'])
     await expect(detail.getByRole('heading', { name: heading })).toBeVisible();
   await expect(detail).toContainText('Doğrudan hızlı yaklaşma');
-  await expect(detail.locator('.entity-history-table').last()).toContainText('m');
+  const history = detail.getByRole('button', { name: /Mesafe Geçmişi/ });
+  if (await history.getAttribute('aria-expanded') === 'false') await history.click();
+  await expect(detail.getByLabel('Zamana göre üs mesafesi')).toBeVisible();
   await expect(page.locator('.analysis-track-marker[data-track-id="T0106"]')).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('map filters and layers work on API data; mobile layout stays usable', async ({ page }) => {
   const { state } = await mockApi(page);
   await page.goto('/');
+  await page.getByRole('button', { name: 'Harita panelini aç', exact: true }).click();
   await page.getByRole('combobox', { name: 'Harita risk filtresi' }).selectOption('CRITICAL');
   await expect(page.locator('.map-filter-result')).toContainText(`2 / ${state.trackingData.tracks.length} iz görünür`);
   await page.getByRole('combobox', { name: 'Harita risk filtresi' }).selectOption('ALL');

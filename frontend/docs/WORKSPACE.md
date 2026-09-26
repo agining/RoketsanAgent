@@ -39,6 +39,10 @@ After any action (human-review switch, analyst decision, frame assessment) the w
 - **Track detail** (`TrackDetail`): risk decision (final / engine / LLM, rule, engine margin, analyst decision), scenario and reasons, observation with the drone frame and bboxes (`/api/images/{id}`), movement features, agent assessment (run / re-run), interpolated position, field reports with checks, distance history (`/api/tracks/{id}`), engine pipeline steps.
 - **Top bar**: last analysis time, track count, high/critical alerts, pending reviews, "Son söz insanda" switch (`PUT /api/settings`), LLM status.
 
+## Game graph replay analysis
+
+The optional graph section in MapSidebar uses `useGraphAnalysis` and the existing API transport. The backend owns all graph calculations. `GraphAnalysisPanel` selects a same-day window and displays a ranked region list, independent graph/report contributions, source references and the representative-node breakdown. `useGraphOverlay` adds a selectable MapLibre layer. Loading/errors remain independent of the main track analysis. See [graph documentation](../../docs/graph-analysis.md) for contracts and formulas.
+
 ## Tests
 
 - `src/services/*.test.ts` (Vitest): API client (errors, request bodies, concurrency), API → view-model mapping, playback helpers, formatters.

@@ -46,7 +46,7 @@ export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onCh
     finally { setAssessing(false); }
   };
 
-  return <div className="map-floating-overlays">
+  return <div className={`map-floating-overlays${panel ? ' has-open-panel' : ''}`}>
     <div className="map-quick-filters" aria-label="Hızlı harita filtreleri">
       <label className={filters.risk !== 'ALL' ? 'active' : ''}><span>Risk</span><select aria-label="Risk filtresi" value={filters.risk} onChange={event => updateFilter('risk', event.target.value as MapFilterState['risk'])}>{riskOptions.map(option => <option key={option} value={option}>{option === 'ALL' ? 'Tümü' : formatRiskLevel(option)}</option>)}</select></label>
       <label className={filters.vehicleClass !== 'ALL' ? 'active' : ''}><span>Araç</span><select aria-label="Araç filtresi" value={filters.vehicleClass} onChange={event => updateFilter('vehicleClass', event.target.value)}><option value="ALL">Tümü</option>{vehicleOptions.map(option => <option key={option} value={option}>{formatVehicleClass(option)}</option>)}</select></label>

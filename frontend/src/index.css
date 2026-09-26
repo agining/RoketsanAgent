@@ -2901,3 +2901,6 @@ button,select,input,textarea{color:var(--text-primary)}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model::before{border-style:dashed}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model.filtered{opacity:.35}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model:is(:hover,:focus-visible){opacity:1}
+
+/* Open action panels stay above timeline controls so their buttons remain reachable. */
+.map-floating-overlays.has-open-panel { z-index: 29; }
