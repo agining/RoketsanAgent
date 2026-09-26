@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Box, Focus, GripVertical, Info, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
 import * as maplibregl from 'maplibre-gl';
 import type { ExpressionSpecification, GeoJSONSource, Map as LibreMap, Marker, StyleSpecification } from 'maplibre-gl';
@@ -11,16 +11,34 @@ import type { AnalysisData, AnalysisEntity, AnalysisVehicle, RiskLevel } from '.
 import { allTrackTrailFeatures, formatClock, headingAtTime, positionAtTime, reportsAtTime, selectedTrackEventFeatures, trackColor, trailArrowFeatures, untrackedVisibleAt } from '../../services/analysis-playback';
 import type { TrailMode } from '../../store/playback';
 import { formatDecisionStatus, formatMeters, formatPercent, formatRiskLevel, formatScenario, formatSource, formatUnavailable, formatVehicleClass } from '../../services/formatters';
-import { activeTrackEntities } from '../../services/trackFilters';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 maplibregl.setWorkerUrl(workerUrl);
 const style = basemapStyle as unknown as StyleSpecification;
 const visualControlsStorageKey = 'hisar-map-visual-controls-position-v1';
-const vehicleMarkerZoom = {
-  mid: 13.25,
-  label: 14.75,
-} as const;
+const FAR_MARKER_ZOOM = 12.5;
+const CLOSE_MARKER_ZOOM = 14.25;
+const vehicleSprites = import.meta.glob('../../assets/vehicles/*.webp', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+function vehicleSprite(type: string, heading: number, risk: RiskLevel) {
+  const direction = ((Math.round(heading / 45) % 8) + 8) % 8;
+  return vehicleSprites[`../../assets/vehicles/${type}-${risk}-${direction}.webp`] ?? vehicleSprites[`../../assets/vehicles/unknown-${risk}-${direction}.webp`];
+}
+function appendVehicleModel(button: HTMLButtonElement, type: string, risk: RiskLevel, heading = 0) {
+  button.classList.add('has-vehicle-model');
+  const image = document.createElement('img');
+  image.className = 'vehicle-model';
+  image.src = vehicleSprite(type, heading, risk);
+  image.alt = '';
+  image.draggable = false;
+  button.append(image);
+  if (!['car', 'van', 'truck', 'bus'].includes(type)) {
+    const badge = document.createElement('span');
+    badge.className = 'vehicle-unknown-badge';
+    badge.textContent = '?';
+    badge.setAttribute('aria-hidden', 'true');
+    button.append(badge);
+  }
+}
 /** Change paint only: theme switches preserve camera, selection, sources and playback. */
 function applyMapTheme(map: LibreMap) {
   const light = document.documentElement.dataset.theme === 'light';
@@ -131,7 +149,7 @@ function untrackedPopup(item: AnalysisVehicle, time: number) {
 function allBounds(analysis: AnalysisData) {
   const bounds = new maplibregl.LngLatBounds([analysis.base.lon, analysis.base.lat], [analysis.base.lon, analysis.base.lat]);
   analysis.zones.forEach(zone => bounds.extend([zone.center[1], zone.center[0]]));
-  activeTrackEntities(analysis.entities).forEach(entity => entity.points.forEach(point => bounds.extend([point.lon, point.lat])));
+  analysis.entities.forEach(entity => entity.points.forEach(point => bounds.extend([point.lon, point.lat])));
   analysis.untracked.forEach(item => bounds.extend([item.lon, item.lat]));
   return bounds;
 }
@@ -206,7 +224,6 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       return null;
     }
   });
-  const activeEntities = useMemo(() => activeTrackEntities(analysis.entities), [analysis.entities]);
 
   useEffect(() => { visibleTrackIdsRef.current = visibleTrackIds; }, [visibleTrackIds]);
 
@@ -277,8 +294,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     const markers: Marker[] = [];
     const trackMarkers = new Map<string, Marker>();
     const untrackedMarkers = new Map<string, Marker>();
-    const entities = activeTrackEntities(analysis.entities);
-    const byTrackId = new Map(entities.map(entity => [entity.track_id, entity]));
+    const byTrackId = new Map(analysis.entities.map(entity => [entity.track_id, entity]));
     const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: 'vehicle-tooltip', offset: 16 });
     const showPopup = (coordinates: [number, number], content: HTMLElement) => popup.setLngLat(coordinates).setDOMContent(content).addTo(map);
     const hidePopup = () => popup.remove();
@@ -327,8 +343,8 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
       const time = usePlaybackStore.getState().currentTime;
       const mode = usePlaybackStore.getState().trailMode;
       const visible = visibleTrackIdsRef.current;
-      (map.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(entities, time, mode, selected, visible));
-      (map.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(entities, time, mode, selected, visible));
+      (map.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(analysis.entities, time, mode, selected, visible));
+      (map.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(analysis.entities, time, mode, selected, visible));
       (map.getSource('selected-track-events') as GeoJSONSource | undefined)?.setData(selectedTrackEventFeatures(entity ?? null, time));
     };
 
@@ -394,7 +410,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     base.append(baseIcon, baseLabel);
     markers.push(new maplibregl.Marker({ element: base }).setLngLat([analysis.base.lon, analysis.base.lat]).addTo(map));
 
-    entities.forEach(entity => {
+    analysis.entities.forEach(entity => {
       const risk = entity.risk_level;
       const button = document.createElement('button');
       button.type = 'button';
@@ -506,9 +522,8 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
 
     const applyZoomDetail = () => {
       const zoom = map.getZoom();
-      shell.current?.classList.toggle('vehicle-zoom-mid', zoom >= vehicleMarkerZoom.mid);
-      shell.current?.classList.toggle('vehicle-zoom-close', zoom >= vehicleMarkerZoom.label);
-      shell.current?.classList.toggle('close-vehicle-zoom', false);
+      shell.current?.classList.toggle('far-vehicle-zoom', zoom < FAR_MARKER_ZOOM);
+      shell.current?.classList.toggle('close-vehicle-zoom', zoom >= CLOSE_MARKER_ZOOM);
     };
     map.on('zoom', applyZoomDetail);
     const updateVehicleDirections = () => {
@@ -557,14 +572,14 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
     const time = usePlaybackStore.getState().currentTime;
     shell.current?.querySelectorAll<HTMLElement>('.analysis-track-marker').forEach(marker => {
       const trackId = marker.dataset.trackId;
-      const entity = activeEntities.find(item => item.track_id === trackId);
+      const entity = analysis.entities.find(item => item.track_id === trackId);
       const temporalPosition = entity ? positionAtTime(entity, time) : null;
       marker.style.display = layers.vehicles && temporalPosition && (!visibleTrackIds || (trackId ? visibleTrackIds.has(trackId) : false)) ? '' : 'none';
     });
     const selected = useTrackingStore.getState().selectedTrackId;
-    (mapRef.current?.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(activeEntities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
-    (mapRef.current?.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(activeEntities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
-  }, [activeEntities, layers.vehicles, visibleTrackIds]);
+    (mapRef.current?.getSource('all-track-trails') as GeoJSONSource | undefined)?.setData(allTrackTrailFeatures(analysis.entities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
+    (mapRef.current?.getSource('trail-arrows') as GeoJSONSource | undefined)?.setData(trailArrowFeatures(analysis.entities, time, usePlaybackStore.getState().trailMode, selected, visibleTrackIds));
+  }, [analysis.entities, layers.vehicles, visibleTrackIds]);
 
   useEffect(() => {
     const change = () => setFullscreen(document.fullscreenElement === shell.current);
@@ -574,7 +589,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
 
   const fitAll = () => mapRef.current?.fitBounds(allBounds(analysis), { padding: 70, maxZoom: 15, duration: 250 });
   const focusSelected = () => {
-    const entity = activeEntities.find(item => item.track_id === selectedTrackId);
+    const entity = analysis.entities.find(item => item.track_id === selectedTrackId);
     const position = entity ? positionAtTime(entity, usePlaybackStore.getState().currentTime) : null;
     if (position) mapRef.current?.easeTo({ center: [position.lon, position.lat], zoom: Math.max(mapRef.current.getZoom(), 14), duration: 250 });
   };
@@ -617,32 +632,30 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { an
 
   return <div className="map-shell analysis-map-shell" ref={shell}>
     <div ref={container} className="map-canvas" aria-label="Zaman çizelgesi oynatmalı analiz haritası" />
+    <div className="map-toolbar" role="toolbar" aria-label="Harita araçları">
+      <Button variant="ghost" onClick={fitAll}><LocateFixed size={15} /><span>Tümünü göster</span></Button>
+      <Button variant="ghost" size="icon" aria-label="Seçili track'e odaklan" title="Seçili track'e odaklan" disabled={!selectedTrackId} onClick={focusSelected}><Focus size={16} /></Button>
+      <Button variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
+      <Button variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
+    </div>
     <div
-      className={`map-control-cluster ${visualControlsPosition ? 'dragged' : ''}`}
+      className={`map-visual-controls ${visualControlsPosition ? 'dragged' : ''}`}
       ref={visualControls}
       role="toolbar"
-      aria-label="Harita kontrol grubu"
+      aria-label="Harita görselleştirme kontrolleri"
       style={visualControlsPosition ? { left: visualControlsPosition.x, top: visualControlsPosition.y, right: 'auto' } : undefined}
     >
       <button className="map-visual-drag-handle" type="button" aria-label="Harita görünüm kontrollerini taşı" onPointerDown={startVisualControlsDrag}>
         <GripVertical size={14} />
       </button>
-      <div className="map-toolbar" role="group" aria-label="Harita araçları">
-        <Button variant="ghost" onClick={fitAll}><LocateFixed size={15} /><span>Tümünü göster</span></Button>
-        <Button variant="ghost" size="icon" aria-label="Seçili track'e odaklan" title="Seçili track'e odaklan" disabled={!selectedTrackId} onClick={focusSelected}><Focus size={16} /></Button>
-        <Button variant="ghost" size="icon" aria-label="Harita yönünü sıfırla" title="Harita yönünü sıfırla" onClick={() => { mapRef.current?.jumpTo({ bearing: 0, pitch: 0 }); fitAll(); }}><RotateCcw size={15} /></Button>
-        <Button variant="ghost" size="icon" aria-label={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} title={fullscreen ? 'Tam ekrandan çık' : 'Tam ekran harita'} disabled={!document.fullscreenEnabled} onClick={() => void toggleFullscreen()}>{fullscreen ? <Minimize size={15} /> : <Maximize size={15} />}</Button>
+      <div className="segmented-control" aria-label="Harita perspektifi">
+        <button aria-pressed={viewMode === '2d'} onClick={() => setMapMode('2d')}>2D</button>
+        <button aria-pressed={viewMode === '3d'} onClick={() => setMapMode('3d')}><Box size={12} />3D</button>
       </div>
-      <div className="map-visual-controls" role="group" aria-label="Harita görselleştirme kontrolleri">
-        <div className="segmented-control" aria-label="Harita perspektifi">
-          <button aria-pressed={viewMode === '2d'} onClick={() => setMapMode('2d')}>2D</button>
-          <button aria-pressed={viewMode === '3d'} onClick={() => setMapMode('3d')}><Box size={12} />3D</button>
-        </div>
-        <div className="segmented-control trail-control" aria-label="Rota izi görünümü">
-          <button aria-pressed={trailMode === 'elapsed'} onClick={() => setTrailMode('elapsed')}>Gidilen</button>
-          <button aria-pressed={trailMode === 'full'} onClick={() => setTrailMode('full')}>Tüm rota</button>
-          <button aria-pressed={trailMode === 'off'} onClick={() => setTrailMode('off')}>Kapalı</button>
-        </div>
+      <div className="segmented-control trail-control" aria-label="Rota izi görünümü">
+        <button aria-pressed={trailMode === 'elapsed'} onClick={() => setTrailMode('elapsed')}>Gidilen</button>
+        <button aria-pressed={trailMode === 'full'} onClick={() => setTrailMode('full')}>Tüm rota</button>
+        <button aria-pressed={trailMode === 'off'} onClick={() => setTrailMode('off')}>Kapalı</button>
       </div>
     </div>
     <div className="analysis-map-layers" role="group" aria-label="Harita katmanları">
