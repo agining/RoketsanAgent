@@ -12,10 +12,10 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-THEME_VERSION = "1.1"
+THEME_VERSION = "1.2"
 ORG_NAME = os.getenv("REPORT_ORG_NAME", "HİSAR")
 REPORT_TITLE = "Tehdit Değerlendirme Raporu"
-REPORT_SUBTITLE = "Merkez Üs çevresi · şüpheli araç dosyaları"
+REPORT_SUBTITLE = "Merkez Üs Çevresi · Araç Risk Değerlendirmesi"
 REPORT_TZ = os.getenv("REPORT_TZ", "Europe/Istanbul")
 
 # ------------------------------------------------------------------ renkler
@@ -112,10 +112,12 @@ def font_dir() -> Path:
 
 
 FONT_FILES = {
-    "Body": "DejaVuSansMono.ttf",
-    "Body-Bold": "DejaVuSansMono-Bold.ttf",
-    "Body-Italic": "DejaVuSansMono-Oblique.ttf",
-    "Body-BoldItalic": "DejaVuSansMono-BoldOblique.ttf",
+    # Rapor gövdesi için orantılı sans-serif: daha resmi görünür ve monospace'e göre
+    # aynı bilgiyi daha az satırda taşır. Mono yalnızca teknik alanlar için korunur.
+    "Body": "DejaVuSans.ttf",
+    "Body-Bold": "DejaVuSans-Bold.ttf",
+    "Body-Italic": "DejaVuSans-Oblique.ttf",
+    "Body-BoldItalic": "DejaVuSans-BoldOblique.ttf",
     "Mono": "DejaVuSansMono.ttf",
     "Mono-Bold": "DejaVuSansMono-Bold.ttf",
 }
