@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertTriangle, BrainCircuit, CircleAlert, Clock3, Crosshair, LoaderCircle, RefreshCw, Search, UserCheck } from 'lucide-react';
+import { AlertTriangle, BrainCircuit, CircleAlert, Clock3, Crosshair, LoaderCircle, RefreshCw, Search, UserCheck, Volume2, VolumeX } from 'lucide-react';
 import { OperationsMap } from './components/map/OperationsMap';
 import { MapOverlays } from './components/map/MapOverlays';
+import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
 import { MapSidebar, entityMatchesMapFilters, initialMapFilters, type MapFilterState } from './components/map/MapSidebar';
 import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
 import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
 import { Button } from './components/ui/button';
 import { useAnalysis } from './hooks/useAnalysis';
+import { useVoiceAlerts } from './hooks/useVoiceAlerts';
 import { api, API_BASE_URL } from './services/api';
 import { clockSeconds, positionAtTime } from './services/analysis-playback';
 import type { AnalysisData } from './types/analysis';
@@ -15,6 +17,7 @@ import { startPlaybackClock } from './services/playback-clock';
 import { usePlaybackStore } from './store/playback';
 import { useTrackingStore } from './store/tracking';
 import { useWorkspaceStore } from './store/workspace';
+import { useVoiceAlertsStore } from './store/voiceAlerts';
 
 function formatTimestamp(value: string) {
   const date = new Date(value);
@@ -34,6 +37,7 @@ export default function App() {
   const [actionError, setActionError] = useState<string | null>(null);
   const selectedTrackId = useTrackingStore(state => state.selectedTrackId);
   const inspectorOpen = useWorkspaceStore(state => state.inspectorOpen);
+  const voice = useVoiceAlertsStore();
   const playbackTime = usePlaybackStore(state => Math.floor(state.currentTime));
   const data = analysis.data;
   const visibleTrackIds = useMemo(() => new Set(data?.entities.filter(entity => entityMatchesMapFilters(entity, filters)).map(entity => entity.track_id) ?? []), [data, filters]);
@@ -41,6 +45,7 @@ export default function App() {
   const highCritical = data ? data.alerts.filter(alert => alert.risk_level === 'HIGH' || alert.risk_level === 'CRITICAL').length : 0;
   const dataRef = useRef<AnalysisData | null>(null);
   useEffect(() => { dataRef.current = data; }, [data]);
+  useVoiceAlerts(data);
   /** Stable (the map is rebuilt when it changes). Jumps the clock to the observation if the track is not on the map yet. */
   const selectTrack = useCallback((trackId: string) => {
     setBottomOpen(false);
@@ -77,6 +82,8 @@ export default function App() {
       <div className={`map-top-stat risk-total ${highCritical ? 'active' : ''}`}><AlertTriangle size={13} /><span><small>YÜKSEK / KRİTİK</small><strong>{highCritical}</strong></span></div>
       <div className={`map-top-stat pending-total ${data.summary.pending_reviews ? 'active' : ''}`}><UserCheck size={13} /><span><small>ONAY BEKLEYEN</small><strong>{data.summary.pending_reviews}</strong></span></div>
       <button className={`human-review-toggle ${data.human_review ? 'on' : ''}`} role="switch" aria-checked={data.human_review} disabled={togglingReview} onClick={() => void toggleHumanReview()} title="Açıkken motor ile LLM'in ayrıştığı kararlar analist onayına düşer">{togglingReview ? <LoaderCircle size={13} className="spinning" /> : <UserCheck size={13} />}<span>Son söz insanda</span><i /></button>
+      <button className={`voice-alert-toggle ${voice.enabled ? 'on' : ''} ${voice.isSpeaking ? 'speaking' : ''}`} role="switch" aria-checked={voice.enabled} onClick={voice.toggleEnabled} title={voice.enabled ? 'Sesli Tehdit Uyarıları: AÇIK (Kapatmak için tıkla)' : 'Sesli Tehdit Uyarıları: KAPALI (Açmak için tıkla)'}>{voice.enabled ? <Volume2 size={13} /> : <VolumeX size={13} />}<span>Sesli Uyarı</span><i /></button>
+      <button className={`voice-alert-toggle ${voice.autoLock ? 'on' : ''}`} role="switch" aria-checked={voice.autoLock} onClick={voice.toggleAutoLock} title={voice.autoLock ? 'Oto-Kilit: AÇIK (Sesli uyarı anında kamerayı araca kilitler ve takip eder)' : 'Oto-Kilit: KAPALI (Açmak için tıkla)'}><Crosshair size={13} /><span>Oto-Kilit</span><i /></button>
       <span className={`llm-badge ${data.summary.llm_enabled ? 'on' : ''}`} title={data.summary.llm_enabled ? `Model: ${data.summary.model ?? '—'}` : "API'de OPENAI_API_KEY tanımlı değil"}><BrainCircuit size={13} /><span>{data.summary.llm_enabled ? 'LLM açık' : 'LLM kapalı'}</span></span>
       <button className="map-top-search" onClick={() => { setSidebarOpen(true); requestAnimationFrame(() => document.querySelector<HTMLInputElement>('[aria-label="Harita araç kayıtlarında ara"]')?.focus()); }}><Search size={13} /><span>İz ara</span></button>
       <button className="map-refresh" onClick={analysis.reload} disabled={analysis.status === 'loading'} aria-label="Analiz verisini yenile"><RefreshCw size={14} className={analysis.status === 'loading' ? 'spinning' : ''} /><span>{analysis.status === 'loading' ? 'Yenileniyor…' : 'Yenile'}</span></button>
@@ -85,6 +92,7 @@ export default function App() {
       <OperationsMap analysis={data} onSelectTrack={selectTrack} visibleTrackIds={visibleTrackIds} />
       <MapSidebar analysis={data} filters={filters} setFilters={setFilters} open={sidebarOpen} setOpen={setSidebarOpen} onSelectTrack={selectTrack} />
       <MapOverlays analysis={data} onSelectTrack={selectTrack} onChanged={analysis.reload} selectedFrameId={selectedEntity?.frame_id ?? null} />
+      <VoiceAlertCard onSelectTrack={selectTrack} />
       <BottomTrackPanel analysis={data} selectedTrackId={selectedTrackId} onSelectTrack={selectTrack} open={bottomOpen} setOpen={setBottomOpen} />
       <Timeline analysis={data} />
       {selectedEntity && inspectorOpen && <div className="map-detail-backdrop" onClick={() => useTrackingStore.getState().selectTrack(null)} aria-hidden="true" />}
