@@ -8,7 +8,8 @@ nodejs
 pip install -r requirements.txt
 uvicorn app.api:app --reload --port 8000
 cd frontend
-npm ci & npm run dev
+npm ci 
+npm run dev
 ```
 
 Arayüz localhost:5173
