@@ -1,0 +1,1689 @@
+{
+ "summary": {
+  "report_id": "TR-20260926-120906-minKRITIK",
+  "pdf_path": "C:\\Users\\qwerty\\Desktop\\Roketsan\\outputs\\reports\\TR-20260926-120906-minKRITIK.pdf",
+  "json_path": "C:\\Users\\qwerty\\Desktop\\Roketsan\\outputs\\reports\\TR-20260926-120906-minKRITIK.json",
+  "pages": 12,
+  "generated_at": "2026-09-26T12:09:06+03:00",
+  "filter_label": "KRİTİK ve üstü",
+  "levels": [
+   "KRITIK"
+  ],
+  "vehicle_count": 2,
+  "counts": {
+   "DUSUK": 0,
+   "ORTA": 0,
+   "YUKSEK": 0,
+   "KRITIK": 2
+  },
+  "human_review": true,
+  "pending_reviews": 0,
+  "frames_assessed": 45,
+  "frames_llm": 44,
+  "narrative_model": "gpt-4.1-mini",
+  "narrative_stats": {
+   "llm": 3,
+   "cache": 0,
+   "template": 0,
+   "errors": 0
+  },
+  "facts_digest": "1c6e168e2b2c9c05",
+  "elapsed_s": 15.42,
+  "vehicles": [
+   {
+    "index": 1,
+    "key": "img_000901_v0",
+    "vehicle_id": "img_000901_v0",
+    "track_id": "T0017",
+    "final_level": "KRITIK",
+    "engine_level": "KRITIK",
+    "status": "uzlasi",
+    "headline": "Araç 85 dakika bekledikten sonra üsse 8.1 m/s hızla doğrudan yaklaşıyor, ETA 4.2 dakika."
+   },
+   {
+    "index": 2,
+    "key": "img_000903_v0",
+    "vehicle_id": "img_000903_v0",
+    "track_id": "T0018",
+    "final_level": "KRITIK",
+    "engine_level": "KRITIK",
+    "status": "uzlasi",
+    "headline": "T0018 aracının üsse doğrudan hızlı yaklaşması kritik risk oluşturuyor"
+   }
+  ]
+ },
+ "data": {
+  "meta": {
+   "report_id": "TR-20260926-120906-minKRITIK",
+   "generated_at": "26.09.2026 12:09:06",
+   "generated_at_iso": "2026-09-26T12:09:06+03:00",
+   "filter_label": "KRİTİK ve üstü",
+   "levels": [
+    "KRITIK"
+   ],
+   "min_risk": "KRITIK",
+   "include_offframe": true,
+   "assess_scope": "all",
+   "human_review": true,
+   "prepared_by": null,
+   "detector": "simulated",
+   "frames_total": 45,
+   "frames_assessed": 45,
+   "frames_llm": 44,
+   "assess_model": "gpt-4.1-mini",
+   "data_window": "12:00–14:00",
+   "tracks_total": 21,
+   "reports_total": 52,
+   "vehicles_total": 67,
+   "base": {
+    "name": "Merkez Us",
+    "lat": 39.92184,
+    "lon": 32.85306
+   },
+   "zones": [
+    {
+     "name": "Kuzey Yolu",
+     "xy_km": [
+      0.0,
+      3.1964
+     ],
+     "dist_m": 3196
+    },
+    {
+     "name": "Kuzeydogu Kavsagi",
+     "xy_km": [
+      2.1268,
+      2.4641
+     ],
+     "dist_m": 3255
+    },
+    {
+     "name": "Dogu Yolu",
+     "xy_km": [
+      3.1964,
+      0.0
+     ],
+     "dist_m": 3196
+    },
+    {
+     "name": "Guneydogu Yerlesimi",
+     "xy_km": [
+      2.0415,
+      -2.2061
+     ],
+     "dist_m": 3006
+    },
+    {
+     "name": "Guney Kapisi Yaklasimi",
+     "xy_km": [
+      0.0,
+      -2.7621
+     ],
+     "dist_m": 2762
+    },
+    {
+     "name": "Guneybati Yolu",
+     "xy_km": [
+      -1.8812,
+      -2.0949
+     ],
+     "dist_m": 2816
+    },
+    {
+     "name": "Bati Yerlesimi",
+     "xy_km": [
+      -3.0751,
+      0.0
+     ],
+     "dist_m": 3075
+    },
+    {
+     "name": "Kuzeybati Yolu",
+     "xy_km": [
+      -2.0518,
+      2.4641
+     ],
+     "dist_m": 3206
+    }
+   ],
+   "theme_version": "1.0",
+   "facts_digest": "1c6e168e2b2c9c05"
+  },
+  "counts": {
+   "DUSUK": 0,
+   "ORTA": 0,
+   "YUKSEK": 0,
+   "KRITIK": 2
+  },
+  "all_counts": {
+   "DUSUK": 49,
+   "ORTA": 13,
+   "YUKSEK": 3,
+   "KRITIK": 2
+  },
+  "vehicles": [
+   {
+    "key": "img_000901_v0",
+    "kind": "frame_vehicle",
+    "vehicle_id": "img_000901_v0",
+    "frame_id": "img_000901",
+    "capture_time": "13:45",
+    "capture_min": 825,
+    "track_id": "T0017",
+    "source": "detection",
+    "label": "truck",
+    "confidence": 0.94,
+    "bbox": [
+     458,
+     245,
+     68,
+     34
+    ],
+    "lat": 39.928146,
+    "lon": 32.875649,
+    "xy_km": [
+     1.9263,
+     0.7012
+    ],
+    "zone": "Dogu Yolu",
+    "dist_to_base_m": 2049.9,
+    "bearing_from_base_deg": 70.0,
+    "track_match_m": 0.06,
+    "engine_level": "KRITIK",
+    "final_level": "KRITIK",
+    "status": "uzlasi",
+    "status_label": "Motor + LLM uzlaştı",
+    "scenario": "DIRECT_FAST_APPROACH",
+    "scenario_label": "Doğrudan hızlı yaklaşma",
+    "engine_reasons": [
+     "85 dk bekledikten sonra ara durak olmadan üsse doğru 8.1 m/s ile ilerliyor.",
+     "Yönelim sapması 0°, üsse mesafe 2050 m, ETA ≈ 4.2 dk."
+    ],
+    "margin": {
+     "confidence": "net",
+     "can_drop": false,
+     "can_rise": false,
+     "rise_to": null,
+     "notes": []
+    },
+    "friendly_confirmed_by": [],
+    "features": {
+     "t_start": "12:00",
+     "t_end": "13:45",
+     "dist_now_m": 2049.9,
+     "dist_start_m": 11647.3,
+     "dist_min_m": 2049.9,
+     "approach_total_m": 9597.4,
+     "approach_last60_m": 9597.7,
+     "closing_speed_mps": 8.1,
+     "speed_now_mps": 8.1,
+     "max_speed_mps": 8.2,
+     "heading_deg": 250.0,
+     "bearing_to_base_deg": 250.0,
+     "heading_offset_deg": 0.0,
+     "eta_min": 4.2,
+     "stops_last60": 1,
+     "stopped_minutes_total": 85,
+     "moving_now": true,
+     "path_length_m": 9665.3,
+     "net_displacement_m": 9597.4,
+     "extent_m": 9604.5,
+     "radius_cv": 0.2,
+     "angular_sweep_deg": 0.2,
+     "dist_trend": "azaliyor",
+     "initial_wait_min": 85,
+     "stops": [
+      {
+       "start": "12:00",
+       "end": "13:25",
+       "minutes": 85,
+       "dist_to_base_m": 11646.5
+      }
+     ]
+    },
+    "decision": {
+     "vehicle_id": "img_000901_v0",
+     "frame_id": "img_000901",
+     "track_id": "T0017",
+     "rule": "uzlasi",
+     "rule_label": "Uzlaşı",
+     "engine_level": "KRITIK",
+     "llm_level": "KRITIK",
+     "motor_confidence": "net",
+     "motor_margin_notes": [],
+     "auto_level": "KRITIK",
+     "review_level": "KRITIK",
+     "needs_review": false,
+     "options": [],
+     "llm_reason": null,
+     "evidence_report_ids": [],
+     "note": ""
+    },
+    "review": null,
+    "assessment": {
+     "assessed": true,
+     "llm": true,
+     "model": "gpt-4.1-mini",
+     "headline": "T0017 aracı 85 dakika bekledikten sonra hızlı ve doğrudan üsse yaklaşıyor",
+     "explanation": "85 dakika bekledikten sonra ara durak olmadan üsse 8.1 m/s hızla ilerliyor, ETA 4.2 dk.",
+     "change_reason": null,
+     "llm_level": "KRITIK",
+     "actions": [
+      "T0017 aracını sürekli izle, ETA yaklaşık 4 dakika, Doğu Yolu kontrol noktasını uyar."
+     ],
+     "guardrail_notes": [],
+     "disagreement": null
+    },
+    "frame": {
+     "frame_id": "img_000901",
+     "capture_time": "13:45",
+     "zone": "Dogu Yolu",
+     "width_px": 960,
+     "height_px": 540,
+     "corners": {
+      "top_left": [
+       39.93101781143962,
+       32.87156987983526
+      ],
+      "top_right": [
+       39.93101781143962,
+       32.87952987983526
+      ],
+      "bottom_left": [
+       39.92509781143961,
+       32.87156987983526
+      ],
+      "bottom_right": [
+       39.92509781143961,
+       32.87952987983526
+      ]
+     },
+     "footprint_km": [
+      [
+       1.5785,
+       1.0205
+      ],
+      [
+       2.2573,
+       1.0205
+      ],
+      [
+       2.2573,
+       0.3623
+      ],
+      [
+       1.5785,
+       0.3623
+      ]
+     ],
+     "others": [
+      {
+       "vehicle_id": "img_000901_v1",
+       "label": "car",
+       "bbox": [
+        170,
+        390,
+        40,
+        56
+       ],
+       "lat": 39.926435,
+       "lon": 32.873145
+      }
+     ]
+    },
+    "related_reports": [],
+    "rules": [
+     {
+      "scenario": "FRIENDLY_PATROL",
+      "risk": "ORTA",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "mesafe değişim katsayısı",
+        "value": "0.244",
+        "threshold": "≤ 0.03",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "taranan açı",
+        "value": "0°",
+        "threshold": "≥ 180°",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "toplam duraklama",
+        "value": "85 dk",
+        "threshold": "≤ 15 dk",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "üsse mesafe",
+        "value": "2050 m",
+        "threshold": "≥ 400 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "DIRECT_FAST_APPROACH",
+      "risk": "KRITIK",
+      "all_ok": true,
+      "matched": true,
+      "conds": [
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hareket halinde",
+        "value": "evet",
+        "threshold": "evet",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hız",
+        "value": "8.1 m/s",
+        "threshold": "≥ 7 m/s",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "ara duraklama sayısı",
+        "value": "0",
+        "threshold": "= 0",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "ETA",
+        "value": "4.2 dk",
+        "threshold": "≤ 10 dk",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "APPROACH_WITH_STOPS",
+      "risk": "YUKSEK",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "son 60 dk yaklaşma",
+        "value": "9598 m",
+        "threshold": "≥ 1500 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "duraklama sayısı",
+        "value": "1",
+        "threshold": "≥ 2",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "LOITER_NEAR_BASE",
+      "risk": "YUKSEK",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "üsse mesafe",
+        "value": "2050 m",
+        "threshold": "≥ 400 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "üsse mesafe",
+        "value": "2050 m",
+        "threshold": "≤ 3000 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "kapladığı alan",
+        "value": "9604 m",
+        "threshold": "≤ 1500 m",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "yol/yer değiştirme oranı",
+        "value": "1.0",
+        "threshold": "≥ 3",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "duraklama sayısı",
+        "value": "1",
+        "threshold": "≥ 2",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "APPROACHING",
+      "risk": "ORTA",
+      "all_ok": true,
+      "matched": false,
+      "conds": [
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hareket halinde",
+        "value": "evet",
+        "threshold": "evet",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "son 60 dk yaklaşma",
+        "value": "9598 m",
+        "threshold": "≥ 500 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     }
+    ],
+    "track": {
+     "track_id": "T0017",
+     "points": [
+      {
+       "t": 720,
+       "time": "12:00",
+       "lat": 39.957674,
+       "lon": 32.981434,
+       "x_km": 10.9474,
+       "y_km": 3.9846,
+       "dist_m": 11647.3,
+       "speed_mps": null
+      },
+      {
+       "t": 725,
+       "time": "12:05",
+       "lat": 39.957679,
+       "lon": 32.981386,
+       "x_km": 10.9433,
+       "y_km": 3.9851,
+       "dist_m": 11643.7,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 730,
+       "time": "12:10",
+       "lat": 39.957665,
+       "lon": 32.981406,
+       "x_km": 10.945,
+       "y_km": 3.9836,
+       "dist_m": 11644.7,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 735,
+       "time": "12:15",
+       "lat": 39.957683,
+       "lon": 32.981451,
+       "x_km": 10.9489,
+       "y_km": 3.9856,
+       "dist_m": 11649.0,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 740,
+       "time": "12:20",
+       "lat": 39.957689,
+       "lon": 32.981392,
+       "x_km": 10.9439,
+       "y_km": 3.9862,
+       "dist_m": 11644.5,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 745,
+       "time": "12:25",
+       "lat": 39.957671,
+       "lon": 32.981387,
+       "x_km": 10.9434,
+       "y_km": 3.9842,
+       "dist_m": 11643.5,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 750,
+       "time": "12:30",
+       "lat": 39.957663,
+       "lon": 32.981434,
+       "x_km": 10.9474,
+       "y_km": 3.9833,
+       "dist_m": 11646.9,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 755,
+       "time": "12:35",
+       "lat": 39.957655,
+       "lon": 32.981404,
+       "x_km": 10.9449,
+       "y_km": 3.9824,
+       "dist_m": 11644.2,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 760,
+       "time": "12:40",
+       "lat": 39.95768,
+       "lon": 32.981438,
+       "x_km": 10.9478,
+       "y_km": 3.9852,
+       "dist_m": 11647.9,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 765,
+       "time": "12:45",
+       "lat": 39.957663,
+       "lon": 32.981443,
+       "x_km": 10.9482,
+       "y_km": 3.9833,
+       "dist_m": 11647.6,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 770,
+       "time": "12:50",
+       "lat": 39.957686,
+       "lon": 32.981384,
+       "x_km": 10.9432,
+       "y_km": 3.9859,
+       "dist_m": 11643.8,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 775,
+       "time": "12:55",
+       "lat": 39.957686,
+       "lon": 32.981454,
+       "x_km": 10.9491,
+       "y_km": 3.9859,
+       "dist_m": 11649.4,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 780,
+       "time": "13:00",
+       "lat": 39.957667,
+       "lon": 32.981399,
+       "x_km": 10.9445,
+       "y_km": 3.9838,
+       "dist_m": 11644.3,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 785,
+       "time": "13:05",
+       "lat": 39.957692,
+       "lon": 32.981417,
+       "x_km": 10.946,
+       "y_km": 3.9866,
+       "dist_m": 11646.7,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 790,
+       "time": "13:10",
+       "lat": 39.957657,
+       "lon": 32.981393,
+       "x_km": 10.9439,
+       "y_km": 3.9827,
+       "dist_m": 11643.4,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 795,
+       "time": "13:15",
+       "lat": 39.957688,
+       "lon": 32.981444,
+       "x_km": 10.9483,
+       "y_km": 3.9861,
+       "dist_m": 11648.7,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 800,
+       "time": "13:20",
+       "lat": 39.957686,
+       "lon": 32.981457,
+       "x_km": 10.9494,
+       "y_km": 3.9859,
+       "dist_m": 11649.6,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 805,
+       "time": "13:25",
+       "lat": 39.957675,
+       "lon": 32.981481,
+       "x_km": 10.9514,
+       "y_km": 3.9847,
+       "dist_m": 11651.1,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 810,
+       "time": "13:30",
+       "lat": 39.950446,
+       "lon": 32.955539,
+       "x_km": 8.7392,
+       "y_km": 3.1808,
+       "dist_m": 9298.3,
+       "speed_mps": 7.8
+      },
+      {
+       "t": 815,
+       "time": "13:35",
+       "lat": 39.943063,
+       "lon": 32.929093,
+       "x_km": 6.4839,
+       "y_km": 2.3599,
+       "dist_m": 6899.1,
+       "speed_mps": 8.0
+      },
+      {
+       "t": 820,
+       "time": "13:40",
+       "lat": 39.935528,
+       "lon": 32.902095,
+       "x_km": 4.1816,
+       "y_km": 1.522,
+       "dist_m": 4449.6,
+       "speed_mps": 8.2
+      },
+      {
+       "t": 825,
+       "time": "13:45",
+       "lat": 39.928146,
+       "lon": 32.875649,
+       "x_km": 1.9263,
+       "y_km": 0.7012,
+       "dist_m": 2049.9,
+       "speed_mps": 8.0
+      }
+     ],
+     "t_start": "12:00",
+     "t_end": "13:45",
+     "continues_after_capture": false
+    },
+    "nearest_track": null,
+    "decision_chain": [
+     {
+      "stage": "Motor kuralı",
+      "level": "KRITIK",
+      "detail": "Doğrudan hızlı yaklaşma (DIRECT_FAST_APPROACH). 85 dk bekledikten sonra ara durak olmadan üsse doğru 8.1 m/s ile ilerliyor."
+     },
+     {
+      "stage": "Motor güveni",
+      "level": null,
+      "detail": "Net — değerler eşiklerden uzak."
+     },
+     {
+      "stage": "LLM kare değerlendirmesi",
+      "level": "KRITIK",
+      "detail": "LLM motorla aynı seviyeyi verdi."
+     },
+     {
+      "stage": "Karar tablosu",
+      "level": "KRITIK",
+      "detail": "Uzlaşı."
+     },
+     {
+      "stage": "İnsan onayı",
+      "level": null,
+      "detail": "Açık; bu karar analist onayı gerektirmiyor (uzlaşı veya riski artıran karar)."
+     },
+     {
+      "stage": "Nihai seviye",
+      "level": "KRITIK",
+      "detail": "Motor + LLM uzlaştı"
+     }
+    ],
+    "index": 1
+   },
+   {
+    "key": "img_000903_v0",
+    "kind": "frame_vehicle",
+    "vehicle_id": "img_000903_v0",
+    "frame_id": "img_000903",
+    "capture_time": "13:55",
+    "capture_min": 835,
+    "track_id": "T0018",
+    "source": "detection",
+    "label": "van",
+    "confidence": 0.93,
+    "bbox": [
+     434,
+     251,
+     44,
+     58
+    ],
+    "lat": 39.901135,
+    "lon": 32.843234,
+    "xy_km": [
+     -0.8379,
+     -2.3023
+    ],
+    "zone": "Guney Kapisi Yaklasimi",
+    "dist_to_base_m": 2450.0,
+    "bearing_from_base_deg": 200.0,
+    "track_match_m": 0.05,
+    "engine_level": "KRITIK",
+    "final_level": "KRITIK",
+    "status": "uzlasi",
+    "status_label": "Motor + LLM uzlaştı",
+    "scenario": "DIRECT_FAST_APPROACH",
+    "scenario_label": "Doğrudan hızlı yaklaşma",
+    "engine_reasons": [
+     "100 dk bekledikten sonra ara durak olmadan üsse doğru 9.1 m/s ile ilerliyor.",
+     "Yönelim sapması 0°, üsse mesafe 2450 m, ETA ≈ 4.5 dk."
+    ],
+    "margin": {
+     "confidence": "net",
+     "can_drop": false,
+     "can_rise": false,
+     "rise_to": null,
+     "notes": []
+    },
+    "friendly_confirmed_by": [],
+    "features": {
+     "t_start": "12:00",
+     "t_end": "13:55",
+     "dist_now_m": 2450.1,
+     "dist_start_m": 10600.8,
+     "dist_min_m": 2450.1,
+     "approach_total_m": 8150.7,
+     "approach_last60_m": 8149.8,
+     "closing_speed_mps": 9.1,
+     "speed_now_mps": 9.1,
+     "max_speed_mps": 9.2,
+     "heading_deg": 20.0,
+     "bearing_to_base_deg": 20.0,
+     "heading_offset_deg": 0.0,
+     "eta_min": 4.5,
+     "stops_last60": 1,
+     "stopped_minutes_total": 100,
+     "moving_now": true,
+     "path_length_m": 8209.4,
+     "net_displacement_m": 8150.7,
+     "extent_m": 8153.1,
+     "radius_cv": 0.2,
+     "angular_sweep_deg": 0.2,
+     "dist_trend": "azaliyor",
+     "initial_wait_min": 100,
+     "stops": [
+      {
+       "start": "12:00",
+       "end": "13:40",
+       "minutes": 100,
+       "dist_to_base_m": 10601.0
+      }
+     ]
+    },
+    "decision": {
+     "vehicle_id": "img_000903_v0",
+     "frame_id": "img_000903",
+     "track_id": "T0018",
+     "rule": "uzlasi",
+     "rule_label": "Uzlaşı",
+     "engine_level": "KRITIK",
+     "llm_level": "KRITIK",
+     "motor_confidence": "net",
+     "motor_margin_notes": [],
+     "auto_level": "KRITIK",
+     "review_level": "KRITIK",
+     "needs_review": false,
+     "options": [],
+     "llm_reason": null,
+     "evidence_report_ids": [],
+     "note": ""
+    },
+    "review": null,
+    "assessment": {
+     "assessed": true,
+     "llm": true,
+     "model": "gpt-4.1-mini",
+     "headline": "T0018 aracı 100 dk bekledikten sonra üsse hızlı ve doğrudan yaklaşıyor",
+     "explanation": "100 dk bekledikten sonra ara durak olmadan üsse doğru 9.1 m/s ile ilerliyor, yön sapması 0°, üsse mesafe 2450 m, ETA ≈ 4.5 dk.",
+     "change_reason": null,
+     "llm_level": "KRITIK",
+     "actions": [
+      "T0018 aracını sürekli izle, ETA ~4.5 dk, Güney Kapısı kontrol noktasını uyar."
+     ],
+     "guardrail_notes": [],
+     "disagreement": null
+    },
+    "frame": {
+     "frame_id": "img_000903",
+     "capture_time": "13:55",
+     "zone": "Guney Kapisi Yaklasimi",
+     "width_px": 960,
+     "height_px": 540,
+     "corners": {
+      "top_left": [
+       39.904096136759264,
+       32.83958587239859
+      ],
+      "top_right": [
+       39.904096136759264,
+       32.84726587239859
+      ],
+      "bottom_left": [
+       39.898386136759264,
+       32.83958587239859
+      ],
+      "bottom_right": [
+       39.898386136759264,
+       32.84726587239859
+      ]
+     },
+     "footprint_km": [
+      [
+       -1.149,
+       -1.973
+      ],
+      [
+       -0.4941,
+       -1.973
+      ],
+      [
+       -0.4941,
+       -2.608
+      ],
+      [
+       -1.149,
+       -2.608
+      ]
+     ],
+     "others": []
+    },
+    "related_reports": [],
+    "rules": [
+     {
+      "scenario": "FRIENDLY_PATROL",
+      "risk": "ORTA",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "mesafe değişim katsayısı",
+        "value": "0.198",
+        "threshold": "≤ 0.03",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "taranan açı",
+        "value": "0°",
+        "threshold": "≥ 180°",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "toplam duraklama",
+        "value": "100 dk",
+        "threshold": "≤ 15 dk",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "üsse mesafe",
+        "value": "2450 m",
+        "threshold": "≥ 400 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "DIRECT_FAST_APPROACH",
+      "risk": "KRITIK",
+      "all_ok": true,
+      "matched": true,
+      "conds": [
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hareket halinde",
+        "value": "evet",
+        "threshold": "evet",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hız",
+        "value": "9.1 m/s",
+        "threshold": "≥ 7 m/s",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "ara duraklama sayısı",
+        "value": "0",
+        "threshold": "= 0",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "ETA",
+        "value": "4.5 dk",
+        "threshold": "≤ 10 dk",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "APPROACH_WITH_STOPS",
+      "risk": "YUKSEK",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "son 60 dk yaklaşma",
+        "value": "8150 m",
+        "threshold": "≥ 1500 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "duraklama sayısı",
+        "value": "1",
+        "threshold": "≥ 2",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "LOITER_NEAR_BASE",
+      "risk": "YUKSEK",
+      "all_ok": false,
+      "matched": false,
+      "conds": [
+       {
+        "name": "üsse mesafe",
+        "value": "2450 m",
+        "threshold": "≥ 400 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "üsse mesafe",
+        "value": "2450 m",
+        "threshold": "≤ 3000 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "kapladığı alan",
+        "value": "8153 m",
+        "threshold": "≤ 1500 m",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "yol/yer değiştirme oranı",
+        "value": "1.0",
+        "threshold": "≥ 3",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "duraklama sayısı",
+        "value": "1",
+        "threshold": "≥ 2",
+        "ok": false,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     },
+     {
+      "scenario": "APPROACHING",
+      "risk": "ORTA",
+      "all_ok": true,
+      "matched": false,
+      "conds": [
+       {
+        "name": "yönelim sapması",
+        "value": "0°",
+        "threshold": "≤ 45°",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "hareket halinde",
+        "value": "evet",
+        "threshold": "evet",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       },
+       {
+        "name": "son 60 dk yaklaşma",
+        "value": "8150 m",
+        "threshold": "≥ 500 m",
+        "ok": true,
+        "near_miss": false,
+        "barely": false
+       }
+      ]
+     }
+    ],
+    "track": {
+     "track_id": "T0018",
+     "points": [
+      {
+       "t": 720,
+       "time": "12:00",
+       "lat": 39.832261,
+       "lon": 32.810547,
+       "x_km": -3.6254,
+       "y_km": -9.9607,
+       "dist_m": 10600.8,
+       "speed_mps": null
+      },
+      {
+       "t": 725,
+       "time": "12:05",
+       "lat": 39.832256,
+       "lon": 32.810552,
+       "x_km": -3.625,
+       "y_km": -9.9613,
+       "dist_m": 10601.2,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 730,
+       "time": "12:10",
+       "lat": 39.832274,
+       "lon": 32.810559,
+       "x_km": -3.6244,
+       "y_km": -9.9593,
+       "dist_m": 10599.1,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 735,
+       "time": "12:15",
+       "lat": 39.832275,
+       "lon": 32.810555,
+       "x_km": -3.6247,
+       "y_km": -9.9592,
+       "dist_m": 10599.1,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 740,
+       "time": "12:20",
+       "lat": 39.832269,
+       "lon": 32.810502,
+       "x_km": -3.6292,
+       "y_km": -9.9598,
+       "dist_m": 10601.3,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 745,
+       "time": "12:25",
+       "lat": 39.83225,
+       "lon": 32.810526,
+       "x_km": -3.6272,
+       "y_km": -9.962,
+       "dist_m": 10602.6,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 750,
+       "time": "12:30",
+       "lat": 39.832244,
+       "lon": 32.81052,
+       "x_km": -3.6277,
+       "y_km": -9.9626,
+       "dist_m": 10603.4,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 755,
+       "time": "12:35",
+       "lat": 39.832245,
+       "lon": 32.810525,
+       "x_km": -3.6273,
+       "y_km": -9.9625,
+       "dist_m": 10603.1,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 760,
+       "time": "12:40",
+       "lat": 39.832266,
+       "lon": 32.810533,
+       "x_km": -3.6266,
+       "y_km": -9.9602,
+       "dist_m": 10600.7,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 765,
+       "time": "12:45",
+       "lat": 39.832256,
+       "lon": 32.810518,
+       "x_km": -3.6279,
+       "y_km": -9.9613,
+       "dist_m": 10602.2,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 770,
+       "time": "12:50",
+       "lat": 39.832252,
+       "lon": 32.810591,
+       "x_km": -3.6217,
+       "y_km": -9.9617,
+       "dist_m": 10600.5,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 775,
+       "time": "12:55",
+       "lat": 39.832267,
+       "lon": 32.810558,
+       "x_km": -3.6245,
+       "y_km": -9.9601,
+       "dist_m": 10599.9,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 780,
+       "time": "13:00",
+       "lat": 39.832248,
+       "lon": 32.81057,
+       "x_km": -3.6234,
+       "y_km": -9.9622,
+       "dist_m": 10601.5,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 785,
+       "time": "13:05",
+       "lat": 39.832247,
+       "lon": 32.810535,
+       "x_km": -3.6264,
+       "y_km": -9.9623,
+       "dist_m": 10602.6,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 790,
+       "time": "13:10",
+       "lat": 39.83228,
+       "lon": 32.810561,
+       "x_km": -3.6242,
+       "y_km": -9.9586,
+       "dist_m": 10598.4,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 795,
+       "time": "13:15",
+       "lat": 39.832263,
+       "lon": 32.810565,
+       "x_km": -3.6239,
+       "y_km": -9.9605,
+       "dist_m": 10600.1,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 800,
+       "time": "13:20",
+       "lat": 39.832275,
+       "lon": 32.810575,
+       "x_km": -3.623,
+       "y_km": -9.9592,
+       "dist_m": 10598.5,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 805,
+       "time": "13:25",
+       "lat": 39.83225,
+       "lon": 32.8105,
+       "x_km": -3.6294,
+       "y_km": -9.962,
+       "dist_m": 10603.3,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 810,
+       "time": "13:30",
+       "lat": 39.832254,
+       "lon": 32.810524,
+       "x_km": -3.6274,
+       "y_km": -9.9615,
+       "dist_m": 10602.2,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 815,
+       "time": "13:35",
+       "lat": 39.832249,
+       "lon": 32.810591,
+       "x_km": -3.6217,
+       "y_km": -9.9621,
+       "dist_m": 10600.8,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 820,
+       "time": "13:40",
+       "lat": 39.832276,
+       "lon": 32.810528,
+       "x_km": -3.627,
+       "y_km": -9.9591,
+       "dist_m": 10599.8,
+       "speed_mps": 0.0
+      },
+      {
+       "t": 825,
+       "time": "13:45",
+       "lat": 39.855078,
+       "lon": 32.821376,
+       "x_km": -2.7019,
+       "y_km": -7.4236,
+       "dist_m": 7900.5,
+       "speed_mps": 9.0
+      },
+      {
+       "t": 830,
+       "time": "13:50",
+       "lat": 39.878318,
+       "lon": 32.832405,
+       "x_km": -1.7614,
+       "y_km": -4.8394,
+       "dist_m": 5150.2,
+       "speed_mps": 9.2
+      },
+      {
+       "t": 835,
+       "time": "13:55",
+       "lat": 39.901135,
+       "lon": 32.843234,
+       "x_km": -0.8379,
+       "y_km": -2.3023,
+       "dist_m": 2450.1,
+       "speed_mps": 9.0
+      }
+     ],
+     "t_start": "12:00",
+     "t_end": "13:55",
+     "continues_after_capture": false
+    },
+    "nearest_track": null,
+    "decision_chain": [
+     {
+      "stage": "Motor kuralı",
+      "level": "KRITIK",
+      "detail": "Doğrudan hızlı yaklaşma (DIRECT_FAST_APPROACH). 100 dk bekledikten sonra ara durak olmadan üsse doğru 9.1 m/s ile ilerliyor."
+     },
+     {
+      "stage": "Motor güveni",
+      "level": null,
+      "detail": "Net — değerler eşiklerden uzak."
+     },
+     {
+      "stage": "LLM kare değerlendirmesi",
+      "level": "KRITIK",
+      "detail": "LLM motorla aynı seviyeyi verdi."
+     },
+     {
+      "stage": "Karar tablosu",
+      "level": "KRITIK",
+      "detail": "Uzlaşı."
+     },
+     {
+      "stage": "İnsan onayı",
+      "level": null,
+      "detail": "Açık; bu karar analist onayı gerektirmiyor (uzlaşı veya riski artıran karar)."
+     },
+     {
+      "stage": "Nihai seviye",
+      "level": "KRITIK",
+      "detail": "Motor + LLM uzlaştı"
+     }
+    ],
+    "index": 2
+   }
+  ],
+  "reviews": {
+   "enabled": true,
+   "pending": [],
+   "decided": [],
+   "pending_count": 0
+  },
+  "integrity": {
+   "verdict_counts": {
+    "destekler": 9,
+    "celisir": 34,
+    "kismen_uyumlu": 2,
+    "dogrulanamaz": 7,
+    "ilgisiz": 0,
+    "manipulasyon": 0
+   },
+   "type_counts": {
+    "BILINMIYOR": 3,
+    "BOLGE_GOZLEM": 1,
+    "DOGRU_GOZLEM": 9,
+    "GENEL_TATBIKAT": 1,
+    "HAYALET_KARE_DISI": 2,
+    "HAYALET_KARE_ICI": 4,
+    "YANLIS_DAVRANIS": 30,
+    "ZAMAN_KAYMASI": 2
+   },
+   "related_report_ids": [],
+   "manipulation": []
+  },
+  "methodology": {
+   "rules": [
+    {
+     "scenario": "FRIENDLY_PATROL",
+     "label": "Sabit yarıçaplı devriye",
+     "risk": "ORTA",
+     "conds": [
+      "mesafe değişim katsayısı ≤ 0.03",
+      "taranan açı ≥ 180°",
+      "toplam duraklama ≤ 15 dk",
+      "üsse mesafe ≥ 400 m"
+     ]
+    },
+    {
+     "scenario": "DIRECT_FAST_APPROACH",
+     "label": "Doğrudan hızlı yaklaşma",
+     "risk": "KRITIK",
+     "conds": [
+      "yönelim sapması ≤ 45°",
+      "hareket halinde evet",
+      "hız ≥ 7 m/s",
+      "ara duraklama sayısı = 0",
+      "ETA ≤ 10 dk"
+     ]
+    },
+    {
+     "scenario": "APPROACH_WITH_STOPS",
+     "label": "Duraklamalı yaklaşma",
+     "risk": "YUKSEK",
+     "conds": [
+      "son 60 dk yaklaşma ≥ 1500 m",
+      "duraklama sayısı ≥ 2",
+      "yönelim sapması ≤ 45°"
+     ]
+    },
+    {
+     "scenario": "LOITER_NEAR_BASE",
+     "label": "Üs yakınında tur atma",
+     "risk": "YUKSEK",
+     "conds": [
+      "üsse mesafe ≥ 400 m",
+      "üsse mesafe ≤ 3000 m",
+      "kapladığı alan ≤ 1500 m",
+      "yol/yer değiştirme oranı ≥ 3",
+      "duraklama sayısı ≥ 2"
+     ]
+    },
+    {
+     "scenario": "APPROACHING",
+     "label": "Üsse yönelmiş hareket",
+     "risk": "ORTA",
+     "conds": [
+      "yönelim sapması ≤ 45°",
+      "hareket halinde evet",
+      "son 60 dk yaklaşma ≥ 500 m"
+     ]
+    },
+    {
+     "scenario": "UNTRACKED",
+     "label": "İzsiz araç (davranış bilinmiyor)",
+     "risk": "ORTA",
+     "conds": [
+      "ağır araç (truck/bus) üsse < 2500 m",
+      "veya herhangi araç üsse < 1200 m"
+     ]
+    },
+    {
+     "scenario": "TRANSIT / MOVING_AWAY / PARKED",
+     "label": "Diğer",
+     "risk": "DUSUK",
+     "conds": [
+      "yukarıdaki kuralların hiçbiri eşleşmedi"
+     ]
+    }
+   ],
+   "decision_table": [
+    {
+     "rule": "uzlasi",
+     "label": "Uzlaşı",
+     "when": "LLM = motor",
+     "hil_off": "motor",
+     "hil_on": "motor"
+    },
+    {
+     "rule": "reddedildi",
+     "label": "LLM önerisi reddedildi",
+     "when": "LLM ≠ motor ama gerekçe yok / dayanak rapor geçersiz / tespit elenmiş",
+     "hil_off": "motor",
+     "hil_on": "motor"
+    },
+    {
+     "rule": "llm_yukseltti",
+     "label": "LLM yükseltti",
+     "when": "LLM > motor, en çok 1 kademe (ya da motorun kıl payı kaçırdığı seviye)",
+     "hil_off": "LLM",
+     "hil_on": "LLM"
+    },
+    {
+     "rule": "fazla_yukseltme",
+     "label": "Aşırı yükseltme — kısmen uygulandı",
+     "when": "LLM tavanın üstünde",
+     "hil_off": "tavan",
+     "hil_on": "tavan → analist"
+    },
+    {
+     "rule": "motor_kesin",
+     "label": "Motor kesin — LLM itirazı not edildi",
+     "when": "LLM < motor, motor net",
+     "hil_off": "motor",
+     "hil_on": "motor"
+    },
+    {
+     "rule": "llm_dusurdu",
+     "label": "LLM düşürdü",
+     "when": "LLM < motor, motor sınırda, resmi+destekler rapor, KRİTİK değil, 1 kademe",
+     "hil_off": "LLM",
+     "hil_on": "motor → analist"
+    },
+    {
+     "rule": "belirsiz",
+     "label": "Belirsiz — motor sınırda",
+     "when": "LLM < motor, motor sınırda ama şartlar eksik",
+     "hil_off": "motor",
+     "hil_on": "motor → analist"
+    }
+   ],
+   "thresholds": {
+    "Tespit güven eşiği": "0.40",
+    "İz eşleştirme yarıçapı": "5 m",
+    "Duraklama": "20 m içinde ≥ 15 dk",
+    "Yönelim (üsse doğru)": "≤ 45°",
+    "Hızlı yaklaşma": "≥ 7 m/s",
+    "Kritik ETA": "≤ 10 dk",
+    "Rapor eşleşme yarıçapı": "60 m",
+    "Rapor zaman toleransı": "± 10 dk",
+    "Motor 'sınırda' payı": "%10"
+   }
+  },
+  "risk_labels": {
+   "DUSUK": "DÜŞÜK",
+   "ORTA": "ORTA",
+   "YUKSEK": "YÜKSEK",
+   "KRITIK": "KRİTİK"
+  }
+ },
+ "executive": {
+  "narrative": {
+   "situation": "12:00-14:00 arasında 45 kare incelendi, 21 iz tespit edildi. Toplam 52 rapor değerlendirildi, filtre \"KRİTİK ve üstü\" seviyesinde uygulandı. Şüpheli araç sayısı kritik seviyede 2, toplam araç sayısı kritik seviyede 2, yüksek seviyede 3, orta ve düşük seviyelerde sırasıyla 13 ve 49 olarak belirlendi.",
+   "key_findings": [
+    "img_000901_v0 (T0017) - 1 adet kritik seviye kamyon, üsse 4.2 dakika içinde doğrudan hızlı yaklaşma tespit edildi.",
+    "img_000903_v0 (T0018) - 1 adet kritik seviye van, üsse 4.5 dakika içinde doğrudan hızlı yaklaşma tespit edildi."
+   ],
+   "report_integrity": "52 rapordan 9'u destekleyici, 34'ü çelişen, 2'si kısmen uyumlu, 7'si doğrulanamaz nitelikte. Manipülasyon tespit edilmedi. Raporlar kararı sınırlı desteklemiştir.",
+   "decision_process": "Motor ve LLM değerlendirmeleri kritik seviyede uzlaştı. İnsan onayı açık ve bekleyen onay bulunmamaktadır. Analist kararları henüz alınmamıştır.",
+   "priorities": [
+    "Kritik seviyedeki araçların hareketlerinin anlık takibi ve müdahale planı oluşturulması.",
+    "Güney Kapısı ve Doğu Yolu bölgelerinde güvenlik önlemlerinin artırılması.",
+    "Çelişen raporların detaylı analizi için ek inceleme yapılması.",
+    "İnsan onay sürecinin tamamlanarak hızlı karar alınması.",
+    "İlgili birimlere kritik araçların bilgisi ve koordinasyon sağlanması."
+   ]
+  },
+  "source": "llm",
+  "notes": []
+ },
+ "vehicle_narratives": {
+  "img_000901_v0": {
+   "narrative": {
+    "headline": "Araç 85 dakika bekledikten sonra üsse 8.1 m/s hızla doğrudan yaklaşıyor, ETA 4.2 dakika.",
+    "why_suspicious": [
+     "85 dakika ara durak yaptıktan sonra hareket etti.",
+     "Araç ara durak olmadan üsse doğru ilerliyor.",
+     "Hızı 8.1 m/s, eşik değer 7 m/s'nin üzerinde.",
+     "Yönelim sapması 0°, üsse doğru tam yönelim var.",
+     "ETA 4.2 dakika, 10 dakikadan kısa sürede üsse varacak."
+    ],
+    "movement_story": "Araç 12:00-13:25 arasında 85 dakika boyunca hareketsiz kaldı. Sonrasında ara durak yapmadan, 8.1 m/s hızla üsse doğru hareket etti. 13:45'te üsse 2050 m mesafede ve doğrudan yaklaşmakta. Hareket ve hız değerleri net ve güvenilir.",
+    "report_assessment": "Saha raporu yok. Motor ve LLM değerlendirmeleri araç için kritik risk belirledi. Motorun kuralı doğrudan hızlı yaklaşma senaryosuna uyuyor ve güven notu net. LLM de aynı seviyede karar verdi.",
+    "decision_rationale": "Motor kuralı, araç hareketi, hız, yönelim ve ETA değerleri kritik seviyeyi destekliyor. LLM değerlendirmesi motorla uyumlu. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmiyor, nihai seviye kritik olarak belirlendi.",
+    "uncertainties": [
+     "Araç izinde ara durak sonrası hareket var, ancak ara durak olmadan hızlı yaklaşma net.",
+     "Saha raporu olmaması nedeniyle ek doğrulama yok.",
+     "Olası iz bilgisi yok, davranış hipotezi yapılamıyor."
+    ],
+    "recommended_actions": [
+     "Araç sürekli izlenmeli.",
+     "ETA yaklaşık 4 dakika, üsse yaklaşma hızı takip edilmeli.",
+     "Doğu Yolu kontrol noktası uyarılmalı.",
+     "Gerekirse ek saha gözlemi yapılmalı."
+    ]
+   },
+   "source": "llm",
+   "notes": []
+  },
+  "img_000903_v0": {
+   "narrative": {
+    "headline": "T0018 aracının üsse doğrudan hızlı yaklaşması kritik risk oluşturuyor",
+    "why_suspicious": [
+     "Araç 100 dakika bekledikten sonra ara durak yapmadan üsse doğru 9.1 m/s hızla ilerliyor.",
+     "Yönelim sapması 0° olup, üsse mesafe 2450 m ve ETA yaklaşık 4.5 dakika.",
+     "Araç hareket halinde ve ara durak sayısı sıfır, bu da doğrudan ve hızlı yaklaşmayı gösteriyor.",
+     "Motor kuralı ve LLM değerlendirmesi kritik seviyede uzlaşıyor."
+    ],
+    "movement_story": "Araç 12:00-13:40 arasında 100 dakika boyunca hareketsiz kalmış, ardından 13:50 ve 13:55 saatlerinde ara durak yapmadan 9.1 m/s hızla üsse doğru ilerlemiştir. Üsse mesafe 2450 m ve ETA yaklaşık 4.5 dakikadır.",
+    "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü kritik seviyededir ve LLM kare değerlendirmesi de aynı seviyeyi vermiştir. Bu nedenle araç güvenilmemektedir.",
+    "decision_rationale": "Motor kuralı doğrudan hızlı yaklaşma senaryosunu tespit etmiş ve tüm koşullar (yön sapması, hız, ara durak olmaması, ETA) kritik seviyede sağlanmıştır. LLM değerlendirmesi motorla aynı sonucu vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye kritik olarak belirlenmiştir.",
+    "uncertainties": [],
+    "recommended_actions": [
+     "T0018 aracını sürekli izlemeye devam et.",
+     "Güney Kapısı kontrol noktasını uyar.",
+     "Araç üsse yaklaşırken hareket ve hız değişikliklerini takip et.",
+     "Gerekirse güvenlik önlemlerini artır."
+    ]
+   },
+   "source": "llm",
+   "notes": []
+  }
+ }
+}

@@ -1,0 +1,1463 @@
+{
+ "1d560c6f86a0a15353e038c5ee318f3ad63f00aa65e7375faae562d9a543e4a0": {
+  "narrative": {
+   "headline": "T0018 aracının üsse doğrudan hızlı yaklaşması kritik risk oluşturuyor",
+   "why_suspicious": [
+    "Araç 100 dakika bekledikten sonra ara durak yapmadan üsse doğru 9.1 m/s hızla ilerliyor.",
+    "Yönelim sapması 0° olup, üsse mesafe 2450 m ve ETA yaklaşık 4.5 dakika.",
+    "Araç hareket halinde ve ara durak sayısı sıfır, bu da doğrudan ve hızlı yaklaşmayı gösteriyor.",
+    "Motor kuralı ve LLM değerlendirmesi kritik seviyede uzlaşıyor."
+   ],
+   "movement_story": "Araç 12:00-13:40 arasında 100 dakika boyunca hareketsiz kalmış, ardından 13:50 ve 13:55 saatlerinde ara durak yapmadan 9.1 m/s hızla üsse doğru ilerlemiştir. Üsse mesafe 2450 m ve ETA yaklaşık 4.5 dakikadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü kritik seviyededir ve LLM kare değerlendirmesi de aynı seviyeyi vermiştir. Bu nedenle araç güvenilmemektedir.",
+   "decision_rationale": "Motor kuralı doğrudan hızlı yaklaşma senaryosunu tespit etmiş ve tüm koşullar (yön sapması, hız, ara durak olmaması, ETA) kritik seviyede sağlanmıştır. LLM değerlendirmesi motorla aynı sonucu vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye kritik olarak belirlenmiştir.",
+   "uncertainties": [],
+   "recommended_actions": [
+    "T0018 aracını sürekli izlemeye devam et.",
+    "Güney Kapısı kontrol noktasını uyar.",
+    "Araç üsse yaklaşırken hareket ve hız değişikliklerini takip et.",
+    "Gerekirse güvenlik önlemlerini artır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413750.3325324,
+  "kind": "vehicle:img_000903_v0"
+ },
+ "3f5c0f49d2846ff49ed63fcb99fcf08f3ed117b066cef1f2066002d43a5f8086": {
+  "narrative": {
+   "headline": "Araç 85 dakika bekledikten sonra üsse 8.1 m/s hızla doğrudan yaklaşıyor, ETA 4.2 dakika.",
+   "why_suspicious": [
+    "85 dakika ara durak yaptıktan sonra hareket etti.",
+    "Araç ara durak olmadan üsse doğru ilerliyor.",
+    "Hızı 8.1 m/s, eşik değer 7 m/s'nin üzerinde.",
+    "Yönelim sapması 0°, üsse doğru tam yönelim var.",
+    "ETA 4.2 dakika, 10 dakikadan kısa sürede üsse varacak."
+   ],
+   "movement_story": "Araç 12:00-13:25 arasında 85 dakika boyunca hareketsiz kaldı. Sonrasında ara durak yapmadan, 8.1 m/s hızla üsse doğru hareket etti. 13:45'te üsse 2050 m mesafede ve doğrudan yaklaşmakta. Hareket ve hız değerleri net ve güvenilir.",
+   "report_assessment": "Saha raporu yok. Motor ve LLM değerlendirmeleri araç için kritik risk belirledi. Motorun kuralı doğrudan hızlı yaklaşma senaryosuna uyuyor ve güven notu net. LLM de aynı seviyede karar verdi.",
+   "decision_rationale": "Motor kuralı, araç hareketi, hız, yönelim ve ETA değerleri kritik seviyeyi destekliyor. LLM değerlendirmesi motorla uyumlu. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmiyor, nihai seviye kritik olarak belirlendi.",
+   "uncertainties": [
+    "Araç izinde ara durak sonrası hareket var, ancak ara durak olmadan hızlı yaklaşma net.",
+    "Saha raporu olmaması nedeniyle ek doğrulama yok.",
+    "Olası iz bilgisi yok, davranış hipotezi yapılamıyor."
+   ],
+   "recommended_actions": [
+    "Araç sürekli izlenmeli.",
+    "ETA yaklaşık 4 dakika, üsse yaklaşma hızı takip edilmeli.",
+    "Doğu Yolu kontrol noktası uyarılmalı.",
+    "Gerekirse ek saha gözlemi yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413750.4432874,
+  "kind": "vehicle:img_000901_v0"
+ },
+ "ab7f4a56ce4157758168ed3dbf58f206367ebd6bbe180e8f92bb6fd4e798ca77": {
+  "narrative": {
+   "situation": "12:00-14:00 arasında 45 kare incelendi, 21 iz tespit edildi. Toplam 52 rapor değerlendirildi, filtre \"KRİTİK ve üstü\" seviyesinde uygulandı. Şüpheli araç sayısı kritik seviyede 2, toplam araç sayısı kritik seviyede 2, yüksek seviyede 3, orta ve düşük seviyelerde sırasıyla 13 ve 49 olarak belirlendi.",
+   "key_findings": [
+    "img_000901_v0 (T0017) - 1 adet kritik seviye kamyon, üsse 4.2 dakika içinde doğrudan hızlı yaklaşma tespit edildi.",
+    "img_000903_v0 (T0018) - 1 adet kritik seviye van, üsse 4.5 dakika içinde doğrudan hızlı yaklaşma tespit edildi."
+   ],
+   "report_integrity": "52 rapordan 9'u destekleyici, 34'ü çelişen, 2'si kısmen uyumlu, 7'si doğrulanamaz nitelikte. Manipülasyon tespit edilmedi. Raporlar kararı sınırlı desteklemiştir.",
+   "decision_process": "Motor ve LLM değerlendirmeleri kritik seviyede uzlaştı. İnsan onayı açık ve bekleyen onay bulunmamaktadır. Analist kararları henüz alınmamıştır.",
+   "priorities": [
+    "Kritik seviyedeki araçların hareketlerinin anlık takibi ve müdahale planı oluşturulması.",
+    "Güney Kapısı ve Doğu Yolu bölgelerinde güvenlik önlemlerinin artırılması.",
+    "Çelişen raporların detaylı analizi için ek inceleme yapılması.",
+    "İnsan onay sürecinin tamamlanarak hızlı karar alınması.",
+    "İlgili birimlere kritik araçların bilgisi ve koordinasyon sağlanması."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413753.1970692,
+  "kind": "executive"
+ },
+ "e519b25569ffb680991eae01e7b57ba3b3ad95234a8f606f7106e40b83e99fd4": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 1410 m uzaklıkta, risk eşiğinin altında, düşük risk seviyesi.",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor.",
+    "Üsse mesafe 1410.2 m, risk eşiklerinin dışında.",
+    "Motor güveni net, değerler eşiklerden uzak.",
+    "LLM değerlendirmesi düşük risk verdi, motorla uyumlu."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Üsse olan mesafe 1410.2 m olup, risk eşiklerinin dışındadır. Olası iz hipotezi 10.4 m mesafede verilmiş ancak bu kesin bir iz değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk seviyesindedir. Motor ve LLM değerlendirmeleri uyumludur ve araç güvenilir kabul edilmiştir.",
+   "decision_rationale": "Motor kuralı izsiz araç olarak düşük risk belirlemiştir. Motor güveni net ve eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğu için davranış bilinmemektedir.",
+    "Olası iz hipotezi kesin değildir ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalıdır.",
+    "Olası iz doğruluğu araştırılmalıdır.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413802.8771446,
+  "kind": "vehicle:img_000869_v0"
+ },
+ "3b8f11a528b4b562cd379edbe2adada89686a0ca1bc102c897576880d6ad08ee": {
+  "narrative": {
+   "headline": "Araç 1177 m uzaklıkta, yönelimi üsse 180° ters, düşük riskte transit geçişte.",
+   "why_suspicious": [
+    "Karede izi var ama tespit yok, model aracı kaçırmış olabilir.",
+    "Mesafe üsse 12:00-12:30 arasında 588 m'den 1177 m'ye artmış.",
+    "Yönelim 135.7°, üsse yönelim 315.7°, aradaki fark 180° (ters yön).",
+    "Hız sabit 0.3 m/s, hareket halinde, duraklama yok.",
+    "Saha raporları araç hareketli derken, model izle uyumsuzluk gösteriyor."
+   ],
+   "movement_story": "Araç 12:00'de üsse 588 m uzaklıktaydı, 12:30'da 1177 m'ye çıktı. Hareket hızı 0.3 m/s sabit, yönelim üsse tam ters (180° sapma). Duraklama yok, hareket devam ediyor. İzde mesafe artıyor, tehdit oluşturmadı.",
+   "report_assessment": "İki saha raporu araç hareketli olduğunu belirtiyor ancak motor hareketle iz arasında uyumsuzluk tespit etti. Motor net güvenle düşük risk verdi. LLM de aynı seviyede karar verdi. Raporlar motorla çelişiyor ancak manipülasyon yok.",
+   "decision_rationale": "Motor kuralı transit geçiş senaryosuna göre düşük risk belirledi. LLM kare değerlendirmesi motorla uyumlu. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Saha raporları motorla çelişiyor, davranış uyumsuzluğu var.",
+    "Araç tipi bilinmiyor, tespit yok, sadece iz var.",
+    "ETA ve duraklama bilgisi eksik.",
+    "İz hareketi yavaş ve mesafe artıyor, tehdit oluşturmadı."
+   ],
+   "recommended_actions": [
+    "Araç tipi ve tespit için ek sensör verisi toplanmalı.",
+    "Saha raporları ile motor verileri karşılaştırılmalı.",
+    "İz hareketi ve yönelim düzenli izlenmeli.",
+    "Düşük risk nedeniyle öncelikli müdahale gerekmiyor."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413803.443154,
+  "kind": "vehicle:img_000876_trk_T0008"
+ },
+ "c9d9a0ad21719023521c12ad4a7f390063bb61587541e1e31bf105c5c3f49d6c": {
+  "narrative": {
+   "headline": "Araç 1304.8 m mesafede, üsse yönelmemiş, hareketli ve düşük riskli olarak değerlendirildi",
+   "why_suspicious": [
+    "Karede izi var ama tespit yok, model aracı kaçırmış olabilir",
+    "Mesafe trendi artıyor, araç üsse yönelmemiş (180° sapma)",
+    "Araç 12:00-12:30 arasında 652.3 m'den 1304.8 m'ye hareket etti",
+    "Hız sabit ve düşük, 0.4 m/s civarında",
+    "Saha raporları araç hareketli derken motor transit geçiş senaryosunu destekliyor"
+   ],
+   "movement_story": "Araç 12:00'de üsse 652.3 m mesafedeydi, 12:30'da 1304.8 m'ye çıktı. Mesafe artıyor, araç üsse yönelmemiş, hız 0.4 m/s civarında sabit. Araç hareket halinde, duraklama yok.",
+   "report_assessment": "Saha raporları araç hareketli olduğunu belirtiyor ancak motor ve LLM bu durumu transit geçiş olarak değerlendirip düşük risk verdi. Raporlar davranış iddiasıyla çelişiyor ancak manipülasyon yok.",
+   "decision_rationale": "Motor kuralı transit geçiş senaryosuna göre düşük risk verdi. LLM kare değerlendirmesi motorla aynı seviyede (düşük). Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye düşük olarak sabitlendi.",
+   "uncertainties": [
+    "Araç tipi bilinmiyor, tespit yok",
+    "Saha raporları davranış iddiasıyla çelişiyor",
+    "İz var ancak tespit yok, model aracı kaçırmış olabilir"
+   ],
+   "recommended_actions": [
+    "Araç tipi ve tespiti için ek görüntü analizi yapılmalı",
+    "Saha raporları ile motor verileri karşılaştırılarak tutarsızlıklar incelenmeli",
+    "Araç hareketi izlenmeye devam edilmeli",
+    "Transit geçiş senaryosu doğrulanmalı"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413803.5243044,
+  "kind": "vehicle:img_000861_trk_T0002"
+ },
+ "f56cba116ad8a7964b66555070af15e970eed4cd91cebc5787878a0ad72e4771": {
+  "narrative": {
+   "headline": "Araç mesafe trendi artıyor, yönelim üsse zıt, düşük risk seviyesiyle transit geçişte.",
+   "why_suspicious": [
+    "Araç üsse olan mesafesi 12:00'de 627 m iken 12:30'da 1254 m'ye çıktı.",
+    "Yönelim sapması 180°; araç üsse yönelmemiştir.",
+    "Hız sabit ve düşük, 0.3 m/s civarında hareket ediyor.",
+    "Motor net güvenle düşük risk (DUSUK) verdi."
+   ],
+   "movement_story": "Araç 12:00'de üsse 627 m mesafedeydi ve 12:30'a kadar mesafesi artarak 1254 m'ye çıktı. Araç hareket halinde ve hız yaklaşık 0.3 m/s sabit kaldı. Yönelim ise üsse zıt yönde, 180° sapma gösterdi. İzde duraklama veya ani yön değişikliği gözlenmedi.",
+   "report_assessment": "Saha raporları araç davranışı ile iz arasında çelişki bildirdi ancak motor bu durumu transit geçiş olarak değerlendirdi ve düşük risk seviyesi verdi. Raporlardaki davranış iddiası izle uyumsuzluk gösterdi ancak manipülasyon işareti yoktur. Motorun net güveni ve LLM değerlendirmesi de düşük riskte birleşti.",
+   "decision_rationale": "Motor kuralı, mesafe artışı ve yönelim sapması nedeniyle aracı transit geçiş olarak sınıflandırdı ve düşük risk verdi. LLM kare değerlendirmesi motorla aynı seviyede (DUSUK) karar verdi. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye motor ve LLM uzlaşmasıyla DUSUK olarak sabitlendi.",
+   "uncertainties": [
+    "Saha raporları araç davranışı ile iz arasında çelişki bildirdi, bu durum analizde belirsizlik oluşturdu.",
+    "Araç hareketli olmasına rağmen saha raporları uzun süredir bekliyor ifadesi içeriyor, bu çelişki açıklığa kavuşturulmalı."
+   ],
+   "recommended_actions": [
+    "Araç izlemeye devam edilmeli, mesafe artışı ve yönelim değişikliği kontrol edilmeli.",
+    "Saha raporlarındaki çelişkiler araştırılmalı ve doğrulukları teyit edilmeli.",
+    "Araç davranışı ile iz uyumu düzenli olarak gözden geçirilmeli.",
+    "Gerekirse ek sensör verileri ile doğrulama yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413804.7980642,
+  "kind": "vehicle:img_000891_v0"
+ },
+ "c55571f9acb24f23b95d08cd83c9cea1655e9f77b51162c03fcd99a29f418a35": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 1880 m mesafede, düşük risk seviyesinde değerlendirildi",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor",
+    "Üsse mesafe 1880 m, eşiklerin dışında",
+    "Olası iz hipotezi: 1.1 m mesafede, transit geçiş senaryosu",
+    "Motor ve LLM değerlendirmesi düşük risk verdi",
+    "Karar tablosu ve insan onayı düşük riskte uzlaştı"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi mevcuttur ancak bu sadece bir varsayımdır ve risk seviyesini değiştirmemektedir. Araç üsse 1880 m mesafede ve eşiklerin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM değerlendirmesi de aynı seviyededir. Motor ve LLM uzlaşmıştır, insan onayı gerekmemektedir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM değerlendirmesi motorla aynı seviyededir. Karar tablosu uzlaşı göstermektedir. İnsan onayı açık olup gerekmemektedir. Nihai seviye düşük risktir.",
+   "uncertainties": [
+    "İzsiz araç olması nedeniyle davranış bilinmemektedir",
+    "Olası iz hipotezi sadece varsayımdır, kesin değildir"
+   ],
+   "recommended_actions": [
+    "İz takibi için ek sensör veya yöntemler araştırılmalı",
+    "Olası iz hipotezi doğrulanmalı veya reddedilmeli",
+    "Üs çevresinde benzer araç hareketleri izlenmeli",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalı"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413806.8577094,
+  "kind": "vehicle:img_000892_v1"
+ },
+ "ec9394fd17478643cd2556ca45d4603ba10030b89dbd269a94e8f3494026f302": {
+  "narrative": {
+   "headline": "İzsiz araç, üsse 1787 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi car, iz bilgisi yok (izsiz araç).",
+    "Üsse mesafe 1787.4 m, eşiklerin dışında uzak mesafede.",
+    "Motor değerlendirmesi DUSUK seviyede, iz bilgisi olmadığı için davranış bilinmiyor.",
+    "LLM kare değerlendirmesi de DUSUK seviyesinde, motorla uyumlu.",
+    "Karar tablosu ve insan onayı DUSUK seviyede, risk artırıcı bir durum yok."
+   ],
+   "movement_story": "Araç için iz bilgisi bulunmamaktadır, bu nedenle hareket ve davranışları bilinmemektedir. Olası iz olarak 286 m mesafede bir iz önerilmiştir ancak bu sadece bir hipotezdir ve nihai risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Araç hakkında saha raporu bulunmamaktadır. Motorun hükmü DUSUK seviyede olup, izsiz araç olması nedeniyle davranış bilinmemektedir. LLM değerlendirmesi motorla uyumludur ve risk düşük olarak belirlenmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse 1787 m mesafede bulunması nedeniyle DUSUK seviyede karar vermiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Bu nedenle nihai risk seviyesi DUSUK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bilgisi olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi mevcuttur ancak doğrulanmamıştır.",
+    "Veri eksikliği nedeniyle risk değerlendirmesi sınırlıdır."
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılmalıdır.",
+    "Olası iz hipotezi doğrulanmalıdır.",
+    "Üs çevresinde araç hareketleri izlenmelidir.",
+    "Gerekirse saha incelemesi yapılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413807.1248507,
+  "kind": "vehicle:img_000901_v1"
+ },
+ "d6a49e0b9ca5059ca12b2229cd21891f4e0bdace69db033d4b9ae5fd384d08ea": {
+  "narrative": {
+   "headline": "İzsiz van, üsse 2019 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi van, üsse mesafe 2019.3 m, eşiklerin dışında",
+    "İz yok, davranış bilinmiyor, bu nedenle risk değerlendirmesi sınırlı",
+    "Olası iz hipotezi: 3.6 m mesafede başka bir araçla ilişkilendirildi, ancak bu kesin değil",
+    "Motor ve LLM değerlendirmesi düşük riskte birleşti",
+    "Saha raporu araçla aynı karede van olduğunu doğruluyor ancak iz kaydı yok, zaman kayması var"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi, başka bir araca 3.6 m mesafede ilişkilendirilmiştir ve üsse 2019 m uzaklıktadır. Çekim saati 13:00 olup, saha raporu 13:40 saatinde farklı bir zaman diliminde gözlem bildirmiştir.",
+   "report_assessment": "Saha raporu araçla aynı karede van olduğunu doğrulamaktadır ancak iz kaydı bulunmadığı için davranış tespiti yapılamamıştır. Motor hükmü düşük riskte olup, LLM değerlendirmesi de aynı seviyededir. Rapor manipülasyon içermemektedir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olduğu için davranış bilinmediğinden düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, hareket davranışı bilinmiyor",
+    "Olası iz hipotezi kesin değil, risk seviyesini değiştirmemektedir",
+    "Saha raporu zaman kayması nedeniyle davranış doğrulaması yapamamıştır"
+   ],
+   "recommended_actions": [
+    "İz takibi için ek sensör veya yöntemler kullanılmalı",
+    "Olası iz hipotezi doğrulanmalı veya reddedilmeli",
+    "Saha raporu zaman uyumu sağlanmalı ve güncellenmeli",
+    "Araç hareketleri izlenmeye devam edilmeli"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413807.5760493,
+  "kind": "vehicle:img_000862_v0"
+ },
+ "55694421b4ba1eac0ab14b0ab505907d0643b1cd86c5b532ca1f9a281afefb49": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2043 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor",
+    "Üsse mesafe 2043.5 m, eşiklerin dışında",
+    "Motor güveni net, değerler eşiklerden uzak",
+    "LLM değerlendirmesi motorla aynı seviyede, düşük riskli"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Üsse olan mesafe 2043.5 m olup, bu mesafe risk eşiklerinin dışındadır. Olası iz hipotezi verilmiş ancak bu kesin bir iz değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Araç hakkında saha raporu bulunmamaktadır. Motorun hükmü düşük riskli olup, güvenilir olarak değerlendirilmiştir. LLM kare değerlendirmesi de aynı seviyede karar vermiştir.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için düşük risk belirlemiştir. Motor güveni net ve eşiklerin dışındadır. LLM değerlendirmesi motorla uyumludur. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğundan davranış bilinmemektedir",
+    "Olası iz hipotezi kesin değildir ve risk seviyesini değiştirmemektedir"
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi yapılması önerilir",
+    "Üs çevresinde benzer araçların izlenmesi",
+    "Risk seviyesinin değişip değişmediğinin periyodik kontrolü"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413808.2931983,
+  "kind": "vehicle:img_000904_v1"
+ },
+ "878a36d57201d4efbf4b9cc0507afef46a3cb482d5e696cdf4c1886780f8956c": {
+  "narrative": {
+   "headline": "İzsiz van, üsse 2293 m mesafede, düşük riskli",
+   "why_suspicious": [
+    "Araç tipi van, üsse 2292.6 m uzaklıkta.",
+    "Araç izsiz, davranışı bilinmiyor.",
+    "Motor değerlendirmesi düşük riskli (DUSUK).",
+    "LLM değerlendirmesi de düşük riskli (DUSUK).",
+    "Araç durağan, hareket riski yok."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi mevcuttur ancak bu seviye değiştirmemektedir. Araç 13:00'te Güney Kapısı Yaklaşımı bölgesinde tespit edilmiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük riskli (DUSUK) olup, LLM değerlendirmesi de aynı seviyededir. Araç güvenilir bulunmuştur.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse 2293 m mesafede olması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede karar vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğu için davranış bilinmemektedir.",
+    "Olası iz hipotezi mevcuttur ancak kesin değildir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Durağan ve düşük riskli olduğu için öncelikli müdahale gerekmemektedir.",
+    "Olası iz doğrulanırsa değerlendirme güncellenebilir.",
+    "Güvenlik personeline bilgi ver ve bölgeyi gözlem altında tut."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413810.3576655,
+  "kind": "vehicle:img_000882_v0"
+ },
+ "ca835d163736f60ff6419e50c68c891424eb018f1a889dc01ac42f3fd0a10b76": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2510 m uzaklıkta, risk düşük seviyede.",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor.",
+    "Üsse mesafe 2510 m, eşiklerin dışında.",
+    "Olası iz hipotezi 2.7 m yakınlıkta, risk düşük olarak değerlendirildi.",
+    "Motor ve LLM değerlendirmesi risk seviyesini düşük olarak belirledi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi mevcuttur ancak bu sadece bir varsayımdır ve risk seviyesini değiştirmemektedir. Araç üsse 2510 m uzaklıkta ve eşiklerin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü izsiz araç olduğu için düşük risk seviyesindedir. LLM değerlendirmesi de aynı seviyededir. Manipülasyon işareti yoktur, motorun hükmü esas alınmıştır.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu ve üsse mesafe 2510 m olduğu için düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye motor ve LLM uzlaşması ile düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İzsiz araç olması nedeniyle davranış bilinmemektedir.",
+    "Olası iz hipotezi sadece varsayımdır ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Hareket ve silah durumu için ek veri topla.",
+    "Olası iz hipotezini doğrula veya reddet.",
+    "Risk seviyesini düzenli olarak gözden geçir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413811.3435783,
+  "kind": "vehicle:img_000893_v0"
+ },
+ "ced15429e1769a93cce393bc28cda7643e2a863948a2159ba09f891ad60ee29d": {
+  "narrative": {
+   "headline": "Araç park halinde, hareket hızı 0.2 m/s, 2457.5 m üs mesafesinde, motor ve LLM düşük riskte uzlaştı",
+   "why_suspicious": [
+    "Karede araç izi var ancak tespit yok, model aracı kaçırmış olabilir",
+    "Araç iz boyunca hareketsiz, hız maksimum 0.2 m/s",
+    "Üs mesafesi 2457.5 m, hareket trendi sabit",
+    "Saha raporları araç davranışı ile motor tespiti çelişiyor, ancak manipülasyon yok",
+    "Motor ve LLM kararları düşük riskte uzlaşıyor"
+   ],
+   "movement_story": "Araç 12:00-14:00 arasında 2444.5 m ile 2882 m arasında üs mesafesinde hareket etmiş, hız 0.2 m/s civarında sabit kalmış, hareket trendi sabit ve park halinde olduğu değerlendirilmiş.",
+   "report_assessment": "Saha raporları araç davranışının hareketli olduğunu iddia ediyor ancak motor ve LLM araç izini park halinde olarak değerlendiriyor. Motorun güveni net, LLM de aynı seviyede düşük risk veriyor. Raporlardaki çelişki manipülasyon içermiyor ve motor kararını değiştirmiyor.",
+   "decision_rationale": "Motor kuralı park halinde düşük risk belirledi. LLM kare değerlendirmesi motorla aynı seviyede düşük risk verdi. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye düşük risk olarak sabitlendi.",
+   "uncertainties": [
+    "Saha raporları ile motor tespiti arasında davranış çelişkisi var",
+    "Araç tespiti karede yok, sadece iz var, model aracı kaçırmış olabilir",
+    "Hareket hızı çok düşük, gerçek hareket mi yoksa ölçüm hatası mı belirsiz"
+   ],
+   "recommended_actions": [
+    "Araç hareketi ve tespiti için ek sensör verileri ile doğrulama yapılmalı",
+    "Saha raporlarındaki çelişki için ek analiz yapılmalı",
+    "Araç izinin devamı ve hareket trendi izlenmeli",
+    "Gerekirse araç için ek kamera veya radar takibi sağlanmalı"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413811.4235375,
+  "kind": "vehicle:img_000880_trk_T0010"
+ },
+ "0f962dd4430324cf7ec4a7552a69ed5f1193f43422b5be7f20bdc75360faab3c": {
+  "narrative": {
+   "headline": "Van araç park halinde, 2596 m üsse mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç 12:00-12:40 arasında 2595-2605 m arası sabit mesafede hareketsiz (0.0 m/s hız).",
+    "İz boyunca hareket yok, net 6.8 m yol kat etmiş ancak net yer değiştirme de 6.8 m, hareket yok denebilir.",
+    "Motor senaryosu PARKED, güven net, iz boyunca hareketsiz olduğu için düşük riskli kabul edildi.",
+    "Saha raporlarından biri (R009) konumu ve davranışı destekliyor, diğer rapor (R026) hareket iddiası ile çelişiyor ancak motor verisi öncelikli.",
+    "LLM değerlendirmesi de düşük riskli, motorla uzlaşıyor."
+   ],
+   "movement_story": "Araç 12:00'de 2596 m mesafede, 12:40'a kadar 2595-2605 m arası sabit konumda hareketsiz. 12:50 sonrası hareket başlamış ancak bu zaman dilimi motor senaryosu ve karar zinciri için dikkate alınmamış. İz boyunca hareket yok, park halinde olduğu kabul edilmiş.",
+   "report_assessment": "Saha raporları genel olarak konum ve tip ile uyumlu. R009 raporu motoru destekliyor, R026 raporu hareket iddiası ile çelişiyor ancak motor verisi öncelikli. Motor ve LLM düşük riskli kararında uzlaşıyor.",
+   "decision_rationale": "Motor kuralı park/hareketsiz senaryosuna dayanıyor ve net güvenle düşük riskli dedi.",
+   "uncertainties": [
+    "R026 raporu hareket iddiası ile çelişiyor, ancak motor verisi öncelikli.",
+    "İz 12:50 sonrası hareketi göstermekte, ancak motor senaryosu 12:00-12:40 arası veriye dayanıyor."
+   ],
+   "recommended_actions": [
+    "Araç hareketi 12:50 sonrası izlenmeli.",
+    "Saha raporlarındaki çelişkiler incelenmeli.",
+    "Motor ve LLM kararları düzenli olarak gözden geçirilmeli.",
+    "Gerekirse insan onayı ile nihai karar desteklenmeli."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413812.4698744,
+  "kind": "vehicle:img_000880_v0"
+ },
+ "14db8d930b3d967e6d481c3b0cb11faa4c4940c6aa5517d0eea7315cafbdba21": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 2607 m mesafede, sınırda düşük risk",
+   "why_suspicious": [
+    "Araç tipi: ağır kamyon (truck)",
+    "Üsse mesafe: 2607 m, eşik 2500 m'nin üzerinde",
+    "İz yok, davranış bilinmiyor",
+    "Motor güveni sınırda, neredeyse orta risk seviyesinde"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Üsse olan mesafe 2607 m olup, eşik değerlerin dışındadır. Olası iz hipotezi mevcuttur ancak bu seviye değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk seviyesindedir. LLM değerlendirmesi de motorla uyumludur ve düşük risk vermiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni sınırda olup neredeyse orta seviyeye yaklaşmaktadır. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bulunmaması nedeniyle araç davranışı bilinmemektedir",
+    "Mesafe eşik değerine yakın olması sınırda değerlendirmeye neden olmuştur"
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et",
+    "Mesafe 2500 m altına düşerse risk değerlendirmesini güncelle",
+    "Olası iz hipotezini doğrula veya reddet",
+    "Güvenlik önlemlerini gözden geçir"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413813.3810642,
+  "kind": "vehicle:img_000863_v0"
+ },
+ "91b3412dd4c6ba807527bebc609744608f113df6b9f4ad34188a66bd0247b7b4": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2636 m uzaklıkta, düşük risk seviyesinde değerlendirildi",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor",
+    "Üsse mesafe 2636 m, eşiklerin dışında",
+    "Olası iz hipotezi 1.8 m yakınlıkta, risk düşük",
+    "Motor ve LLM değerlendirmesi düşük risk verdi",
+    "Karar tablosu ve insan onayı düşük riskte uzlaştı"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi mevcuttur ancak bu sadece bir varsayımdır ve risk seviyesini değiştirmemektedir. Araç üsse 2636 m uzaklıkta ve eşiklerin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM değerlendirmesi motorla aynı seviyededir. Manipülasyon işareti yoktur, motorun hükmü esas alınmıştır.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için düşük risk belirlemiştir. Motor güveni net olup değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bulunmaması nedeniyle araç davranışı bilinmemektedir",
+    "Olası iz hipotezi sadece varsayımdır ve risk seviyesini değiştirmemektedir"
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et",
+    "Ani hareketlere karşı uyarı ver",
+    "Olası iz hipotezini doğrulamak için ek veri topla",
+    "Üs çevresinde benzer araç hareketlerini takip et"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413814.7327628,
+  "kind": "vehicle:img_000889_v0"
+ },
+ "3f5d606cddf29a73ff632ca0bd2c3c78ffc83c5fec7d89fd332ab3ddf129e893": {
+  "narrative": {
+   "headline": "İzsiz van, üsse 2620 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi van, iz bilgisi yok (izsiz araç).",
+    "Üsse mesafe 2619.6 m, eşiklerin dışında uzak konumda.",
+    "Motor değerlendirmesi düşük risk verdi.",
+    "LLM değerlendirmesi motorla aynı seviyede, düşük risk.",
+    "Olası iz hipotezi üsten uzaklaşma senaryosu, düşük riskli."
+   ],
+   "movement_story": "Araç için iz bilgisi bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi olarak başka bir araca ait izle 3 m mesafede ve 5 m eşik içinde olduğu varsayılmış, bu iz üsten uzaklaşma senaryosunu desteklemektedir. Araç 13:30'da Güneybatı Yolu bölgesinde tespit edilmiştir ve üsse 2619.6 m uzaklıktadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motor net güvenle düşük risk kararı vermiştir. LLM değerlendirmesi motorla uyumludur ve düşük risk seviyesindedir.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni nettir ve değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bilgisi olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "İz takibi için ek sensör veya yöntemler değerlendirilmelidir.",
+    "Araç hareketleri izlenerek davranış analizi yapılmalıdır.",
+    "Güvenlik ekipleri bilgilendirilmeli ve bölge gözetimi artırılmalıdır.",
+    "Benzer araçlar için iz ve risk değerlendirmesi prosedürleri gözden geçirilmelidir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413815.0896227,
+  "kind": "vehicle:img_000888_v0"
+ },
+ "d20b27dbdbb95753561154d0e465e4109a15171d7211cb6fe2685e6c79816907": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 2652 m mesafede, sınırda düşük risk",
+   "why_suspicious": [
+    "Araç tipi: truck, üsse mesafe: 2652.5 m",
+    "İz yok, davranış bilinmiyor",
+    "Mesafe eşik dışı: 2652 m > 2500 m (izsiz ağır araç için eşik)",
+    "Motor güveni sınırda, neredeyse orta risk",
+    "Olası iz hipotezi var, ancak kesin değil ve seviye değiştirmedi"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Üsse olan mesafe 2652.5 m olup, izsiz ağır araç için belirlenen 2500 m eşik değerinin üzerindedir. Olası iz hipotezi mevcuttur ancak bu kesin değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk seviyesindedir. LLM değerlendirmesi motorla aynı seviyededir. Araç için güven seviyesi 0.87 olup, motorun sınırda güven notları mevcuttur.",
+   "decision_rationale": "Motor kuralı izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni sınırda olup, neredeyse orta risk seviyesindedir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor",
+    "Mesafe eşik değerin biraz üzerinde, sınırda değerlendirme",
+    "Olası iz hipotezi kesin değil"
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et",
+    "Hareket ve mesafe değişikliklerini raporla",
+    "Olası iz hipotezini doğrula veya reddet",
+    "Risk seviyesinde değişiklik olursa güncelle"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413816.5022676,
+  "kind": "vehicle:img_000881_v0"
+ },
+ "0df16f195091f4d57863a3d3deec755ba1c3a643a111b2e0f975888511c42edd": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 2711 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi bus, iz yok (UNTRACKED)",
+    "Üsse mesafe 2711 m, eşik 2500 m'nin üzerinde",
+    "Motor güveni sınırda, neredeyse orta seviyede",
+    "LLM değerlendirmesi düşük riskli",
+    "Saha raporu motor kararını destekliyor"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi üsten uzaklaşma senaryosunu göstermektedir. Araç üsse 2711 m mesafede ve eşiklerin dışındadır. Çekim saati 13:00'tür. Çekim sonrası hareket bilgisi yoktur.",
+   "report_assessment": "Saha raporu motorun düşük riskli kararını desteklemektedir. Motorun izsiz araç senaryosundaki kararına LLM değerlendirmesi de uyumludur. Manipülasyon işareti yoktur, rapor güvenilirdir.",
+   "decision_rationale": "Motor kuralı izsiz araç senaryosunda düşük risk belirlemiştir. Motor güveni sınırda olsa da LLM değerlendirmesi aynı seviyededir. Karar tablosu uzlaşı göstermektedir. İnsan onayı gerekmemektedir ve nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor",
+    "Mesafe eşiklerin biraz dışında, sınırda güven notu"
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et",
+    "Mesafe 2500 m altına inerse uyarı ver",
+    "Olası iz hipotezini doğrula",
+    "Saha raporlarını takip et"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413816.6146338,
+  "kind": "vehicle:img_000887_v1"
+ },
+ "e21e880713c6a5410cf032b09d1d6121ff6e27b66fb4702f3df91def24fbf59b": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 2789 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi truck, üsse mesafe 2788.6 m ile eşiklerin dışında.",
+    "İz yok, davranış bilinmiyor, bu durum risk değerlendirmesini zorlaştırıyor.",
+    "Olası iz hipotezi üsten uzaklaşma yönünde, risk düşük olarak değerlendirildi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranışları bilinmemektedir. Olası iz hipotezi olarak üsten uzaklaşma senaryosu önerilmiştir, ancak bu kesin değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir. LLM değerlendirmesi motorla uyumludur ve düşük risk vermiştir. Manipülasyon işareti yoktur, motorun kararı esas alınmıştır.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni net olup, değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi kesin değildir ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et, hareket ve konum değişikliklerini raporla.",
+    "Üs çevresinde benzer araç hareketlerini takip et.",
+    "Olası iz hipotezini doğrulamak için ek veri topla.",
+    "Risk seviyesinde değişiklik olursa güncelleme yap."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413818.3664522,
+  "kind": "vehicle:img_000883_v0"
+ },
+ "c25cc1eff25e9140170c0e697220db26bb7d7e1fd1a13550bfac3d3ba3010f92": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2725 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi car, üsse mesafe 2724.7 m ile eşiklerin dışında.",
+    "Araç izsiz (UNTRACKED), davranışı bilinmiyor.",
+    "Olası iz hipotezi park halinde, üsse yönelim yok, 2724 m mesafede.",
+    "Motor ve LLM değerlendirmesi düşük risk verdi.",
+    "Karar tablosu ve insan onayı düşük riskte uzlaştı."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Olası iz hipotezi park halinde olduğunu ve üsse yönelimin olmadığını belirtmektedir. Araç üsse 2724.7 m mesafede ve 222.8 derece kerterizdedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM değerlendirmesi motorla aynı seviyededir. Araç güvenilir olarak değerlendirilmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğundan davranış bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır, kesin değildir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri için iz takibi yapılması önerilir.",
+    "Olası iz hipotezinin doğruluğu saha gözlemi ile teyit edilmelidir.",
+    "Üs çevresinde benzer araçların iz durumu izlenmelidir.",
+    "Düşük riskli araçların periyodik kontrolü sürdürülmelidir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413818.5383403,
+  "kind": "vehicle:img_000887_v0"
+ },
+ "1ac88e15c789ed05a02d39813b8eed1356d9d7a12d3c5e4e31a80dab13f07ced": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2837 m uzaklıkta, risk düşük olarak değerlendirildi",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor.",
+    "Üsse mesafe 2836.8 m, eşiklerin dışında.",
+    "Olası iz hipotezi: araç park halinde, üsse yönelim yok, 2 m mesafede iz var."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi mevcuttur; araç park halinde ve üsse yönelim göstermemektedir. Üsse olan mesafe 2836.8 m'dir ve bu mesafe risk eşiklerinin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü izsiz araç olduğu için düşük risk şeklindedir. LLM değerlendirmesi de aynı seviyededir.",
+   "decision_rationale": "Motor kuralı izsiz araç ve üsse mesafe 2837 m olduğu için düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğu için davranış bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalıdır.",
+    "Olası iz doğrulanmalı veya reddedilmelidir.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413819.6036682,
+  "kind": "vehicle:img_000886_v0"
+ },
+ "9c4d6979d1d4b53df086a266e50caad61f2fa8dfb24e9cd12c81c87a62467ad2": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2894 m uzaklıkta düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi car, üsse mesafe 2894.3 m ile eşiklerin dışında.",
+    "İz yok, bu nedenle davranış bilinmiyor.",
+    "Motor değerlendirmesi düşük risk verdi (güven 0.79).",
+    "LLM değerlendirmesi de düşük risk seviyesinde.",
+    "Olası iz hipotezi var ancak kesin değil ve seviye değiştirmedi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Üsse olan mesafe 2894.3 m olup, bu mesafe risk eşiklerinin dışındadır. Olası iz hipotezi mevcuttur ancak kesin değildir ve nihai risk seviyesini etkilememiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir ve LLM değerlendirmesi de aynı seviyededir. Motor ve LLM kararları uzlaşmıştır.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı göstermekte ve insan onayı gerekmemektedir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, bu nedenle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi kesin değildir ve risk seviyesini değiştirmemiştir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Hareket ve konum değişikliklerini takip et.",
+    "Olası iz hipotezini doğrula veya reddet.",
+    "Risk seviyesinde değişiklik olursa yeniden değerlendir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413819.7557719,
+  "kind": "vehicle:img_000873_v0"
+ },
+ "217e2b9e1b625cc34e2f9b63d7aa33f557125c56ae210e09c130a9a30570fc6e": {
+  "narrative": {
+   "headline": "Van aracı 2897 m mesafede, yön sapması 116°, düşük riskli transit geçiş.",
+   "why_suspicious": [
+    "Araç üsse 2897 m mesafede bulunuyor.",
+    "Yönelim sapması 116° ile üsse yönelmemiş.",
+    "Mesafe trendi artıyor, araç üsse yaklaşmıyor.",
+    "Hız düşük, 0.2 m/s civarında seyrediyor.",
+    "Saha raporu R012 araç davranışını destekliyor."
+   ],
+   "movement_story": "Araç 12:00'de 2473 m mesafede başladı. 12:30'da 2896 m mesafeye çıktı. Mesafe genel olarak artıyor, araç üsse yaklaşmıyor. Hızı 0.2-0.3 m/s arasında değişiyor. Duraklama yok, hareket halinde.",
+   "report_assessment": "Saha raporu R012, aracın konum ve davranışının tespit verisiyle tutarlı olduğunu ve düşük riskli olduğunu belirtiyor. Motorun senaryosu TRANSIT, düşük riskli olarak değerlendirildi. LLM değerlendirmesi de düşük riskli seviyede.",
+   "decision_rationale": "Motor kuralı ve LLM değerlendirmesi düşük riskli seviyede uzlaşıyor. Karar tablosu da bu uzlaşıyı destekliyor. İnsan onayı gerekmiyor çünkü karar net ve tutarlı. Nihai seviye DUSUK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç iz verisi mevcut, ancak olası iz bilgisi yok.",
+    "Hız ve mesafe değerleri düşük, sınırda risk değerlendirmesi olabilir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeye devam edilmeli.",
+    "Mesafe ve yönelim trendleri takip edilmeli.",
+    "Saha raporları güncellenmeli.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413821.7256444,
+  "kind": "vehicle:img_000886_v1"
+ },
+ "2cdf8e18217085f7a5e51d11f1aa5856474473a24b8aabc742663a67301dd1f4": {
+  "narrative": {
+   "headline": "img_000875_v0 aracının düşük riskli bulunma nedeni ve nihai karar açıklaması",
+   "why_suspicious": [
+    "Araç iz boyunca hareketsiz, park halinde (0.3 m/s maksimum hız).",
+    "Üsse mesafe başlangıçta 2993 m, çekim anında 2895 m, hareket sabit ve yavaş.",
+    "Motor senaryosu 'PARKED' olarak net ve güvenilir.",
+    "LLM değerlendirmesi motorla uyumlu, düşük riskli olarak belirledi.",
+    "Saha raporu motorla çelişiyor ancak manipülasyon işareti yok ve motor hükmü esas alındı."
+   ],
+   "movement_story": "Araç 12:00-12:05 arasında 95.3 m yol kat etmiş, hız 0.3 m/s civarında sabit kalmış ve hareketi park halinde olarak sınıflandırılmıştır. İz boyunca hareket yavaş ve sabittir, duraklama yoktur. 12:05 çekim saatinde üsse mesafe 2895 m'dir.",
+   "report_assessment": "Saha raporu araç davranışını motorla çelişen şekilde raporlamış ancak motorun net ve güvenilir değerlendirmesi ile LLM'nin aynı seviyede karar vermesi nedeniyle motor hükmü esas alınmıştır. Saha raporu manipülasyon içermemektedir.",
+   "decision_rationale": "Motor kuralı park halinde hareketi düşük risk olarak belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede (DÜŞÜK) karar vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye motor ve LLM uzlaşması ile DÜŞÜK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Saha raporu motorla çelişmekte, araç hareketli olarak raporlanmıştır ancak motor hareketi park halinde olarak değerlendirmiştir.",
+    "Araç izinde hareket yavaş ve sabit, bu durum davranışın net olarak tanımlanmasını zorlaştırabilir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et, hareket ve konum değişikliklerini raporla.",
+    "Saha raporları ile motor değerlendirmeleri arasındaki farkları takip et.",
+    "Araç hareketinde ani değişiklikler olursa yeniden değerlendirme yap.",
+    "Güvenlik protokollerine uygun şekilde araç konumunu periyodik kontrol et."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413822.8386774,
+  "kind": "vehicle:img_000875_v0"
+ },
+ "8ebabee22d21084df402444ab97a2650fd3ac68a358776bfd4698f11dc95cfae": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2952 m uzaklıkta, risk seviyesi düşük.",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor.",
+    "Üsse mesafe 2951.9 m, eşiklerin dışında.",
+    "Olası iz hipotezi park halinde, risk düşük.",
+    "Motor ve LLM değerlendirmesi düşük risk veriyor.",
+    "Karar tablosu ve insan onayı düşük riskte uzlaşıyor."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi park halinde olduğunu göstermektedir ancak bu kesin değildir ve risk seviyesini değiştirmemektedir. Araç üsse 2951.9 m uzaklıkta ve 210.5 derece kerterizdedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM kare değerlendirmesi motorla aynı seviyededir. Manipülasyon işareti yoktur, motorun hükmü esas alınmıştır.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için düşük risk belirlemiştir. Motor güveni nettir, değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamıştır. İnsan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor.",
+    "Olası iz hipotezi kesin değildir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalı.",
+    "Olası iz doğruluğu araştırılmalı.",
+    "Üs çevresinde araç takibi artırılmalı.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413822.9106026,
+  "kind": "vehicle:img_000885_v0"
+ },
+ "7f300b45c17719f6be9d50efbbaec12643e8f1fac9c8d3a3409e36043e24a647": {
+  "narrative": {
+   "headline": "img_000885_trk_T0011 aracı 2958 m uzaklıkta hareketsiz park halinde, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç izde 12:00-12:05 arasında 27.4 m yaklaşma yapmış ancak hız 0.2 m/s ile çok düşük ve hareket neredeyse yok.",
+    "Motor senaryosu PARKED, araç hareketsiz ve tespit yok, model aracı kaçırmış olabilir.",
+    "LLM kare değerlendirmesi de düşük risk veriyor, araç hareketsiz ve konumu sabit.",
+    "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor ancak motor ve LLM kararını değiştirmedi."
+   ],
+   "movement_story": "Araç 12:00-12:05 arasında 27.4 m yaklaşma yapmış, hız 0.2 m/s ile çok düşük, hareket neredeyse yok. İz boyunca araç sabit kalmış, park halinde olduğu değerlendiriliyor.",
+   "report_assessment": "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor, motor hareketli diyor, raporlar ise uzun süredir bekliyor diyor. Ancak raporlar manipülasyon içermiyor ve motor kararı net düşük riskli.",
+   "decision_rationale": "Motor kuralı ve LLM kare değerlendirmesi düşük riskte uzlaşıyor. Karar tablosu da bu uzlaşıyı destekliyor. İnsan onayı gerekmedi. Nihai seviye DÜŞÜK olarak sabitlenmiş.",
+   "uncertainties": [
+    "Saha raporları ile motor davranış iddiası arasında çelişki var.",
+    "Araç tipi ve güven bilgisi yok, bu veri eksikliği oluşturuyor."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et, hareketsizliği ve konumunu teyit et.",
+    "Saha raporlarındaki çelişkileri takip et ve gerekirse ek analiz yap.",
+    "Araç tipi ve güven bilgisi tamamlanmalı.",
+    "Gelecek karelerde hareket ve konum değişikliği dikkatle izlenmeli."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413824.2081976,
+  "kind": "vehicle:img_000885_trk_T0011"
+ },
+ "5d9615a5995208767ba75a348af4abbeaa593b8e283db56c4ab12386594bfe4a": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 2967 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor",
+    "Üsse mesafe 2966.8 m, eşiklerin dışında",
+    "Olası iz hipotezi: park halinde, üsse yönelim yok, 6.9 m yakınlıkta",
+    "Motor net güvenle düşük risk belirledi",
+    "LLM değerlendirmesi motorla uyumlu, düşük risk verdi"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi olarak araç hareket ettikten sonra park etmiş ve üsse yönelimi yoktur. Üs ile araç arasındaki mesafe 2966.8 m olup, eşiklerin dışındadır. Çekim saati 13:00 olarak kaydedilmiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir ve LLM değerlendirmesi de aynı seviyededir. Motorun güveni nettir ve karar tablosu uzlaşı göstermektedir.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için davranış bilinmemektedir ancak üsse mesafe 2967 m ile eşiklerin dışındadır. Motor net güvenle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı göstermekte ve insan onayı gerekmemektedir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğundan davranış bilinmemektedir",
+    "Olası iz hipotezi bir varsayımdır ve risk seviyesini değiştirmemektedir"
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılabilir",
+    "Üs çevresinde benzer araç hareketleri izlenmeli",
+    "Olası iz hipotezi doğrulanmalı veya reddedilmeli",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalı"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413825.8673055,
+  "kind": "vehicle:img_000867_v0"
+ },
+ "d80e56c39e70829dba2498de81ac33d1c0d4409f7c8f5981e8269155f0b1b8d6": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 2990 m mesafede düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi: truck",
+    "Üsse mesafe: 2989.6 m, eşiklerin dışında",
+    "İz yok, davranış bilinmiyor",
+    "Olası iz hipotezi: park halinde, üsse yönelim yok, 3.4 m yakınlıkta iz var"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezine göre araç park halinde ve üsse yönelimi yoktur. Üsse olan mesafe yaklaşık 2990 m olup, eşiklerin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük riskli (DUSUK) olup, LLM değerlendirmesi de aynı seviyededir. Motorun güveni nettir ve değerler eşiklerin dışındadır.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor",
+    "Olası iz hipotezi bir varsayımdır ve seviyeyi değiştirmemiştir"
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalıdır",
+    "Olası iz doğruluğu saha gözlemi ile teyit edilmelidir",
+    "Üs çevresinde benzer araçlar için takip artırılmalıdır",
+    "Risk seviyesi değişirse analist onayı alınmalıdır"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413826.357053,
+  "kind": "vehicle:img_000897_v0"
+ },
+ "229f6be78e62cb0b03c7a9a2c416992fc03b4c0a17a82da357c162c9241fe532": {
+  "narrative": {
+   "headline": "img_000890_v0 aracı park halinde, düşük riskli olarak değerlendirildi.",
+   "why_suspicious": [
+    "Araç 12:00-12:05 arasında 2979.1 m üsse mesafede, hareketsiz (park halinde) bulundu.",
+    "Araç hızı maksimum 0.3 m/s, ortalama hız 0.3 m/s, hareketi çok yavaş ve sabit.",
+    "İz boyunca araç 92.1 m yol kat etti ancak duraklama yok, hareket çok yavaş ve sabit.",
+    "Saha raporları araç davranışı ile iz verisi arasında çelişki bildiriyor, ancak motor net düşük risk belirledi.",
+    "Motor ve LLM değerlendirmesi araç için düşük risk kararı verdi ve karar tablosu uzlaşı sağladı."
+   ],
+   "movement_story": "Araç 12:00'de 3071 m üsse mesafede başladı, 12:05'te 2979.1 m mesafeye geldi. Hareketi çok yavaş (0.3 m/s) ve sabit, duraklama yok. İz boyunca toplam 92.1 m yol kat etti, ancak hareket park/hareketsiz senaryosuna uygun.",
+   "report_assessment": "Saha raporları araç davranışı ile iz verisi arasında çelişki bildiriyor; raporlar araç hareketli olduğunu iddia ediyor ancak motor net olarak park halinde olduğunu belirtti. Raporlardaki bilgiler güvenilmez kabul edilmedi ancak motorun net kararı esas alındı.",
+   "decision_rationale": "Motorun park halinde olduğu ve düşük risk belirlediği net. LLM değerlendirmesi motorla aynı seviyede (DÜŞÜK). Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye DÜŞÜK olarak sabitlendi.",
+   "uncertainties": [
+    "Saha raporları araç hareketli olduğunu iddia ediyor, bu iz verisi ile çelişiyor.",
+    "Araç hareketi çok yavaş ve sabit, bu durum davranışın tam olarak anlaşılmasını zorlaştırıyor."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et, ani hareketlere karşı uyarı ver.",
+    "Saha raporları ile iz verisi arasındaki çelişkiyi araştır.",
+    "Araç hareketi ve konumunu düzenli olarak kontrol et.",
+    "Gerekirse ek sensör verileri ile doğrulama yap."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413827.2245295,
+  "kind": "vehicle:img_000890_v0"
+ },
+ "b3d30a5d253dc86cf84bf525aff7d38dc36b037839b7750231acc840fee83ef6": {
+  "narrative": {
+   "headline": "İzsiz van, üsse 3079 m uzaklıkta düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi van, izsiz (iz yok)",
+    "Üsse mesafe 3079 m, eşiklerin dışında",
+    "Motor net güvenle düşük risk belirledi",
+    "LLM değerlendirmesi motorla uyumlu, düşük risk",
+    "Olası iz hipotezi var ancak kesin değil"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Üsse olan mesafe 3079 m olup, bu mesafe eşiklerin dışındadır. Olası iz hipotezi verilmiş ancak bu kesin bir iz değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir ve güveni nettir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. İnsan onayı gerekmemiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. Motorun güveni nettir. LLM değerlendirmesi motorla uyumludur. Karar tablosu uzlaşı göstermektedir. İnsan onayı gerekmemiştir ve nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İzsiz araç olması nedeniyle davranış bilinmemektedir",
+    "Olası iz hipotezi kesin değildir ve risk seviyesini değiştirmemektedir"
+   ],
+   "recommended_actions": [
+    "İz takibi için ek sensör veya yöntemler araştırılmalı",
+    "Araç hareketleri izlenmeli ve yeni verilerle risk değerlendirmesi güncellenmeli",
+    "Olası iz hipotezi doğrulanmalı veya reddedilmeli",
+    "Saha raporları oluşturulmalı ve analiz edilmelidir"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413827.5573134,
+  "kind": "vehicle:img_000867_v1"
+ },
+ "4cd35973aa209d31abdc544382c502f1e99d0070e10c3e3a021f966327e2e2ab": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 3087 m mesafede, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi bus ve üsse uzaklığı 3087 m (eşiklerin dışında).",
+    "İz yok, bu nedenle davranış bilinmiyor.",
+    "Olası iz hipotezi park halinde ve üsse yönelim yok, risk düşük.",
+    "Motorun net düşük risk kararı var.",
+    "LLM değerlendirmesi motorla uyumlu, düşük risk dedi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Olası iz hipotezi park halinde olduğunu ve üsse yönelimin olmadığını göstermektedir. Araç 13:00'te Kuzeybatı Yolu bölgesinde tespit edilmiştir ve üsse 3087 m uzaklıktadır.",
+   "report_assessment": "Saha raporu R033, aracın konumu, tipi ve davranışının tespit/iz verisiyle tutarlı olduğunu ve düşük riskli olduğunu desteklemektedir. Motorun hükmü düşük risktir ve manipülasyon işareti yoktur.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni net olup, değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bulunmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve seviyeyi değiştirmemiştir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri için iz takibi sağlanmalı.",
+    "Olası iz doğruluğu kontrol edilmeli.",
+    "Bölgedeki diğer araçlar ve hareketler izlenmeli.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413829.7882082,
+  "kind": "vehicle:img_000897_v1"
+ },
+ "b54c565383ab7850ed90f837ae89c5a1cdf298b664bfbe052e93846139675f6e": {
+  "narrative": {
+   "headline": "Araç park halinde ve üsse 3111 m mesafede düşük riskli bulundu",
+   "why_suspicious": [
+    "Üsse mesafe 3111 m, 400 m üzeri, 3000 m altı değil (yüksek risk için eşik sağlanmadı)",
+    "Araç iz boyunca hareketsiz, park halinde olduğu tespit edildi",
+    "Hız 0.3 m/s ile çok düşük, hareketlilik minimal",
+    "Duraklama sayısı 0, yol/yer değiştirme oranı 1.0, hareketlilik kriterleri düşük risk gösteriyor",
+    "Saha raporları araç davranışı ile motor değerlendirmesi arasında çelişki bildiriyor ancak motor kararı esas alındı"
+   ],
+   "movement_story": "Araç 12:00-12:05 arasında 3113.5 m ile 3198 m arasında üsse mesafede hareket etti ancak hız çok düşük (0.3 m/s) ve duraklama yok. İz boyunca hareket minimal ve park halinde olduğu motor tarafından değerlendirildi. 12:00'den 14:00'e kadar araç üsse yaklaşmaya devam etti ve 895 m mesafeye kadar indi.",
+   "report_assessment": "Saha raporları araç hareketli olduğunu iddia etse de motorun iz ve hız verileri araç park halinde olduğunu gösteriyor. Motor kuralı park/hareketsiz senaryosunu net olarak destekliyor. LLM değerlendirmesi yok. İnsan onayı gerekmiyor. Nihai seviye motorun düşük risk kararına uygun olarak DÜŞÜK olarak belirlendi.",
+   "decision_rationale": "Motor kuralı park halinde olduğu için düşük risk belirledi. Güven seviyesi net ve eşiklerin dışındadır. LLM değerlendirmesi yapılmadı, insan onayı gerekmedi. Saha raporlarındaki çelişki motor kararını değiştirmedi.",
+   "uncertainties": [
+    "Saha raporları araç davranışı ile motor değerlendirmesi arasında çelişki gösteriyor",
+    "LLM değerlendirmesi yapılmadı, dolayısıyla ek analiz yok",
+    "İz hareketi minimal ve duraklama yok, hareketlilik tam olarak net değil"
+   ],
+   "recommended_actions": [
+    "Motor ve saha raporları arasındaki çelişkiyi incelemek",
+    "Araç hareketliliğini daha uzun süre izlemek",
+    "LLM değerlendirmesi yapılması için sistem güncellemesi önerisi",
+    "İz ve hız verilerinin doğruluğunu teyit etmek"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413830.9267826,
+  "kind": "vehicle:img_000860_v0"
+ },
+ "2ae943f64e6e60ae73d082d7843525c44b4e0d08d135cfc705985cd6e69ad63c": {
+  "narrative": {
+   "headline": "İzsiz van, üsse 3238 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi van, üsse mesafe 3238.1 m ile eşiklerin dışında.",
+    "İz yok, davranış bilinmiyor, bu durum risk değerlendirmesini sınırlar.",
+    "Olası iz hipotezi 6.4 m mesafede, ancak bu seviye değiştirmedi.",
+    "Motorun net DUSUK kararı var, güven notları eşiklerin dışında olduğunu gösteriyor.",
+    "LLM değerlendirmesi motorla uyumlu, DUSUK seviyesinde risk belirledi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi mevcuttur ancak bu sadece bir varsayımdır ve risk seviyesini değiştirmemektedir. Araç 13:30'da Kuzeydoğu Kavşağı bölgesinde tespit edilmiştir ve üsse olan mesafesi 3238.1 metredir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü DUSUK seviyesindedir ve LLM değerlendirmesi de aynı seviyededir. Bu nedenle araç düşük riskli olarak değerlendirilmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle DUSUK seviyesinde karar vermiştir. Motor güveni net olup, değerler eşiklerden uzaktır. LLM kare değerlendirmesi motorla aynı seviyede DUSUK kararı vermiştir. Karar tablosu uzlaşı göstermekte ve insan onayı gerekmemektedir. Nihai seviye motor ve LLM uzlaşması ile DUSUK olarak belirlenmiştir.",
+   "uncertainties": [
+    "İz bulunmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi sadece bir varsayımdır ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Ani hareket ve üsse yaklaşma durumunda hızlı uyarı ver.",
+    "Olası iz hipotezini doğrulamak için ek veri topla.",
+    "Risk seviyesini yeniden değerlendirmek için yeni hareket verisi bekle."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413831.623725,
+  "kind": "vehicle:img_000868_v0"
+ },
+ "00efddfd882ed7bf7628460f01ece59c9ae054da2c9935c5f8e3667ce69d5171": {
+  "narrative": {
+   "headline": "img_000871_v0 aracının düşük risk seviyesi, üsse uzaklığı ve hareketsizliği nedeniyle belirlenmiştir.",
+   "why_suspicious": [
+    "Üsse mesafe 3255 m, 3000 m eşik değerinin üzerindedir.",
+    "Araç hareket halinde ancak hızı çok düşüktür (0.3 m/s).",
+    "Duraklama sayısı 0, yani araç uzun süre durmamıştır.",
+    "Yol değiştirme oranı 1.0, hareketlilik sınırlıdır."
+   ],
+   "movement_story": "Araç 12:00'den 14:00'e kadar 3504 m'den 3181 m'ye kadar üsse yaklaşmıştır. Hareket yavaş ve düzenlidir, duraklama yoktur. Üsse yönelim yoktur, hareket sonrası araç durmuş ve hareketsiz kalmıştır.",
+   "report_assessment": "Saha raporları araç davranışı ile motorun hareket iddiası arasında çelişki bildirmiştir ancak raporlar manipülasyon içermemektedir. Motor net olarak düşük risk vermiştir. LLM değerlendirmesi de motorla uyumludur.",
+   "decision_rationale": "Motor kuralı araç için düşük risk belirlemiştir çünkü araç park/hareketsiz senaryosundadır ve üsse yönelim yoktur. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Saha raporları motorun hareket iddiasıyla çelişmektedir.",
+    "Araç davranışı izle tam uyumlu değildir.",
+    "Olası iz bilgisi yoktur, bu nedenle davranış kesin değildir."
+   ],
+   "recommended_actions": [
+    "Aracın hareket ve konum değişiklikleri izlenmelidir.",
+    "Saha raporları ile motor verileri karşılaştırılmaya devam edilmelidir.",
+    "Araç üzerindeki hareketlilik ve duraklama durumları düzenli olarak kontrol edilmelidir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413831.623725,
+  "kind": "vehicle:img_000871_v0"
+ },
+ "bd2cf5672cefbd07d51071cf4419693649519bd7344d27853df976610fdfdb6a": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 3282 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi bus, üsse mesafe 3282.2 m ile eşiklerin dışında.",
+    "İz yok, bu nedenle davranış bilinmiyor.",
+    "Olası iz hipotezi park halinde ve üsse yönelim yok, risk düşük.",
+    "Motor güveni net, değerler eşiklerin dışında.",
+    "LLM değerlendirmesi motorla aynı seviyede, düşük risk verdi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Olası iz hipotezi park halinde olduğunu ve üsse yönelim olmadığını göstermektedir. Araç üsse 3282 m uzaklıkta ve 89.2 derece kerteriz açısındadır. Çekim saati 13:00'tir.",
+   "report_assessment": "Saha raporu motor hükmünü desteklemekte, araç konum, tip ve davranış açısından düşük riskli olarak değerlendirilmiştir. Manipülasyon işareti yoktur.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için düşük risk belirlemiş, güven net ve eşiklerin dışında. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve seviyeyi değiştirmemiştir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Hareket ve konum değişikliklerini raporla.",
+    "Olası iz hipotezini doğrula veya reddet.",
+    "Risk seviyesinde değişiklik olursa güncelle.",
+    "Saha raporlarını takip et."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413833.8542175,
+  "kind": "vehicle:img_000872_v0"
+ },
+ "ae19c5de7dca1b1e598ad1f90e6e4ced25ef51bd445039801ece9d7ac97423a1": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 3332 m uzaklıkta düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi bus, üsse mesafe 3331.7 m ile eşiklerin dışında.",
+    "İz yok, davranış bilinmiyor, bu durum risk değerlendirmesini zorlaştırıyor.",
+    "Olası iz hipotezi park halinde, üsse yönelim yok, risk düşük olarak değerlendirildi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Olası iz hipotezi park halinde olduğunu ve üsse yönelimin olmadığını göstermektedir. Araç 12:30'da Kuzeybatı Yolu bölgesinde tespit edilmiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir. LLM değerlendirmesi motorla uyumludur ve düşük risk vermiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse 3332 m mesafede bulunması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve risk seviyesini değiştirmemiştir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri için iz takibi yapılması önerilir.",
+    "Olası iz doğruluğu saha gözlemi ile teyit edilmelidir.",
+    "Risk seviyesinin değişip değişmediği düzenli olarak kontrol edilmelidir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413834.3037043,
+  "kind": "vehicle:img_000896_v1"
+ },
+ "4fa348a5b2d01301a40e50627b8e82bc871f7330919dff9949a9c093973e7182": {
+  "narrative": {
+   "headline": "İzsiz araç üsse 3364 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç izsiz (UNTRACKED), davranışı bilinmiyor",
+    "Üsse mesafe 3363.7 m, eşiklerin dışında",
+    "Olası iz 4.3 m mesafede, park halinde olduğu hipotezi var",
+    "Motor ve LLM değerlendirmesi düşük risk verdi",
+    "Saha raporu araç konumu ve tipini doğruluyor"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz 4.3 m mesafede tespit edilmiş ve park halinde olduğu hipotezi yapılmıştır. Araç üsse 3363.7 m uzaklıkta ve eşiklerin dışındadır. Çekim saati 12:30'dur. Çekim sonrası hareket bilgisi yoktur.",
+   "report_assessment": "Saha raporu araç konumu ve tipini doğrulamaktadır. Motorun hükmü düşük riskli (UNTRACKED) olup, LLM değerlendirmesi de aynı seviyededir. Manipülasyon işareti yoktur, rapor güvenilirdir.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İzsiz araç olması nedeniyle davranış bilinmemektedir",
+    "Olası iz hipotezidir, seviyeyi değiştirmemiştir"
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalıdır",
+    "Olası iz doğruluğu saha ile teyit edilmelidir",
+    "Risk seviyesi değişirse analist bilgilendirilmelidir",
+    "Üs çevresinde benzer araçlar takip edilmelidir"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413835.2238662,
+  "kind": "vehicle:img_000866_v0"
+ },
+ "716d3610d852d12445f7af554d271b6e18288a36192c36655ba7fd6b4399271f": {
+  "narrative": {
+   "headline": "Araç park halinde, hareketsiz ve düşük hızda, 3365 m üs mesafesinde.",
+   "why_suspicious": [
+    "Karede izi var ancak tespit yok, model aracı kaçırmış olabilir.",
+    "Araç iz boyunca hareketsiz, park halinde ve hız 0.2 m/s ile çok düşük.",
+    "Motor senaryosu 'PARKED' ve güven net olarak belirtilmiş.",
+    "LLM değerlendirmesi motorla uyumlu, düşük risk seviyesinde.",
+    "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor ancak manipülasyon yok."
+   ],
+   "movement_story": "Araç 12:00-12:05 arasında 3379.9 m'den 3365.3 m'ye kadar 14.7 m yaklaşmış, hız 0.2 m/s ile çok düşük ve hareketi neredeyse sabit. İz boyunca araç park halinde ve hareketsiz görünüyor. 12:00-14:00 arasında mesafe 3284.6 m ile 3371.2 m arasında değişmiş, hareket çok yavaş ve sabit kalmış.",
+   "report_assessment": "Saha raporları araç konumunu doğruluyor ancak davranış iddiası ile iz arasında çelişki var. Motor ve LLM düşük risk seviyesinde karar vermiş. Raporlardaki çelişki manipülasyon içermiyor, bu nedenle motor kararı esas alınmıştır.",
+   "decision_rationale": "Motor kuralı park halinde ve hareketsiz senaryoya göre düşük risk belirlemiş. LLM değerlendirmesi motorla aynı seviyede. Karar tablosu uzlaşı sağlıyor. İnsan onayı açık ve gerekmediği için nihai seviye motor ve LLM uzlaşmasına göre düşük risk olarak belirlenmiştir.",
+   "uncertainties": [
+    "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor.",
+    "Araç tespit edilmemiş, sadece iz var; bu modelin aracı kaçırmış olabileceğini gösteriyor."
+   ],
+   "recommended_actions": [
+    "Araç hareketlerinin izlenmeye devam edilmesi.",
+    "Saha raporlarındaki çelişkilerin detaylı incelenmesi.",
+    "Modelin tespit performansının gözden geçirilmesi.",
+    "Gerekirse ek sensör verileri ile doğrulama yapılması."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413835.790785,
+  "kind": "vehicle:img_000870_trk_T0005"
+ },
+ "1f55dd43c47986fca13a6963dbd3bf77a6d6c82c0de8f9e463174a0752ee4180": {
+  "narrative": {
+   "headline": "Araç 3366 m uzaklıkta, 5 dakika hareketsiz park halinde, düşük riskli bulundu",
+   "why_suspicious": [
+    "Karede araç izi var ancak tespit yok, model aracı kaçırmış olabilir.",
+    "Araç 12:00-12:05 arasında 0 m/s hızla hareketsiz (park halinde).",
+    "Motor güveni net, değerler eşiklerden uzak.",
+    "LLM değerlendirmesi motorla aynı seviyede, düşük riskli dedi.",
+    "Saha raporu motorla çelişiyor ancak manipülasyon yok, rapor güvenilir değil."
+   ],
+   "movement_story": "Araç 12:00'de 3365 m uzaklıktaydı, 12:05'te 3366 m uzaklıkta ve hareketsizdi. İz boyunca hareket yok, park halinde olduğu anlaşılıyor. 12:50 sonrası hareket başlamış ancak bu karede hareket yok.",
+   "report_assessment": "Saha raporu motorla çelişiyor; raporda araç hareketli denmiş ancak motor ve LLM hareketsiz diyor. Raporun güvenilirliği düşük, motor ve LLM kararına öncelik verildi.",
+   "decision_rationale": "Motor kuralı park/hareketsiz senaryosunu işaret ediyor ve net güven sağlıyor. LLM motorla aynı seviyede düşük risk dedi. Karar tablosu uzlaşı gösteriyor. İnsan onayı gerekmedi. Nihai seviye düşük risk olarak sabitlenmiş.",
+   "uncertainties": [
+    "Saha raporu motorla çelişiyor, davranış konusunda belirsizlik var.",
+    "Araç tipi belirtilmemiş, bu da değerlendirmeyi sınırlıyor."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeye devam edilmeli.",
+    "Saha raporları ile motor kararları karşılaştırılmalı.",
+    "Araç tipi ve tespit doğruluğu artırılmalı.",
+    "Gerekirse ek sensör verileri ile doğrulama yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413837.756312,
+  "kind": "vehicle:img_000865_trk_T0003"
+ },
+ "4e51c9c46c8a364450a9e127011806e6d5c3baf097c0cc444138554da097a4a8": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 3370 m mesafede, düşük risk seviyesinde.",
+   "why_suspicious": [
+    "Araç tipi bus ve üsse mesafe 3369.7 m ile eşiklerin dışında.",
+    "İz yok, bu nedenle davranış bilinmiyor.",
+    "Olası iz hipotezi park halinde, risk düşük olarak değerlendirildi.",
+    "Motor kuralı ve LLM değerlendirmesi düşük riskte uzlaştı.",
+    "İnsan onayı açık ve gerekmedi, karar otomatik olarak düşük riskte."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket ve davranış bilgisi yoktur. Olası iz hipotezi park halinde olup, araç üsse yaklaşık 3365 m mesafededir. Araç 12:05'te Doğu Yolu bölgesinde tespit edilmiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM değerlendirmesi de aynı seviyededir. Bu nedenle araç güvenilir bulunmuştur.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyede karar vermiştir. Karar tablosu uzlaşı göstermekte ve insan onayı gerekmemektedir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi sadece bir varsayımdır ve seviyeyi değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri için iz takibi yapılmalıdır.",
+    "Olası iz doğruluğu saha gözlemi ile teyit edilmelidir.",
+    "Risk seviyesinin değişip değişmediği düzenli olarak kontrol edilmelidir.",
+    "İlgili bölge ve zamanlarda ek sensör verileri toplanmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413838.6878803,
+  "kind": "vehicle:img_000870_v0"
+ },
+ "1230c87c56a9d375f7f7b0b422be6c421c18478ea18474f583ee0cdbb7e3b0f8": {
+  "narrative": {
+   "headline": "İzsiz otobüs, üsse 3372 m mesafede düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi otobüs (bus) ve üsse mesafe 3372.3 m, eşiklerin dışında.",
+    "İz yok, bu nedenle davranış bilinmiyor.",
+    "Olası iz hipotezi: 1.4 m mesafede, yönelim sapması 103°, üsse yönelmemiş.",
+    "Motor net düşük risk belirledi (güven 0.97).",
+    "LLM değerlendirmesi motorla aynı seviyede düşük risk verdi."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi mevcuttur; bu hipoteze göre araç üsse 3371 m mesafede ve yönelimi üsse doğru değildir. Bu durum araç hareketinin sabit olduğunu ve riskin düşük olduğunu desteklemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motor net düşük risk kararı vermiştir. LLM değerlendirmesi motorla aynı seviyede düşük risk belirlemiştir. Bu nedenle araç güvenilir kabul edilmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç senaryosuna göre düşük risk belirlemiştir çünkü araç üsse 3372 m mesafede ve eşiklerin dışındadır. Motor güveni nettir, değerler eşiklerden uzaktır. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, bu nedenle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve seviyeyi değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Aracı izlemeye devam et.",
+    "Ani hareketlere karşı dikkatli ol.",
+    "Olası iz hipotezini doğrulamak için ek veri topla.",
+    "Risk seviyesini düzenli olarak yeniden değerlendir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413839.592789,
+  "kind": "vehicle:img_000874_v0"
+ },
+ "fd969b83eb73cc26c261479efb6d377d33c3926852e2e8a2af833186636713b9": {
+  "narrative": {
+   "headline": "İzsiz araç, üsse 3369 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç izsiz, davranışı bilinmiyor",
+    "Üsse mesafe 3369 m, eşiklerin dışında",
+    "Motor net düşük risk kararı verdi",
+    "LLM değerlendirmesi motorla aynı seviyede, düşük risk"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Üsse olan mesafe 3369 m olup, bu mesafe risk eşiklerinin dışındadır. Olası iz hipotezi verilmiş ancak bu seviye değiştirmemiştir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü net olarak düşük risk yönündedir. LLM kare değerlendirmesi motorla uyumludur. Manipülasyon işareti yoktur.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç izsiz olduğu için davranış bilinmemektedir",
+    "Olası iz hipotezi mevcuttur ancak kesin değildir",
+    "Veri eksikliği nedeniyle hareket analizi yapılamamıştır"
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılmalıdır",
+    "Üs çevresinde mesafe ve hareket düzenli olarak izlenmelidir",
+    "Olası iz hipotezi doğrulanmalıdır",
+    "Gerekirse ek sensör verileri ile desteklenmelidir"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413840.152991,
+  "kind": "vehicle:img_000865_v0"
+ },
+ "8e9bdae852eb917405ff5fc4e4e65c814a225a9ba2a1d4abd96fbfed2b0d1f5b": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 3378 m uzaklıkta düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi: truck",
+    "Üsse mesafe: 3377.8 m, eşiklerin dışında",
+    "İz yok, davranış bilinmiyor",
+    "Olası iz hipotezi: park halinde, 4.6 m mesafede",
+    "Motor ve LLM değerlendirmesi düşük riskte"
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi park halinde olduğunu göstermektedir ancak bu kesin değildir ve risk seviyesini değiştirmemektedir. Araç üsse 3377.8 m uzaklıktadır ve bu mesafe eşiklerin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risktir. LLM değerlendirmesi motorla uyumludur ve düşük risk vermiştir. Manipülasyon işareti yoktur, motorun hükmü esas alınmıştır.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için davranış bilinmemektedir ve üsse mesafe eşiklerin dışındadır, bu nedenle düşük risk verilmiştir. LLM kare değerlendirmesi motorla aynı seviyededir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor",
+    "Olası iz hipotezi kesin değildir",
+    "Üsse mesafe eşiklerin dışında, sınırda değil"
+   ],
+   "recommended_actions": [
+    "Araç hareketleri izlenmeli ve iz oluşturulmalı",
+    "Olası iz doğrulanmalı veya reddedilmeli",
+    "Üs çevresinde benzer araçlar için takip artırılmalı"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413841.331026,
+  "kind": "vehicle:img_000896_v0"
+ },
+ "e589dc530546273db38283d202f2df27858a4dc9e8471b9497198442c7699a8d": {
+  "narrative": {
+   "headline": "İzsiz truck, üsse 3383 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi truck, üsse mesafe 3382.6 m ile eşiklerin dışında.",
+    "İz yok, davranış bilinmiyor, bu durum risk değerlendirmesini zorlaştırıyor.",
+    "Olası iz hipotezi park halinde, risk düşük olarak değerlendirildi.",
+    "Motor güveni net, değerler eşiklerin dışında ve risk düşük.",
+    "LLM değerlendirmesi motorla uyumlu, risk seviyesi düşük."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle hareket davranışı bilinmemektedir. Olası iz hipotezi park halinde olduğunu göstermektedir ancak bu kesin değildir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk yönündedir ve güven notları nettir. LLM değerlendirmesi de motorla aynı seviyeyi vermiştir.",
+   "decision_rationale": "Motor kuralı izsiz araç senaryosuna göre düşük risk belirlemiştir. Motor güveni net olup, değerler eşiklerin dışındadır. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi kesin değildir, sadece bir varsayımdır."
+   ],
+   "recommended_actions": [
+    "Araç hareketleri için iz takibi sağlanmalıdır.",
+    "Olası iz doğruluğu saha kontrolü ile teyit edilmelidir.",
+    "Risk seviyesinin değişmemesi için izsiz araçlar dikkatle izlenmelidir.",
+    "Gelecekte benzer durumlar için iz ve davranış verileri artırılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413842.0538714,
+  "kind": "vehicle:img_000895_v0"
+ },
+ "c2d43ed2b1ab30607fc1e17547ba6b79dd0a7f49d8af7de9d0773f033107db81": {
+  "narrative": {
+   "headline": "İzsiz van araç üsse 3396 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi van, iz bilgisi yok (izsiz araç).",
+    "Üsse mesafe 3396.4 m, belirlenen eşiklerin dışında.",
+    "Motor değerlendirmesi düşük risk (DUSUK) verdi.",
+    "LLM kare değerlendirmesi de düşük risk (DUSUK) ile uyumlu.",
+    "Olası iz hipotezi park halinde, üsse yönelim yok, risk düşük."
+   ],
+   "movement_story": "Araç için iz bilgisi bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi park halinde olduğunu ve üsse yönelim olmadığını göstermektedir. Araç 12:30'da Kuzeydoğu Kavşağı bölgesinde tespit edilmiştir ve üsse 3396.4 m uzaklıktadır.",
+   "report_assessment": "Araç hakkında saha raporu bulunmamaktadır. Motorun hükmü düşük risk (DUSUK) olup, LLM değerlendirmesi de aynı seviyededir. Bu nedenle araç güvenilir kabul edilmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse mesafenin eşiklerin dışında olması nedeniyle düşük risk belirlemiştir. LLM kare değerlendirmesi motorla aynı seviyeyi vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bilgisi olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi bir varsayımdır ve risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılmalıdır.",
+    "Üs çevresinde benzer araçların hareketleri izlenmelidir.",
+    "Olası iz hipotezi doğrulanmalıdır.",
+    "Gelecekte benzer durumlar için iz verisi artırılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413843.9061031,
+  "kind": "vehicle:img_000866_v1"
+ },
+ "57c5e0aec5f26bd7304293e5b6003b66cbe7f70df1ec886898129e4cad62a01e": {
+  "narrative": {
+   "headline": "Araç 3386.4 m mesafede park halinde, hareket yok, düşük riskli bulundu",
+   "why_suspicious": [
+    "Karede araç izi var ancak tespit yok, model aracı kaçırmış olabilir.",
+    "Araç 12:00-12:05 arasında hareketsiz, hız 0.0 m/s.",
+    "İz zaman çizelgesinde 12:00-12:40 arası sabit konum, hareket yok.",
+    "Saha raporları konum ve davranışla uyumlu, araç uzun süredir bekliyor.",
+    "Motor ve LLM değerlendirmesi düşük riskli (DUSUK) olarak uzlaştı."
+   ],
+   "movement_story": "Araç 12:00'de üsse 3388 m mesafede, 12:05'te 3386.4 m mesafede park halinde bulundu. Hareket hızı 0.0 m/s, net hareket yok. İz zaman çizelgesinde 12:00-12:40 arası konum sabit kaldı. 12:50 sonrası hareket başladı ancak rapor çekim anında araç hareketsizdi.",
+   "report_assessment": "Saha raporları genel olarak konum ve davranışla uyumlu, motor hükmü aracı destekliyor. Üç rapordan biri zaman kayması nedeniyle kısmen uyumlu, biri ise hareketli davranış iddiasıyla çelişiyor ancak çekim anındaki durum hareketsizdi.",
+   "decision_rationale": "Motor kuralı park/hareketsiz senaryoya göre düşük risk belirledi. LLM kare değerlendirmesi motorla aynı seviyede düşük risk verdi. Karar tablosu uzlaşı sağladı. İnsan onayı gerekmedi. Nihai seviye DUSUK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç tipi belirtilmemiş, tespit yok.",
+    "Saha raporlarından biri davranışta çelişki içeriyor.",
+    "İz hareketi 12:50 sonrası başladı, çekim anında hareket yok."
+   ],
+   "recommended_actions": [
+    "Araç tipi ve tespit doğruluğu için ek sensör verileri incelenmeli.",
+    "Saha raporlarındaki zaman kayması ve çelişkiler analiz edilmeli.",
+    "Araç hareketi ve konumu izlenmeye devam edilmeli.",
+    "Gerekirse ek görsel doğrulama yapılmalı."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413844.826567,
+  "kind": "vehicle:img_000895_trk_T0015"
+ },
+ "b506e19de24b9c863f3166b3fac65cdf6244ba3ac824b2b56c668dc25737dd4b": {
+  "narrative": {
+   "headline": "Araç 3508.7 m mesafede, hareketsiz ve düşük riskli olarak değerlendirildi",
+   "why_suspicious": [
+    "Karede izi var ancak tespit yok, model aracı kaçırmış olabilir",
+    "Araç iz boyunca hareketsiz, hız 0.2 m/s ile çok düşük",
+    "Motor senaryosu 'Park / hareketsiz' olarak belirlenmiş",
+    "LLM değerlendirmesi de düşük riskli (DUSUK) olarak uyumlu",
+    "Saha raporları konum ve davranış açısından genel olarak uyumlu, risk artışı yok"
+   ],
+   "movement_story": "Araç 12:00-14:00 arasında 3508.7 m uzaklıkta, çok düşük hızla (0.2 m/s) hareket ediyor. Hareketi sabit ve yavaş, park halinde olduğu senaryoya uygun. İz boyunca ani hızlanma veya üsse yönelme gözlenmedi.",
+   "report_assessment": "Saha raporları motorun düşük riskli değerlendirmesini destekliyor. Bir rapor hareketli olduğu iddiası ile çelişse de motor ve LLM kararları ile uyumlu değil. Manipülasyon işareti yok, raporlar güvenilir kabul edildi.",
+   "decision_rationale": "Motor ve LLM kare değerlendirmesi DUSUK seviyesinde uzlaştı. Karar tablosu da bu uzlaşıyı destekliyor. İnsan onayı gerekmedi. Bu nedenle nihai seviye DUSUK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Araç tipi belirtilmemiş, bu nedenle davranış tam olarak tanımlanamıyor",
+    "İz ve tespit arasında uyumsuzluk var, model aracı kaçırmış olabilir"
+   ],
+   "recommended_actions": [
+    "Araç hareketi izlenmeli",
+    "Ani hızlanma veya üsse yönelme durumunda uyarı verilmeli",
+    "Araç tipi ve davranış hakkında ek veri toplanmalı",
+    "Saha raporları düzenli olarak kontrol edilmeli"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413845.1215818,
+  "kind": "vehicle:img_000895_trk_T0016"
+ },
+ "a4bc572c42722077bb7d938e48475864fc1b87d933e0754c04e0f3291177ea44": {
+  "narrative": {
+   "headline": "İzsiz bus, üsse 3517 m uzaklıkta, düşük riskli bulundu",
+   "why_suspicious": [
+    "Araç tipi bus, iz yok (izsiz araç).",
+    "Üsse mesafe 3516.8 m, risk eşiklerinin dışında.",
+    "Motor değerlendirmesi düşük risk (DUSUK).",
+    "LLM değerlendirmesi de düşük risk (DUSUK).",
+    "Olası iz hipotezi park halinde, düşük riskli."
+   ],
+   "movement_story": "Araç için iz bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Olası iz hipotezi park halinde olduğunu göstermektedir. Araç üsse 3516.8 m uzaklıkta ve risk eşiklerinin dışındadır.",
+   "report_assessment": "Saha raporu bulunmamaktadır. Motorun hükmü düşük risk (DUSUK) olup, LLM değerlendirmesi de aynı seviyededir. Bu nedenle araç güvenilir kabul edilmiştir.",
+   "decision_rationale": "Motor kuralı izsiz araç olduğu için davranış bilinmemektedir ancak üsse mesafe 3517 m ile risk eşiklerinin dışındadır. LLM kare değerlendirmesi motorla aynı seviyede düşük risk vermiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye düşük risk olarak belirlenmiştir.",
+   "uncertainties": [
+    "İz yok, davranış bilinmiyor.",
+    "Olası iz hipotezi sadece bir varsayımdır ve seviyeyi değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılmalıdır.",
+    "Üs çevresinde mesafe ve hareket düzenli olarak izlenmelidir.",
+    "Olası iz doğruluğu saha kontrolleri ile teyit edilmelidir.",
+    "Risk seviyesinde değişiklik olması durumunda yeniden değerlendirme yapılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413845.7445433,
+  "kind": "vehicle:img_000895_v1"
+ },
+ "ea3b37fb99d4955f8ca035f0f6342080d1baae15d1b471d2786331d220407143": {
+  "narrative": {
+   "headline": "İzsiz van araç üsse 3570 m uzaklıkta, düşük risk seviyesinde değerlendirildi",
+   "why_suspicious": [
+    "Araç tipi van, iz bilgisi yok (izsiz araç).",
+    "Üsse mesafe 3569.9 m, eşiklerin dışında uzak mesafe.",
+    "Motor değerlendirmesi net DÜŞÜK risk seviyesinde.",
+    "LLM kare değerlendirmesi motorla uyumlu, DÜŞÜK risk seviyesi verdi."
+   ],
+   "movement_story": "Araç için iz bilgisi bulunmamaktadır, bu nedenle davranışı bilinmemektedir. Üsse olan mesafe 3569.9 m olup, bu mesafe eşiklerin dışındadır. Olası iz bilgisi verilmiş ancak bu bir hipotezdir ve risk seviyesini değiştirmemektedir.",
+   "report_assessment": "Araç hakkında saha raporu bulunmamaktadır. Motorun hükmü net DÜŞÜK risk seviyesindedir ve LLM değerlendirmesi de aynı sonucu vermiştir. Bu nedenle araç güvenilir kabul edilmiştir.",
+   "decision_rationale": "Motor kuralı, izsiz araç olması ve üsse uzaklığı nedeniyle DÜŞÜK risk seviyesi vermiştir. LLM kare değerlendirmesi motorla aynı seviyeyi desteklemiştir. Karar tablosu uzlaşı sağlamış ve insan onayı gerekmemiştir. Nihai seviye DÜŞÜK olarak sabitlenmiştir.",
+   "uncertainties": [
+    "İz bilgisi olmaması nedeniyle araç davranışı bilinmemektedir.",
+    "Olası iz hipotezi mevcuttur ancak risk seviyesini değiştirmemektedir."
+   ],
+   "recommended_actions": [
+    "Araç için iz takibi başlatılabilir.",
+    "Üs çevresinde benzer araçların hareketleri izlenmelidir.",
+    "Olası iz hipotezi doğrulanmalı veya reddedilmelidir.",
+    "Risk seviyesi değişirse yeniden değerlendirme yapılmalıdır."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413847.9677122,
+  "kind": "vehicle:img_000865_v1"
+ },
+ "d09eb9356fc26f4d35bedec2d381f826e747e6c5cfc25ed6a1b5ed9f8a7b77d2": {
+  "narrative": {
+   "headline": "Araç 3565 m uzaklıkta, park halinde ve çok yavaş hareket ediyor, risk seviyesi düşük.",
+   "why_suspicious": [
+    "Araç 12:00-12:05 arasında 9.1 m yaklaşma ile 3565 m uzaklıkta sabit kaldı.",
+    "Hız 0.2 m/s ile çok düşük, hareket neredeyse yok.",
+    "Motor aracı park halinde (PARKED) olarak sınıflandırdı, tespit yok ancak iz var.",
+    "LLM değerlendirmesi motorla uyumlu, düşük risk veriyor.",
+    "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor ancak manipülasyon yok."
+   ],
+   "movement_story": "Araç 12:00'de 3574 m uzaklıktaydı, 12:05'te 3565 m'ye yaklaştı. Hızı 0.2 m/s civarında çok düşük ve hareketi neredeyse sabit. İz boyunca duraklama yok, hareket çok yavaş ve park halinde olduğu değerlendirildi.",
+   "report_assessment": "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor, motor ise aracı park halinde ve düşük riskli olarak değerlendiriyor. LLM motorla aynı seviyede düşük risk veriyor. Raporlardaki çelişki manipülasyon içermiyor ve motor kararını değiştirmedi.",
+   "decision_rationale": "Motor aracı park halinde ve düşük riskli olarak sınıflandırdı, LLM değerlendirmesi bunu destekledi. Karar tablosu uzlaşı sağladı ve insan onayı gerektirmedi. Nihai seviye düşük risk olarak sabitlenmiştir.",
+   "uncertainties": [
+    "Saha raporları araç davranışı ile iz arasında çelişki bildiriyor, bu durum analizde belirsizlik yaratıyor.",
+    "Araç tipi belirtilmemiş, bu da davranış yorumunu zorlaştırıyor."
+   ],
+   "recommended_actions": [
+    "Araç hareket ve iz verileri düzenli olarak izlenmeli.",
+    "Saha raporlarındaki çelişkiler detaylı incelenmeli.",
+    "Araç tipi ve davranışı hakkında ek bilgi toplanmalı.",
+    "Gerekirse insan onayı ile risk seviyesi tekrar değerlendirilmelidir."
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413848.1746285,
+  "kind": "vehicle:img_000865_trk_T0004"
+ },
+ "1fd7571ec282b7c46bfbcd88957fd5285a12fd065b27981af648594ed7d5d8a5": {
+  "narrative": {
+   "situation": "12:00-14:00 arasında 45 karede 21 iz tespit edildi. Düşük riskli 49 şüpheli araç belirlendi. Toplam araç sayısı 67 olup, kritik seviyede araç yoktur. İnsan onayı açık ve LLM ile motor değerlendirmeleri uyumludur.",
+   "key_findings": [
+    "img_000876_trk_T0008: 1 araç, 1177 m mesafede, düşük riskli transit geçiş",
+    "img_000891_v0: 1 araç, 1257 m mesafede, düşük riskli transit geçiş",
+    "img_000869_v0: 1 izsiz araç, 1410 m mesafede, düşük riskli",
+    "img_000880_trk_T0010: 1 araç, 2458 m mesafede, park halinde düşük riskli",
+    "img_000885_trk_T0011: 1 araç, 2958 m mesafede, park halinde düşük riskli"
+   ],
+   "report_integrity": "52 rapordan 34'ü çelişiyor, 9 destekliyor, 7 doğrulanamaz, 2 kısmen uyumlu. Manipülasyon yok. Çelişkiler kararları sınırlı etkiledi.",
+   "decision_process": "Motor ve LLM değerlendirmeleri uyumlu, insan onayı açık. Bekleyen onay yok. Kararlar motor, LLM ve insan onayı ile destekleniyor.",
+   "priorities": [
+    "Düşük riskli araçların izlenmeye devam edilmesi",
+    "Çelişen raporların analizinin derinleştirilmesi",
+    "İzsiz araçların hareketlerinin takip edilmesi",
+    "İnsan onay sürecinin sürdürülmesi",
+    "Güvenlik önlemlerinin güncellenmesi"
+   ]
+  },
+  "model": "gpt-4.1-mini",
+  "created_at": 1790413850.8014643,
+  "kind": "executive"
+ }
+}
