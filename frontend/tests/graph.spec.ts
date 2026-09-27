@@ -23,12 +23,12 @@ test('game graph analysis is opt-in, selectable and uses the requested window', 
   expect(calls).toHaveLength(0);
   await panel.getByRole('button', { name: 'Bölgesel Anomali Analizini Başlat' }).click();
   await panel.locator('.graph-region-row').click();
-  await expect(panel.getByRole('article', { name: 'Seçili graph bölgesi' })).toContainText('Bölge 1');
+  await expect(panel.getByRole('article', { name: 'Seçili anomali bölgesi' })).toContainText('Bölge 1');
   await panel.getByText('Teknik ayrıntılar', { exact: true }).click();
-  await expect(panel.getByRole('table', { name: 'Graph skor bileşenleri' })).toContainText('Düzeltilmiş lift');
+  await expect(panel.getByRole('table', { name: 'Anomali skor bileşenleri' })).toContainText('Düzeltilmiş lift');
   await page.screenshot({ path: testInfo.outputPath('game-graph-panel.png'), fullPage: true });
-  await panel.getByLabel('Graph başlangıç zamanı').fill('10:30');
-  await panel.getByLabel('Graph bitiş zamanı').fill('11:30');
+  await panel.getByLabel('Analiz başlangıç zamanı').fill('10:30');
+  await panel.getByLabel('Analiz bitiş zamanı').fill('11:30');
   await panel.getByRole('button', { name: 'Aralığı analiz et' }).click();
   await expect.poll(() => calls.some(url => url.includes('start_time=10%3A30') && url.includes('end_time=11%3A30'))).toBe(true);
   await expect(panel.locator('.graph-summary')).toContainText('10:30 – 11:30');
@@ -39,9 +39,9 @@ test('game graph analysis is opt-in, selectable and uses the requested window', 
   await expect(async () => {
     // Select the visible region rim; the existing base DOM marker overlaps its centre.
     await canvas.click({ position: { x: bounds!.width / 2 - 12, y: bounds!.height / 2 - 8 } });
-    await expect(panel.getByRole('article', { name: 'Seçili graph bölgesi' })).toBeVisible({ timeout: 1000 });
+    await expect(panel.getByRole('article', { name: 'Seçili anomali bölgesi' })).toBeVisible({ timeout: 1000 });
   }).toPass({ timeout: 10000 });
-  await panel.getByRole('button', { name: 'Graph katmanını kapat' }).click();
+  await panel.getByRole('button', { name: 'Anomali tespitini kapat' }).click();
   await expect(panel.getByRole('table')).toHaveCount(0);
   expect(errors).toEqual([]);
 });

@@ -21,7 +21,7 @@ export function useGraphAnalysis(enabled: boolean, sourceRevision: unknown, wind
     fetch({ start_time: window.start_time, end_time: window.end_time }, controller.signal)
       .then(validateGraphAnalysis)
       .then(result => { if (!controller.signal.aborted) setData(result); })
-      .catch(cause => { if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : 'Graph analizi alınamadı.'); })
+      .catch(cause => { if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : 'Anomali analizi alınamadı.'); })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [enabled, sourceRevision, window.start_time, window.end_time, request]);

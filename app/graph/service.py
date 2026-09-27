@@ -136,9 +136,10 @@ class GraphAnalysisService:
             if region is None:
                 return None
             llm = getattr(getattr(self.main_service, "agent", None), "llm", None) if self.enable_llm else None
-            return {"region_id": region_id, **summarize_feedback(
-                region.vehicle_assessments, llm, self.output_dir / "graph_vehicle_summaries.json",
-                self.config.intelligence.llm_timeout_seconds)}
+            records = copy.deepcopy(region.vehicle_assessments)
+        return {"region_id": region_id, **summarize_feedback(
+            records, llm, self.output_dir / "graph_vehicle_summaries.json",
+            self.config.intelligence.llm_timeout_seconds)}
 
     def get_region_by_id(self, region_id: str, **window):
         return next((r for r in self.get_regions(**window) if r.region_id == region_id), None)

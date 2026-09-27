@@ -283,11 +283,10 @@ export default function App() {
   const analysis = useAnalysis();
   const [graphOpen, setGraphOpen] = useState(false);
   const [graphWindow, setGraphWindow] = useState<GraphWindow>({});
-  const [showNormalRegions, setShowNormalRegions] = useState(true);
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
   const graph = useGraphAnalysis(graphOpen, analysis.data, graphWindow);
   const graphRegions = useMemo(() => graphOpen ? (graph.data?.regions ?? []).filter(region =>
-    showNormalRegions || region.interest_score >= (graph.data?.region_interest_threshold ?? 1)) : [], [graphOpen, graph.data, showNormalRegions]);
+    region.interest_score >= (graph.data?.region_interest_threshold ?? 1)) : [], [graphOpen, graph.data]);
   const selectedRegion = graph.data?.regions.find(region => region.region_id === selectedRegionId) ?? null;
   const selectRegion = useCallback((regionId: string) => {
     setSelectedRegionId(regionId);
@@ -1033,14 +1032,14 @@ export default function App() {
         />
 
         <MapSidebar
-          graphPanel={<GraphAnalysisPanel enabled={graphOpen} onToggle={() => setGraphOpen(value => !value)}
+          graphPanel={<GraphAnalysisPanel requestWindow={graphWindow} enabled={graphOpen} onToggle={() => setGraphOpen(value => !value)}
             data={graph.data} loading={graph.loading} error={graph.error} reload={graph.reload}
             onWindow={window => { setSelectedRegionId(null); setGraphWindow(window); }}
             selected={selectedRegion} onSelect={regionId => {
               selectRegion(regionId);
               const region = graph.data?.regions.find(item => item.region_id === regionId);
               if (region) useTrackingStore.getState().requestView('coordinate', undefined, [region.location.lon, region.location.lat]);
-            }} reports={data.reports} showNormal={showNormalRegions} onShowNormal={setShowNormalRegions} />}
+            }} reports={data.reports} />}
           analysis={data}
           filters={filters}
           setFilters={setFilters}

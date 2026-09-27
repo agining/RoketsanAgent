@@ -400,7 +400,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
   const [fullscreen, setFullscreen] = useState(false);
 
-  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>(savedCamera && savedCamera.pitch === 0 ? '2d' : '3d');
 
   const [legendOpen, setLegendOpen] = useState(false);
 
@@ -500,7 +500,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
     setMapError('');
 
-    const map = new maplibregl.Map({ container: container.current, style, center: savedCamera?.center ?? [analysis.base.lon, analysis.base.lat], zoom: savedCamera?.zoom ?? 12, bearing: savedCamera?.bearing ?? 0, pitch: savedCamera?.pitch ?? 0, attributionControl: false });
+    const map = new maplibregl.Map({ container: container.current, style, center: savedCamera?.center ?? [analysis.base.lon, analysis.base.lat], zoom: savedCamera?.zoom ?? 12, bearing: savedCamera?.bearing ?? -28, pitch: savedCamera?.pitch ?? 58, attributionControl: false });
 
     const restoredCamera = savedCamera !== null;
 
