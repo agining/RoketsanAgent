@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import csv
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .geo import angle_diff, bearing_deg, haversine_m, hhmm_to_min
+from .config import settings
 
 
 @dataclass
@@ -20,6 +21,7 @@ class TrackPoint:
 class Track:
     track_id: str
     points: list[TrackPoint]
+    outliers: list[TrackPoint] = field(default_factory=list)   # yüklemede ayıklanan GPS sıçramaları
 
     @property
     def t_start(self) -> int:
@@ -73,8 +75,29 @@ class Dataset:
         return bearing_deg(self.base["lat"], self.base["lon"], lat, lon)
 
 
-def load_dataset(data_dir: Path) -> Dataset:
+def drop_gps_spikes(points: list[TrackPoint], th) -> tuple[list[TrackPoint], list[TrackPoint]]:
+    """Tek örneklik GPS sıçramalarını ayıklar. Araç bir örnekte fiziksel olarak olanaksız bir hızla uzağa
+    "zıplayıp" bir sonraki örnekte eski noktasına (gps_spike_return_m içinde) dönüyorsa o örnek ölçüm hatasıdır.
+    Gerçek hızlı hareket (ör. ani yaklaşma) geri dönmediği için etkilenmez. Dönen: (temiz noktalar, ayıklananlar)."""
+    if len(points) < 3:
+        return points, []
+    keep, spikes = [points[0]], []
+    for i in range(1, len(points) - 1):
+        a, b, c = keep[-1], points[i], points[i + 1]
+        v_out = haversine_m(a.lat, a.lon, b.lat, b.lon) / max((b.t - a.t) * 60, 1)
+        v_back = haversine_m(b.lat, b.lon, c.lat, c.lon) / max((c.t - b.t) * 60, 1)
+        if (v_out >= th.gps_spike_min_speed_mps and v_back >= th.gps_spike_min_speed_mps
+                and haversine_m(a.lat, a.lon, c.lat, c.lon) <= th.gps_spike_return_m):
+            spikes.append(b)
+            continue
+        keep.append(b)
+    keep.append(points[-1])
+    return keep, spikes
+
+
+def load_dataset(data_dir: Path, th=None) -> Dataset:
     data_dir = Path(data_dir)
+    th = th or settings.thresholds
     # utf-8-sig: dosya BOM'lu gelirse de okur, BOM'suz UTF-8'i de aynen okur
     zones_raw = json.loads((data_dir / "zones.json").read_text(encoding="utf-8-sig"))
     base = zones_raw["base"]
@@ -97,7 +120,10 @@ def load_dataset(data_dir: Path) -> Dataset:
             tracks.setdefault(row["track_id"], []).append(
                 TrackPoint(hhmm_to_min(row["time"]), float(row["lat"]), float(row["lon"]))
             )
-    track_objs = {tid: Track(tid, sorted(p, key=lambda x: x.t)) for tid, p in tracks.items()}
+    track_objs = {}
+    for tid, p in tracks.items():
+        pts, spikes = drop_gps_spikes(sorted(p, key=lambda x: x.t), th)   # veri kalitesi: GPS sıçramaları
+        track_objs[tid] = Track(tid, pts, spikes)
 
     reports = json.loads((data_dir / "field_reports.json").read_text(encoding="utf-8-sig"))
     if isinstance(reports, dict):  # {"reports": [...]} biçimine de dayanıklı ol

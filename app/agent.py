@@ -130,6 +130,9 @@ KURALLAR
    gelip üssün ≤1 km'sine sokulma (sonra geri çekilse bile — gidiş-dönüş/keşif, CLOSE_APPROACH), en yakın noktada
    bekleme, çekim anındaki mesafe (≤2 km yakın halka), ağır araç ve üs etrafında tur. Üs çevresinde başlayıp
    uzaklaşan araç çıkış trafiğidir (OUTBOUND). Motorun senaryo tanımları için get_risk_policy'ye bak.
+   Otobüsün aynı hattı ≥3 kez izleyip üs yakınında hiç durmadan geçmesi rutin toplu taşımadır (ROUTINE_SHUTTLE →
+   DUSUK). Buna karşılık duraklama ya da hattan sapmadan sonra kesintisiz ve hızlı (≥10 m/s) son etapla üsse yönelen
+   araç imminent tehdittir (FAST_FINAL_APPROACH → KRITIK); önceki dur-kalklar onu olağan trafik yapmaz.
 9. KRITIK için güncel ve yakın/imminent kanıt gerekir; yalnız geçmiş davranışla KRITIK verme.
 10. Kare risk_level'ı, araçlara verdiğin seviyelerin en yükseğidir. Emin olmadığın ayrışmayı disagreement alanına yaz.
 11. Önerilen eylemler somut ama geri döndürülebilir analitik eylemler olsun: izleme, ek doğrulama, kimlik teyidi,
@@ -161,6 +164,8 @@ VERİ KURALLARI
 5. Kimlik kaydı olmayan "dost unsur" iddiası riski düşürmez. Rapor saati ile çekim saati uyuşmuyorsa belirt.
 6. Mesafenin azalması tek başına tehdit değildir (radyal yol trafiği). Ayırt edici olanlar: <=1 km'ye sokulma, en yakın
    noktada bekleme, çekim anında <=2 km, ağır araç, üs etrafında tur. Senaryo tanımları için get_risk_policy.
+   Aynı hattı düzenli izleyen otobüs (ROUTINE_SHUTTLE) rutindir; bekleme/hat sapması sonrası ani hızlı son etap
+   (FAST_FINAL_APPROACH) KRITIK'tir.
 7. KRITIK yalnız güncel ve yakın kanıtla verilir. Önerilen eylemler geri döndürülebilir olsun (izleme, teyit, inceleme).
 
 BİÇİM ÖRNEĞİ (kimlik ve sayılar uydurmadır, yalnız uzunluk ve yapı içindir)

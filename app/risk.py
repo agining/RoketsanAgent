@@ -10,6 +10,15 @@ noktada ne kadar beklendiği, çekim anındaki mesafe, araç sınıfı (ağır a
 Senaryolar (ilk eşleşen kural kazanır; öncelik sırasıyla):
   FRIENDLY_PATROL      → ORTA    üs etrafında sabit yarıçaplı tur, üsse ≤2 km (resmi dost teyidi varsa DUSUK)
   DIRECT_FAST_APPROACH → KRITIK  ara durak olmadan hızla (≥7 m/s) doğrudan üsse, ETA ≤10 dk
+  FAST_FINAL_APPROACH  → KRITIK  duraklama ya da hat sapmasından SONRA kesintisiz son etap: etap ort. hızı ≥10 m/s
+                                 (bu veride olağan trafik ≤~9.4 m/s), üsse ≤30° yönelim, etapta ≥1.5 km kapatma,
+                                 son etap hızıyla ETA ≤10 dk (15 dk'lık ETA bekleme süresiyle şişer). Önceki dur-kalklar
+                                 aracı olağan trafik gibi gösterse de son etap imminent tehdittir (DIRECT_FAST_APPROACH
+                                 ara durak şartı yüzünden bunu kaçırır).
+  ROUTINE_SHUTTLE      → DUSUK   otobüs; üs yakınından (≤1.5 km) aynı hat üzerinden ≥3 ayrı geçiş, noktaların ≥%80'i
+                                 hattın başka seferleriyle aynı koridorda, çekim anında hat üzerinde ve üssün 2.5 km'si
+                                 içinde hiç durmamış → rutin toplu taşıma. Hattan sapma, üs yakınında durma ya da ani
+                                 hızlanma muafiyeti kaldırır (KRITIK kurallar zaten bu kuraldan önce değerlendirilir).
   CLOSE_APPROACH       → YUKSEK  dışarıdan (≥1.5 km yaklaşarak) gelip üsse ≤1 km'ye sokuldu; sonra geri çekilmiş
                                  olsa da (gidiş-dönüş / keşif örüntüsü)
   HEAVY_NEAR_APPROACH  → YUKSEK  ağır araç (truck/bus) dışarıdan gelip çekim anında üsse ≤2 km
@@ -23,6 +32,10 @@ Senaryolar (ilk eşleşen kural kazanır; öncelik sırasıyla):
   OUTBOUND             → DUSUK   üs çevresinde (≤1.2 km) başlayıp uzaklaşan çıkış trafiği
   PATROL_FAR           → DUSUK   üsten ≥2 km'de sabit yarıçaplı tur
   TRANSIT / MOVING_AWAY / PARKED → DUSUK
+
+Veri kalitesi: tek örneklik GPS sıçramaları (araç ≥12 m/s ile uzağa "zıplayıp" bir sonraki örnekte eski noktasına
+≤20 m dönüyorsa) yüklemede ayıklanır (data.drop_gps_spikes). Ayıklanan nokta gerekçede belirtilir; kural hesabına
+girmez. Gerçek hızlı hareket geri dönmediği için etkilenmez.
 
 "Dışarıdan geldi": iz başlangıcındaki mesafe ile en yakın (ya da çekim anındaki) mesafe arasındaki fark ≥1.5 km.
 Üs çevresinde başlayıp uzaklaşan araçlar bu yüzden CLOSE_APPROACH sayılmaz (OUTBOUND).
@@ -141,7 +154,14 @@ def is_heavy(label: str | None, alt_labels: list[dict] | None = None, min_alt_co
                for a in (alt_labels or []))
 
 
-def _tracked_rules(f: TrackFeatures, th: Thresholds, heavy: bool = False) -> list[Rule]:
+def is_bus(label: str | None, alt_labels: list[dict] | None = None, min_alt_conf: float = 0.5) -> bool:
+    """Otobüs: etiket bus ya da aynı nesneye düşen kopya kutulardan birinde güvenli (≥min_alt_conf) bus etiketi."""
+    if label == "bus":
+        return True
+    return any(a.get("label") == "bus" and (a.get("confidence") or 0) >= min_alt_conf for a in (alt_labels or []))
+
+
+def _tracked_rules(f: TrackFeatures, th: Thresholds, heavy: bool = False, bus: bool = False) -> list[Rule]:
     """Öncelik sırasıyla kurallar. İlk eşleşen kural senaryoyu belirler."""
     intermediate_stops = len(f.stops) - (1 if f.initial_wait_min else 0)
     ratio = f.path_length_m / max(f.extent_m, 1.0)
@@ -153,6 +173,37 @@ def _tracked_rules(f: TrackFeatures, th: Thresholds, heavy: bool = False) -> lis
     came_to_now = Cond("dışarıdan gelme (başlangıç − şimdi)", f.approach_total_m, ">=", th.approach_gain_m,
                        " m", nd=0)
     near_now = Cond("üsse mesafe", f.dist_now_m, "<=", th.near_arrival_m, " m", nd=0)
+    near_stops = sum(1 for s in f.stops if s.dist_to_base_m <= th.shuttle_stop_clear_m)
+
+    def fast_final_reasons() -> list[str]:
+        start = (f"Son duraklama bittikten sonra ({f.final_leg_start})" if f.stops
+                 else f"İz başından ({f.final_leg_start}) bu yana")
+        out = [f"{start} {f.final_leg_min} dk'dır kesintisiz ve hızla ({f.final_leg_speed_mps:.1f} m/s) üsse doğru "
+               f"ilerliyor; bu etapta {f.final_leg_gain_m / 1000:.1f} km kapattı.",
+               f"Yönelim sapması {_fmt(f.heading_offset_deg, '°')}, üsse {f.dist_now_m:.0f} m, son etap hızıyla "
+               f"ETA ≈ {_fmt(f.final_leg_eta_min, ' dk', 1)}."]
+        if intermediate_stops:
+            out.append(f"Önceki {len(f.stops)} duraklama nedeniyle araç ara duraklı (olağan trafik) görünüyor; ancak son "
+                       f"etap hızı olağan trafiğin üstünde (≥{th.dash_speed_mps:g} m/s). DIRECT_FAST_APPROACH ara durak "
+                       "şartı nedeniyle bu aracı kaçırırdı.")
+        if f.route_passes >= 2 and f.route_overlap_pct >= th.shuttle_min_overlap_pct and not f.on_route_now:
+            prior = f.route_passes - (1 if f.dist_now_m <= th.shuttle_pass_near_m else 0)
+            out.append(f"Öncesinde aynı hat üzerinden üs yakınından {prior} kez geçmişti; çekim anında hattın dışında "
+                       "— hattan sapma. Rutin hat muafiyeti (ROUTINE_SHUTTLE) uygulanmadı.")
+        return out
+
+    def shuttle_reasons() -> list[str]:
+        stop_d = [s.dist_to_base_m for s in f.stops]
+        return [
+            f"Otobüs aynı hattı izliyor: üs yakınından {f.route_passes} ayrı geçiş; noktaların "
+            f"%{f.route_overlap_pct:.0f}'i hattın diğer seferleriyle aynı {th.shuttle_corridor_m:.0f} m'lik koridorda "
+            "ve çekim anında hat üzerinde.",
+            f"Üsse en yakın {f.dist_min_m:.0f} m ({f.dist_min_time}), çekim anında {f.dist_now_m:.0f} m; üssün "
+            f"{th.shuttle_stop_clear_m / 1000:g} km'si içinde hiç durmadı"
+            + (f", duraklamaları hat uçlarında (üsse ≥{min(stop_d) / 1000:.1f} km)." if stop_d else "."),
+            "Rutin toplu taşıma örüntüsü: üs yakınından geçmek bu hattın parçası, tek başına tehdit sayılmadı. "
+            "Hattan sapma, üs yakınında durma ya da ani hızlanma olursa muafiyet kalkar.",
+        ]
 
     def journey() -> str:
         return (f"Başlangıç {_km(f.dist_start_m)} → en yakın {_km(f.dist_min_m)} ({f.dist_min_time}) → "
@@ -190,6 +241,24 @@ def _tracked_rules(f: TrackFeatures, th: Thresholds, heavy: bool = False) -> lis
             f"{f.initial_wait_min} dk bekledikten sonra ara durak olmadan üsse doğru {f.speed_now_mps:.1f} m/s ile ilerliyor.",
             f"Yönelim sapması {_fmt(f.heading_offset_deg, '°')}, üsse mesafe {_fmt(f.dist_now_m, ' m')}, ETA ≈ {_fmt(f.eta_min, ' dk', 1)}.",
         ]),
+        # 2b) duraklama / hat sapmasından sonra kesintisiz ve hızlı son etap. DIRECT_FAST_APPROACH ara durak şartı
+        #     nedeniyle kaçırır; hız eşiği olağan trafiğin (≤~9.4 m/s) üstünde → mevcut araçların seviyesi değişmez.
+        Rule("FAST_FINAL_APPROACH", "KRITIK", [
+            Cond("yönelim sapması", f.heading_offset_deg, "<=", th.dash_heading_deg, "°", nd=0),
+            moving,
+            Cond("son etap ort. hızı", f.final_leg_speed_mps, ">=", th.dash_speed_mps, " m/s"),
+            Cond("son etapta kapanan mesafe", f.final_leg_gain_m, ">=", th.approach_gain_m, " m", nd=0),
+            Cond("son etap hızıyla ETA", f.final_leg_eta_min, "<=", th.critical_eta_min, " dk"),
+        ], fast_final_reasons),
+        # 2c) rutin hat aracı (servis otobüsü): üs yakınından geçmek hattının parçası → aşağıdaki yakınlık
+        #     kurallarından muaf. Sapma / üs yakınında durma / ani hızlanma muafiyeti kaldırır.
+        Rule("ROUTINE_SHUTTLE", "DUSUK", [
+            Cond("otobüs sınıfı", bus, "true", soft=False),
+            Cond("üs yakınından ayrı geçiş", f.route_passes, ">=", th.shuttle_min_passes, soft=False),
+            Cond("hat tekrarı (aynı koridor)", f.route_overlap_pct, ">=", th.shuttle_min_overlap_pct, "%", nd=0),
+            Cond("çekim anında hat üzerinde", f.on_route_now, "true", soft=False),
+            Cond(f"üssün {th.shuttle_stop_clear_m / 1000:g} km'si içinde duraklama", near_stops, "==", 0, soft=False),
+        ], shuttle_reasons),
         # 3) dışarıdan gelip üssün 1 km'si içine sokulma (gidiş-dönüş dahil)
         Rule("CLOSE_APPROACH", "YUKSEK", [
             came_to_min,
@@ -284,12 +353,24 @@ def _classify_low(f: TrackFeatures, th: Thresholds) -> tuple[str, str, list[str]
     return "PARKED", "DUSUK", ["Hareket ettikten sonra durmuş; üsse yönelim yok."]
 
 
-def classify_tracked(f: TrackFeatures, th: Thresholds, heavy: bool = False) -> tuple[str, str, list[str]]:
+def classify_tracked(f: TrackFeatures, th: Thresholds, heavy: bool = False,
+                     bus: bool = False) -> tuple[str, str, list[str]]:
     """(senaryo, risk, gerekçeler)"""
-    for rule in _tracked_rules(f, th, heavy):
+    for rule in _tracked_rules(f, th, heavy, bus):
         if rule.matches():
-            return rule.scenario, rule.risk, rule.reasons()
-    return _classify_low(f, th)
+            return rule.scenario, rule.risk, rule.reasons() + _quality_notes(f, th)
+    scen, risk, reasons = _classify_low(f, th)
+    return scen, risk, reasons + _quality_notes(f, th)
+
+
+def _quality_notes(f: TrackFeatures, th: Thresholds) -> list[str]:
+    """Veri kalitesi notu: yüklemede ayıklanan GPS sıçramaları (yoksa boş)."""
+    if not f.gps_outliers:
+        return []
+    spots = ", ".join(f"{o['time']} (üsse {o['dist_to_base_m']:.0f} m)" for o in f.gps_outliers)
+    return [f"Veri kalitesi: {spots} örneği tek örneklik GPS sıçraması — araç ≥{th.gps_spike_min_speed_mps:g} m/s ile "
+            "'zıplayıp' bir sonraki örnekte eski noktasına döndü (fiziksel olarak olanaksız). Nokta analizden "
+            "çıkarıldı; yakınlık kurallarına girmedi."]
 
 
 def _untracked_conds(label: str, dist_m: float, th: Thresholds, heavy: bool | None = None) -> list[Cond]:
@@ -325,9 +406,10 @@ def firm_margin(note: str) -> dict:
     return _margin([], []) | {"notes": [note]}
 
 
-def tracked_margin(f: TrackFeatures, th: Thresholds, scenario: str, risk: str, heavy: bool = False) -> dict:
+def tracked_margin(f: TrackFeatures, th: Thresholds, scenario: str, risk: str, heavy: bool = False,
+                   bus: bool = False) -> dict:
     tol = th.margin_tol
-    rules = _tracked_rules(f, th, heavy)
+    rules = _tracked_rules(f, th, heavy, bus)
     drop, rise, rise_levels = [], [], []
     matched = next((r for r in rules if r.scenario == scenario), None)
     if matched and risk != "DUSUK":
@@ -339,7 +421,20 @@ def tracked_margin(f: TrackFeatures, th: Thresholds, scenario: str, risk: str, h
         if misses and all(c.ok() or c.near_miss(tol) for c in r.conds):
             rise.append(f"Neredeyse {r.risk} ({r.scenario}): " + "; ".join(c.describe() for c in misses))
             rise_levels.append(r.risk)
-    return _margin(drop, rise, max_risk(rise_levels) if rise_levels else None)
+    # Muafiyet kuralı (ROUTINE_SHUTTLE, DUSUK): muafiyet olmasa hangi üst kural kazanırdı? Muafiyetin kendi
+    # koşulu kıl payı sağlandıysa motor sınırdadır; LLM o seviyeye kadar gerekçeyle yükseltebilir.
+    info = []
+    if matched and matched.risk == "DUSUK":
+        waived = next((r for r in rules if _rank(r.risk) > _rank(risk) and r.matches()), None)
+        if waived:
+            info.append(f"Muafiyet: rutin hat örüntüsü olmasa {waived.scenario} ({waived.risk}) olurdu.")
+            shaky = [c for c in matched.conds if c.barely(tol)]
+            if shaky:
+                rise.append("Muafiyet kıl payı: " + "; ".join(c.describe() for c in shaky))
+                rise_levels.append(waived.risk)
+    out = _margin(drop, rise, max_risk(rise_levels) if rise_levels else None)
+    out["notes"] = out["notes"] + info
+    return out
 
 
 def untracked_margin(label: str, dist_m: float, th: Thresholds, risk: str, heavy: bool | None = None) -> dict:
@@ -370,12 +465,12 @@ def _cond_view(c: Cond, tol: float) -> dict:
             "near_miss": c.near_miss(tol), "barely": c.barely(tol)}
 
 
-def explain_tracked(f: TrackFeatures, th: Thresholds, heavy: bool = False) -> list[dict]:
+def explain_tracked(f: TrackFeatures, th: Thresholds, heavy: bool = False, bus: bool = False) -> list[dict]:
     """Her kuralın koşulları, değerleri ve sonucu — öncelik sırasıyla. Sınıflandırmayla aynı kural listesini
     (_tracked_rules) kullanır; rapordaki tablo motorun gerçekte uyguladığı kuralla birebir aynıdır.
     matched: senaryoyu belirleyen (ilk eşleşen) kural. Sonraki kurallar değerlendirilmez ama gösterilir."""
     out, winner_seen = [], False
-    for r in _tracked_rules(f, th, heavy):
+    for r in _tracked_rules(f, th, heavy, bus):
         ok = r.matches()
         out.append({"scenario": r.scenario, "risk": r.risk, "all_ok": ok, "matched": ok and not winner_seen,
                     "conds": [_cond_view(c, th.margin_tol) for c in r.conds]})

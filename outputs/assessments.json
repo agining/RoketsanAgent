@@ -30764,5 +30764,202 @@
     "fusion_model": "gpt-5-mini",
     "assessment_schema_version": "fusion-v3",
     "assessed_at": 1790461728.0346282
+  },
+  "img_999998": {
+    "frame_id": "img_999998",
+    "risk_level": "KRITIK",
+    "headline": "Ağır otobüs (T9998) daha önce üssü ≤1 km’ye soktu; anlık 1.4 km — geçmiş CLOSE_APPROACH var, güncel KRITIK kanıtı yok.",
+    "reasoning_steps": [
+      {
+        "stage": "tespit",
+        "finding": "1 adet ağır otobüs tespit edildi (img_999998_v0), algılama güveni 0.89.",
+        "evidence": [
+          "vehicle_id: img_999998_v0",
+          "confidence: 0.89",
+          "label: bus"
+        ]
+      },
+      {
+        "stage": "konumlandirma",
+        "finding": "Çekim anında üsse uzaklık 1,400.7 m; aynı track daha önce 15:00'de minimum 651.9 m'ye indi (≤1 km).",
+        "evidence": [
+          "track_id: T9998",
+          "dist_to_base_m: 1400.7 (15:35)",
+          "dist_min_m: 651.9 at 15:00"
+        ]
+      },
+      {
+        "stage": "hareket",
+        "finding": "15:15–15:30 arası 15 dk duraklama kaydı; 15:30'da son etaba başladı, son 60 dakikada 2,839.8 m yaklaşma; şu an hız 5.7 m/s, önceki maksimum final hız kaydı 11.5 m/s; mevcut trend 'bir kez azalıp sonra artıyor' (yaklaşıp uzaklaşma).",
+        "evidence": [
+          "stops: 15:15–15:30 (15 dk)",
+          "approach_last60_m: 2839.8",
+          "speed_now_mps: 5.7",
+          "max_speed_mps: 11.5",
+          "dist_trend: once_azalip_sonra_artiyor"
+        ]
+      },
+      {
+        "stage": "risk",
+        "finding": "Geçmişte üsse ≤1 km yaklaşma (CLOSE_APPROACH) var — bu YÜKSEK risk; ancak çekim anında araç 1.4 km ve geri çekiliyor, dolayısıyla KRITIK (imminent) kanıtı yok.",
+        "evidence": [
+          "dist_min_m: 651.9 at 15:00",
+          "dist_to_base_m: 1400.7 at 15:35",
+          "speed_now_mps: 5.7",
+          "final_leg_start: 15:30 (track)"
+        ]
+      }
+    ],
+    "summary": "Aynı track (T9998) üzerinden geçen ağır otobüs, 15:00'de üsse 652 m kadar yakınsadı (CLOSE_APPROACH). Araç 15:15–15:30 arası durdu, 15:30'da harekete geçti; ancak çekim anında üsse uzaklığı 1,400.7 m ve anlık hız 5.7 m/s. Motor KRITIK değerlendirmesi son etaptaki yüksek hız kayıtlarına dayanıyor; mevcut anlık verilerle hemen saldırı tehdidini doğrulamıyorum, ama geçmiş yakın yaklaşma YÜKSEK risk oluşturuyor.",
+    "vehicles": [
+      {
+        "vehicle_id": "img_999998_v0",
+        "risk_level": "KRITIK",
+        "scenario": "FAST_FINAL_APPROACH",
+        "explanation": "T9998 track'i 15:00'de üsse 651.9 m kadar yaklaştı; son 60 dk içinde 2,839.8 m yaklaşma kaydedildi; çekim anında 1,400.7 m ve hız 5.7 m/s.",
+        "change_reason": "Motor KRITIK demiş; ancak motorun KRITIK gerekçesindeki 'ETA ≈2.0 dk' ve 'son etap hızı 11.5 m/s' ile çekim anındaki hız (5.7 m/s) ve mevcut mesafe (1400.7 m) çelişiyor; ayrıca en yakın noktada bekleme yok (dwell_near_min_min=0) — bu nedenle seviyeyi KRITIK'ten YUKSEK'e düşürdüm.",
+        "evidence_report_ids": [],
+        "llm_risk_level": "YUKSEK",
+        "engine_risk_level": "KRITIK",
+        "decision": {
+          "vehicle_id": "img_999998_v0",
+          "frame_id": "img_999998",
+          "track_id": "T9998",
+          "rule": "motor_kesin",
+          "rule_label": "Motor kesin — LLM itirazı not edildi",
+          "engine_level": "KRITIK",
+          "llm_level": "YUKSEK",
+          "motor_confidence": "net",
+          "motor_margin_notes": [],
+          "auto_level": "KRITIK",
+          "review_level": "KRITIK",
+          "needs_review": false,
+          "options": [],
+          "llm_reason": "Motor KRITIK demiş; ancak motorun KRITIK gerekçesindeki 'ETA ≈2.0 dk' ve 'son etap hızı 11.5 m/s' ile çekim anındaki hız (5.7 m/s) ve mevcut mesafe (1400.7 m) çelişiyor; ayrıca en yakın noktada bekleme yok (dwell_near_min_min=0) — bu nedenle seviyeyi KRITIK'ten YUKSEK'e düşürdüm.",
+          "evidence_report_ids": [],
+          "note": "LLM YUKSEK önerdi; motor bu seviyeden emin (net), seviye değişmedi. LLM'in itirazı: Motor KRITIK demiş; ancak motorun KRITIK gerekçesindeki 'ETA ≈2.0 dk' ve 'son etap hızı 11.5 m/s' ile çekim anındaki hız (5.7 m/s) ve mevcut mesafe (1400.7 m) çelişiyor; ayrıca en yakın noktada bekleme yok (dwell_near_min_min=0) — bu nedenle seviyeyi KRITIK'ten YUKSEK'e düşürdüm."
+        }
+      }
+    ],
+    "reports": [],
+    "recommended_actions": [
+      "1) Takibi artır: T9998 için 1 dakikalık izleme periyodu (telemetri/CCTV) ve son 30 dk timeline çek.",
+      "2) Hız/mesafe eşik alarmı kur: tekrar ≤1,000 m veya ani hız artışı ≥10 m/s algılanırsa yükseltilmiş alarm (KRITIK) ver.",
+      "3) Durak yeri CCTV ve operatör kayıtlarını sorgula (15:15–15:30 duraklama doğrulaması) — kimlik/hat/ruhsat teyidi.",
+      "4) Havadan veya mobil keşif ile anlık pozisyon doğrulaması; tekrar yaklaşma gözlenirse sahaya uyarı/veri paylaşımı.",
+      "5) Analist incelemesi: motorun final_leg parametrelerindeki tutarsızlığı incele (ETA 2.0 vs eta_min 6.1)."
+    ],
+    "injection_report_ids": [],
+    "disagreement": "Motor KRITIK demiş; ben YUKSEK verdim. Gerekçe: motorun KRITIK çıktısı final_leg hız/ETA'ye dayanırken çekim anındaki speed_now (5.7 m/s) ve güncel mesafe (1400.7 m) bu acil/imtinan kanıtını sağlamıyor; ayrıca en yakın mesafe 15:00'de gerçekleşmiş (651.9 m) ve şu an araç geri çekiliyor.",
+    "confidence": 0.82,
+    "llm_risk_level": "YUKSEK",
+    "engine_risk_level": "KRITIK",
+    "guardrail_notes": [
+      "img_999998_v0: LLM YUKSEK önerdi; motor bu seviyeden emin (net), seviye değişmedi. LLM'in itirazı: Motor KRITIK demiş; ancak motorun KRITIK gerekçesindeki 'ETA ≈2.0 dk' ve 'son etap hızı 11.5 m/s' ile çekim anındaki hız (5.7 m/s) ve mevcut mesafe (1400.7 m) çelişiyor; ayrıca en yakın noktada bekleme yok (dwell_near_min_min=0) — bu nedenle seviyeyi KRITIK'ten YUKSEK'e düşürdüm.",
+      "FUSION hata verdi; ilk motor+LLM kararı korundu: ValidationError: 1 validation error for FusionFrameAssessment\nconfidence\n  Field required [type=missing, input_value={'frame_id': 'img_999998'... (geri alınabilir)']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    ],
+    "tool_calls": [
+      {
+        "tool": "get_frame_analysis",
+        "args": {
+          "frame_id": "img_999998"
+        }
+      },
+      {
+        "tool": "get_reports_for_frame",
+        "args": {
+          "frame_id": "img_999998"
+        }
+      },
+      {
+        "tool": "get_vehicle_details",
+        "args": {
+          "vehicle_id": "img_999998_v0"
+        }
+      }
+    ],
+    "trace": [
+      {
+        "seq": 1,
+        "t_ms": null,
+        "type": "tool_call",
+        "call_id": "call_pTysTWjKDENkV3A9IM85IlaU",
+        "tool": "get_frame_analysis",
+        "args": {
+          "frame_id": "img_999998"
+        },
+        "stage": "tespit",
+        "title": "Kare analizi (tespit + konum)"
+      },
+      {
+        "seq": 2,
+        "t_ms": null,
+        "type": "tool_call",
+        "call_id": "call_Mg8TLunFEpjBWPZkpK1NXNC8",
+        "tool": "get_reports_for_frame",
+        "args": {
+          "frame_id": "img_999998"
+        },
+        "stage": "risk",
+        "title": "Rapor doğrulama"
+      },
+      {
+        "seq": 3,
+        "t_ms": null,
+        "type": "tool_result",
+        "call_id": "call_pTysTWjKDENkV3A9IM85IlaU",
+        "tool": "get_frame_analysis",
+        "stage": "tespit",
+        "title": "Kare analizi (tespit + konum)",
+        "status": "ok",
+        "summary": "img_999998 (15:35, Dogu Yolu): 1 araç, kare riski KRITIK, 0 ilişkili rapor",
+        "preview": "{\"frame_id\": \"img_999998\", \"capture_time\": \"15:35\", \"zone\": \"Dogu Yolu\", \"risk_level\": \"KRITIK\", \"counts\": {\"DUSUK\": 0, \"ORTA\": 0, \"YUKSEK\": 0, \"KRITIK\": 1}, \"vehicles\": [{\"vehicle_id\": \"img_999998_v0\", \"label\": \"bus\", \"confidence\": 0.89, \"source\": \"detection\", \"track_id\": \"T9998\", \"zone\": \"Dogu Yolu\", \"dist_to_base_m\": 1400.7, \"heavy\": true, \"alt_labels\": [], \"low_conf_corroborated\": false, \"scenario\": \"FAST_FINAL_APPROACH\", \"risk_level\": \"KRITIK\", \"risk_reasons\": [\"Son duraklama bittikten sonra (15:30) 5 dk'dır kesintisiz ve hızla (11.5 m/s) üsse doğru ilerliyor; bu etapta 3.5 km kapattı.\", \"Yönelim sapması 0°, üsse 1401 m, son etap hızıyla ETA ≈ 2.0 dk.\", \"Önceki 1 duraklama nedeniyle araç ara duraklı (olağan trafik) görünüyor; ancak son etap hızı olağan trafiğin üstünde (≥10 m/s). DIRECT_FAST_APPROACH ara durak şartı nedeniyle bu aracı kaçırırdı.\", \"Öncesinde aynı hat üzerinden üs yakınından 3 kez geçmişti; çekim anında hattın dışında — hattan sapma. Rutin hat muafiyeti (ROUTINE_SHUTTLE) uygulanmadı.\"], \"filtered\": false, \"report_ids\": [], \"motor_margin\": {\"confidence\": \"net\", \"can_drop\": false, \"can_rise\": false, \"rise_to\": null, \"notes\": []}, \"key_features\": {\"dist_start_m\": 4342.6, \"dist_min_m\": 651.9, \"dist_min_time\": \"15:00\", \"approach_to_min_m\": 3690.7, \"retreat_from_min_m\": 748.9, \"dwell_near_min_min\": 0, \"approach_last60_m\": 2839.8, \"speed_now_mps\": 5.7, \"heading_offset_deg\": 0.0, \"eta_min\": 6.1, \"stops_last60\": 1, \"dist_trend\": \"once_azalip_sonra_artiyor\", \"initi…"
+      },
+      {
+        "seq": 4,
+        "t_ms": null,
+        "type": "tool_result",
+        "call_id": "call_Mg8TLunFEpjBWPZkpK1NXNC8",
+        "tool": "get_reports_for_frame",
+        "stage": "risk",
+        "title": "Rapor doğrulama",
+        "status": "ok",
+        "summary": "0 rapor",
+        "preview": "[]"
+      },
+      {
+        "seq": 5,
+        "t_ms": null,
+        "type": "tool_call",
+        "call_id": "call_yL4qwlhVd1bVOX4umb69kSPw",
+        "tool": "get_vehicle_details",
+        "args": {
+          "vehicle_id": "img_999998_v0"
+        },
+        "stage": "hareket",
+        "title": "Araç öznitelikleri"
+      },
+      {
+        "seq": 6,
+        "t_ms": null,
+        "type": "tool_result",
+        "call_id": "call_yL4qwlhVd1bVOX4umb69kSPw",
+        "tool": "get_vehicle_details",
+        "stage": "hareket",
+        "title": "Araç öznitelikleri",
+        "status": "ok",
+        "summary": "img_999998_v0: KRITIK (FAST_FINAL_APPROACH), üsse 1401 m, ETA ~6 dk",
+        "preview": "{\"vehicle_id\": \"img_999998_v0\", \"frame_id\": \"img_999998\", \"capture_time\": \"15:35\", \"capture_min\": 935, \"source\": \"detection\", \"label\": \"bus\", \"confidence\": 0.89, \"alt_labels\": [], \"heavy\": true, \"lat\": 39.923659, \"lon\": 32.869314, \"zone\": \"Dogu Yolu\", \"dist_to_base_m\": 1400.7, \"bearing_from_base_deg\": 81.7, \"track_id\": \"T9998\", \"track_match_m\": 0.08, \"features\": {\"track_id\": \"T9998\", \"t_start\": \"13:25\", \"t_end\": \"15:35\", \"dist_now_m\": 1400.7, \"dist_start_m\": 4342.6, \"dist_min_m\": 651.9, \"dist_max_m\": 4851.1, \"approach_total_m\": 2941.8, \"approach_last60_m\": 2839.8, \"closing_speed_mps\": 3.8, \"speed_now_mps\": 5.7, \"max_speed_mps\": 11.5, \"heading_deg\": 261.7, \"bearing_to_base_deg\": 261.7, \"heading_offset_deg\": 0.0, \"eta_min\": 6.1, \"stops\": [{\"start\": \"15:15\", \"end\": \"15:30\", \"minutes\": 15, \"lat\": 39.92814, \"lon\": 32.909344, \"dist_to_base_m\": 4850.4}], \"stops_last60\": 1, \"stopped_minutes_total\": 15, \"moving_now\": true, \"path_length_m\": 30758.7, \"net_displacement_m\": 5700.9, \"extent_m\": 9115.3, \"radius_cv\": 0.4, \"angular_sweep_deg\": 491.4, \"dist_trend\": \"once_azalip_sonra_artiyor\", \"initial_wait_min\": 0, \"window_min\": 130, \"dist_min_time\": \"15:00\", \"approach_to_min_m\": 3690.7, \"retreat_from_min_m\": 748.9, \"dwell_near_min_min\": 0, \"route_passes\": 4, \"route_overlap_pct\": 96.3, \"on_route_now\": false, \"final_leg_start\": \"15:30\", \"final_leg_min\": 5, \"final_leg_gain_m\": 3450.0, \"final_leg_speed_mps\": 11.5, \"final_leg_eta_min\": 2.0, \"gps_outliers\": []}, \"filtered\": false, \"duplicate_of\": …"
+      }
+    ],
+    "model": "gpt-5-mini",
+    "fusion": {
+      "enabled": true,
+      "status": "error",
+      "model": "gpt-5-mini",
+      "error": "ValidationError: 1 validation error for FusionFrameAssessment\nconfidence\n  Field required [type=missing, input_value={'frame_id': 'img_999998'... (geri alınabilir)']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    "assessment_schema_version": "fusion-v3",
+    "assessed_at": 1790470233.4150126
   }
 }

@@ -85,6 +85,18 @@ class TrackFeatures:
     approach_to_min_m: float = 0.0   # başlangıç − en yakın mesafe (dışarıdan ne kadar sokuldu)
     retreat_from_min_m: float = 0.0  # şimdi − en yakın mesafe (en yakın noktadan ne kadar geri çekildi)
     dwell_near_min_min: int = 0      # en yakın noktanın dwell_band_m bandında geçen süre
+    # --- rutin hat (servis otobüsü) öznitelikleri — risk.ROUTINE_SHUTTLE
+    route_passes: int = 0            # üssün shuttle_pass_near_m halkasına ayrı ayrı giriş sayısı (her sefer = 1 geçiş)
+    route_overlap_pct: float = 0.0   # noktaların, izin ≥ shuttle_route_gap_min dk önceki/sonraki yoluyla aynı koridorda olma %'si
+    on_route_now: bool = False       # t_ref anındaki konum, izin daha önce kullandığı hat üzerinde mi
+    # --- son etap (son duraklamanın bitişinden t_ref'e) — risk.FAST_FINAL_APPROACH
+    final_leg_start: str = ""        # son duraklamanın bittiği an (duraklama yoksa iz başlangıcı)
+    final_leg_min: int = 0
+    final_leg_gain_m: float = 0.0    # son etapta üsse kapanan mesafe
+    final_leg_speed_mps: float = 0.0  # son etabın ortalama yer hızı
+    final_leg_eta_min: float | None = None  # son etabın kapanma hızıyla üsse varış (bekleme süresi ETA'yı şişirmesin)
+    # --- veri kalitesi: yüklemede ayıklanan tek örneklik GPS sıçramaları (data.drop_gps_spikes; t_ref'e kadar)
+    gps_outliers: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -182,6 +194,22 @@ def compute_features(tr: Track, ds: Dataset, th: Thresholds, t_ref: int | None =
     band = dists[i_min] + th.dwell_band_m
     dwell = sum(b.t - a.t for a, b, da, db in zip(pts, pts[1:], dists, dists[1:]) if da <= band and db <= band)
 
+    # rutin hat: üs yakınından kaç ayrı geçiş, iz kendi hattını ne kadar tekrarlıyor, şu an hat üzerinde mi
+    passes, overlap_pct, on_route = _route_pattern(pts, xy, dists, th)
+
+    # son etap: son duraklama bittiğinden bu yana (duraklama yoksa iz başından beri)
+    leg_t0 = _hhmm(stops[-1].end) if stops else pts[0].t
+    leg = [(p, d) for p, d in zip(pts, dists) if p.t >= leg_t0]
+    leg_min = now.t - leg_t0
+    leg_path = sum(haversine_m(a.lat, a.lon, b.lat, b.lon) for (a, _), (b, _) in zip(leg, leg[1:]))
+    leg_speed = leg_path / (leg_min * 60) if leg_min > 0 else 0.0
+    leg_gain = leg[0][1] - dists[-1]
+    leg_eta = dists[-1] / (leg_gain / leg_min) if leg_min > 0 and leg_gain > 0 else None
+
+    outliers = [{"time": min_to_hhmm(p.t), "lat": p.lat, "lon": p.lon,
+                 "dist_to_base_m": round(haversine_m(blat, blon, p.lat, p.lon), 1)}
+                for p in getattr(tr, "outliers", []) if t_ref is None or p.t <= t_ref]
+
     return TrackFeatures(
         track_id=tr.track_id, t_start=min_to_hhmm(pts[0].t), t_end=min_to_hhmm(now.t),
         dist_now_m=dists[-1], dist_start_m=dists[0], dist_min_m=min(dists), dist_max_m=max(dists),
@@ -197,7 +225,51 @@ def compute_features(tr: Track, ds: Dataset, th: Thresholds, t_ref: int | None =
         window_min=now.t - pts[0].t, dist_min_time=min_to_hhmm(pts[i_min].t),
         approach_to_min_m=dists[0] - dists[i_min], retreat_from_min_m=dists[-1] - dists[i_min],
         dwell_near_min_min=dwell,
+        route_passes=passes, route_overlap_pct=overlap_pct, on_route_now=on_route,
+        final_leg_start=min_to_hhmm(leg_t0), final_leg_min=leg_min, final_leg_gain_m=leg_gain,
+        final_leg_speed_mps=leg_speed, final_leg_eta_min=leg_eta, gps_outliers=outliers,
     )
+
+
+def _seg_dist(p: tuple[float, float], a: tuple[float, float], b: tuple[float, float]) -> float:
+    """p noktasının [a, b] doğru parçasına uzaklığı (yerel metre)."""
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    l2 = dx * dx + dy * dy
+    r = 0.0 if l2 == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2))
+    return math.hypot(p[0] - a[0] - r * dx, p[1] - a[1] - r * dy)
+
+
+def _route_pattern(pts: list, xy: list[tuple[float, float]], dists: list[float],
+                   th: Thresholds) -> tuple[int, float, bool]:
+    """(üs yakınından ayrı geçiş sayısı, hat tekrarı %, t_ref anında hat üzerinde mi).
+
+    * Geçiş: iz shuttle_pass_near_m halkasına her girişinde bir sayılır. Örnekler arası doğru parçasının üsse en
+      yakın noktası kullanılır (5 dk'lık örnekleme geçişi atlamasın). Yeni geçiş için halkanın
+      shuttle_pass_reset_m kadar dışına çıkılmış olmalı.
+    * Hat tekrarı: nokta, izin kendisinden en az shuttle_route_gap_min dk önceki ya da sonraki bir doğru parçasına
+      shuttle_corridor_m içinde (aynı yolun başka seferi). Yalnız t_ref'e kadarki noktalar — gelecek sızıntısı yok.
+    * Hat üzerinde: son nokta, en az shuttle_route_gap_min dk önce biten bir parçaya koridor içinde.
+    """
+    near, reset = th.shuttle_pass_near_m, th.shuttle_pass_near_m + th.shuttle_pass_reset_m
+    origin = (0.0, 0.0)                      # xy üsse göre (to_local_xy) → üs orijinde
+    inside = dists[0] <= near
+    passes = 1 if inside else 0
+    for i in range(len(xy) - 1):
+        if not inside and _seg_dist(origin, xy[i], xy[i + 1]) <= near:
+            passes += 1
+            inside = True
+        if inside and dists[i + 1] >= reset:
+            inside = False
+
+    gap, cor = th.shuttle_route_gap_min, th.shuttle_corridor_m
+    segs = [(pts[k].t, pts[k + 1].t, xy[k], xy[k + 1]) for k in range(len(xy) - 1)]
+
+    def on_other_trip(j: int) -> bool:
+        tj = pts[j].t
+        return any(_seg_dist(xy[j], a, b) <= cor for t0, t1, a, b in segs if t1 <= tj - gap or t0 >= tj + gap)
+
+    overlap = sum(1 for j in range(len(xy)) if on_other_trip(j)) / len(xy) * 100
+    return passes, overlap, on_other_trip(len(xy) - 1)
 
 
 def _hhmm(s: str) -> int:

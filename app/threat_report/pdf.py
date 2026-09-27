@@ -175,8 +175,15 @@ class VehicleHeader(Flowable):
         c.setFillColor(C(RISK_TEXT_ON[lvl])); c.setFont("Body-Bold", 9.5)
         c.drawCentredString(bx + bw / 2, by + 2.6 * mm, f"{RISK_ICONS[lvl]} {risk_label(lvl)}")
         c.setFillColor(C(INK_2)); c.setFont("Body", 6.4)
-        c.drawRightString(self.w - 4 * mm, 6.6 * mm, f"Motor: {risk_label(f['engine_level'])}")
-        c.drawRightString(self.w - 4 * mm, 3.2 * mm, _fit(c, f["status_label"], "Body", 6.4, 56 * mm))
+        d = f.get("decision") or {}
+        if d.get("fusion_action"):
+            line1 = f"Motor {risk_label(f['engine_level'])} · İlk LLM {risk_label(d.get('llm_level'))} · Fusion {risk_label(d.get('fusion_level'))}"
+            line2 = f"{d.get('fusion_action')} → {risk_label(d.get('auto_level'))}"
+        else:
+            line1 = f"Motor: {risk_label(f['engine_level'])}"
+            line2 = f["status_label"]
+        c.drawRightString(self.w - 4 * mm, 6.6 * mm, _fit(c, line1, "Body", 6.4, 66 * mm))
+        c.drawRightString(self.w - 4 * mm, 3.2 * mm, _fit(c, line2, "Body", 6.4, 66 * mm))
 
 
 def _fit(c, text: str, font: str, size: float, width: float) -> str:
@@ -374,8 +381,8 @@ def _on_cover(meta):
         c.drawString(M, PAGE_H - 70 * mm, f"Rapor No: {meta['report_id']}")
         c.drawString(M, PAGE_H - 75 * mm, f"Oluşturulma: {meta['generated_at']} · Filtre: {meta['filter_label']}")
         c.setFont("Body", FS_TINY); c.setFillColor(C(MUTED))
-        c.drawString(M, 11 * mm, "Otomatik üretilmiştir. Seviyeler karar tablosu ve (açıksa) analist kararlarından gelir; "
-                                 "açıklama metinleri olgulara dayanır.")
+        c.drawString(M, 11 * mm, "Otomatik üretilmiştir. Seviyeler motor + ilk LLM + fusion kanıt kapısı ve (açıksa) "
+                                 "analist kararlarından gelir.")
         c.drawString(M, 7.5 * mm, "Operasyonel karar öncesi analist doğrulaması gerekir.")
         c.restoreState()
     return draw
@@ -418,9 +425,12 @@ def _cover(data, ctx) -> list:
                            f"{m['reports_total']} saha raporu"),
         ("Seçim filtresi", f"{m['filter_label']}" + (" · kare dışı izler dahil" if m["include_offframe"] else "")),
         ("Kare değerlendirmesi", f"{m['frames_assessed']}/{m['frames_total']} kare değerlendirildi · "
-                                 f"{m['frames_llm']} kare LLM ile" + (f" ({m['assess_model']})" if m["assess_model"] else "")),
-        ("İnsan onayı (son söz insanda)", "AÇIK — riski düşüren / belirsiz kararlar analiste gider" if m["human_review"]
-         else "KAPALI — karar tablosunun otomatik sonucu uygulanır"),
+                                 f"{m['frames_llm']} kare ilk LLM" + (f" ({m['assess_model']})" if m["assess_model"] else "")
+                                 + f" · {m.get('frames_fusion', 0)} kare fusion"
+                                 + (f" ({m.get('fusion_model')})" if m.get("fusion_model") else "")
+                                 + (f" · {m.get('frames_fusion_error', 0)} fusion hatası" if m.get("frames_fusion_error") else "")),
+        ("İnsan onayı (son söz insanda)", "AÇIK — onay gerektiren otomatik kararlar analiste gider; analist kararı üstündür"
+         if m["human_review"] else "KAPALI — fusion/guardrail otomatik sonucu uygulanır"),
         ("Açıklama metinleri", src),
         ("Tespit katmanı", m["detector"]),
     ]
@@ -436,11 +446,15 @@ def _cover(data, ctx) -> list:
 def _summary_table(vs) -> Table:
     head = ["#", "Araç / iz", "Tip", "Bölge", "Nihai", "Motor", "Karar", "Üsse", "ETA", "Senaryo"]
     rows, cmds = [head], []
+    fusion_short = {"ESCALATE": "Fusion ↑", "DEESCALATE": "Fusion ↓", "KEEP": "Fusion = motor",
+                    "REJECTED": "Fusion reddedildi", "CAPPED_UP": "Fusion ↑ sınır", "CAPPED_DOWN": "Fusion ↓ sınır"}
     for i, f in enumerate(vs, 1):
         fe = f.get("features") or {}
+        d = f.get("decision") or {}
+        decision_text = fusion_short.get(d.get("fusion_action")) or STATUS_SHORT.get(f["status"], f["status"])
         rows.append([str(f["index"]), f["track_id"] or f["vehicle_id"], LABEL_TR.get(f["label"], f["label"] or "—"),
                      f["zone"], level_cell(f["final_level"])[0], risk_label(f["engine_level"]),
-                     STATUS_SHORT.get(f["status"], f["status"]), km(f["dist_to_base_m"]),
+                     decision_text, km(f["dist_to_base_m"]),
                      num(fe.get("eta_min"), " dk"), SCENARIO_SHORT.get(f["scenario"], f["scenario_label"])])
         cmds += level_cmds(4, i, f["final_level"])
         if f["status"] == "onay_bekliyor":
@@ -498,35 +512,51 @@ def _situation(data, ctx) -> list:
 def _methodology(data, ctx) -> list:
     mt, m = data["methodology"], data["meta"]
     out = [PageBreak()] + section("3", "Karar yöntemi", "sec3")
-    out.append(P("Her aracın seviyesi üç katmanda belirlenir ve sıra sabittir: <b>(1) kural tabanlı motor</b> tespit, "
-                 "iz ve saha raporlarından senaryo ve seviye üretir; <b>(2) LLM ajanı</b> kareyi değerlendirip kendi "
-                 "seviyesini gerekçesiyle önerir, bu öneri aşağıdaki karar tablosundan geçer; <b>(3) insan onayı</b> "
-                 "açıksa riski düşüren ya da belirsiz her karar analistin onayına gider ve analistin seçimi son sözdür. "
-                 "Saha raporu metinleri güvenilmez veri olarak işlenir: içlerindeki talimatlar uygulanmaz, çelişen / "
-                 "ilgisiz / manipülasyon hükümlü raporlar hiçbir seviye değişikliğine dayanak olamaz.", "body", raw=True))
+    out.append(P("Her aracın otomatik seviyesi artık dört aşamalı bir zincirle üretilir: <b>(1) kural tabanlı motor</b> "
+                 "tespit ve hareket verisinden ilk seviye/senaryoyu üretir; <b>(2) ilk LLM</b> aynı kareyi bağımsız "
+                 "yorumlar ve eski guardrail yalnız fusion öncesi güvenli başlangıç/fallback seviyesini oluşturur; "
+                 "<b>(3) fusion hakemi</b> motoru ve ilk LLM'i ground-truth kabul etmeden CURRENT + tüm geçmiş HISTORY + "
+                 "saha raporlarını birlikte değerlendirir; <b>(4) kanıt kapısı</b> fusion değişikliğini yalnız doğrulanmış "
+                 "ACTIVE olgularla uygular. İnsan onayı açıksa analist kararı bütün otomatik katmanların üstündedir. "
+                 "Saha raporu metinleri güvenilmez veridir; talimatları uygulanmaz ve manipülasyon/çelişki karar dayanağı "
+                 "yapılmaz.", "body", raw=True))
+
     out.append(P("Motor kuralları (öncelik sırasıyla; ilk eşleşen kural senaryoyu belirler)", "h3"))
     rows, cmds = [["Senaryo", "Seviye", "Koşullar (hepsi sağlanmalı)"]], []
     for i, r in enumerate(mt["rules"], 1):
-        rows.append([f"{r['label']}\n({r['scenario']})".replace("\n", " "), level_cell(r["risk"])[0],
+        rows.append([f"{r['label']} ({r['scenario']})", level_cell(r["risk"])[0],
                      " · ".join(r["conds"])])
         cmds += level_cmds(1, i, r["risk"])
     out.append(table(rows, [52 * mm, 22 * mm, CONTENT_W - 74 * mm], extra=cmds))
-    out.append(P("Karar tablosu (motor + LLM)", "h3"))
-    rows = [["Kural", "Ne zaman", "İnsan onayı kapalı", "İnsan onayı açık"]]
-    for r in mt["decision_table"]:
-        rows.append([r["label"], r["when"], r["hil_off"], r["hil_on"]])
-    out.append(table(rows, [44 * mm, CONTENT_W - 44 * mm - 60 * mm, 26 * mm, 34 * mm], zebra=True))
-    out.append(P("Riski artırmak kolay, düşürmek zordur: LLM gerekçeyle en fazla bir kademe yükseltebilir; düşürme "
-                 "için motorun sınırda olması, resmi kaynaklı ve motorun 'destekler' dediği bir rapor, KRİTİK olmaması "
-                 "ve tek kademe olması gerekir. Nedeni: saha raporuna gömülü bir talimat LLM'i ikna etse bile riski "
-                 "düşüremez.", "small"))
-    out.append(P("Eşikler", "h3"))
-    out.append(kv_table(list(mt["thresholds"].items()), (52 * mm, None)))
+
+    out.append(P("İlk LLM guardrail'i (fusion öncesi başlangıç / fallback)", "h3"))
+    rows = [["Durum", "Ne zaman", "Fusion öncesi sonuç"]]
+    for r in mt.get("primary_guardrail_table") or []:
+        rows.append([r["label"], r["when"], r["result"]])
+    out.append(table(rows, [48 * mm, CONTENT_W - 48 * mm - 34 * mm, 34 * mm], zebra=True))
+    out.append(P("Bu tablo artık nihai otomatik otorite değildir. Fusion başarılıysa ilk LLM değişikliği dahil tüm seviye "
+                 "değişiklikleri motor seviyesine göre aynı doğrulanmış kanıt kapısından yeniden sınanır; doğrulanmayan "
+                 "ilk LLM değişikliği geri alınabilir.", "small"))
+
+    out.append(P("Fusion hakemi ve kanıt kapısı", "h3"))
+    rows = [["#", "İlke", "Uygulama"]]
+    for r in mt.get("fusion_flow") or []:
+        rows.append([r["step"], r["role"], r["detail"]])
+    out.append(table(rows, [9 * mm, 39 * mm, CONTENT_W - 48 * mm], zebra=True))
+    out.append(Spacer(1, 1.5 * mm))
+    out.append(two_col([P("Fusion doğrulama eşikleri", "h3"),
+                        kv_table(list((mt.get("fusion_thresholds") or {}).items()), (43 * mm, None))],
+                       [P("Motor / veri eşikleri", "h3"),
+                        kv_table(list(mt["thresholds"].items()), (43 * mm, None))]))
     out.append(Spacer(1, 2 * mm))
-    out.append(banner(("Bu raporda insan onayı AÇIK: seviye önceliği analist kararı → karar tablosu (onay seviyesi) → "
-                       "motor." if m["human_review"] else
-                       "Bu raporda insan onayı KAPALI: seviye önceliği karar tablosu (otomatik seviye) → motor. "
-                       "Analist kararları kayıtlı olsa bile uygulanmaz."), ACCENT))
+
+    if m["human_review"]:
+        text = ("Bu raporda insan onayı AÇIK: seviye önceliği analist kararı → fusion sonrası doğrulanmış otomatik/onay "
+                "seviyesi → fusion yoksa ilk motor+LLM guardrail sonucu → motor.")
+    else:
+        text = ("Bu raporda insan onayı KAPALI: seviye önceliği fusion sonrası doğrulanmış auto_level → fusion yoksa "
+                "ilk motor+LLM guardrail sonucu → motor. Kayıtlı analist kararları uygulanmaz.")
+    out.append(banner(text, ACCENT))
     return out
 
 
@@ -645,6 +675,24 @@ def _vehicle(f: dict, data: dict, ctx: dict) -> list:
                      header=False, style="cell"))
     out.append(Spacer(1, 1.5 * mm))
 
+    if d and d.get("fusion_action"):
+        pre = d.get("pre_fusion") or {}
+        fusion_conf = d.get("fusion_confidence")
+        fusion_pairs = [
+            ("Motor", risk_label(f["engine_level"])),
+            ("İlk LLM", risk_label(d.get("llm_level"))),
+            ("Fusion öncesi", risk_label(pre.get("auto_level")) if pre else "—"),
+            ("Fusion önerisi", risk_label(d.get("fusion_level"))),
+            ("Fusion uygulaması", f"{d.get('fusion_action')} → {risk_label(d.get('auto_level'))}"),
+            ("Fusion güveni", f"{fusion_conf:.2f}" if isinstance(fusion_conf, (int, float)) else "—"),
+        ]
+        out.append(P("Otomatik karar zinciri", "h3"))
+        out.append(kv_table(fusion_pairs, (34 * mm, None)))
+        ev = d.get("fusion_evidence_keys") or []
+        if ev:
+            out.append(P("Fusion kanıtları: " + ", ".join(ev), "tiny"))
+        out.append(Spacer(1, 1.2 * mm))
+
     out.append(P(n["headline"], "lead"))
     out += bullets((n.get("why_suspicious") or [])[:3])
 
@@ -672,21 +720,23 @@ def _vehicle(f: dict, data: dict, ctx: dict) -> list:
 def _reviews(data, ctx) -> list:
     rv, m = data["reviews"], data["meta"]
     out = [PageBreak()] + section("5", "İnsan onayı", "sec5")
-    out.append(P(("İnsan onayı AÇIK. Riski düşüren, belirsiz ve aşırı yükseltme kararları analist onayı olmadan "
-                  "uygulanmaz; analistin seçtiği seviye nihai seviyedir." if m["human_review"] else
-                  "İnsan onayı KAPALI. Karar tablosunun otomatik sonucu uygulandı. Aşağıdaki liste, özellik açık olsaydı "
-                  "analiste gidecek kararları bilgi amaçlı gösterir; kayıtlı analist kararları uygulanmaz."), "body"))
+    out.append(P(("İnsan onayı AÇIK. Fusion/guardrail tarafından needs_review işaretlenen kararlar analiste gider; "
+                  "analistin seçtiği seviye bütün otomatik katmanların üstünde nihai seviyedir." if m["human_review"] else
+                  "İnsan onayı KAPALI. Fusion varsa doğrulanmış otomatik sonuç, yoksa ilk motor+LLM fallback sonucu "
+                  "uygulanır. Aşağıdaki kayıtlı analist kararları bu raporda uygulanmaz."), "body"))
     out.append(P("Onay bekleyen kararlar", "h3"))
     dossier = lambda x: f"#{x['dossier']}" if x.get("dossier") else "filtre dışı"  # noqa: E731
     if rv["pending"]:
-        rows, cmds = [["Araç", "Dosya", "Kare / saat", "Geçici", "Motor", "LLM", "Kural", "Seçenekler"]], []
+        rows, cmds = [["Araç", "Dosya", "Kare / saat", "Geçici", "Motor", "İlk LLM", "Fusion", "Kural / aksiyon", "Seçenekler"]], []
         for i, x in enumerate(rv["pending"], 1):
+            fusion_txt = risk_label(x.get("fusion_level")) if x.get("fusion_level") else "—"
+            rule_txt = x.get("fusion_action") or x.get("rule_label") or "—"
             rows.append([x["vehicle_id"], dossier(x), f"{x['frame_id']} · {x['capture_time']}",
                          level_cell(x["current_level"])[0], risk_label(x["engine_level"]), risk_label(x["llm_level"]),
-                         x.get("rule_label") or "—", ", ".join(risk_label(o) for o in x.get("options") or [])])
+                         fusion_txt, rule_txt, ", ".join(risk_label(o) for o in x.get("options") or [])])
             cmds += level_cmds(3, i, x["current_level"])
-        out.append(table(rows, [28 * mm, 15 * mm, 28 * mm, 18 * mm, 15 * mm, 15 * mm, 30 * mm, CONTENT_W - 149 * mm],
-                         extra=cmds))
+        out.append(table(rows, [24 * mm, 13 * mm, 24 * mm, 17 * mm, 13 * mm, 14 * mm, 14 * mm, 28 * mm,
+                                CONTENT_W - 147 * mm], extra=cmds))
         for x in rv["pending"]:
             if x.get("note"):
                 out.append(P(f"{x['vehicle_id']}: {x['note']}", "tiny"))
@@ -694,15 +744,15 @@ def _reviews(data, ctx) -> list:
         out.append(P("Kayıt yok.", "small"))
     out.append(P("Analist kararları", "h3"))
     if rv["decided"]:
-        rows, cmds = [["Araç", "Dosya", "Seçilen", "Analist", "Zaman", "Motor", "LLM", "Not"]], []
+        rows, cmds = [["Araç", "Dosya", "Seçilen", "Analist", "Zaman", "Motor", "İlk LLM", "Fusion", "Not"]], []
         for i, x in enumerate(rv["decided"], 1):
             r = x["review"]
             rows.append([x["vehicle_id"], dossier(x), level_cell(r["level"])[0], r.get("analyst") or "—",
                          r.get("at_text") or "—", risk_label(x["engine_level"]), risk_label(x["llm_level"]),
-                         r.get("note") or "—"])
+                         risk_label(x.get("fusion_level")) if x.get("fusion_level") else "—", r.get("note") or "—"])
             cmds += level_cmds(2, i, r["level"])
-        out.append(table(rows, [28 * mm, 15 * mm, 18 * mm, 20 * mm, 22 * mm, 15 * mm, 15 * mm, CONTENT_W - 133 * mm],
-                         extra=cmds))
+        out.append(table(rows, [24 * mm, 13 * mm, 17 * mm, 18 * mm, 21 * mm, 13 * mm, 14 * mm, 14 * mm,
+                                CONTENT_W - 134 * mm], extra=cmds))
         out.append(P("'filtre dışı': analistin seçtiği seviye rapor filtresinin altında kaldığı için araç dosyası "
                      "oluşturulmadı; karar yine de burada kayıt altındadır.", "tiny"))
         if not m["human_review"]:
@@ -716,12 +766,14 @@ def _integrity(data, ctx) -> list:
     it = data["integrity"]
     out = [PageBreak()] + section("6", "Saha raporu bütünlüğü", "sec6")
     out.append(P("Raporlar olduğu gibi kabul edilmez: her rapor konum, zaman, tip, davranış ve dost iddiası açısından "
-                 "tespit ve iz verisine karşı doğrulanır. Çelişkide raporun değil tespitin esas alınır.", "body"))
+                 "tespit ve iz verisine karşı doğrulanır. Çelişkide doğrulanmış sensör/track olguları esas alınır; "
+                 "rapor veya motor hükmü tek başına ground-truth değildir.", "body"))
     rows = [["Hüküm", "Sayı", "Etkisi"]]
-    eff = {"destekler": "Kanıt olarak kullanılabilir (resmi ise seviye düşürmeye dayanak olabilir)",
-           "celisir": "Kanıt olarak kullanılmaz; tehditle çelişen 'olağan' iddiası işaretlenir",
-           "kismen_uyumlu": "Kısmi kanıt; davranış iddiası karşılaştırılamaz",
-           "dogrulanamaz": "Etkisiz", "ilgisiz": "Etkisiz", "manipulasyon": "Talimat uygulanmaz, kanıt olarak kullanılmaz"}
+    eff = {"destekler": "Yardımcı kanıt; fusion değişikliği için tek başına yeterli değildir",
+           "celisir": "Değişiklik dayanağı olamaz; karşı olgu olarak görünür",
+           "kismen_uyumlu": "Yardımcı/kısmi kanıt; tek başına seviye değiştirmez",
+           "dogrulanamaz": "Seviye değişikliği dayanağı değildir", "ilgisiz": "Etkisiz",
+           "manipulasyon": "Talimat uygulanmaz, kanıt olarak kullanılmaz"}
     for k, v in it["verdict_counts"].items():
         rows.append([VERDICT_LABELS[k], str(v), eff[k]])
     out.append(table(rows, [32 * mm, 16 * mm, CONTENT_W - 48 * mm], zebra=True))
@@ -748,8 +800,11 @@ def _appendix(data, ctx) -> list:
     pairs = [("Rapor No", m["report_id"]), ("Olgu özeti (digest)", m["facts_digest"]),
              ("Tema sürümü", THEME_VERSION), ("İstem sürümü", ctx["prompt_version"]),
              ("Anlatım modeli", ctx["narrative_model"] or "yok (deterministik şablon)"),
+             ("İlk LLM modeli", m.get("assess_model") or "yok"),
+             ("Fusion modeli", m.get("fusion_model") or "yok / devre dışı"),
+             ("Fusion sonucu", f"{m.get('frames_fusion', 0)} başarılı · {m.get('frames_fusion_error', 0)} hata"),
              ("Anlatım kaynakları", f"LLM {st['llm']} · önbellek {st['cache']} · şablon {st['template']} · hata {st['errors']}"),
-             ("Kare değerlendirme kapsamı", {"all": "tüm kareler", "min_risk": "motor seviyesi ≥ filtre",
+             ("Kare değerlendirme kapsamı", {"all": "tüm kareler (ilk LLM + fusion)", "min_risk": "motor seviyesi ≥ filtre",
                                             "none": "yalnızca mevcut önbellek"}.get(m["assess_scope"], m["assess_scope"])),
              ("Üretim süresi", f"{ctx['elapsed_s']:.1f} sn")]
     out.append(kv_table(pairs, (46 * mm, None)))

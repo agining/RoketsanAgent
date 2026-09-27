@@ -2,7 +2,7 @@
 
 Buradaki sözlükler raporun tek doğruluk kaynağıdır — PDF tabloları, grafikler, LLM'e giden olgular ve LLM
 yokken yazılan şablon metin hepsi aynı veriden üretilir. Seviyeler service.vehicle_final'den gelir; yani
-insan onayı açıksa analist kararı, değilse karar tablosunun otomatik sonucu raporda aynen görünür.
+insan onayı açıksa analist kararı, değilse fusion sonrası doğrulanmış otomatik sonuç raporda aynen görünür.
 Bu modül hiçbir şeyi değiştirmez (motor durumu, değerlendirmeler, analist kararları salt okunur).
 """
 from __future__ import annotations
@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 from ..agent import RULE_LABELS
 from ..config import RISK_ORDER, settings
 from ..geo import haversine_m, min_to_hhmm, to_local_xy
-from ..risk import classify_tracked, explain_tracked, explain_untracked
+from ..risk import classify_tracked, explain_tracked, explain_untracked, is_bus
 from ..tracking import TrackFeatures, compute_features
 from .theme import (REPORT_TZ, RISK_LABELS, THEME_VERSION, risk_label, scenario_label, status_label)
 
@@ -26,7 +26,7 @@ class ReportOptions:
     min_risk: str = "ORTA"                 # bu seviye ve üstü (levels verilmezse)
     levels: list[str] | None = None        # yalnızca bu seviyeler (ör. ["KRITIK"])
     include_offframe: bool = True          # hiçbir kareye bağlanmayan riskli izler
-    assess_scope: str = "all"              # all: tüm kareler LLM'den geçer · min_risk: motor ≥ min_risk · none
+    assess_scope: str = "all"              # all: tüm kareler ilk LLM + fusion'dan geçer · min_risk: motor ≥ min_risk · none
     force_llm: bool = False                # anlatım önbelleğini yok say (kare değerlendirmeleri korunur)
     use_llm: bool = True                   # False → LLM anahtarı olsa da şablon anlatım
     prepared_by: str | None = None
@@ -142,14 +142,22 @@ def _related_reports(st, vid: str | None, tid: str | None) -> list[dict]:
 def _assessment_info(svc, fid: str | None, vid: str | None, tid: str | None) -> dict:
     a = svc.assessments.get(fid) if fid else None
     if not a:
-        return {"assessed": False, "llm": False, "model": None}
+        return {"assessed": False, "llm": False, "model": None, "fusion_status": None, "fusion_model": None}
     note = next((x for x in a.get("vehicles") or [] if x.get("vehicle_id") == vid), None) or {}
     keys = [k for k in (vid, tid) if k]
+    fusion = a.get("fusion") or {}
+    decision = note.get("decision") or {}
     return {
         "assessed": True, "llm": a.get("model") is not None, "model": a.get("model"),
         "headline": a.get("headline"),
         "explanation": note.get("explanation"), "change_reason": note.get("change_reason"),
         "llm_level": note.get("llm_risk_level"),
+        "fusion_status": fusion.get("status"),
+        "fusion_model": fusion.get("model") or a.get("fusion_model"),
+        "fusion_frame_level": a.get("fusion_risk_level") or fusion.get("frame_proposed_level"),
+        "fusion_level": decision.get("fusion_level") or note.get("fusion_risk_level"),
+        "fusion_action": decision.get("fusion_action"),
+        "fusion_confidence": decision.get("fusion_confidence"),
         "actions": [x for x in a.get("recommended_actions") or [] if any(k in x for k in keys)][:3],
         "guardrail_notes": [n for n in a.get("guardrail_notes") or [] if any(k in n for k in keys)],
         "disagreement": a.get("disagreement"),
@@ -157,46 +165,106 @@ def _assessment_info(svc, fid: str | None, vid: str | None, tid: str | None) -> 
 
 
 def _decision_chain(svc, engine_level, scenario, reasons, margin, fin, assess) -> list[dict]:
-    """Nihai seviyeye giden adımlar. Tamamen deterministik; LLM metni burada yok."""
+    """Motor → ilk LLM → ilk guardrail → fusion → insan onayı → nihai seviye denetim izi."""
     d, rv = fin.get("decision"), fin.get("review")
     conf = (margin or {}).get("confidence", "net")
-    chain = [{"stage": "Motor kuralı", "level": engine_level,
-              "detail": f"{scenario_label(scenario)} ({scenario}). " + (reasons[0] if reasons else "")},
-             {"stage": "Motor güveni", "level": None,
-              "detail": ("Net — değerler eşiklerden uzak." if conf == "net" else "Sınırda — ")
-              + "; ".join((margin or {}).get("notes") or [])}]
+    chain = [
+        {"stage": "Motor kuralı", "level": engine_level,
+         "detail": f"{scenario_label(scenario)} ({scenario}). " + (reasons[0] if reasons else "")},
+        {"stage": "Motor güveni", "level": None,
+         "detail": ("Net — değerler eşiklerden uzak." if conf == "net" else "Sınırda — ")
+                   + "; ".join((margin or {}).get("notes") or [])},
+    ]
+
     if not assess.get("assessed"):
-        chain.append({"stage": "LLM kare değerlendirmesi", "level": None,
+        chain.append({"stage": "İlk LLM değerlendirmesi", "level": None,
                       "detail": "Kare henüz değerlendirilmedi; motor seviyesi geçerli."})
     elif not assess.get("llm"):
-        chain.append({"stage": "LLM kare değerlendirmesi", "level": None,
-                      "detail": "LLM devre dışıydı — motor şablonu kullanıldı; seviye değişikliği önerilmedi."})
+        chain.append({"stage": "İlk LLM değerlendirmesi", "level": None,
+                      "detail": "İlk LLM devre dışıydı; motor şablonu kullanıldı."})
     elif d is None:
-        chain.append({"stage": "LLM kare değerlendirmesi", "level": None,
-                      "detail": "Bu araç için karar kaydı yok (motor seviyesi değiştiyse eski karar geçersiz sayılır)."})
+        chain.append({"stage": "İlk LLM değerlendirmesi", "level": assess.get("llm_level"),
+                      "detail": "Bu araç için geçerli karar kaydı yok; motor seviyesi korunuyor."})
     else:
         llm_lv = d.get("llm_level")
-        chain.append({"stage": "LLM kare değerlendirmesi", "level": llm_lv,
-                      "detail": (f"LLM {risk_label(llm_lv)} önerdi. Gerekçe: {d['llm_reason']}" if d.get("llm_reason")
-                                 else "LLM motorla aynı seviyeyi verdi." if llm_lv == engine_level
-                                 else "LLM bu aracı ayrıca belirtmedi." if llm_lv is None
-                                 else f"LLM {risk_label(llm_lv)} önerdi, gerekçe yazmadı.")})
-        chain.append({"stage": "Karar tablosu", "level": d.get("review_level") if svc.human_review else d.get("auto_level"),
-                      "detail": f"{RULE_LABELS.get(d['rule'], d['rule'])}. {d.get('note') or ''}".strip()})
+        chain.append({"stage": "İlk LLM değerlendirmesi", "level": llm_lv,
+                      "detail": (f"İlk LLM {risk_label(llm_lv)} önerdi. Gerekçe: {d['llm_reason']}" if d.get("llm_reason")
+                                 else "İlk LLM motorla aynı seviyeyi verdi." if llm_lv == engine_level
+                                 else "İlk LLM bu aracı ayrıca belirtmedi." if llm_lv is None
+                                 else f"İlk LLM {risk_label(llm_lv)} önerdi, gerekçe yazmadı.")})
+
+    if d is not None:
+        pre = d.get("pre_fusion") or {}
+        if pre:
+            chain.append({"stage": "İlk guardrail", "level": pre.get("auto_level"),
+                          "detail": f"{pre.get('rule_label') or pre.get('rule') or 'İlk karar'}. "
+                                    f"Fusion öncesi otomatik seviye {risk_label(pre.get('auto_level'))}."})
+        elif not d.get("fusion_action"):
+            chain.append({"stage": "İlk guardrail", "level": d.get("auto_level"),
+                          "detail": f"{RULE_LABELS.get(d.get('rule'), d.get('rule') or 'Karar')}. "
+                                    f"{d.get('note') or ''}".strip()})
+
+        if d.get("fusion_action"):
+            proposal = d.get("fusion_level")
+            fusion_conf = d.get("fusion_confidence")
+            conf_text = f" · güven {fusion_conf:.2f}" if isinstance(fusion_conf, (int, float)) else ""
+            explanation = d.get("fusion_explanation") or ""
+            chain.append({"stage": "Fusion hakemi", "level": proposal,
+                          "detail": f"Bağımsız fusion önerisi {risk_label(proposal)}{conf_text}. {explanation}".strip()})
+
+            action_tr = {
+                "ESCALATE": "yükseltme uygulandı", "DEESCALATE": "düşürme uygulandı", "KEEP": "motor seviyesi korundu",
+                "REJECTED": "öneri kanıt kapısında reddedildi", "CAPPED_UP": "yükseltme otomatik değişim tavanında sınırlandı",
+                "CAPPED_DOWN": "düşürme otomatik değişim tavanında sınırlandı",
+            }.get(d.get("fusion_action"), d.get("fusion_action"))
+            score = d.get("fusion_net_score")
+            score_text = f" Net kanıt skoru {score}." if score is not None else ""
+            keys = d.get("fusion_evidence_keys") or []
+            consumed = d.get("fusion_consumed_by_engine") or []
+            detail = f"{action_tr}; uygulanan otomatik seviye {risk_label(d.get('auto_level'))}.{score_text}"
+            if keys:
+                detail += f" Doğrulanmış aktif kanıt: {', '.join(keys)}."
+            if consumed:
+                detail += f" Motorun zaten tükettiği gruplar tekrar sayılmadı: {', '.join(consumed)}."
+            chain.append({"stage": "Fusion kanıt kapısı", "level": d.get("auto_level"), "detail": detail})
+        else:
+            fs = assess.get("fusion_status")
+            if fs == "error":
+                chain.append({"stage": "Fusion hakemi", "level": None,
+                              "detail": "Fusion hata verdi; güvenli fallback olarak ilk motor+LLM kararı korundu."})
+            elif fs == "disabled":
+                chain.append({"stage": "Fusion hakemi", "level": None,
+                              "detail": "Fusion devre dışı; ilk motor+LLM kararı korundu."})
+            elif fs == "ok":
+                chain.append({"stage": "Fusion hakemi", "level": None,
+                              "detail": "Fusion kare düzeyinde çalıştı ancak bu araç için uygulanmış fusion sonucu yok; fallback karar korundu."})
+    else:
+        fs = assess.get("fusion_status")
+        if fs == "error":
+            chain.append({"stage": "Fusion hakemi", "level": None,
+                          "detail": "Fusion hata verdi; motor/ilk LLM fallback kararı korundu."})
+        elif fs == "disabled":
+            chain.append({"stage": "Fusion hakemi", "level": None,
+                          "detail": "Fusion devre dışı."})
+        elif fs == "ok":
+            chain.append({"stage": "Fusion hakemi", "level": None,
+                          "detail": "Fusion kare düzeyinde çalıştı; bu araç için ayrı uygulanmış sonuç bulunmuyor."})
+
     if not svc.human_review:
         chain.append({"stage": "İnsan onayı", "level": None,
-                      "detail": "Kapalı — karar tablosunun otomatik sonucu uygulandı."})
+                      "detail": "Kapalı — fusion varsa doğrulanmış otomatik sonuç, yoksa fallback sonuç uygulandı."})
     elif rv:
         chain.append({"stage": "İnsan onayı", "level": rv["level"],
-                      "detail": f"Analist '{rv.get('analyst') or 'analist'}' ({fmt_ts(rv.get('at'))}) {risk_label(rv['level'])} "
-                                f"seviyesini seçti." + (f" Not: {rv['note']}" if rv.get("note") else "")})
+                      "detail": f"Analist '{rv.get('analyst') or 'analist'}' ({fmt_ts(rv.get('at'))}) "
+                                f"{risk_label(rv['level'])} seviyesini seçti."
+                                + (f" Not: {rv['note']}" if rv.get("note") else "")})
     elif d and d.get("needs_review"):
         chain.append({"stage": "İnsan onayı", "level": None,
                       "detail": "BEKLİYOR — seçenekler: " + ", ".join(risk_label(x) for x in d.get("options") or [])
-                                + ". Karar verilene kadar geçici seviye uygulanır."})
+                                + ". Karar verilene kadar otomatik/geçici seviye gösterilir."})
     else:
         chain.append({"stage": "İnsan onayı", "level": None,
-                      "detail": "Açık; bu karar analist onayı gerektirmiyor (uzlaşı veya riski artıran karar)."})
+                      "detail": "Açık; bu karar için ayrıca analist onayı gerekmiyor."})
     chain.append({"stage": "Nihai seviye", "level": fin["level"], "detail": status_label(fin["status"])})
     return chain
 
@@ -208,7 +276,8 @@ def _features_view(f: dict | None) -> dict | None:
             "closing_speed_mps", "speed_now_mps", "max_speed_mps", "heading_deg", "bearing_to_base_deg",
             "heading_offset_deg", "eta_min", "stops_last60", "stopped_minutes_total", "moving_now",
             "path_length_m", "net_displacement_m", "extent_m", "radius_cv", "angular_sweep_deg", "dist_trend",
-            "initial_wait_min")
+            "initial_wait_min", "window_min", "dist_min_time", "approach_to_min_m", "retreat_from_min_m",
+            "dwell_near_min_min")
     out = {k: f.get(k) for k in keys}
     out["stops"] = [{"start": s["start"], "end": s["end"], "minutes": s["minutes"],
                      "dist_to_base_m": s["dist_to_base_m"]} for s in f.get("stops") or []]
@@ -250,7 +319,8 @@ def _frame_vehicle_facts(svc, vid: str, dmap: dict) -> dict:
     if tid:
         tr = ds.tracks[tid]
         fobj = _features_obj(ds, th, tid, v["capture_min"])
-        facts["rules"] = explain_tracked(fobj, th)
+        facts["rules"] = explain_tracked(fobj, th, heavy=bool(v.get("heavy")),
+                                         bus=is_bus(v["label"], v.get("alt_labels"), th.heavy_alt_min_conf))
         facts["track"] = {"track_id": tid, "points": _track_points(ds, tr), "t_start": min_to_hhmm(tr.t_start),
                           "t_end": min_to_hhmm(tr.t_end), "continues_after_capture": tr.t_end > v["capture_min"]}
         if tr.t_end > v["capture_min"]:
@@ -280,7 +350,7 @@ def _offframe_facts(svc, tid: str) -> dict:
         "xy_km": list(_local_km(ds, r["lat"], r["lon"])), "zone": r["zone"],
         "dist_to_base_m": r["features"]["dist_now_m"], "bearing_from_base_deg": round(ds.bearing_from_base(r["lat"], r["lon"]), 1),
         "track_match_m": None, "engine_level": r["risk_level"], "final_level": r["risk_level"], "status": "motor",
-        "status_label": "Motor seviyesi (kare dışı iz — LLM kare değerlendirmesi yok)",
+        "status_label": "Motor seviyesi (kare dışı iz — ilk LLM/fusion kare değerlendirmesi yok)",
         "scenario": r["scenario"], "scenario_label": scenario_label(r["scenario"]), "engine_reasons": r["risk_reasons"],
         "margin": r.get("margin"), "friendly_confirmed_by": [], "features": _features_view(r["features"]),
         "decision": None, "review": None, "assessment": assess, "frame": None,
@@ -292,7 +362,10 @@ def _offframe_facts(svc, tid: str) -> dict:
     }
     facts["decision_chain"] = _decision_chain(svc, r["risk_level"], r["scenario"], r["risk_reasons"],
                                               r.get("margin"), fin, assess)
-    facts["decision_chain"][2]["detail"] = "İz hiçbir karede görünmediği için LLM kare değerlendirmesine girmedi."
+    for step in facts["decision_chain"]:
+        if step["stage"] == "İlk LLM değerlendirmesi":
+            step["detail"] = "İz hiçbir karede görünmediği için ilk LLM/fusion kare değerlendirmesine girmedi."
+            break
     return facts
 
 
@@ -310,8 +383,9 @@ def _dummy_features() -> TrackFeatures:
 
 
 def methodology() -> dict:
-    """Motor kuralları (eşikler config'ten, koşullar risk._tracked_rules'tan — kodla birebir) + karar tablosu."""
+    """Motor kuralları + ilk LLM guardrail'i + bağımsız fusion doğrulama politikasını rapora taşır."""
     th = settings.thresholds
+    fp = settings.fusion
     rules = [{"scenario": r["scenario"], "label": scenario_label(r["scenario"]), "risk": r["risk"],
               "conds": [f"{c['name']} {c['threshold']}" for c in r["conds"]]}
              for r in explain_tracked(_dummy_features(), th)]
@@ -320,20 +394,57 @@ def methodology() -> dict:
                             f"veya herhangi araç üsse < {th.untracked_any_m:g} m"]})
     rules.append({"scenario": "TRANSIT / MOVING_AWAY / PARKED", "label": "Diğer", "risk": "DUSUK",
                   "conds": ["yukarıdaki kuralların hiçbiri eşleşmedi"]})
-    decision_table = [
-        ("uzlasi", "LLM = motor", "motor", "motor"),
-        ("reddedildi", "LLM ≠ motor ama gerekçe yok / dayanak rapor geçersiz / tespit elenmiş", "motor", "motor"),
-        ("llm_yukseltti", "LLM > motor, en çok 1 kademe (ya da motorun kıl payı kaçırdığı seviye)", "LLM", "LLM"),
-        ("fazla_yukseltme", "LLM tavanın üstünde", "tavan", "tavan → analist"),
-        ("motor_kesin", "LLM < motor, motor net", "motor", "motor"),
-        ("llm_dusurdu", "LLM < motor, motor sınırda, resmi+destekler rapor, KRİTİK değil, 1 kademe", "LLM",
-         "motor → analist"),
-        ("belirsiz", "LLM < motor, motor sınırda ama şartlar eksik", "motor", "motor → analist"),
+
+    # İlk LLM sonrası koruma katmanı geriye dönük/operasyonel fallback olarak korunuyor; nihai otomatik otorite fusion.
+    primary_guardrail = [
+        ("uzlasi", "İlk LLM = motor", "motor"),
+        ("reddedildi", "İlk LLM değişiklik gerekçesi/rapor dayanağı geçersiz", "motor"),
+        ("llm_yukseltti", "İlk LLM > motor ve ilk guardrail tavanı içinde", "ilk LLM"),
+        ("fazla_yukseltme", "İlk LLM ilk guardrail tavanını aşıyor", "sınırlandırılmış seviye"),
+        ("motor_kesin", "İlk LLM < motor, motor ilk guardrail'de net", "motor"),
+        ("llm_dusurdu", "İlk LLM < motor ve eski düşürme guardrail koşulları sağlanıyor", "ilk LLM / onay"),
+        ("belirsiz", "İlk LLM < motor fakat eski düşürme guardrail koşulları eksik", "motor / onay"),
     ]
+
+    fusion_flow = [
+        {"step": "1", "role": "Bağımsız hakem",
+         "detail": "Motor ve ilk LLM iki ayrı uzman görüşüdür; fusion hiçbirini ground-truth veya zorunlu alt sınır kabul etmez."},
+        {"step": "2", "role": "Bağlam",
+         "detail": "Çekim anındaki CURRENT verisi, capture_time'a kadar tüm track HISTORY'si ve güvenli saha raporu bağlamı birlikte değerlendirilir."},
+        {"step": "3", "role": "Doğrulanmış kanıt",
+         "detail": "Seviye değişikliği yalnız ACTIVE evidence anahtarlarıyla yapılır; aynı olgunun eşik kopyaları tek grupta sayılır."},
+        {"step": "4", "role": "Çifte sayımı engelleme",
+         "detail": "Motor kuralının zaten kullandığı kanıt grupları fusion değişiklik skorunda tekrar kullanılamaz."},
+        {"step": "5", "role": "Net skor",
+         "detail": "Destekleyen taze kanıt skoru, katalogdaki tüm aktif karşı kanıt skoru düşülerek değerlendirilir; model karşı kanıtı yazmayarak gizleyemez."},
+        {"step": "6", "role": "İki yönlü düzeltme",
+         "detail": "Yeterli güven ve net kanıt varsa motor seviyesi hem yükseltilebilir hem düşürülebilir; ilk LLM'in doğrulanmayan değişikliği geri alınabilir."},
+        {"step": "7", "role": "KRİTİK korkuluğu",
+         "detail": "KRİTİK'e çıkış için yüksek güvene ek olarak kısa ETA, güncel yakınlık ve yönelim/hız gibi imminent CURRENT kanıtı zorunludur."},
+        {"step": "8", "role": "Otomatik değişim tavanı",
+         "detail": f"Tek çağrıda motor seviyesinden en fazla {fp.max_auto_delta} kademe otomatik değişiklik uygulanır; fazlası sınırlandırılır/onaya taşınabilir."},
+    ]
+
     return {
         "rules": rules,
-        "decision_table": [{"rule": k, "label": RULE_LABELS[k], "when": w, "hil_off": a, "hil_on": b}
-                           for k, w, a, b in decision_table],
+        "primary_guardrail_table": [{"rule": k, "label": RULE_LABELS[k], "when": w, "result": r}
+                                    for k, w, r in primary_guardrail],
+        # Eski tüketicileri kırmamak için alan korunur; PDF yeni primary_guardrail_table alanını kullanır.
+        "decision_table": [{"rule": k, "label": RULE_LABELS[k], "when": w, "hil_off": r, "hil_on": r}
+                           for k, w, r in primary_guardrail],
+        "fusion_flow": fusion_flow,
+        "fusion_thresholds": {
+            "1 kademe min. güven": f"{fp.min_confidence:.2f}",
+            "2 kademe min. güven": f"{fp.high_confidence:.2f}",
+            "KRİTİK min. güven": f"{fp.critical_min_confidence:.2f}",
+            "1 kademe min. net skor": str(fp.one_step_min_score),
+            "2 kademe min. net skor": str(fp.two_step_min_score),
+            "1 kademe min. bağımsız grup": str(fp.one_step_min_keys),
+            "2 kademe min. bağımsız grup": str(fp.two_step_min_keys),
+            "KRİTİK güncel tehdit skoru": f"≥ {fp.critical_current_min_score}",
+            "KRİTİK düşürme net skoru": f"≥ {fp.critical_downgrade_min_score}",
+            "Maks. otomatik kademe": str(fp.max_auto_delta),
+        },
         "thresholds": {
             "Tespit güven eşiği": f"{th.min_confidence:.2f}", "İz eşleştirme yarıçapı": f"{th.match_radius_m:g} m",
             "Duraklama": f"{th.stop_radius_m:g} m içinde ≥ {th.stop_min_minutes} dk",
@@ -375,6 +486,11 @@ def collect_report_data(svc, opts: ReportOptions) -> dict:
     in_report = {f["vehicle_id"]: f["index"] for f in vehicles if f["vehicle_id"]}
     for x in pending + decided:                 # araç raporda hangi dosyada (ya da filtre dışında)
         x["dossier"] = in_report.get(x["vehicle_id"])
+        dx = dmap.get(x["vehicle_id"]) or {}
+        x["fusion_level"] = dx.get("fusion_level")
+        x["fusion_action"] = dx.get("fusion_action")
+        x["fusion_confidence"] = dx.get("fusion_confidence")
+        x["fusion_applied_level"] = dx.get("auto_level") if dx.get("fusion_action") else None
 
     verdict_counts = {k: sum(1 for r in st.reports if r["verdict"] == k)
                       for k in ["destekler", "celisir", "kismen_uyumlu", "dogrulanamaz", "ilgisiz", "manipulasyon"]}
@@ -385,6 +501,12 @@ def collect_report_data(svc, opts: ReportOptions) -> dict:
 
     frames_assessed = [fid for fid in st.frames if fid in svc.assessments]
     frames_llm = [fid for fid in frames_assessed if svc.assessments[fid].get("model")]
+    frames_fusion = [fid for fid in frames_assessed
+                     if (svc.assessments[fid].get("fusion") or {}).get("status") == "ok"]
+    frames_fusion_error = [fid for fid in frames_assessed
+                           if (svc.assessments[fid].get("fusion") or {}).get("status") == "error"]
+    fusion_models = sorted({str((svc.assessments[fid].get("fusion") or {}).get("model"))
+                            for fid in frames_fusion if (svc.assessments[fid].get("fusion") or {}).get("model")})
     times = [p.t for tr in svc.ds.tracks.values() for p in tr.points]
     now = datetime.now(_tz())
 
@@ -396,7 +518,9 @@ def collect_report_data(svc, opts: ReportOptions) -> dict:
         "human_review": svc.human_review, "prepared_by": opts.prepared_by,
         "detector": st.detector, "frames_total": len(st.frames), "frames_assessed": len(frames_assessed),
         "frames_llm": len(frames_llm),
+        "frames_fusion": len(frames_fusion), "frames_fusion_error": len(frames_fusion_error),
         "assess_model": ", ".join(sorted({str(svc.assessments[f]["model"]) for f in frames_llm})) or None,
+        "fusion_model": ", ".join(fusion_models) or None,
         "data_window": f"{min_to_hhmm(min(times))}–{min_to_hhmm(max(times))}" if times else "—",
         "tracks_total": len(svc.ds.tracks), "reports_total": len(st.reports),
         "vehicles_total": len(all_final),
