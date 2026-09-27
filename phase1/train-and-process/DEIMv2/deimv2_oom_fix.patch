@@ -1,0 +1,108 @@
+diff --git a/engine/deim/box_ops.py b/engine/deim/box_ops.py
+index ede1b32..d7374d9 100644
+--- a/engine/deim/box_ops.py
++++ b/engine/deim/box_ops.py
+@@ -63,6 +63,31 @@ def generalized_box_iou(boxes1, boxes2):
+     return iou - (area - union) / area
+ 
+ 
++def paired_box_iou(boxes1: Tensor, boxes2: Tensor):
++    """Element-wise IoU of boxes1[i] and boxes2[i] ([N, 4] xyxy each).
++    Equivalent to torch.diag(box_iou(boxes1, boxes2)[0]) without the O(N^2) memory."""
++    area1 = box_area(boxes1)
++    area2 = box_area(boxes2)
++    lt = torch.max(boxes1[:, :2], boxes2[:, :2])
++    rb = torch.min(boxes1[:, 2:], boxes2[:, 2:])
++    wh = (rb - lt).clamp(min=0)
++    inter = wh[:, 0] * wh[:, 1]
++    union = area1 + area2 - inter
++    return inter / union, union
++
++
++def paired_generalized_box_iou(boxes1: Tensor, boxes2: Tensor):
++    """Element-wise GIoU; equivalent to torch.diag(generalized_box_iou(boxes1, boxes2))."""
++    assert (boxes1[:, 2:] >= boxes1[:, :2]).all()
++    assert (boxes2[:, 2:] >= boxes2[:, :2]).all()
++    iou, union = paired_box_iou(boxes1, boxes2)
++    lt = torch.min(boxes1[:, :2], boxes2[:, :2])
++    rb = torch.max(boxes1[:, 2:], boxes2[:, 2:])
++    wh = (rb - lt).clamp(min=0)
++    area = wh[:, 0] * wh[:, 1]
++    return iou - (area - union) / area
++
++
+ def masks_to_boxes(masks):
+     """Compute the bounding boxes around the provided masks
+ 
+diff --git a/engine/deim/deim_criterion.py b/engine/deim/deim_criterion.py
+index aef4468..4aa105b 100644
+--- a/engine/deim/deim_criterion.py
++++ b/engine/deim/deim_criterion.py
+@@ -15,7 +15,7 @@ import torchvision
+ import copy
+ 
+ from .dfine_utils import bbox2distance
+-from .box_ops import box_cxcywh_to_xyxy, box_iou, generalized_box_iou
++from .box_ops import box_cxcywh_to_xyxy, box_iou, generalized_box_iou, paired_box_iou, paired_generalized_box_iou
+ from ..misc.dist_utils import get_world_size, is_dist_available_and_initialized
+ from ..core import register
+ 
+@@ -85,8 +85,8 @@ class DEIMCriterion(nn.Module):
+         if values is None:
+             src_boxes = outputs['pred_boxes'][idx]
+             target_boxes = torch.cat([t['boxes'][i] for t, (_, i) in zip(targets, indices)], dim=0)
+-            ious, _ = box_iou(box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes))
+-            ious = torch.diag(ious).detach()
++            ious, _ = paired_box_iou(box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes))
++            ious = ious.detach()
+         else:
+             ious = values
+ 
+@@ -114,8 +114,8 @@ class DEIMCriterion(nn.Module):
+         if values is None:
+             src_boxes = outputs['pred_boxes'][idx]
+             target_boxes = torch.cat([t['boxes'][i] for t, (_, i) in zip(targets, indices)], dim=0)
+-            ious, _ = box_iou(box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes))
+-            ious = torch.diag(ious).detach()
++            ious, _ = paired_box_iou(box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes))
++            ious = ious.detach()
+         else:
+             ious = values
+ 
+@@ -155,8 +155,8 @@ class DEIMCriterion(nn.Module):
+         loss_bbox = F.l1_loss(src_boxes, target_boxes, reduction='none')
+         losses['loss_bbox'] = loss_bbox.sum() / num_boxes
+ 
+-        loss_giou = 1 - torch.diag(generalized_box_iou(\
+-            box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes)))
++        loss_giou = 1 - paired_generalized_box_iou(
++            box_cxcywh_to_xyxy(src_boxes), box_cxcywh_to_xyxy(target_boxes))
+         loss_giou = loss_giou if boxes_weight is None else loss_giou * boxes_weight
+         losses['loss_giou'] = loss_giou.sum() / num_boxes
+ 
+@@ -183,8 +183,8 @@ class DEIMCriterion(nn.Module):
+ 
+             target_corners, weight_right, weight_left = self.fgl_targets_dn if 'is_dn' in outputs else self.fgl_targets
+ 
+-            ious = torch.diag(box_iou(\
+-                        box_cxcywh_to_xyxy(outputs['pred_boxes'][idx]), box_cxcywh_to_xyxy(target_boxes))[0])
++            ious = paired_box_iou(
++                        box_cxcywh_to_xyxy(outputs['pred_boxes'][idx]), box_cxcywh_to_xyxy(target_boxes))[0]
+             weight_targets = ious.unsqueeze(-1).repeat(1, 1, 4).reshape(-1).detach()
+ 
+             losses['loss_fgl'] = self.unimodal_distribution_focal_loss(
+@@ -414,11 +414,10 @@ class DEIMCriterion(nn.Module):
+         target_boxes = torch.cat([t['boxes'][j] for t, (_, j) in zip(targets, indices)], dim=0)
+ 
+         if self.boxes_weight_format == 'iou':
+-            iou, _ = box_iou(box_cxcywh_to_xyxy(src_boxes.detach()), box_cxcywh_to_xyxy(target_boxes))
+-            iou = torch.diag(iou)
++            iou, _ = paired_box_iou(box_cxcywh_to_xyxy(src_boxes.detach()), box_cxcywh_to_xyxy(target_boxes))
+         elif self.boxes_weight_format == 'giou':
+-            iou = torch.diag(generalized_box_iou(\
+-                box_cxcywh_to_xyxy(src_boxes.detach()), box_cxcywh_to_xyxy(target_boxes)))
++            iou = paired_generalized_box_iou(
++                box_cxcywh_to_xyxy(src_boxes.detach()), box_cxcywh_to_xyxy(target_boxes))
+         else:
+             raise AttributeError()
+ 
