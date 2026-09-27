@@ -1,17 +1,30 @@
-import { ExternalLink, HelpCircle, X } from 'lucide-react';
-import { useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { ArrowLeft, ExternalLink, FileText, HelpCircle, PlayCircle, X } from 'lucide-react';
+import { useEffect, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { usePanelLayoutStore } from '../../store/panelLayout';
 
 const guideUrl = '/docs/kullanim-kilavuzu.pdf';
 
-export function HelpPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function HelpPanel({ open, onClose, onStartTutorial }: { open: boolean; onClose: () => void; onStartTutorial?: () => void }) {
+  const [view, setView] = useState<'menu' | 'pdf'>('menu');
   const [failed, setFailed] = useState(false);
   const helpWidth = usePanelLayoutStore(state => state.helpWidth);
   const setHelpWidth = usePanelLayoutStore(state => state.setHelpWidth);
 
+  useEffect(() => {
+    if (open) setView('menu');
+  }, [open]);
+
   if (!open) return null;
 
   const openGuide = () => window.open(guideUrl, '_blank', 'noopener,noreferrer');
+  const showGuide = () => {
+    setFailed(false);
+    setView('pdf');
+  };
+  const startTutorial = () => {
+    onClose();
+    window.setTimeout(() => onStartTutorial?.(), 0);
+  };
   const startResize = (event: ReactPointerEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -25,6 +38,43 @@ export function HelpPanel({ open, onClose }: { open: boolean; onClose: () => voi
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', stop, { once: true });
   };
+
+  if (view === 'menu') {
+    return (
+      <section className="help-menu-popover" aria-label="Yardım menüsü">
+        <header>
+          <span>
+            <HelpCircle size={15} />
+            Yardım
+          </span>
+
+          <button type="button" aria-label="Yardım menüsünü kapat" onClick={onClose}>
+            <X size={15} />
+          </button>
+        </header>
+
+        <div className="help-choice-grid compact" aria-label="Yardım seçenekleri">
+          <button type="button" onClick={showGuide}>
+            <FileText size={17} />
+            <span>
+              <strong>Kullanım Kılavuzu</strong>
+              <small>PDF rehberini görüntüle</small>
+            </span>
+          </button>
+
+          {onStartTutorial && (
+            <button type="button" onClick={startTutorial}>
+              <PlayCircle size={17} />
+              <span>
+                <strong>Eğitim Turu</strong>
+                <small>Arayüzü adım adım keşfet</small>
+              </span>
+            </button>
+          )}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="help-drawer" aria-label="Yardım paneli" style={{ width: `min(${helpWidth}px, 85vw, calc(100vw - 22px))` }}>
@@ -41,6 +91,11 @@ export function HelpPanel({ open, onClose }: { open: boolean; onClose: () => voi
       </header>
 
       <div className="help-drawer-actions">
+        <button type="button" onClick={() => setView('menu')}>
+          <ArrowLeft size={14} />
+          Geri
+        </button>
+
         <button type="button" onClick={openGuide}>
           <ExternalLink size={14} />
           Yeni sekmede aç

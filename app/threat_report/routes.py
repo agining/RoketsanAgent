@@ -10,8 +10,10 @@ Seviyeler NİHAİ seviyedir: insan onayı açıksa analist kararları ve bekleye
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import re
+from pathlib import Path
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Query
@@ -24,6 +26,7 @@ from .collect import ReportOptions, collect_report_data
 Level = Literal["DUSUK", "ORTA", "YUKSEK", "KRITIK"]
 Scope = Literal["all", "min_risk", "none"]
 _ID_RE = re.compile(r"^TR-\d{8}-\d{6}-[A-Za-z0-9_-]+$")
+DEMO_PDF_PATH = Path(__file__).resolve().parent / "demo" / "demo_threat_report.pdf"
 
 router = APIRouter(prefix="/api/threat-report", tags=["Tehdit raporu (PDF)"])
 
@@ -96,6 +99,16 @@ def preview_report(min_risk: Level = "ORTA", levels: list[Level] | None = Query(
                           "final_level": f["final_level"], "engine_level": f["engine_level"], "status": f["status"],
                           "scenario": f["scenario"], "dist_to_base_m": f["dist_to_base_m"],
                           "eta_min": (f.get("features") or {}).get("eta_min")} for f in d["vehicles"]]}
+
+
+@router.get("/demo-download")
+async def demo_download():
+    """Demo PDF'i kısa bir bekleme simülasyonundan sonra döndürür; LLM veya builder çalıştırmaz."""
+    if not DEMO_PDF_PATH.exists():
+        raise HTTPException(404, "Demo rapor PDF'i bulunamadı")
+    await asyncio.sleep(3)
+    return FileResponse(DEMO_PDF_PATH, media_type="application/pdf", filename="HISAR_Tehdit_Raporu.pdf",
+                        content_disposition_type="inline")
 
 
 @router.get("")

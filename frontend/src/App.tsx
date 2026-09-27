@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type SetStateAction } from 'react';
 import {
   AlertTriangle,
   Bell,
@@ -25,9 +25,11 @@ import {
   initialMapFilters,
   type MapFilterState,
 } from './components/map/MapSidebar';
+import type { MapOverlayPanel } from './components/map/MapOverlays';
 import { BottomTrackPanel } from './components/tracks/BottomTrackPanel';
 import { TrackDetail } from './components/tracks/TrackDetail';
 import { Timeline } from './components/Timeline';
+import { AppTutorial } from './components/tutorial/AppTutorial';
 import { Button } from './components/ui/button';
 import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
 
@@ -61,6 +63,17 @@ import hisarLogo from '@/assets/hisar-logo.png';
 import { HelpPanel } from './components/help/HelpPanel';
 
 const bottomControlGroupStorageKey = 'hisar-bottom-control-group-position-v1';
+type UtilityPanel = 'settings' | 'help' | null;
+
+function demoReportEnabled() {
+  const envValue = String(import.meta.env.VITE_DEMO_REPORT ?? '').toLowerCase();
+  if (envValue === '1' || envValue === 'true' || envValue === 'yes') return true;
+  try {
+    return window.localStorage.getItem('hisar-demo-report') === 'true';
+  } catch {
+    return false;
+  }
+}
 
 function loadStoredPosition(key: string) {
   if (typeof window === 'undefined') return null;
@@ -303,8 +316,30 @@ export default function App() {
     media.addEventListener('change', apply);
     return () => media.removeEventListener('change', apply);
   }, [fontScale, themeMode]);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
+  const [activeUtilityPanel, setActiveUtilityPanel] =
+    useState<UtilityPanel>(null);
+  const settingsOpen = activeUtilityPanel === 'settings';
+  const helpOpen = activeUtilityPanel === 'help';
+  const setSettingsOpen = useCallback((value: SetStateAction<boolean>) => {
+    setActiveUtilityPanel(current => {
+      const nextOpen = typeof value === 'function'
+        ? value(current === 'settings')
+        : value;
+      return nextOpen ? 'settings' : current === 'settings' ? null : current;
+    });
+  }, []);
+  const setHelpOpen = useCallback((value: SetStateAction<boolean>) => {
+    setActiveUtilityPanel(current => {
+      const nextOpen = typeof value === 'function'
+        ? value(current === 'help')
+        : value;
+      return nextOpen ? 'help' : current === 'help' ? null : current;
+    });
+  }, []);
+  const [tutorialRunId, setTutorialRunId] = useState(0);
+  const [tutorialActive, setTutorialActive] = useState(false);
+  const [tutorialOverlayPanel, setTutorialOverlayPanel] =
+    useState<MapOverlayPanel | undefined>(undefined);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [bottomOpen, setBottomOpen] = useState(false);
@@ -322,6 +357,11 @@ export default function App() {
   const timelineCompact = useTimelineStore(state => state.compact);
   const bottomControlsRef = useRef<HTMLDivElement>(null);
   const [bottomControlsPosition, setBottomControlsPosition] = useState<{ x: number; y: number } | null>(() => loadStoredPosition(bottomControlGroupStorageKey));
+  const bottomControlsPositionRef = useRef(bottomControlsPosition);
+
+  useEffect(() => {
+    bottomControlsPositionRef.current = bottomControlsPosition;
+  }, [bottomControlsPosition]);
 
   const selectedTrackId = useTrackingStore(
     state => state.selectedTrackId,
@@ -357,30 +397,6 @@ export default function App() {
     window.addEventListener('pointerup', stop, { once: true });
   };
 
-  useEffect(() => {
-    if (!bottomControlsPosition) return undefined;
-    const clampCurrent = () => {
-      const element = bottomControlsRef.current;
-      const parent = element?.parentElement;
-      if (!element || !parent) return;
-      const parentRect = parent.getBoundingClientRect();
-      const rect = element.getBoundingClientRect();
-      const next = {
-        x: Math.min(Math.max(8, bottomControlsPosition.x), Math.max(8, parentRect.width - rect.width - 8)),
-        y: Math.min(Math.max(8, bottomControlsPosition.y), Math.max(8, parentRect.height - rect.height - 8)),
-      };
-      if (next.x === bottomControlsPosition.x && next.y === bottomControlsPosition.y) return;
-      setBottomControlsPosition(next);
-      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
-    };
-    const frame = window.requestAnimationFrame(clampCurrent);
-    window.addEventListener('resize', clampCurrent);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('resize', clampCurrent);
-    };
-  }, [bottomControlsPosition, bottomOpen, timelineCompact]);
-
   const startBottomControlsDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
     const element = bottomControlsRef.current;
     const parent = element?.parentElement;
@@ -399,10 +415,14 @@ export default function App() {
     });
     const move = (moveEvent: PointerEvent) => {
       const next = clamp(initial.x + moveEvent.clientX - startX, initial.y + moveEvent.clientY - startY);
+      bottomControlsPositionRef.current = next;
       setBottomControlsPosition(next);
-      try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(next)); } catch { /* localStorage may be unavailable. */ }
     };
     const stop = () => {
+      const finalPosition = bottomControlsPositionRef.current;
+      if (finalPosition) {
+        try { localStorage.setItem(bottomControlGroupStorageKey, JSON.stringify(finalPosition)); } catch { /* localStorage may be unavailable. */ }
+      }
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', stop);
     };
@@ -422,6 +442,42 @@ export default function App() {
     reviews: { ...rawData.reviews, human_review: humanReview },
   } : null, [humanReview, rawData]);
   useVoiceAlerts(data);
+
+  useEffect(() => {
+    if (!data) return undefined;
+    const keepReachableIfFullyOutside = () => {
+      const position = bottomControlsPositionRef.current;
+      const element = bottomControlsRef.current;
+      const parent = element?.parentElement;
+      if (!position || !element || !parent) return;
+      const parentRect = parent.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const visibleEdge = 24;
+      let x = position.x;
+      let y = position.y;
+
+      if (rect.right < parentRect.left + visibleEdge) x = 8;
+      else if (rect.left > parentRect.right - visibleEdge) x = Math.max(8, parentRect.width - rect.width - 8);
+
+      if (rect.bottom < parentRect.top + visibleEdge) y = 8;
+      else if (rect.top > parentRect.bottom - visibleEdge) y = Math.max(8, parentRect.height - rect.height - 8);
+
+      if (x === position.x && y === position.y) return;
+      const next = { x, y };
+      bottomControlsPositionRef.current = next;
+      setBottomControlsPosition(next);
+    };
+
+    window.addEventListener('resize', keepReachableIfFullyOutside);
+    const observer = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(keepReachableIfFullyOutside);
+    if (bottomControlsRef.current) observer?.observe(bottomControlsRef.current);
+    return () => {
+      window.removeEventListener('resize', keepReachableIfFullyOutside);
+      observer?.disconnect();
+    };
+  }, [data]);
 
   const activeEntities = useMemo(
     () => activeTrackEntities(data?.entities ?? []),
@@ -536,10 +592,11 @@ export default function App() {
   };
 
   const openPdfReport = () => {
+    const path = demoReportEnabled()
+      ? '/api/threat-report/demo-download'
+      : '/api/threat-report/download?min_risk=YUKSEK';
     window.open(
-      apiUrl(
-        '/api/threat-report/download?min_risk=YUKSEK',
-      ),
+      apiUrl(path),
       '_blank',
       'noopener,noreferrer',
     );
@@ -614,6 +671,13 @@ export default function App() {
 
   useEffect(() => startPlaybackClock(), []);
 
+  const startTutorial = useCallback(() => {
+    setSettingsOpen(false);
+    setHelpOpen(false);
+    setNotificationsOpen(false);
+    setTutorialRunId(current => current + 1);
+  }, []);
+
   if (!data) {
     return (
       <div className="map-first-shell">
@@ -628,6 +692,7 @@ export default function App() {
           <button
             className="settings-trigger"
             type="button"
+            data-tour="settings"
             aria-label="Ayarları aç"
             aria-expanded={settingsOpen}
             onClick={() => setSettingsOpen(open => !open)}
@@ -637,6 +702,7 @@ export default function App() {
           <button
             className="help-trigger"
             type="button"
+            data-tour="help"
             aria-label="Yardım"
             title="Yardım"
             aria-expanded={helpOpen}
@@ -653,7 +719,7 @@ export default function App() {
           onToggleHumanReview={() => void toggleHumanReview()}
           summary={null}
         />
-        <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+        <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} onStartTutorial={startTutorial} />
 
         <InitialState
           error={
@@ -760,6 +826,7 @@ export default function App() {
               className={`watch-notification-trigger ${
                 unreadNotifications ? 'active' : ''
               }`}
+              data-tour="notifications"
               aria-expanded={notificationsOpen}
               aria-label={`İzleme listesi bildirimleri${
                 unreadNotifications
@@ -874,6 +941,7 @@ export default function App() {
         <button
           className="settings-trigger"
           type="button"
+          data-tour="settings"
           aria-label="Ayarları aç"
           aria-expanded={settingsOpen}
           onClick={() => setSettingsOpen(open => !open)}
@@ -884,6 +952,7 @@ export default function App() {
         <button
           className="help-trigger"
           type="button"
+          data-tour="help"
           aria-label="Yardım"
           title="Yardım"
           aria-expanded={helpOpen}
@@ -923,7 +992,26 @@ export default function App() {
         onToggleHumanReview={() => void toggleHumanReview()}
         summary={data.summary}
       />
-      <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <HelpPanel open={helpOpen} onClose={() => setHelpOpen(false)} onStartTutorial={startTutorial} />
+
+      <AppTutorial
+        ready={Boolean(data)}
+        runId={tutorialRunId}
+        bottomOpen={bottomOpen}
+        helpOpen={helpOpen}
+        notificationsOpen={notificationsOpen}
+        settingsOpen={settingsOpen}
+        sidebarOpen={sidebarOpen}
+        timelineCompact={timelineCompact}
+        setBottomOpen={setBottomOpen}
+        setHelpOpen={setHelpOpen}
+        setNotificationsOpen={setNotificationsOpen}
+        setSettingsOpen={setSettingsOpen}
+        setSidebarOpen={setSidebarOpen}
+        setTimelineCompact={useTimelineStore.getState().setCompact}
+        setTourActive={setTutorialActive}
+        setTourOverlayPanel={setTutorialOverlayPanel}
+      />
 
       <main
         className={`map-first-workspace ${
@@ -970,10 +1058,13 @@ export default function App() {
           selectedFrameId={
             selectedEntity?.frame_id ?? null
           }
+          tourActive={tutorialActive}
+          tourPanel={tutorialOverlayPanel}
         />
 
         <div
           ref={bottomControlsRef}
+          data-tour="track-list"
           className={`bottom-control-group ${bottomControlsPosition ? 'dragged' : ''}`}
           style={bottomControlsPosition ? { left: bottomControlsPosition.x, top: bottomControlsPosition.y, right: 'auto', bottom: 'auto' } : undefined}
         >

@@ -23,3 +23,5 @@ Fusion-v3 discards incompatible old assessments from active use. Old files are r
 - Main's font scale settings replace the older blanket CSS zoom. Panel layout and map controls remain from main.
 
 Local environment files and Python bytecode are no longer tracked; their files are retained on disk. The pre-integration feature stash is retained for rollback. No merge into main is performed by this integration.
+
+Main integration: retains the guided tutorial, updated map and agent prompt, and demo PDF endpoint. Configure `VITE_DEMO_REPORT` in the root `.env`; default false generates live reports.

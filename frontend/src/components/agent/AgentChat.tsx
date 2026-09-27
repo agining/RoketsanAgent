@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type PointerEvent as ReactPointerEvent } from 'react';
-import { Bot, LoaderCircle, Send, X } from 'lucide-react';
+import { Bot, LoaderCircle, Send, Trash2, X } from 'lucide-react';
 import type { AnalysisData } from '../../types/analysis';
 import { clockSeconds } from '../../services/analysis-playback';
 import { useAgentChatStore } from '../../store/agentChat';
@@ -16,6 +16,7 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
   const messages = useAgentChatStore(state => state.messages);
   const pending = useAgentChatStore(state => state.pending);
   const send = useAgentChatStore(state => state.send);
+  const clearChat = useAgentChatStore(state => state.clear);
   const agentWidth = usePanelLayoutStore(state => state.agentWidth);
   const setAgentWidth = usePanelLayoutStore(state => state.setAgentWidth);
   const llmEnabled = analysis.summary.llm_enabled;
@@ -51,9 +52,23 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
     window.addEventListener('pointerup', stop, { once: true });
   };
 
-  return <section className="agent-console agent-chat map-agent-chat" aria-label="Ajan sohbeti" style={{ width: `min(${agentWidth}px, calc(100vw - 28px))` }}>
+  return <section className="agent-console agent-chat map-agent-chat" data-tour="agent-panel" aria-label="Ajan sohbeti" style={{ width: `min(${agentWidth}px, calc(100vw - 28px))` }}>
     <div className="panel-resize-handle left-edge" role="separator" aria-orientation="vertical" aria-label="Ajan paneli genişliği" onPointerDown={startResize} />
-    <header><span><Bot size={15} /><b>AJAN SOHBETİ</b>{frameId && <small>bağlam: {frameId}</small>}</span><button aria-label="Ajan panelini kapat" onClick={onClose}><X size={15} /></button></header>
+    <header>
+      <span><Bot size={15} /><b>AJAN SOHBETİ</b>{frameId && <small>bağlam: {frameId}</small>}</span>
+      <div className="agent-header-actions">
+        <button
+          type="button"
+          aria-label="Sohbeti temizle"
+          title="Sohbeti temizle"
+          disabled={pending || messages.length === 0}
+          onClick={clearChat}
+        >
+          <Trash2 size={14} />
+        </button>
+        <button type="button" aria-label="Ajan panelini kapat" onClick={onClose}><X size={15} /></button>
+      </div>
+    </header>
     <div className="chat-panel">
       {!llmEnabled && <p className="agent-note">API'de LLM kapalı (OPENAI_API_KEY tanımlı değil); sohbet 503 döner.</p>}
       <div className="suggested-prompts">{prompts.map(prompt => <button key={prompt} disabled={pending} onClick={() => void submit(undefined, prompt)}>{prompt}</button>)}</div>
@@ -66,7 +81,7 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
               ? <AgentMarkdown text={message.text} onSelectId={focus} />
               : <p>{message.text}</p>}
         </div>)}
-        {!messages.length && <div className="agent-empty">Araçlar, kareler veya raporlar hakkında sorun. Yanıtlar API'deki ajandan gelir.</div>}
+        {!messages.length && <div className="agent-empty">Araçlar, kareler veya raporlar hakkında sorun.</div>}
       </div>
       <form onSubmit={event => void submit(event)}><textarea value={input} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void submit(); } }} placeholder="Ajana sorun…" aria-label="Ajan mesajı" rows={2} /><button aria-label="Ajan mesajını gönder" disabled={pending || !input.trim()}><Send size={14} /></button></form>
     </div>

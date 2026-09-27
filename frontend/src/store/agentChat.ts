@@ -24,6 +24,7 @@ interface AgentChatState {
   messages: AgentMessage[];
   pending: boolean;
   send: (message: string, frameId?: string | null) => Promise<void>;
+  clear: () => void;
   clearError: (id: string) => void;
 }
 
@@ -57,12 +58,26 @@ function saveChat(state: Pick<AgentChatState, 'threadId' | 'messages'>) {
   }
 }
 
+function clearSavedChat() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(storageKey);
+  } catch {
+    // localStorage may be unavailable; the in-memory state still clears.
+  }
+}
+
 const saved = loadChat();
 
 export const useAgentChatStore = create<AgentChatState>((set, get) => ({
   threadId: saved.threadId ?? null,
   messages: saved.messages ?? [],
   pending: false,
+  clear: () => set(state => {
+    if (state.pending) return state;
+    clearSavedChat();
+    return { ...state, threadId: null, messages: [] };
+  }),
   clearError: messageId => set(state => {
     const next = { ...state, messages: state.messages.filter(message => message.id !== messageId) };
     saveChat(next);
