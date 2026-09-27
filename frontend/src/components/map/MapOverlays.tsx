@@ -77,8 +77,16 @@ export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onCh
     <div className="map-quick-filters" data-tour="quick-filters" aria-label="Hızlı harita filtreleri">
       <label className={filters.risk !== 'ALL' ? 'active' : ''}><span>Risk</span><select aria-label="Risk filtresi" value={filters.risk} onChange={event => updateFilter('risk', event.target.value as MapFilterState['risk'])}>{riskOptions.map(option => <option key={option} value={option}>{option === 'ALL' ? 'Tümü' : formatRiskLevel(option)}</option>)}</select></label>
       <label className={filters.vehicleClass !== 'ALL' ? 'active' : ''}><span>Araç</span><select aria-label="Araç filtresi" value={filters.vehicleClass} onChange={event => updateFilter('vehicleClass', event.target.value)}><option value="ALL">Tümü</option>{vehicleOptions.map(option => <option key={option} value={option}>{formatVehicleClass(option)}</option>)}</select></label>
-      <label className={filters.scenario !== 'ALL' ? 'active' : ''}><span>Senaryo</span><select aria-label="Senaryo filtresi" value={filters.scenario} onChange={event => updateFilter('scenario', event.target.value)}><option value="ALL">Tümü</option>{scenarioOptions.map(option => <option key={option} value={option}>{formatScenario(option)}</option>)}</select></label>
-      <label className={filters.zone !== 'ALL' ? 'active' : ''}><span>Bölge</span><select aria-label="Bölge filtresi" value={filters.zone} onChange={event => updateFilter('zone', event.target.value)}><option value="ALL">Tümü</option>{zoneOptions.map(option => <option key={option} value={option}>{option}</option>)}</select></label>
+      {/* <label className={filters.scenario !== 'ALL' ? 'active' : ''}><span>Senaryo</span><select aria-label="Senaryo filtresi" value={filters.scenario} onChange={event => updateFilter('scenario', event.target.value)}><option value="ALL">Tümü</option>{scenarioOptions.map(option => <option key={option} value={option}>{formatScenario(option)}</option>)}</select></label> */}
+      <label className={filters.zone !== 'ALL' ? 'active' : ''}>
+        <span>Bölge</span>
+        <select aria-label="Bölge filtresi" value={filters.zone} onChange={event => updateFilter('zone', event.target.value)}>
+          <option value="ALL">Tümü</option>
+          {
+            zoneOptions.map(option => <option key={option} value={option}>{option}</option>)
+          }
+        </select>
+      </label>
       {activeFilters > 0 && <button type="button" onClick={() => setFilters(current => ({ ...current, risk: 'ALL', vehicleClass: 'ALL', scenario: 'ALL', zone: 'ALL' }))}>Temizle <b>{activeFilters}</b></button>}
     </div>
     <div className="map-overlay-actions">

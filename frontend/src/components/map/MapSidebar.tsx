@@ -491,7 +491,7 @@ export function MapSidebar({
               </select>
             </label>
 
-            <label className="wide">
+            {/* <label className="wide">
               <span>Senaryo</span>
 
               <select
@@ -517,7 +517,7 @@ export function MapSidebar({
                   </option>
                 ))}
               </select>
-            </label>
+            </label> */}
 
             <label className="wide">
               <span>Bölge</span>
