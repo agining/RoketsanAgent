@@ -165,3 +165,8 @@ export interface ApiReviewItem {
 export interface ApiReviewList { human_review: boolean; items: ApiReviewItem[]; pending_count: number }
 
 export interface ApiChatReply { thread_id: string; answer: string; tool_calls?: unknown[]; trace?: unknown[] }
+
+export interface ApiAsrStatus { loaded: boolean; loading: boolean; model: string; language: string; device: string | null }
+export interface ApiTranscription { text: string; duration_s: number | null; elapsed_s: number }
+export interface ApiUiAction { action: string; params: Record<string, unknown> }
+export interface ApiUiCommandPlan { command: string; message: string; actions: ApiUiAction[]; dropped: string[] }

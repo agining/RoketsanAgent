@@ -4,6 +4,7 @@ import type { AnalysisAlert, AnalysisData, RiskLevel } from '../../types/analysi
 import { api } from '../../services/api';
 import { clockSeconds } from '../../services/analysis-playback';
 import { formatDecisionStatus, formatMeters, formatMinutes, formatReportVerdict, formatRiskLevel, formatScenario, formatVehicleClass } from '../../services/formatters';
+import { useOverlayPanelStore } from '../../store/overlayPanel';
 import { usePlaybackStore } from '../../store/playback';
 import { useTrackingStore } from '../../store/tracking';
 import { useWorkspaceStore } from '../../store/workspace';
@@ -53,6 +54,11 @@ export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onCh
     if (!tourActive || tourPanel === undefined) return;
     setPanel(tourPanel);
   }, [tourActive, tourPanel]);
+
+  // Voice commands open/close panels through the overlay panel store.
+  const panelRequest = useOverlayPanelStore(state => state.request);
+  useEffect(() => { if (panelRequest.sequence) setPanel(panelRequest.panel); }, [panelRequest]);
+  useEffect(() => { useOverlayPanelStore.getState().setCurrent(panel); }, [panel]);
 
   const openAlert = (alert: AnalysisAlert) => {
     usePlaybackStore.getState().seek(clockSeconds(alert.time));

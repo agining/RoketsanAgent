@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type PointerEvent as ReactPointerEvent } from 'react';
-import { Bot, LoaderCircle, Send, Trash2, X } from 'lucide-react';
+import { Bot, LoaderCircle, Mic, Send, Square, Trash2, X } from 'lucide-react';
 import type { AnalysisData } from '../../types/analysis';
+import { useSpeechToText } from '../../hooks/useSpeechToText';
 import { clockSeconds } from '../../services/analysis-playback';
 import { useAgentChatStore } from '../../store/agentChat';
 import { usePanelLayoutStore } from '../../store/panelLayout';
@@ -20,6 +21,8 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
   const agentWidth = usePanelLayoutStore(state => state.agentWidth);
   const setAgentWidth = usePanelLayoutStore(state => state.setAgentWidth);
   const llmEnabled = analysis.summary.llm_enabled;
+  const speech = useSpeechToText(text => setInput(current => current.trim() ? `${current.trimEnd()} ${text}` : text));
+  const speechLabel = speech.state === 'recording' ? 'Ses kaydını durdur' : 'Sesle yaz';
 
   const focus = (id: string) => {
     const entity = analysis.entities.find(item => item.track_id === id);
@@ -82,8 +85,12 @@ export function AgentChat({ analysis, frameId, onSelectTrack, onClose }: { analy
               : <p>{message.text}</p>}
         </div>)}
         {!messages.length && <div className="agent-empty">Araçlar, kareler veya raporlar hakkında sorun.</div>}
+        {speech.state === 'loading-model' && <div className="agent-loading"><LoaderCircle size={15} className="spinning" />Konuşma modeli yükleniyor (ilk seferde uzun sürebilir)…</div>}
+        {speech.state === 'recording' && <div className="agent-loading voice-recording"><span className="voice-dot" />Dinleniyor… bitirmek için ■ düğmesine basın</div>}
+        {speech.state === 'transcribing' && <div className="agent-loading"><LoaderCircle size={15} className="spinning" />Ses metne çevriliyor…</div>}
+        {speech.error && <div className="agent-error" role="alert">{speech.error}</div>}
       </div>
-      <form onSubmit={event => void submit(event)}><textarea value={input} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void submit(); } }} placeholder="Ajana sorun…" aria-label="Ajan mesajı" rows={2} /><button aria-label="Ajan mesajını gönder" disabled={pending || !input.trim()}><Send size={14} /></button></form>
+      <form onSubmit={event => void submit(event)}><textarea value={input} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void submit(); } }} placeholder="Ajana sorun…" aria-label="Ajan mesajı" rows={2} /><button type="button" className={`voice-input${speech.state === 'recording' ? ' recording' : ''}`} aria-label={speechLabel} title={speechLabel} aria-pressed={speech.state === 'recording'} disabled={speech.busy} onClick={speech.toggle}>{speech.busy ? <LoaderCircle size={14} className="spinning" /> : speech.state === 'recording' ? <Square size={12} /> : <Mic size={14} />}</button><button aria-label="Ajan mesajını gönder" disabled={pending || !input.trim()}><Send size={14} /></button></form>
     </div>
   </section>;
 }
