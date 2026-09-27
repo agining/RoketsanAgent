@@ -16,10 +16,10 @@ const levelLabels = { DUSUK: 'Düşük', ORTA: 'Orta', YUKSEK: 'Yüksek', KRITIK
 const regionName = (region: GraphRegion) => `Bölge ${region.region_id.replace(/^REG_N_0*/, '')}`;
 
 export function GraphAnalysisPanel({ enabled, onToggle, data, loading, error, reload, onWindow,
-  selected, onSelect, reports, requestWindow }: {
+  selected, onSelect, reports, requestWindow, showNormal = false }: {
     enabled: boolean; onToggle: () => void; data: GraphAnalysis | null; loading: boolean; error: string | null;
     reload: () => void; onWindow: (window: GraphWindow) => void; selected: GraphRegion | null;
-    onSelect: (regionId: string) => void; reports: AnalysisReport[]; requestWindow: GraphWindow;
+    onSelect: (regionId: string) => void; reports: AnalysisReport[]; requestWindow: GraphWindow; showNormal?: boolean;
   }) {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
@@ -59,7 +59,7 @@ export function GraphAnalysisPanel({ enabled, onToggle, data, loading, error, re
     setFormError(null);
     onWindow({ start_time: start || undefined, end_time: end || undefined });
   };
-  const regions = data?.regions.filter(region => region.interest_score >= data.region_interest_threshold) ?? [];
+  const regions = data?.regions.filter(region => showNormal || region.interest_score >= data.region_interest_threshold) ?? [];
   return <section className="game-graph-panel" aria-label="Bölgesel Anomali Analizini Başlat">
     <button className="graph-toggle" aria-pressed={enabled} onClick={onToggle}>
       {enabled ? 'Anomali tespitini kapat' : 'Bölgesel Anomali Analizini Başlat'}

@@ -32,6 +32,7 @@ import { Timeline } from './components/Timeline';
 import { AppTutorial } from './components/tutorial/AppTutorial';
 import { Button } from './components/ui/button';
 import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
+import { VoiceCommandButton } from './components/voice/VoiceCommandButton';
 
 import { useAnalysis } from './hooks/useAnalysis';
 import { useGraphAnalysis } from './hooks/useGraphAnalysis';
@@ -44,6 +45,7 @@ import { clockSeconds, positionAtTime } from './services/analysis-playback';
 import { formatScenario, formatVehicleClass } from './services/formatters';
 import { startPlaybackClock } from './services/playback-clock';
 import { activeTrackEntities, isActiveTrackEntity } from './services/trackFilters';
+import type { UiController } from './services/uiActions';
 
 import type { AnalysisData } from './types/analysis';
 
@@ -283,6 +285,7 @@ export default function App() {
   const analysis = useAnalysis();
   const [graphOpen, setGraphOpen] = useState(false);
   const [graphWindow, setGraphWindow] = useState<GraphWindow>({});
+  const [showNormalRegions, setShowNormalRegions] = useState(false);
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
   const graph = useGraphAnalysis(graphOpen, analysis.data, graphWindow);
   const graphRegions = useMemo(() => graphOpen ? (graph.data?.regions ?? []).filter(region =>
@@ -677,6 +680,10 @@ export default function App() {
     setTutorialRunId(current => current + 1);
   }, []);
 
+  // Voice commands read the latest render's state and callbacks through this ref (see services/uiActions.ts).
+  const voiceControllerRef = useRef<UiController | null>(null);
+  const voiceController = useCallback(() => voiceControllerRef.current!, []);
+
   if (!data) {
     return (
       <div className="map-first-shell">
@@ -731,6 +738,25 @@ export default function App() {
       </div>
     );
   }
+
+  voiceControllerRef.current = {
+    analysis: data,
+    filters,
+    setFilters,
+    selectTrack,
+    sidebarOpen, setSidebarOpen,
+    bottomOpen, setBottomOpen,
+    notificationsOpen, setNotificationsOpen,
+    settingsOpen, setSettingsOpen,
+    helpOpen, setHelpOpen,
+    graphOpen, setGraphOpen,
+    showNormalRegions, setShowNormalRegions,
+    selectedFrameId: selectedEntity?.frame_id ?? null,
+    startTutorial,
+    openPdfReport,
+    reload: analysis.reload,
+    setHumanReview: async enabled => { if (enabled !== humanReview) await toggleHumanReview(); },
+  };
 
   const error =
     analysis.status === 'error'
@@ -928,6 +954,8 @@ export default function App() {
           )}
         </div>
 
+        <VoiceCommandButton controller={voiceController} />
+
         <button
           className="pdf-report-download"
           onClick={openPdfReport}
@@ -1032,7 +1060,7 @@ export default function App() {
         />
 
         <MapSidebar
-          graphPanel={<GraphAnalysisPanel requestWindow={graphWindow} enabled={graphOpen} onToggle={() => setGraphOpen(value => !value)}
+          graphPanel={<GraphAnalysisPanel showNormal={showNormalRegions} requestWindow={graphWindow} enabled={graphOpen} onToggle={() => setGraphOpen(value => !value)}
             data={graph.data} loading={graph.loading} error={graph.error} reload={graph.reload}
             onWindow={window => { setSelectedRegionId(null); setGraphWindow(window); }}
             selected={selectedRegion} onSelect={regionId => {

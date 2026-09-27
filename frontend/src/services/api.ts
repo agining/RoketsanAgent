@@ -1,6 +1,6 @@
 import type {
-  ApiAlert, ApiAssessment, ApiChatReply, ApiFrameDetail, ApiFrameListItem, ApiHealth, ApiReport, ApiReviewList,
-  ApiRiskLevel, ApiSettings, ApiSummary, ApiTrack, ApiTrackingData,
+  ApiAlert, ApiAsrStatus, ApiAssessment, ApiChatReply, ApiFrameDetail, ApiFrameListItem, ApiHealth, ApiReport, ApiReviewList,
+  ApiRiskLevel, ApiSettings, ApiSummary, ApiTrack, ApiTrackingData, ApiTranscription, ApiUiCommandPlan,
 } from '../types/api';
 import type { GraphAnalysis, GraphWindow } from '../types/graph';
 
@@ -78,6 +78,14 @@ export const api = {
   assessAll: (minRisk: ApiRiskLevel = 'ORTA', force = false) => request<{ assessed: string[] }>('/api/assess-all', { method: 'POST', ...json({ min_risk: minRisk, force }) }),
   chat: (message: string, threadId?: string | null, frameId?: string | null, signal?: AbortSignal) =>
     request<ApiChatReply>('/api/chat', { method: 'POST', ...json({ message, thread_id: threadId ?? null, frame_id: frameId ?? null }) }, signal),
+  /** Speech-to-text (Whisper). start loads the model once (slow on first call); transcribe needs it loaded. */
+  asrStatus: (signal?: AbortSignal) => request<ApiAsrStatus>('/api/asr/status', {}, signal),
+  asrStart: () => request<ApiAsrStatus>('/api/asr/start', { method: 'POST' }),
+  asrTranscribe: (audio: Blob, signal?: AbortSignal) =>
+    request<ApiTranscription>('/api/asr/transcribe', { method: 'POST', body: audio, headers: { 'Content-Type': audio.type || 'application/octet-stream' } }, signal),
+  /** Asks the LLM which UI actions carry out a spoken command, given the current UI state (see app/ui_actions.md). */
+  uiCommand: (command: string, context: unknown, signal?: AbortSignal) =>
+    request<ApiUiCommandPlan>('/api/ui-command', { method: 'POST', ...json({ command, context }) }, signal),
   imageUrl: (frameId: string) => apiUrl(`/api/images/${id(frameId)}`),
 };
 

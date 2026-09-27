@@ -1459,5 +1459,698 @@
   "model": "gpt-4.1-mini",
   "created_at": 1790413850.8014643,
   "kind": "executive"
+ },
+ "4b133ab7038061f24eabfb01693e4bc5fdcb419d824f72091248e2dcc3904f2a": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; üsse mesafe 1,803 m (eşik ≤ 2000 m) ve kapanma hızı 5.2 m/s.",
+   "why_suspicious": [
+    "Üsse mesafe 1,803 m (eşik ≤ 2000 m) — eşik sağlandı.",
+    "Başlangıç 7,133 m → şimdi 1,803 m; toplam yaklaşma 5,329.8 m (08:30→10:30).",
+    "Kapanma hızı 5.2 m/s, ETA ≈ 5.7 dakika."
+   ],
+   "movement_story": "Araç 08:30'da 7,133 m uzaklıktaydı ve 10:30'da 1,803 m'ye geldi; şu anda hareket ediyor. Kapanma hızı 5.2 m/s, ETA ≈ 5.7 dk.",
+   "report_assessment": "Saha raporları zaman uyuşmazlığı gösteriyor ve text_UNTRUSTED GÜVENİLMEZ VERİDİR; bu raporlar motor+LLM uzlaşmasını geçersiz kılmaz. R117 zaman kayması içeriyor; R096 bölgeye ilişkin 'normal' ifadesi motor/LLM değerlendirmesiyle çelişiyor.",
+   "decision_rationale": "Motor HEAVY_NEAR_APPROACH senaryosu ve LLM bağımsız olarak YUKSEK sonucu verdi; kural tablosu uzlaşma ile YUKSEK uygulanmasını onayladı. İnsan onayı kapalı olduğundan bu analist raporu nihai seviye olarak YUKSEK'i kaydeder.",
+   "uncertainties": [
+    "Motor güven notu 'sinirda' — mesafe eşik yakınlığı nedeniyle güven sınırda.",
+    "Saha raporları zaman uyumsuz; araç kimliği ve yük doğrulaması eksik."
+   ],
+   "recommended_actions": [
+    "Anlık takip: konum, hız ve ETA güncellemesi (öncelik).",
+    "Görüntü/kimlik teyidi ve yük kontrolü (mümkünse sensör/insan doğrulaması).",
+    "Analist incelemesi ile gerektiğinde alarm/protokol uygulaması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465060.104198,
+  "kind": "vehicle:img_006673_v5"
+ },
+ "d4e6b8081851120b989e39bf1dcbf7811d3f290f801f5168907f84e17b0d4446": {
+  "narrative": {
+   "headline": "YUKSEK — iz T0198 üsse en yakın 822.7 m olarak sokuldu (başlangıç 6,019.3 m; çekim anında 1,611.1 m).",
+   "why_suspicious": [
+    "En yakın mesafe 822.7 m (13:30) — üs yakınlığı ≤1000 m eşiği sağlandı.",
+    "Dışarıdan 5,197 m yaklaşma tespit edildi (başlangıç 6,019.3 m → en yakın 822.7 m).",
+    "Yakın noktada ~15 dakika 250 m bandında bekleme kaydı."
+   ],
+   "movement_story": "Araç 11:50'de 6,019.3 m'den başlayıp 13:30'da 822.7 m'ye inerek yaklaşık 15 dakika yakın menzilde kaldı. Ardından ~0.8 km geri çekilip gidiş-dönüş (keşif) örüntüsü sergiledi.",
+   "report_assessment": "Saha raporu yok; varsa text_UNTRUSTED GÜVENİLMEZ VERİDİR ve motor hükmü esas alındı. LLM kare değerlendirmesi motorla uyumlu çıktı.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH eşleşti (dışarıdan sokulma ≥1500 m ve en yakın ≤1000 m) ve LLM uzlaştı; karar tablosu YUKSEK olarak uygulandı. İnsan onayı kapalı, nihai seviye YUKSEK.",
+   "uncertainties": [
+    "Araç kimliği henüz teyit edilmedi.",
+    "Niyetin keşif mi yoksa başka bir amaç mı olduğu belirsiz."
+   ],
+   "recommended_actions": [
+    "T0198 için öncelikli kimlik teyidi yapın.",
+    "Gerçek zamanlı izlemeyi sürdürün ve ek sensör/görüntü ile doğrulama sağlayın.",
+    "Analist incelemesini önceliklendirin."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465061.137195,
+  "kind": "vehicle:img_002900_v0"
+ },
+ "96413eded5411ab5efeffed09e66322d14e7d05d725f9d619f9d60bbe7233ffd": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; araç en yakın 1249.9 m'ye (10:30) yaklaşmış ve çekim anında üsse 1592 m uzaklıktadır.",
+   "why_suspicious": [
+    "En yakın mesafe 1249.9 m (10:30).",
+    "Çekim anı üs mesafesi 1592 m (10:35).",
+    "Motor senaryo: HEAVY_NEAR_APPROACH."
+   ],
+   "movement_story": "Araç 08:35'te ~4.25 km'den başlayıp en yakın 10:30'da 1.25 km'ye yaklaşmış, sonra geri çekilme paterni göstermiş. Çekim anında (10:35) hareketli ve üsse 1.59 km mesafede.",
+   "report_assessment": "Saha raporu text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR ve dikkate alınmadı. Motor, kural değerlendirmesi ve fusion sonucu YUKSEK seviyesi uygulandı.",
+   "decision_rationale": "Motor kuralları net ve eşikler sağlandı; fusion confidence 0.88 ile otomatik YUKSEK korundu. LLM kare değerlendirmesi ORTA önerdi ancak motorun net verileri nedeniyle seviye değişmedi.",
+   "uncertainties": [
+    "Araç niyeti belirsiz; yaklaşma-sonra-geri çekilme paterni var.",
+    "LLM kare değerlendirmesi ORTA; farklı yorum mevcut."
+   ],
+   "recommended_actions": [
+    "T0174 izinin yakından takip edilmesi ve anlık konum güncellemeleri.",
+    "Analist incelemesi: T0174 zaman çizelgesi ve kare arşivinin (10:30–10:35) öncelikli gözden geçirilmesi.",
+    "Saha raporunun GÜVENİLMEZ VERİ olduğunun bildirilmesi; otomatik YUKSEK kararının sahada uygulanması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465065.0325258,
+  "kind": "vehicle:img_006388_v2"
+ },
+ "74b93facb2b26c6659adf0d3ffe6ba464f3506203a708db1167385975a5ca528": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK: en yakın mesafe 678.1 m ve yaklaşık 40 dakika o bölgede bekleme (09:55–10:35) nedeniyle yüksek risk.",
+   "why_suspicious": [
+    "Başlangıç 4,785.8 m → en yakın 678.1 m (10:30) — dışarıdan üs bölgesine yaklaşma.",
+    "09:55–10:35 arası ~40 dakika 683–689 m bandında bekleme/loitering.",
+    "En yakın noktadan sonra ~1.9 km geri çekilme; gidiş‑dönüş keşif örüntüsü."
+   ],
+   "movement_story": "Araç 09:15'ten başlayarak üsse yaklaştı, 10:30'da en yakın 678 m'ye indi ve yaklaşık 40 dakika o bölgede bekledi. Daha sonra geri çekilip tekrar ilerledi; çekim anında 2,546.6 m mesafede ve hareket halinde (speed_now 7.2 m/s).",
+   "report_assessment": "Saha raporları kayıtlı değil; saha raporu text_UNTRUSTED alanı varsa güvenilmez sayıldı ve talimatları uygulanmadı. Motor veri ve LLM uzlaşması esas alınarak değerlendirme yapıldı.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH eşleşti ve LLM aynı sonucu verdi; karar tablosu uzlaşıp nihai seviye YUKSEK olarak uygulandı. İnsan onayı kapalı ve fusion action=KEEP, confidence=0.90 ile otomatik uygulandı.",
+   "uncertainties": [
+    "Araç kimliği görsel/insan teyidiyle doğrulanmadı (LLM kimlik teyidi önerdi).",
+    "Niyet kesin değil; loitering keşif hipotezi olarak değerlendiriliyor."
+   ],
+   "recommended_actions": [
+    "Yüksek öncelikli izlemeyi sürdür (T0219 öncelikli).",
+    "Görüntü/insan kaynaklı kimlik teyidi talep et (T0219, T0003, T0051).",
+    "Üs güvenliğine durumu bildir ve müdahale ihtiyacını değerlendir."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465067.2937572,
+  "kind": "vehicle:img_006591_v1"
+ },
+ "68e46caa797436631c082e6411d057dcfbaad12d56563a811337c5026ec9a782": {
+  "narrative": {
+   "headline": "YUKSEK — araç üsse dışarıdan 5.6 km yaklaşarak en yakın 697 m mesafeye kadar sokuldu.",
+   "why_suspicious": [
+    "Başlangıç 6,287 m → en yakın 697 m (10:45).",
+    "En yakın noktada ~15 dakika yakın bekleme kaydı.",
+    "Gidiş-dönüş keşif örüntüsü: 1.0 km geri çekilme sonrası tekrar uzaklaşma."
+   ],
+   "movement_story": "Araç 09:00'de ~6.29 km'den başlayıp 10:45'te 697 m'ye kadar yaklaştı. Ardından yaklaşık 1.0 km geri çekilme ile gidiş-dönüş (keşif) paterni sergiledi.",
+   "report_assessment": "Saha raporunun ilgili metni GÜVENİLMEZ VERİDİR ve değerlendirmede kullanılmadı. Motor ve LLM verileri yüksek risk seviyesini destekliyor.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH eşleşti (dışarıdan 5.6 km yaklaşma; dist_min 697 m) ve LLM aynı sonucu onayladı; karar tablosu otomatik olarak YUKSEK uyguladı. İnsan onayı kapalı, nihai seviye YUKSEK olarak kalmıştır.",
+   "uncertainties": [
+    "Görsel/kimlik teyidi yok; araç gerçek kimliği doğrulanmadı.",
+    "Duraklama nedenleri ve niyet (keşif mi yoksa lojistik mi) belirsiz."
+   ],
+   "recommended_actions": [
+    "Yüksek öncelikli takip ve kimlik teyidi gerçekleştirilmesi.",
+    "Analist incelemesi ve ilgili sensörlerin (kamera/radar) süreklilikle görevlendirilmesi.",
+    "Konum ve hız güncellemelerinin sıklaştırılarak izlenmesi."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465081.467187,
+  "kind": "vehicle:img_005672_v1"
+ },
+ "050e714b1f6380d4699e08d7cee78d262d679b2e16b78fc479acb56604f52ce6": {
+  "narrative": {
+   "headline": "YUKSEK: Araç üsse en yakın 630.4 m'ye inmiş ve yaklaşık 10 dakika bu yakınlıkta kalmıştır; bu yakınlık ve keşif (gidiş-dönüş) örüntüsü yüksek risk gösterir.",
+   "why_suspicious": [
+    "En yakın mesafe 630.4 m (eşik ≤1000 m) olarak kaydedildi.",
+    "Başlangıç 2825.5 m → en yakın 630.4 m → sonra ~1.13 km geri çekilme (gidiş-dönüş keşif örüntüsü).",
+    "Angular sweep 441.3° ve approach_total_m 1060.2 m, alanda tarama hareketini destekliyor."
+   ],
+   "movement_story": "08:30–10:20 arası 2.83 km'den 630.4 m'ye yaklaşıp yaklaşık 10 dakika bu yakınlıkta kaldı. Sonra geri çekilerek 10:30'da 1.77 km uzaklığa geri çekilmiş (anlık konum 1.77 km).",
+   "report_assessment": "Motor kuralları ve LLM kare değerlendirmesi 'YUKSEK' sonucunda uzlaştı; karar tablosu bu uzlaşmayı uyguladı. İnsan onayı kapalı, nihai seviye YUKSEK olarak kaydedildi.",
+   "decision_rationale": "Motor kriterleri (dışarıdan sokulma 2195 m ve en yakın 630.4 m ≤1000 m) ile LLM değerlendirmesi tutarlı şekilde YUKSEK belirledi. Karar tablosu uzlaşma ile otomatik uygulama yaptı; insan onayı gerekmedi.",
+   "uncertainties": [
+    "Araç kimlik doğrulama görüntü güvenirliği detection=0.8417 olup doğrulama gerekebilir.",
+    "Niyet ve yük (keşif vs transit) belirsiz; hareket örüntüsü keşif hipotezini destekliyor ancak kesin bilgi yok."
+   ],
+   "recommended_actions": [
+    "Anlık takip ve konum güncellemesi; üs yakınında yeniden yaklaşma durumunda alarmı yükseltin.",
+    "Görüntü tabanlı kimlik teyidi ve araç izinin (T0043) doğrulanması için analist incelemesi yapın.",
+    "Yakınlaşma tekrarlanırsa yerel güçleri bilgilendirerek güvenlik önlemlerini hazır bulundurun."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465089.0474555,
+  "kind": "vehicle:img_006673_v6"
+ },
+ "9cd46f0c9f5b1cc10fe8f78521dabdc1cd2428999970cc87c69c4dd5abe21fd6": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK: araç üsse en yakın 875.3 m'ye yaklaşıp yaklaşık 20 dakika civarında dwell gösterdi ve çekim anında uzaklık 1693.1 m idi.",
+   "why_suspicious": [
+    "dist_min_m = 875.3 m (11:30).",
+    "approach_total_m = 3492.4 m toplam yaklaşma kaydedildi.",
+    "LLM raporu: dwell_near_min ≈ 20 dakika ve gidiş-dönüş (keşif) örüntüsü."
+   ],
+   "movement_story": "Araç dışarıdan (dist_start_m 5185.5 m) üsse yaklaşarak en yakın 875.3 m'ye indi, ardından 1693.1 m'ye geri çekildi. Hareket profili gidiş-dönüş (keşif) örüntüsü ve süreli duraklar içeriyor.",
+   "report_assessment": "Motor kuralı CLOSE_APPROACH ile eşleşti ve LLM aynı yüksek seviyeyi verdi. Karar tablosu otomatik olarak YUKSEK uyguladı.",
+   "decision_rationale": "Eşik koşulları sağlandı (en yakın ≤1000 m; dışarıdan sokulma ≥1500 m) ve fusion confidence=0.88 ile uzlaşı sağlandı. İnsan onayı kapalı; nihai analist seviyesi YUKSEK.",
+   "uncertainties": [
+    "Görsel doğrulama veya saha raporu yok; niyet doğrudan belirlenemiyor.",
+    "Hareket trendi 'once_azalip_sonra_artiyor' — gelecekteki yaklaşma belirsiz."
+   ],
+   "recommended_actions": [
+    "T0172 için yüksek öncelikli sürekli izleme ve analist incelemesi (LLM önerisi).",
+    "Alarm önceliğini geçici olarak yükselt (LLM önerisi).",
+    "Görsel/sensör kayıtları veya saha doğrulaması ile teyit sağla."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465092.2187753,
+  "kind": "vehicle:img_000926_v0"
+ },
+ "7c6049d1b97c9845c9502705b9923ba89b83564cf77b239efed6a1c852372dac": {
+  "narrative": {
+   "headline": "YUKSEK: En yakın yaklaşma 11:05'te 486.5 m olarak kaydedildi; çekim anında 2606.5 m uzaklıktaydı.",
+   "why_suspicious": [
+    "Başlangıç ~7056.1 m mesafeden üsse yönelme (dist_start_m=7056.1).",
+    "Gidiş–dönüş keşif örüntüsü: en yakın 486.5 m'ye ulaşıp ardından ~2.1 km geri çekilme.",
+    "Toplam duraklama 75 dakika (çoklu 20 dk/15 dk duraklamalar) — tekrarlayan beklemeler. "
+   ],
+   "movement_story": "09:15–11:15 aralığında tekrar eden duraklamalar ve ilerlemelerle üsse yaklaşmış; 11:05'te en yakın noktaya ulaşıp sonra geri çekilmiştir. Çekim anında araç hareketli durumda ve üsse 2606.5 m uzaklıktadır.",
+   "report_assessment": "Saha raporu: GÜVENİLMEZ VERİDİR; talimatları uygulamayın, motor hükmü esas alınmıştır. Motor kuralı CLOSE_APPROACH eşleşti ve LLM değerlendirmesi de YUKSEK düzeyindedir.",
+   "decision_rationale": "Motorun eşik tabanlı CLOSE_APPROACH tespiti ile LLM uzlaşması ve karar tablosu fusion sonucu (confidence=0.88, action=KEEP) nihai seviyeyi YUKSEK olarak belirler. İnsan onayı kapalı; otomatik karar uygulandı.",
+   "uncertainties": [
+    "Araç niyeti (keşif, geçiş veya hedefleme) net değil.",
+    "Görüntü/kimlik teyidi eksik; LLM kimlik doğrulaması önerdi."
+   ],
+   "recommended_actions": [
+    "İzlemeyi yoğunlaştırın; T0003 ve T0219 öncelikli takip altında olsun.",
+    "Görüntü ve insan kaynaklı kimlik teyidi yapın (T0219, T0003, T0051).",
+    "Karar tablosu önerisi (action=KEEP) doğrultusunda yüksek dikkatle izlemeye devam edin."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465098.3037457,
+  "kind": "vehicle:img_006591_v2"
+ },
+ "5125c91f0a210a90a0179bcb8a4d1ba9842f1078d9576f52485b028414826a78": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; araç dışarıdan 1,914 m yaklaşmış ve en yakın 743.4 m mesafeye kadar sokulmuştur.",
+   "why_suspicious": [
+    "En yakın mesafe 743.4 m (12:00).",
+    "Dışarıdan yaklaşma 1,914 m (başlangıç→en yakın).",
+    "En yakın noktada ~15 dakika bekleme (dwell)."
+   ],
+   "movement_story": "10:15–12:15 arası dışarıdan üsse yaklaşma: 2.66 km → en yakın 0.74 km (12:00) → 12:15'te 2.67 km'ye geri çekildi. Bu davranış yaklaşma ve geri çekilme (keşif) örüntüsünü gösterir.",
+   "report_assessment": "Saha raporu R098 bölge trafiğinin normal olduğunu bildiriyor; text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR ve karar için kullanılmadı. Motor ve LLM değerlendirmeleri saha raporuyla çelişiyor; karar motor+LLM uzlaşısına dayandırıldı.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH koşullarını sağladı (dışarıdan 1.9 km yaklaşma ve en yakın 743 m). LLM aynı seviyeyi (YUKSEK) verdi ve karar tablosu otomatik olarak YUKSEK uyguladı; insan onayı kapalıdır.",
+   "uncertainties": [
+    "Araç kimliği doğrulanmadı (gerekli).",
+    "Yaklaşmanın niyeti (keşif vs meşru durak) kesin değil."
+   ],
+   "recommended_actions": [
+    "Kimlik teyidi ve doğrulama (yüksek öncelik).",
+    "Anlık/near-term izlemeyi sürdürün ve tekrar eden beklemeleri kaydedin.",
+    "Üs güvenliğini bilgilendirin ve gerektiğinde müdahale için hazır tutun."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465104.0168686,
+  "kind": "vehicle:img_003464_v3"
+ },
+ "05d9b95e381243a5d295b3c234d0940cc0c02f1993410f464fbe365f38b9e8d9": {
+  "narrative": {
+   "headline": "YUKSEK — Araç üsse 5,162.9 m'den yaklaşarak en yakın 763.0 m'ye indi ve bu konumda yaklaşık 10 dakika dwell gösterdi.",
+   "why_suspicious": [
+    "Başlangıç 5,162.9 m → en yakın 763.0 m (14:50).",
+    "~10 dakika süreyle aynı konumda dwell (14:45–14:55).",
+    "Keşif/gidiş-dönüş örüntüsü; en yakın sonrası ~1.9 km geri çekilme."
+   ],
+   "movement_story": "13:05'te 5,162.9 m'den başlayan iz 14:50'de 763 m'ye indi ve yaklaşık 10 dakika sabit kaldı. Sonra geri çekilme ile keşif örüntüsü oluşturdu; 15:05'te 2,695.2 m ve hareketli durumda.",
+   "report_assessment": "Saha raporu yok; varsa text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR ve dikkate alınmadı. Motor ve LLM değerlendirmesi YUKSEK seviyesinde uzlaştı.",
+   "decision_rationale": "Motor CLOSE_APPROACH kuralları karşılandı (dışarıdan 4,400 m yaklaşma ve min 763 m ≤ 1,000 m eşiği). LLM aynı sonucu verdi ve karar tablosu uzlaşı ile otomatik YUKSEK uyguladı (confidence 0.88).",
+   "uncertainties": [
+    "Araç kimlik/plaka doğrulaması yapılmadı.",
+    "Niyet (hedefli keşif vs rutin geçiş) doğrulanmadı."
+   ],
+   "recommended_actions": [
+    "Analist incelemesi ve görsel/plaka teyidi (T0101).",
+    "T0101 için yüksek öncelikli takip ve sürekli izleme sürdürülsün.",
+    "Gerekirse ek sensörlerle (kamera/izleme) anlık cue ve kayıt alınması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465113.3730292,
+  "kind": "vehicle:img_001733_v2"
+ },
+ "ef4a7e8d5d3bf7d236d6539390e7a020ccc6ccc5dd1313994a36089ac1054b70": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK — T0048 üsse en yakın 599.2 m'ye (11:50) yaklaştı ve o noktada yaklaşık 20 dakika bekledi.",
+   "why_suspicious": [
+    "En yakın mesafe 599.2 m (11:50) — kritik eşik ≤1000 m sağlandı.",
+    "Başlangıç 5.75 km'den başlayıp üs yönünde 3028.2 m yaklaşma kaydı (dist_start 5745.3 m → dist_min 599.2 m).",
+    "En yakın noktada bekleme sonrası yaklaşık 2.1 km geri çekilme gösteren gidiş-dönüş (keşif) örüntüsü."
+   ],
+   "movement_story": "10:10'da 5.75 km civarından başlayan iz 11:50'de 599.2 m'ye kadar yaklaşıp ~20 dk bekledi. Ardından ~2.1 km uzaklaşıp çekim anında üsse 2717.2 m uzaklıktaydı.",
+   "report_assessment": "Saha raporu text_UNTRUSTED GÜVENİLMEZ VERİDİR; saha metni motor hükmünü değiştirmiyor. Motor ve LLM uzlaşısı kararın dayanağıdır.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH, dışarıdan sokulma ve ≤1000 m min mesafe koşullarını karşıladı; LLM aynı YUKSEK sonucu verdi ve insan onayı kapalı olduğundan nihai seviye YUKSEK olarak uygulanır.",
+   "uncertainties": [
+    "Canlı sensörlerle (radar/yer kameraları) anlık konum ve araç kimliği/plaka doğrulaması yok.",
+    "Beklemenin niyeti (keşif vs sivil durma) kesin değil; niyet ayrımı kayıtlardan netleşmedi."
+   ],
+   "recommended_actions": [
+    "Canlı sensörlerden (radar/ground cameras) T0048 konum ve kimlik teyidi iste.",
+    "T0048 için get_track_timeline ile 30 dk aralıklarla 2 saatlik timeline çekip min mesafe ve geri dönüş zamanını doğrula.",
+    "T0048 için yakın izleme başlat ve birimlere durumdan haberdar olmasını sağla."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465118.2860234,
+  "kind": "vehicle:img_005561_v3"
+ },
+ "e13e592b45145e78fff03494306e20f68621fc37dd1eb98378ee8a9df1a83294": {
+  "narrative": {
+   "headline": "YÜKSEK: Araç 11:40'da üsse en yakın 894 m'ye yaklaşarak ≤1000 m eşiğini sağladı.",
+   "why_suspicious": [
+    "En yakın mesafe 894 m (11:40) ve bu noktada yaklaşık 10 dakika bekleme.",
+    "Başlangıç 3.61 km → en yakın 0.894 km → ardından ~3.6 km geri çekilme; gidiş-geliş keşif örüntüsü.",
+    "Fusion kararında confidence ≈0.88; motor ve LLM uzlaşısı YUKSEK olarak eşleşti."
+   ],
+   "movement_story": "10:05–12:05 arası izde araç önce üsse yaklaşmış, 11:40 civarında kısa süreli (≈10 dk) beklemiş ve sonrasında geri çekilmiştir. Çekim anında mesafe 4.48 km ve araç hareket halinde (hız ≈3.9 m/s).",
+   "report_assessment": "Saha raporu yok; motor ve LLM değerlendirmesi nihai kararı belirledi. Karar tablosu otomatik uzlaşıyla YUKSEK sonucu uyguladı.",
+   "decision_rationale": "Motor CLOSE_APPROACH kurallarını eşleştirdi ve eşikler net sağlandı; LLM aynı seviyeyi doğruladı. İnsan onayı kapalı olduğundan nihai seviye YUKSEK olarak uygulanmıştır.",
+   "uncertainties": [
+    "Araç kimliği ve niyeti net değil; kimlik teyidi eksik.",
+    "Duraklamaların (≈10 dk) operasyonel amaç mı yoksa rastgele mi olduğu belirsiz."
+   ],
+   "recommended_actions": [
+    "T0139 için yüksek öncelikli analist incelemesi ve kimlik teyidi.",
+    "Sürekli izleme sürdürülsün; araç yeniden ≤1000 m'ye yaklaşırsa anında uyarı ve tedbir uygulansın.",
+    "Operasyonel ekipler bilgilendirilsin ve denetim izi kayıtları doğrulansın."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465129.3758035,
+  "kind": "vehicle:img_000531_v3"
+ },
+ "77f96614add391769a5ec4a589d3b4e0bc6859126f04040993da02d79d155aba": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; en güçlü sayısal gerekçe: en yakın mesafe 527.4 m ve dışarıdan sokulma 4,033 m (başlangıç − en yakın).",
+   "why_suspicious": [
+    "En yakın noktada yaklaşık 20 dakika durağan bekleme tespit edildi."
+   ],
+   "movement_story": "Araç üsse yaklaşma ve geri çekilme içeren gidiş-dönüş (keşif) örüntüsü sergiledi. Çekim anında hareketli durumda ve mesafe uzaklaşmış durumda.",
+   "report_assessment": "Motor CLOSE_APPROACH kurallarını karşıladı ve LLM aynı seviyeyi (YUKSEK) verdi. İnsan onayı kapalı; karar tablosu otomatik uzlaşıyla YUKSEK uyguladı.",
+   "decision_rationale": "En yakın mesafe ve dışarıdan sokulma koşulları CLOSE_APPROACH kural setini sağladığı için nihai seviye YUKSEK olarak belirlendi. Motor ve LLM uzlaştı, insan müdahalesi gerekmedi.",
+   "uncertainties": [
+    "Tespit güven puanı 0.3936 eşik yakınında (0.40) — iz doğrulaması yapılmış ancak sınırda kalıyor.",
+    "Araç niyeti belirsiz; keşif örüntüsü olduğu hipotezi var."
+   ],
+   "recommended_actions": [
+    "İzleme frekansını 5 dakikada bire yükselterek yüksek çözünürlüklü kare/vid alın.",
+    "Anlık ETA ve heading trendi ile plaka/kimlik doğrulaması talep edin.",
+    "Analist incelemesini 30 dakika içinde yapın; yeni karelerde yeniden üs ≤1 km girişini önceliklendirin."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465130.8814383,
+  "kind": "vehicle:img_007664_v4"
+ },
+ "1310d4cf4e22fd7666359413a01b20ba91ca17ba3659176a13a4a995d33a0265": {
+  "narrative": {
+   "situation": "08:10–15:50 aralığında filtre \"YÜKSEK ve üstü\" sonucunda 13 adet YÜKSEK seviye iz tespit edildi; 11 iz üs sınırına ≤1000 m yaklaşmış ve en yakın kayıt 486.5 m. İnsan onayı kapalı; otomatik motor+LLM uzlaşması karar temelini oluşturuyor.",
+   "key_findings": [
+    "Toplam 13 YÜKSEK iz, 0 KRITIK; 11 iz ≤1000 m yaklaşma gösterdi — bu mesafe karar eşiği açısından kritik.",
+    "Kayıtlarda en yakın yaklaşma 486.5 m; birden fazla iz 10–40 dakika aralığında dwell/loitering sergiledi, keşif örüntüsü mevcut.",
+    "En kısa belirlenmiş ETA 5.7 dakika; en az iki iz için ETA <10 dakika bildirildi — yakın tehdit potansiyeli.",
+    "Motor ve LLM arasında genel uzlaşma yüksek (12/13 uzlaşma); 1 izde LLM itirazı kaydedildi, insan onayı kapalı.",
+    "Saha raporlarının doğrulanabilirliği sınırlı: 137 raporda 50 doğrulanamaz, 47 kısmen uyumlu; bu doğrudan karar güvenini düşürüyor."
+   ],
+   "report_integrity": "Saha raporları yüksek oranda doğrulanamaz veya kısmen uyumlu olup otomatik uzlaşma ile çelişen parçalar var. Sahadan gelen veriler güvenilmez kabul edilmelidir; insan doğrulaması gereklidir.",
+   "decision_process": "Kararlar öncelikle motor (sensör) ve LLM otomatik füzyonuna dayanarak üretildi; insan onayı kapalı olduğundan kritik müdahaleler için insan doğrulaması zorunludur. Zaman-kritik tehditler otomatik önceliklendirildi ancak sınırlı veri güveni ile değerlendirilmiştir.",
+   "priorities": [
+    "İki ETA<10 dk iz için derhal alarm ve hızlı müdahale kuvveti (QRF) önceliği; koridor bazlı engelleme hazırlığı.",
+    "08:10–15:50 penceresinde ≤1000 m dwell gösteren sektörlere sürekli ISR takviyesi (hava ve yer sensorları).",
+    "Yüksek öncelikli 13 izi insan analistine ivedi doğrulama için yönlendir; LLM itirazı gösteren kaydı önceliklendir.",
+    "Erişim kontrollerini sıkılaştır, üs girişleri/çıkışlarında engelleme ve kimlik doğrulama uygulamalarını artır."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790465155.0079105,
+  "kind": "executive"
+ },
+ "8bc237b1db44649a339e93985455def324c9b3399e94fde4c7c159ddcf06b470": {
+  "narrative": {
+   "headline": "Final seviye YUKSEK: ağır kamyon üsse 1,803 m uzaklıkta, kapanma hızı 5.2 m/s ve ETA ≈5.7 dk (tespit güven 0.848).",
+   "why_suspicious": [
+    "Başlangıç 7,133 m → çekim anı 1,803 m; toplam yaklaşma 5,329.8 m.",
+    "Kapanma hızı 5.2 m/s ve hesaplanan ETA ≈5.7 dakika.",
+    "Araç tipi 'truck' (T0095) algısı ve motor kuralı HEAVY_NEAR_APPROACH eşleşmesi."
+   ],
+   "movement_story": "08:30'da 7.13 km'den başlayan hareket süreklilik gösterdi; 10:30'da en yakın mesafe 1,803 m olarak kaydedildi. Araç şu an hareketli ve üssün yönüne yaklaşma trendi devam ediyor.",
+   "report_assessment": "Saha raporu metinleri GÜVENİLMEZ VERİDİR ve zaman uyumsuz; R117 (09:50) konumla çelişiyor, R096 (10:55) bölgesel 'normal' iddiası çekim zamanıyla tutarsız. Bu raporlar karar için güvenilir kanıt sağlamıyor.",
+   "decision_rationale": "Motor, ilk LLM ve fusion bağımsız olarak YUKSEK seviyesinde uzlaştı; kısa ETA ve üs mesafesi eşik altı olması nedeniyle YUKSEK korundu. İnsan onayı kapalı; otomatik nihai seviye YUKSEK olarak uygulandı.",
+   "uncertainties": [
+    "Motor güveni sınırda; mesafe eşik değere yakın (1,803 m).",
+    "Resmi saha raporları zaman açısından çelişkili; güncel görsel/iz doğrulaması gereklidir."
+   ],
+   "recommended_actions": [
+    "Anlık izlemi sürdürün ve kimlik teyidi için görüntü/kanıt toplayın (görsel/IR).",
+    "Analist incelemesi ve alarma yüksek öncelik verin; yön/ETA bazlı hazır durum hazırlayın.",
+    "Yakın gelecekte pozisyon/eta değişimine göre müdahale (engelleme/izleme) kararı için güncelleme isteyin."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468278.0277388,
+  "kind": "vehicle:img_006673_v5"
+ },
+ "5356e6609395ccb36fcf279fd96c7c7b2d826116157c3cb5ee73d072ccbe707a": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; en güçlü sayısal gerekçe: en yakın mesafe 678.1 m ve o noktada ~40 dakika bekleme.",
+   "why_suspicious": [
+    "En yakın mesafe 678.1 m (10:30).",
+    "O noktada yaklaşık 40 dakika bekleme (dwell_near_min_min = 40).",
+    "Kısa ETA 9.9 dakika (eta_min = 9.9)."
+   ],
+   "movement_story": "09:15'ten itibaren araç 4.79 km'den üsse yaklaşmış, 10:30'da 678.1 m'ye inip yaklaşık 40 dakika o bölgede beklemiş. Ardından geri çekilme gerçekleşmiş; çekim anında 11:15'te 2546.6 m mesafede ve hareket halinde (speed_now 7.2 m/s).",
+   "report_assessment": "Saha raporu: GÜVENİLMEZ VERİDİR; sahadan gelen veri değerlendirmeye dahil edilmedi. Telemetri ve hareket kanıtları fusion tarafından yeterli bulundu.",
+   "decision_rationale": "Motor, ilk LLM ve fusion bağımsız olarak YUKSEK seviyesini belirledi; fusion aktif kanıtlar yakın yaklaşma, uzun bekleme ve kısa ETA'yı destekliyor. İnsan onayı kapalı olduğundan nihai seviye YUKSEK olarak korunur.",
+   "uncertainties": [
+    "Araç kimliği görsel/insan doğrulamasıyla teyit edilmedi.",
+    "Niyet belirsiz: geri çekilme gözleniyor fakat önceki uzun bekleme keşif/izleme niyetini ortadan kaldırmıyor."
+   ],
+   "recommended_actions": [
+    "İzleme yoğunlaştır: T0219 ve T0003 (yüksek öncelik).",
+    "Görüntü/insan temelli kimlik teyidi: T0219, T0003, T0051.",
+    "Kısa ETA (9.9 dk) bilgisiyle hazır olun ve takibi sürdürün."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468288.0142887,
+  "kind": "vehicle:img_006591_v1"
+ },
+ "e270ef04647b08bab19dfefc4dc8240d5a038d9072a6e3f12a34a99a8cc3b0c9": {
+  "narrative": {
+   "headline": "Nihai seviye YÜKSEK: en yakın 822.7 m (13:30) ve üs yakınında ~15 dk bekleme kaydı.",
+   "why_suspicious": [
+    "En yakın mesafe 822.7 m (13:30).",
+    "Üs yakınında yaklaşık 15 dakika duraksama (dwell_near_min_min = 15).",
+    "Gidiş–dönüş/keşif örüntüsü: başlangıç 6,019 m → en yakın 822.7 m → çekim anında 1,611.1 m."
+   ],
+   "movement_story": "Araç 11:50'de 6,019 m'den başlayıp 13:30'da 822.7 m'ye yaklaşmış; ardından 13:50'de 1,611.1 m'ye çekilmiştir. Bu, yaklaşma ve geri çekilme (loiter/keşif) örüntüsüne karşılık gelir.",
+   "report_assessment": "Saha raporu yok; saha verisi varsa text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR ve dikkate alınmadı. Fusion önerisi YÜKSEK (güven 0.88) ve motor + ilk LLM uzlaşması mevcuttur.",
+   "decision_rationale": "Motor ve ilk LLM YÜKSEK uzlaştı; fusion da YÜKSEK önerdi (güven 0.88) ve aktif kanıtlar en yakın 822.7 m ile ~15 dk beklemeyi içerir. İnsan onayı kapalı; nihai seviye YÜKSEK olarak kaydedildi.",
+   "uncertainties": [
+    "Geri çekilme/uzaklaşma gözlemlense de mitigasyon etkisi belirsizdir.",
+    "Araç niyeti doğrudan kanıtlanmamıştır; kimlik teyidi eksik."
+   ],
+   "recommended_actions": [
+    "T0198 için öncelikli kimlik teyidi.",
+    "Sürekli izlemeyi sürdür ve T0198'i analiste öncelikli ata.",
+    "Yakın yaklaşma tekrarı veya davranış değişikliğini hemen bildir."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468291.2743962,
+  "kind": "vehicle:img_002900_v0"
+ },
+ "fdbe649b5284c11297f30c1825a2bc6daf664c1e11d0ad131dd6c6d96bb6e72e": {
+  "narrative": {
+   "headline": "Nihai seviye YÜKSEK: araç üsse 875.3 m'ye girip 20 dakika yakın mesafede bekleyerek kuvvetli yakınlaşma/keşif örüntüsü gösterdi.",
+   "why_suspicious": [
+    "dist_min = 875.3 m (11:30) — üs yakınlığı eşiği aşıldı.",
+    "dwell_near_min = 20 dakika — hedefte bekleme süresi belirgin.",
+    "approach_to_min = 4310.2 m — dışarıdan içeri doğru belirgin bir yaklaşma kaydı."
+   ],
+   "movement_story": "Araç 09:35'te 5185.5 m'den başlayıp 11:30'da 875 m'ye kadar yaklaşıp yaklaşık 20 dakika orada bekledi. Çekim anında araç 1693 m'de bulundu; önce yakınlaşma sonra geri çekilme (gidiş-dönüş/keşif) örüntüsü mevcut.",
+   "report_assessment": "Saha raporu yok; var olan text_UNTRUSTED alanları güvensiz veri olarak değerlendirilmelidir. Otomatik motor + ilk LLM + fusion uzlaşması, mevcut telemetri ve dwell verileri YÜKSEK değerlendirmesini destekliyor.",
+   "decision_rationale": "Nihai seviye YÜKSEK (analist seviyesi): motor, ilk LLM ve fusion bağımsız olarak YÜKSEK önerdi; en güçlü kanıtlar 875 m'lik giriş ve 20 dakika bekleme ile ilgili H_*/C_* anahtarlarıdır. Mevcut geri çekilme riski azaltıyor ancak tarihsel yakınlık ve dwell nedeni seviye değişikliğini gerektirmiyor.",
+   "uncertainties": [
+    "Mevcut geri çekilme (11:35 dist_now = 1693.1 m, heading offset 180°) kısa vadede riski düşürebilir ancak geçmiş yakınlaşma/dwell hipotezi seviyeyi koruyor.",
+    "Tespit güveni 0.7248544692993164; yanlış sınıflandırma ihtimali düşük ama mevcuttur."
+   ],
+   "recommended_actions": [
+    "T0172 için yüksek öncelikli sürekli izleme (konum ve mesafe güncellemeleri).",
+    "Analist incelemesi ve kayıt/kanıt tablolarının kontrolü (görüntü ve iz denetimi).",
+    "Alarm önceliğini yükselt — geçici olarak, analist incemesi sonrası geri alınabilir."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468295.666966,
+  "kind": "vehicle:img_000926_v0"
+ },
+ "57151c32d3a4c896218a5f2824d64a30e6055e8b1499c667557760b448fbb7b4": {
+  "narrative": {
+   "headline": "Nihai seviye YÜKSEK; araç en yakın 1,249.9 m (10:30) yaklaşmasının ardından çekim anında üsse 1,592.1 m uzaklıktadır.",
+   "why_suspicious": [
+    "Araç tipi 'truck' (ağır araç) olarak tespit edildi.",
+    "Motor kuralı HEAVY_NEAR_APPROACH ile eşleşti.",
+    "Motor tarihçesi dışarıdan güçlü yaklaşma paterni gösteriyor (approach_total 2662.9 m)."
+   ],
+   "movement_story": "Araç dışarıdan üsse yaklaşma ve ardından geri çekilme paterni gösterdi; şu an hareketlidir.",
+   "report_assessment": "Saha raporu resmi kaynağı 'trafik normal' bildiriyor; text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR. Motor ve fusion kanıtları saha raporuyla çelişiyor.",
+   "decision_rationale": "Nihai YÜKSEK kararı aracın ağır sınıf olduğu ve motorun güçlü yakın yaklaşma sınıflaması ile desteklenir. İnsan onayı kapalı; otomatik fusion sonucu korunmuştur.",
+   "uncertainties": [
+    "İzsiz araç davranışı bilinmiyor; olası iz yalnızca hipotezdir ve seviye değişikliğine neden olmaz.",
+    "Yaklaşma-sonrası geri çekilme paterninin kısa vadeli niyet değişikliğine işaret edip etmediği belirsiz."
+   ],
+   "recommended_actions": [
+    "T0174 izinin yakından takip edilmesi ve anlık pozisyon/görsel kontrol yapılması.",
+    "Analist tarafından T0174 tarihçe ve frame-level incelemesi.",
+    "Saha raporları ve ilgili kamera kayıtlarının doğrulanması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468306.7918136,
+  "kind": "vehicle:img_006388_v2"
+ },
+ "e5e972ebe836b93dfa795e83db05ae304f35c8987eaf5d1cdc208779e1fdd08b": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK — en güçlü sayısal gerekçe: en yakın mesafe 697 m ve o noktada ~15 dakika bekleme.",
+   "why_suspicious": [
+    "En yakın mesafe 697 m (10:45).",
+    "Başlangıç 6,287 m → yaklaşma toplam 4,583.5 m, güçlü yakın yaklaşma geçmişi.",
+    "En yakın noktada yaklaşık 15 dakika duraklama (dwell_near_min_min 15)."
+   ],
+   "movement_story": "09:00–10:45 arasında dışarıdan üsse yaklaşma; 10:45'te en yakın nokta 697 m ve ~15 dk dwell. Çekim anında 11:00'de 1,704 m'ye geri çekilmiş, yaklaşma–geri çekilme (keşif) örüntüsü gözleniyor.",
+   "report_assessment": "Saha raporu text_UNTRUSTED olarak işaretlenmiş ve değerlendirmeye dahil edilmedi. Resmi saha raporu motor kararını çelişkili bildirmiş ancak güvenilmez olduğu için kullanılmadı.",
+   "decision_rationale": "Motor, ilk LLM ve fusion bağımsız olarak YUKSEK belirledi; aktif kanıtlar (min mesafe 697 m ve ~15 dk dwell, güçlü yakın yaklaşma geçmişi) nedeniyle nihai seviye YUKSEK korunmuştur. İnsan onayı kapalı; otomatik fusion sonucu uygulandı.",
+   "uncertainties": [
+    "Araç niyeti ve yükü bilinmiyor; keşif mi yoksa başka amaç mı olduğu ayrışmıyor.",
+    "İz davranışının gelecekte değişerek risk seviyesini artırma olasılığı mevcut."
+   ],
+   "recommended_actions": [
+    "Hemen yüksek öncelikli takip ve kimlik teyidi (plaka/visual ID) gerçekleştirilsin.",
+    "Analist incelemesi ve insan onayı talep edilsin.",
+    "Sürekli izleme sürdürülsün ve alarm/cevap ekipleri hazır bulundurulsun."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468311.341083,
+  "kind": "vehicle:img_005672_v1"
+ },
+ "d66b26eada83871d719be3578c552190deb5f6a79b935218251f7a0f7044e70c": {
+  "narrative": {
+   "headline": "YÜKSEK: Araç 10:20'de üsse 630.4 m'ye inmiş ve yaklaşık 10 dakika bu yakınlıkta beklemiştir.",
+   "why_suspicious": [
+    "En yakın mesafe 630.4 m (10:20) — üs içine ≤1 km yakınlık kaydı.",
+    "Yakın noktada yaklaşık 10 dakika bekleme (dwell_near_min_min = 10).",
+    "Gidiş-dönüş keşif örüntüsü: başlangıç 2825.5 m → en yakın 630.4 m → geri çekilme 1134.8 m."
+   ],
+   "movement_story": "08:30'da 2825.5 m'den yaklaşmaya başladı; 10:20'de 630.4 m'ye indi ve ~10 dk kaldı. Ardından geri çekilerek 10:30'da 1765.3 m konumunda devam etti.",
+   "report_assessment": "Saha raporu (R096) text_UNTRUSTED olarak işaretlidir; sahadan gelen 'trafik normal' bildirimi otomatik iz ve ölçümleri geçersiz kılmaz. Otomatik veriler motor + LLM + fusion uyumuyla yüksek risk sinyali vermektedir.",
+   "decision_rationale": "Motor, ilk LLM ve fusion birden YÜKSEK sonucu verdi; en güçlü nicel gerekçe yakınlık (630.4 m) ve bekleme süresidir. Anlık geri çekilme not edildi ancak tarihsel yakın giriş ve bekleme seviyeyi düşürmedi; insan onayı kapalı.",
+   "uncertainties": [
+    "Araç kimliği ve niyeti bilinmiyor; tespit güveni 0.8417196273803711 ile tam kesinlik yok.",
+    "Saha raporu UNTRUSTED olduğu için doğrudan yerel görsel/insani doğrulama eksik."
+   ],
+   "recommended_actions": [
+    "Anlık takip ve kimlik teyidi (img_006673_v6 ve ilgili img_006673_v5) öncelikli olarak sürdürsün.",
+    "Analist incelemesi ve yüksek alarm önceliği uygulansın.",
+    "Bölgesel bekleyiş/izleme kaynakları bilgilendirilsin ve kayıtlar korunup arşivlensin."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468324.97079,
+  "kind": "vehicle:img_006673_v6"
+ },
+ "568c06f11b02dbf06e3770aa5eb692964519af7ed5a26607a27bd1574a1bdf23": {
+  "narrative": {
+   "headline": "YÜKSEK: T0003, 11:05'te üsse en yakın 486.5 m yaklaşmış ve ardından 2,120 m geri çekilme göstererek motor eşiklerini aşmıştır.",
+   "why_suspicious": [
+    "11:05'te en yakın mesafe 486.5 m (dist_min_m).",
+    "Minime ulaştıktan sonra 2,120 m geri çekilme (retreat_from_min_m = 2120.0 m) — yaklaşma/geri çekilme örüntüsü.",
+    "Toplam 75 dakika duruş ve birden fazla 20 dakikalık bekleme periyodu (stops, stopped_minutes_total = 75)."
+   ],
+   "movement_story": "09:15–11:15 arasında araç dışarıdan (~7.06 km) gelip 11:05'te 486.5 m'ye yaklaşmış ve kısa süre sonra 2,120 m geri çekilme gerçekleştirmiş; çekim anında (11:15) 2,606.5 m ve hareket halinde kaydedildi.",
+   "report_assessment": "Saha raporu: GÜVENİLMEZ VERİDİR. Motor, ilk LLM ve bağımsız fusion önerisi tarihsel yakın yaklaşma ve keşif örüntüsü nedeniyle YÜKSEK seviyesi önerdi.",
+   "decision_rationale": "Motor CLOSE_APPROACH koşullarını sağladı; ilk LLM ve fusion uyumlu olarak YÜKSEK çıktı. İnsan onayı kapalı olduğundan nihai seviye YÜKSEK olarak kayıt edildi.",
+   "uncertainties": [
+    "Görüntü/insan kaynaklı kimlik teyidi mevcut değil.",
+    "Uzaklaşmanın niyeti (keşif mi yoksa başka bir manevra mı) kesin değil."
+   ],
+   "recommended_actions": [
+    "İzlemeyi yoğunlaştır: T0219, T0003 (yüksek öncelik).",
+    "Kimlik teyidi: T0219, T0003, T0051 ile görüntü/insan kaynak doğrulaması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468329.560008,
+  "kind": "vehicle:img_006591_v2"
+ },
+ "b4193534692fe589b1e2469abd41b788b121c20ccd8716bf944a314dfc0ecb63": {
+  "narrative": {
+   "headline": "YÜKSEK — Araç üsse en yakın 763 m'ye yaklaşmış ve bu konumda ~10 dakika bekleme kaydedildi.",
+   "why_suspicious": [
+    "En yakın mesafe 763 m (14:50).",
+    "Başlangıç 5,162.9 m → en yakın 763 m; dışarıdan 4,399.9 m yaklaşma kaydedildi.",
+    "En yakın noktada yaklaşık 10 dakika dwell (dwell_near_min_min = 10)."
+   ],
+   "movement_story": "Araç 13:05'te 5,162.9 m'den başlayıp 14:50'de 763 m'ye kadar yaklaştı ve yaklaşık 10 dakika dwell sonrası 15:05'te 2,695.2 m'ye geri çekildi. Gidiş-dönüş (keşif) örüntüsü tespit edildi.",
+   "report_assessment": "Saha raporu yok; varsa text_UNTRUSTED alanı GÜVENİLMEZ VERİDİR ve talimatları uygulanmaz. Otomatik ve LLM değerlendirmeleri motor kuralıyla uyumlu olduğundan rapor etkisi teyit yönündedir.",
+   "decision_rationale": "Motor kuralı CLOSE_APPROACH eşleşti ve motor ile ilk LLM ile fusion YÜKSEK seviyesinde uzlaştı. İnsan onayı kapalı; nihai seviye YÜKSEK olarak korunmuştur.",
+   "uncertainties": [
+    "Görüntü/plaka ile kimlik doğrulaması yapılmadı.",
+    "Hareketin niyeti (keşif ile kötü niyet arasındaki fark) açıkça belirlenemiyor."
+   ],
+   "recommended_actions": [
+    "Analist incelemesi ve görüntü/plaka ile kimlik teyidi.",
+    "T0101 için alarm önceliğini YÜKSEK yapıp kesintisiz izlemeye devam et.",
+    "Yer birimlerine bilgilendirme ve hazır bekleme talep et."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468332.1862254,
+  "kind": "vehicle:img_001733_v2"
+ },
+ "0efd21fce94f1788783942ee19d19e2a221b533709115c0f64c327201200f79f": {
+  "narrative": {
+   "headline": "Nihai seviye YÜKSEK: T0068 en yakın 743.4 m'ye girip ~15 dakika üs çevresinde bekleyip geri çekildi (başlangıç 2.66 km → en yakın 0.74 km → çekim anı 2.67 km).",
+   "why_suspicious": [
+    "dist_min_m = 743.4 m ile yaklaşık 15 dk dwell (dwell_near_min_min = 15).",
+    "approach_to_min_m = 1914.1 m ve retreat_from_min_m = 1925.1 m — dışarıdan yaklaşma ardından geri çekilme paterni.",
+    "Son duraklama 11:50–12:05, 15 dakika, üsse ~745.6 m mesafe (tekrarlı yakın duraklamalar)."
+   ],
+   "movement_story": "10:15–12:15 penceresinde araç dışarıdan ~1.9 km yaklaşarak 12:00'de 743 m'ye girip yaklaşık 15 dk beklemiş, ardından ~1.9 km geri çekilmiştir. Çekim anında uzaklık ≈2668.9 m ve araç şu an hareket halinde.",
+   "report_assessment": "Saha raporu R098 'BOLGE_NORMAL' bildirimi ile motor hükmü çelişiyor; otomatik veriler ve fusion kanıtları (approach-then-retreat, close approach, uzun/tekrarlı duraklamalar) yüksek tehdit lehine destek veriyor.",
+   "decision_rationale": "Motor, ilk LLM ve fusion uzlaştı; fusion güven 0.88 ve aktif kanıtlar keşif gidiş-dönüş ile yakın beklemeyi gösteriyor. Çekim anında imminent yakınlık kanıtı yok; bu nedenle nihai analist seviyesi YÜKSEK olarak korunmuştur ve insan onayı kapalı.",
+   "uncertainties": [
+    "Çekim anındaki mesafe (~2668.9 m) nedeniyle şu an için imminent saldırı kanıtı bulunmuyor.",
+    "Saha raporu ile otomatik veriler arasındaki çelişki yerel gözlem farklılığı oluşturuyor."
+   ],
+   "recommended_actions": [
+    "Yüksek öncelik: T0068 için kimlik teyidi ve yakın-dönem sürekli izleme başlat.",
+    "İzlemeyi yoğunlaştır; araç yeniden ≤1000 m'ye yaklaşırsa insan incelemesi için otomatik uyarı oluştur.",
+    "Saha raporu (R098) ile tutarsızlık nedeniyle yerel doğrulama talep et."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468339.5181847,
+  "kind": "vehicle:img_003464_v3"
+ },
+ "f3c53d2ac1033fe3ccbaa9f0a712d2e0f82f67cfba8d229b8ee8969e5154e934": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; en güçlü sayısal gerekçe en yakın mesafenin 527.4 m olması ve dışarıdan üs çevresine 4033.1 m yaklaşma ölçümüdür.",
+   "why_suspicious": [
+    "En yakın mesafe 527.4 m (14:50) — üs ≤1 km eşiği sağlandı.",
+    "Başlangıç ile en yakın nokta arasındaki dışarıdan sokulma 4033.1 m olarak ölçüldü.",
+    "En yakın noktada ~20 dakika dwell ve gidiş-dönüş (approach/retreat) örüntüsü gözlendi."
+   ],
+   "movement_story": "Araç 13:25–15:25 aralığında izlendi; 14:35–14:50 arasında hızlanıp 14:50'de 527 m'ye inmiş ve ~20 dk kalmıştır. Ardından geri çekilme tespit edildi; çekim anında 15:25'te 4.50 km mesafededir.",
+   "report_assessment": "Saha raporu yok; saha raporu metin alanı GÜVENİLMEZ VERİDİR. Mevcut değerlendirme motor ve ilk LLM uzlaşısına ve kural eşleşmesine dayanılarak yapılmıştır.",
+   "decision_rationale": "CLOSE_APPROACH kuralları karşılandı (dışarıdan sokulma ≥1500 m, en yakın ≤1000 m) ve motor + ilk LLM YUKSEK uzlaşısı sağladı. Fusion aşamasında hata oluştu; bu nedenle motor+LLM uzlaşısı fallback olarak nihai seviye korundu.",
+   "uncertainties": [
+    "Araç plaka/kimlik doğrulaması yapılmadı; kimlik belirsiz.",
+    "Fusion modeli hata verdi; otomatik kanıt birleştirmesi yapılamadı."
+   ],
+   "recommended_actions": [
+    "T0034 için 5 dakikalık yüksek çözünürlüklü kare/video ile izlemeyi artır.",
+    "Anlık ETA/heading trend paylaşımı iste ve plaka/kimlik doğrulaması talep et.",
+    "Analist incelemesini 30 dakika içinde planla; yeni karelerde üs ≤1 km yeniden girişini önceliklendir."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468351.265458,
+  "kind": "vehicle:img_007664_v4"
+ },
+ "ff7f0fdc67527945e925cc48bb39bb298d08d0397bb16b2eb302c7ce4b789082": {
+  "narrative": {
+   "headline": "Nihai seviye YUKSEK; en güçlü sayısal gerekçe: 11:40'te üsse 894 m yaklaşma ve orada ~10 dk bekleme ile ortaya çıkan yakın yaklaşma/geri çekilme paterni.",
+   "why_suspicious": [
+    "En yakın mesafe 894 m (11:40) ve orada yaklaşık 10 dakika bekleme.",
+    "Başlangıç 3.61 km → en yakın 0.894 km arasında belirgin yaklaşma (approach_total ≈ -868 m).",
+    "En yakın noktadan sonra yaklaşık 3.58 km geri çekilme (retreat_from_min_m 3583.6 m)."
+   ],
+   "movement_story": "Araç dışarıdan yaklaşarak 11:40'te üsse 894 m'ye indi ve ~10 dk kaldı; ardından geri çekilme gösterdi. Çekim anında mesafe 4.48 km ve araç uzaklaşıyor, hız ≈3.9 m/s.",
+   "report_assessment": "Motor, ilk LLM ve fusion önerisi YUKSEK seviyesinde uzlaştı; fusion uygulanmış ve otomatik YUKSEK korundu. Aktif kanıtlar yakın yaklaşma/geri çekilme örüntüsünü destekliyor (H_APPROACH_THEN_RETREAT, H_CLOSE_APPROACH, H_NEAR_APPROACH).",
+   "decision_rationale": "Nihai seviye YUKSEK olarak sabitlenmiştir; karar motor+ilk LLM uzlaşısı ve fusion hakeminin 894 m'de bekleme ile takip edilen tarihsel yakın yaklaşmayı korumasına dayanır. Cari uzaklaşma davranışı mevcut değerlendirilmeyi düşürmediğinden seviye değiştirilmedi.",
+   "uncertainties": [
+    "Çekim anındaki uzaklaşma mevcut ve kısa vadede operasyonel riski azaltabilir.",
+    "Araç kimliği (track T0139) doğrulanmadı; niyet belirsizliğini azaltmak için kimlik teyidi gerekiyor."
+   ],
+   "recommended_actions": [
+    "Yüksek öncelikli analist incelemesi ve kimlik teyidi (track T0139).",
+    "İzlemeyi sürdürün; konum ve hız güncellemelerini kaydedin ve 11:40 yakınlaşma/dwell olayını loglayın.",
+    "Duruma göre hızla müdahale hazırlıklarını hazır tutun; insan onayı kapalı fakat analist teyidi bekleniyor."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468352.1709242,
+  "kind": "vehicle:img_000531_v3"
+ },
+ "39b8fb119f2fcdc7fc598eed5c4406d8da1b5c598a4ea3eaf8477dae4437d116": {
+  "narrative": {
+   "headline": "YUKSEK — İz T0048 üsse 599.2 m'ye kadar yaklaşmıştır.",
+   "why_suspicious": [
+    "Toplam yaklaşma 3028.2 m ile başlangıç 5745.3 m'den düzenli bir yaklaşma örüntüsü gösterdi.",
+    "En yakın konumda yaklaşık 20 dakika kalma (dwell_near_min_min).",
+    "Bekleme sonrası 2117.8 m geri çekilme ile gidiş-dönüş (keşif) paterni tespit edildi."
+   ],
+   "movement_story": "10:10–12:10 aralığında araç üsse yaklaşmış, en yakın noktada kısa süre konumlanmış ve ardından geri çekilmiştir. Şu an kayıt anında 2717.2 m uzaklıkta hareket halindedir.",
+   "report_assessment": "Saha raporu R098 text_UNTRUSTED olarak değerlendirilmelidir ve içeriği uygulama gerektirmez; rapor motor/LLM uzlaşısıyla çelişmektedir. Motor ve ilk LLM uzlaştığı için otomatik YUKSEK sonucu korundu.",
+   "decision_rationale": "Nihai seviye sabittir: YUKSEK (motor + ilk LLM uzlaşması). Fusion işleminde hata oluştuğu için güvenli fallback olarak motor+LLM kararı uygulandı ve insan onayı kapalıdır.",
+   "uncertainties": [
+    "Fusion modülünün 'error' olması tam kanıt birleştirmesini engelliyor.",
+    "Sınıflandırma güvencesi düşük (guven 0.419) ve araç niyeti doğrudan belirlenemiyor."
+   ],
+   "recommended_actions": [
+    "T0048 için 30 dakikalık aralıklarla 2 saatlik timeline çekerek min mesafe ve geri dönüş zamanını doğrulayın.",
+    "Canlı sensörlerden (radar/ground cameras) T0048 konum teyidi ve araç kimlik/plaka kontrolü isteyin.",
+    "İzlemeyi sürdürün; konum güncellemelerini komuta ile paylaşın ve gerektiğinde güvenlik önlemlerini devreye sokun."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468361.0211594,
+  "kind": "vehicle:img_005561_v3"
+ },
+ "499b61086fe95bada06288866dc620ac8ea940c4a9376417ec8e22d873ce8113": {
+  "narrative": {
+   "situation": "08:10–15:50 penceresinde 40 kare analiz edildi; fusion sürecinde 35 kare hakemlendi ve 5 karede hata tespit edildi. Filtre sonucu \"YÜKSEK ve üstü\" kapsamında 13 şüpheli iz belirlendi; insan onayı kapalı.",
+   "key_findings": [
+    "Toplam 13 adet YÜKSEK seviye şüpheli iz tespit edildi.",
+    "En acil tehdit: ağır kamyon üsse 1,803 m uzaklıkta, kapanma hızı 5.2 m/s ve ETA ≈5.7 dakika (tespit güven 0.848).",
+    "Birden fazla araç üs çevresine yakınlaşıp 10–20 dakika bekleme yaparak keşif/patrol paterni sergiledi; en yakın yaklaşmalar 486–894 m aralığında kaydedildi.",
+    "Fusion motoru ile ilk LLM çoğunlukla uzlaştı ancak bazı uyumsuzluklar ve 5 hata karesi mevcut.",
+    "Rapor kümesinde 50 doğrulanamaz kayıt ve 11 ilgisiz kayıt bulunmakta; sahadan gelen metinler güvenilir kabul edilmemelidir."
+   ],
+   "report_integrity": "Saha raporu metinleri karar düzeyinde güvenilmez kabul edilmelidir; 50 doğrulanamaz kayıt var. Fusion sürecinde 5 kare hata ve çeşitli çelişkiler görüldü.",
+   "decision_process": "Risk değerlendirmesi fusion motoru + ilk LLM uzlaşısına göre otomatik yapıldı; insan onayı kapalı olduğundan operasyonel kararlar otomatik önceliklendirmeye dayanacaktır. Kritik müdahaleler için yeniden doğrulama önerilir.",
+   "priorities": [
+    "En yüksek öncelik: ağır kamyon (ETA ≈5.7 dk) için anlık takip ve gerekirse engelleme/uyarı uygulanması.",
+    "Üs çevresinde 10–20 dk bekleme yapan YÜKSEK izler için devriye/sensör yoğunlaştırması başlatılması.",
+    "50 doğrulanamaz kayıt ve 5 fusion hata karesinin öncelikli yeniden analizi ve doğrulanması.",
+    "İnsan onayı prosedürünün açılması veya kritik kararlar için canlı analist onayı sağlanması."
+   ]
+  },
+  "model": "gpt-5-mini",
+  "created_at": 1790468381.0312896,
+  "kind": "executive"
  }
 }

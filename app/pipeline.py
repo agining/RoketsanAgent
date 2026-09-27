@@ -19,7 +19,7 @@ from .data import Dataset, load_dataset
 from .detector import BaseDetector, build_detector
 from .geo import bbox_center_latlon, frame_center, haversine_m, hhmm_to_min, min_to_hhmm, point_in_frame
 from .reports import ReportVerifier
-from .risk import (classify_tracked, classify_untracked, firm_margin, is_heavy, max_risk, tracked_margin,
+from .risk import (classify_tracked, classify_untracked, firm_margin, is_bus, is_heavy, max_risk, tracked_margin,
                    untracked_margin)
 from .tracking import compute_features
 
@@ -231,6 +231,7 @@ class Analyzer:
         dist = self.ds.dist_to_base(lat, lon)
         alt_labels = alt_labels or []
         heavy = is_heavy(label, alt_labels, self.th.heavy_alt_min_conf)
+        bus = is_bus(label, alt_labels, self.th.heavy_alt_min_conf)   # ROUTINE_SHUTTLE için
         rec = {"vehicle_id": vid, "frame_id": fid, "capture_time": meta["capture_time"], "capture_min": t_cap,
                "source": source, "label": label, "confidence": conf, "bbox": bbox, "alt_labels": alt_labels,
                "heavy": heavy, "lat": round(lat, 6), "lon": round(lon, 6), "zone": self.ds.zone_of(lat, lon),
@@ -240,9 +241,9 @@ class Analyzer:
                "friendly_confirmed_by": [], "report_ids": []}
         if tid:
             f = compute_features(self.ds.tracks[tid], self.ds, self.th, t_cap)
-            scen, risk, reasons = classify_tracked(f, self.th, heavy=heavy)
+            scen, risk, reasons = classify_tracked(f, self.th, heavy=heavy, bus=bus)
             rec["features"] = f.to_dict()
-            margin = tracked_margin(f, self.th, scen, risk, heavy=heavy)
+            margin = tracked_margin(f, self.th, scen, risk, heavy=heavy, bus=bus)
         else:
             scen, risk, reasons = classify_untracked(label or "unknown", dist, self.th, heavy=heavy)
             margin = untracked_margin(label or "unknown", dist, self.th, risk, heavy=heavy)

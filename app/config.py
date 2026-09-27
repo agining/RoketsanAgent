@@ -81,6 +81,20 @@ class Thresholds:
     frame_margin_m: float = 15.0          # koordinat kare içinde mi kontrolünde pay
     # --- motor güveni (ortak karar) ---
     margin_tol: float = 0.10              # değer eşiğin bu oranda yakınındaysa motor "sınırda" sayılır
+    # --- rutin hat aracı / servis otobüsü (ROUTINE_SHUTTLE) ---
+    shuttle_pass_near_m: float = 1500.0   # bu halkaya her giriş bir "üs yakınından geçiş" sayılır
+    shuttle_pass_reset_m: float = 1000.0  # yeni geçiş için halkanın en az bu kadar dışına çıkılmış olmalı
+    shuttle_min_passes: int = 3           # aynı hattan en az bu kadar geçiş
+    shuttle_corridor_m: float = 120.0     # "aynı hat" koridoru (şerit + GPS sapması)
+    shuttle_min_overlap_pct: float = 80.0  # iz noktalarının bu yüzdesi hattın başka bir seferiyle aynı koridorda
+    shuttle_route_gap_min: int = 30       # örtüşme sayılması için iki sefer arasında en az bu kadar dakika
+    shuttle_stop_clear_m: float = 2500.0  # bu mesafe içinde hiç duraklama olmamalı (üs yakınında beklemez)
+    # --- duraklama / hat sapması sonrası ani hızlı son etap (FAST_FINAL_APPROACH) ---
+    dash_speed_mps: float = 10.0          # son etap ort. hızı; bu veride olağan trafik ≤ ~9.4 m/s
+    dash_heading_deg: float = 30.0        # son etapta üsse yönelim (DIRECT_FAST_APPROACH'tan sıkı)
+    # --- veri kalitesi: tek örneklik GPS sıçraması ---
+    gps_spike_min_speed_mps: float = 12.0  # gidiş ve dönüş bacaklarının ikisi de bu hızın üstünde ...
+    gps_spike_return_m: float = 20.0       # ... ve araç bir sonraki örnekte eski noktasına bu kadar yakın dönmüşse
 
 
 @dataclass(frozen=True)

@@ -9,3 +9,7 @@ networkx>=3.2,<4
 shapely>=2.0,<3
 Pillow>=10,<13
 httpx>=0.28,<1
+# konuşma → metin (app/asr.py, openai/whisper-small); GPU için torch'u CUDA sürümüyle kurun
+numpy>=1.24
+torch>=2.1
+transformers>=4.40
