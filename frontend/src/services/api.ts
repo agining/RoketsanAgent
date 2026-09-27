@@ -2,7 +2,6 @@ import type {
   ApiAlert, ApiAsrStatus, ApiAssessment, ApiChatReply, ApiFrameDetail, ApiFrameListItem, ApiHealth, ApiReport, ApiReviewList,
   ApiRiskLevel, ApiSettings, ApiSummary, ApiTrack, ApiTrackingData, ApiTranscription, ApiUiCommandPlan,
 } from '../types/api';
-import type { GraphAnalysis, GraphWindow } from '../types/graph';
 
 /**
  * The only transport layer. Every request goes to the analysis API (FastAPI, port 8000).
@@ -43,20 +42,7 @@ async function request<T>(path: string, init: RequestInit = {}, signal?: AbortSi
 
 const json = (body: unknown): RequestInit => ({ body: JSON.stringify(body) });
 const id = encodeURIComponent;
-const graphQuery = (window: GraphWindow) => {
-  const params = new URLSearchParams();
-  if (window.start_time) params.set('start_time', window.start_time);
-  if (window.end_time) params.set('end_time', window.end_time);
-  return params.size ? `?${params}` : '';
-};
-
 export const api = {
-  graphVehicleSummary: (regionId: string, window: GraphWindow = {}, signal?: AbortSignal) =>
-    request<import('../types/graph').VehicleSummary>(`/api/graph-analysis/regions/${id(regionId)}/vehicle-summary${graphQuery(window)}`, { method: 'POST' }, signal),
-  graphAnalysis: (window: GraphWindow = {}, signal?: AbortSignal) =>
-    request<GraphAnalysis>(`/api/graph-analysis${graphQuery(window)}`, {}, signal),
-  graphRecompute: (window: GraphWindow = {}, signal?: AbortSignal) =>
-    request<GraphAnalysis>(`/api/graph-analysis/recompute${graphQuery(window)}`, { method: 'POST', ...json({ force: true }) }, signal),
   health: (signal?: AbortSignal) => request<ApiHealth>('/api/health', {}, signal),
   summary: (signal?: AbortSignal) => request<ApiSummary>('/api/summary', {}, signal),
   trackingData: (signal?: AbortSignal) => request<ApiTrackingData>('/api/tracking-data', {}, signal),

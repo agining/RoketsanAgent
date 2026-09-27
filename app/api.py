@@ -47,7 +47,6 @@ from .geo import min_to_hhmm
 from .service import ReviewError, service
 from .steps import pipeline_steps
 from .threat_report.routes import router as threat_report_router
-from .graph.routes import router as graph_router
 from .inference import router as inference_router
 from .ui_actions import router as ui_actions_router
 from .voice import router as voice_router
@@ -69,7 +68,6 @@ app.add_middleware(
 )
 # Tehdit raporu (PDF): POST /api/threat-report, GET /api/threat-report/download?min_risk=… (bkz. threat_report/routes.py)
 app.include_router(threat_report_router)
-app.include_router(graph_router)
 app.include_router(inference_router)
 app.include_router(voice_router)
 # Konuşma → metin (Whisper): POST /api/asr/start, POST /api/asr/transcribe (bkz. asr.py)

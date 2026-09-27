@@ -34,8 +34,6 @@ export interface UiController {
   notificationsOpen: boolean; setNotificationsOpen: (open: boolean) => void;
   settingsOpen: boolean; setSettingsOpen: (open: boolean) => void;
   helpOpen: boolean; setHelpOpen: (open: boolean) => void;
-  graphOpen: boolean; setGraphOpen: (open: boolean) => void;
-  showNormalRegions: boolean; setShowNormalRegions: (show: boolean) => void;
   selectedFrameId: string | null;
   startTutorial: () => void;
   openPdfReport: () => void;
@@ -166,12 +164,6 @@ const handlers: Record<string, Handler> = {
 
   open_panel: (params, ctrl) => setPanel(ctrl, panelName(params.panel), true),
   close_panel: (params, ctrl) => setPanel(ctrl, panelName(params.panel), false),
-  set_graph_analysis: (params, ctrl) => {
-    const enabled = bool(params, 'enabled');
-    ctrl.setGraphOpen(enabled);
-    if (enabled) ctrl.setSidebarOpen(true);
-    if ('show_normal' in params) ctrl.setShowNormalRegions(bool(params, 'show_normal'));
-  },
   start_tutorial: (_params, ctrl) => ctrl.startTutorial(),
 
   playback: params => {
@@ -279,7 +271,6 @@ export function buildUiContext(ctrl: UiController) {
         overlay: useOverlayPanelStore.getState().current, sidebar: ctrl.sidebarOpen, track_list: ctrl.bottomOpen,
         notifications: ctrl.notificationsOpen, settings: ctrl.settingsOpen, help: ctrl.helpOpen,
       },
-      graph_analysis: { enabled: ctrl.graphOpen, show_normal: ctrl.showNormalRegions },
       playback: {
         time: formatClock(playback.currentTime), start: formatClock(playback.minTime), end: formatClock(playback.maxTime),
         playing: playback.isPlaying, speed: playback.playbackSpeed, trail: playback.trailMode,

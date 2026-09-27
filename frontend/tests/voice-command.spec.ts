@@ -4,7 +4,9 @@ import { mockApi } from './support/mock-api';
 // Chromium's fake microphone lets the real recording → WAV → transcribe path run without a device.
 test.use({
   permissions: ['microphone'],
-  launchOptions: { args: ['--enable-unsafe-swiftshader', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] },
+  launchOptions: { args: ['--enable-unsafe-swiftshader', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
+    ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } : {}),
+  },
 });
 
 async function mockVoice(page: Page, transcript: string, plan: { message: string; actions: { action: string; params: Record<string, unknown> }[] }) {

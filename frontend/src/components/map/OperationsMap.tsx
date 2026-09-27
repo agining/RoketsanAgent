@@ -1,6 +1,3 @@
-import type { GraphRegion } from '../../types/graph';
-import { useGraphOverlay } from '../graph/useGraphOverlay';
-const noGraphRegions: GraphRegion[] = [];
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 
 import { Box, Focus, GripVertical, Info, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
@@ -377,7 +374,7 @@ function configureMapInteractions(map: LibreMap, mode: '2d' | '3d') {
 
 }
 
-export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphRegions = noGraphRegions, selectedRegionId = null, onSelectRegion }: { graphRegions?: GraphRegion[]; selectedRegionId?: string | null; onSelectRegion?: (regionId: string) => void; analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
+export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
   const container = useRef<HTMLDivElement>(null);
 
   const shell = useRef<HTMLDivElement>(null);
@@ -400,7 +397,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
   const [fullscreen, setFullscreen] = useState(false);
 
-  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>(savedCamera && savedCamera.pitch === 0 ? '2d' : '3d');
 
   const [legendOpen, setLegendOpen] = useState(false);
 
@@ -500,7 +497,7 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
     setMapError('');
 
-    const map = new maplibregl.Map({ container: container.current, style, center: savedCamera?.center ?? [analysis.base.lon, analysis.base.lat], zoom: savedCamera?.zoom ?? 12, bearing: savedCamera?.bearing ?? 0, pitch: savedCamera?.pitch ?? 0, attributionControl: false });
+    const map = new maplibregl.Map({ container: container.current, style, center: savedCamera?.center ?? [analysis.base.lon, analysis.base.lat], zoom: savedCamera?.zoom ?? 12, bearing: savedCamera?.bearing ?? -28, pitch: savedCamera?.pitch ?? 58, attributionControl: false });
 
     const restoredCamera = savedCamera !== null;
 
@@ -1216,7 +1213,6 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
   };
 
-  useGraphOverlay(mapRef, graphRegions, selectedRegionId, onSelectRegion, analysis);
 
   return <div className="map-shell analysis-map-shell" ref={shell}>
 

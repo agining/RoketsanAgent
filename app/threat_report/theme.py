@@ -95,7 +95,7 @@ STATUS_SHORT = {           # özet tablosu için kısa hâller
     "onay_bekliyor": "ONAY BEKLİYOR", "analist_karari": "analist",
 }
 SCENARIO_SHORT = {
-    "DIRECT_FAST_APPROACH": "Hızlı yaklaşma", "CLOSE_APPROACH": "Yakın yaklaşma", 
+    "DIRECT_FAST_APPROACH": "Hızlı yaklaşma", "CLOSE_APPROACH": "Yakın yaklaşma",
     "HEAVY_NEAR_APPROACH": "Ağır yakın yaklaşma", "LOITER_NEAR_BASE": "Tur atma",
     "NEAR_BASE_ARRIVAL": "Yakına varış", "NEAR_PASS": "Yakın geçiş", "HEAVY_APPROACH": "Ağır yaklaşma",
     "STATIC_NEAR_BASE": "Yakında durağan", "FRIENDLY_PATROL": "Devriye", "APPROACHING": "Yönelmiş hareket",
