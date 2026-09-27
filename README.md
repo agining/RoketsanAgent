@@ -1,6 +1,5 @@
 # Roketsan DEMO
 
-Oyun içi trajectory graph modülü, API endpointleri, metrikler ve test talimatları: [Graph analizi](docs/graph-analysis.md).
 
 ## Çalıştırmak için
 python=>3.11 

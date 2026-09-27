@@ -1,6 +1,3 @@
-import type { GraphRegion } from '../../types/graph';
-import { useGraphOverlay } from '../graph/useGraphOverlay';
-const noGraphRegions: GraphRegion[] = [];
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 
 import { Box, Focus, GripVertical, Info, LocateFixed, Maximize, Minimize, RotateCcw } from 'lucide-react';
@@ -377,7 +374,7 @@ function configureMapInteractions(map: LibreMap, mode: '2d' | '3d') {
 
 }
 
-export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphRegions = noGraphRegions, selectedRegionId = null, onSelectRegion }: { graphRegions?: GraphRegion[]; selectedRegionId?: string | null; onSelectRegion?: (regionId: string) => void; analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
+export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds }: { analysis: AnalysisData; onSelectTrack: (trackId: string) => void; visibleTrackIds?: ReadonlySet<string> }) {
   const container = useRef<HTMLDivElement>(null);
 
   const shell = useRef<HTMLDivElement>(null);
@@ -1216,7 +1213,6 @@ export function OperationsMap({ analysis, onSelectTrack, visibleTrackIds, graphR
 
   };
 
-  useGraphOverlay(mapRef, graphRegions, selectedRegionId, onSelectRegion, analysis);
 
   return <div className="map-shell analysis-map-shell" ref={shell}>
 

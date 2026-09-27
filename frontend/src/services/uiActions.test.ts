@@ -31,8 +31,6 @@ function controller() {
     notificationsOpen: false, setNotificationsOpen: open => { opened.notifications = open; },
     settingsOpen: false, setSettingsOpen: open => { opened.settings = open; },
     helpOpen: false, setHelpOpen: open => { opened.help = open; },
-    graphOpen: false, setGraphOpen: open => { opened.graph = open; },
-    showNormalRegions: true, setShowNormalRegions: () => {},
     selectedFrameId: null, startTutorial: () => {}, openPdfReport: () => {}, reload: () => {},
     setHumanReview: async () => {},
   };

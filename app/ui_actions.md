@@ -57,7 +57,6 @@ Tablo satırı: | `eylem` | parametreler | ne yapar |. Parametre adındaki `?` i
 |---|---|---|
 | `open_panel` | `panel` | Paneli açar. `panel`: summary (Operasyon Özeti), priority (Öncelikli Araçlar), reviews (Analist Onayı), chat (Ajan), sidebar (Harita Paneli), track_list (Tüm İz Kayıtları), notifications (bildirimler), settings (Ayarlar), help (Yardım). |
 | `close_panel` | `panel` | Aynı değerlerle paneli kapatır. `panel` = all ise sağ üst panelleri, ayarları, yardımı ve bildirimleri kapatır. |
-| `set_graph_analysis` | `enabled` (true/false), `show_normal?` (true/false) | Harita panelindeki grafik (bölge) analizini açar/kapatır; `show_normal` normal (ilgi eşiği altındaki) bölgeleri de gösterir. |
 | `start_tutorial` | — | Arayüz eğitim turunu başlatır. |
 
 ### Zaman çizelgesi ve oynatma

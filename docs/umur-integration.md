@@ -1,6 +1,6 @@
 # Umur integration
 
-Base: origin/main a7d7aac. Retains fusion-v3, updated risk engine, draggable panels, settings, timeline, agent Markdown, help and vehicle sprites. Adds graph analysis, on-demand model inference and server-side ElevenLabs speech.
+Base: origin/main a7d7aac. Retains fusion-v3, updated risk engine, draggable panels, settings, timeline, agent Markdown, help and vehicle sprites. Adds on-demand model inference and server-side ElevenLabs speech.
 
 ## Setup
 
@@ -13,11 +13,10 @@ Base: origin/main a7d7aac. Retains fusion-v3, updated risk engine, draggable pan
 
 The branch leaves main's data files unchanged. The original local dataset is preserved at `outputs/datasets/pre-integration`; the shared `.env` defaults to main's `data/` directory. This local snapshot is not committed. A fresh team checkout uses main's `data/` by default. To reproduce the earlier dataset, copy the backed-up dataset into a separate directory and configure `DATA_DIR`.
 
-Fusion-v3 discards incompatible old assessments from active use. Old files are retained locally; producing a new assessment updates graph classification and vehicle feedback. Graph summaries include primary and fusion explanations/report IDs and use the final decision level. Filtered duplicate detections cannot promote a trajectory.
+Fusion-v3 discards incompatible old assessments from active use. Old files are retained locally; producing a new assessment updates vehicle feedback.
 
 ## Features
 
-- Open the map sidebar and start regional anomaly analysis. The 4-threat/3-normal group priority rule, adaptive prior and source-linked summaries are retained.
 - `POST /api/inference/detect` accepts JPEG/PNG bytes without altering the dataset; `/api/inference/status` reports availability. See `inference-api.md`.
 - Voice alerts keep main's queue/chime system. `/api/voice/synthesize` calls ElevenLabs using the server key. Browser audio is cached locally and browser speech is used on provider/playback failure.
 - Main's font scale settings replace the older blanket CSS zoom. Panel layout and map controls remain from main.
