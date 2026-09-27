@@ -4,6 +4,7 @@ import type { AnalysisAlert, AnalysisData, RiskLevel } from '../../types/analysi
 import { api } from '../../services/api';
 import { clockSeconds } from '../../services/analysis-playback';
 import { formatDecisionStatus, formatMeters, formatMinutes, formatReportVerdict, formatRiskLevel, formatScenario, formatVehicleClass } from '../../services/formatters';
+import { useOverlayPanelStore } from '../../store/overlayPanel';
 import { usePlaybackStore } from '../../store/playback';
 import { useTrackingStore } from '../../store/tracking';
 import { useWorkspaceStore } from '../../store/workspace';
@@ -54,6 +55,11 @@ export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onCh
     setPanel(tourPanel);
   }, [tourActive, tourPanel]);
 
+  // Voice commands open/close panels through the overlay panel store.
+  const panelRequest = useOverlayPanelStore(state => state.request);
+  useEffect(() => { if (panelRequest.sequence) setPanel(panelRequest.panel); }, [panelRequest]);
+  useEffect(() => { useOverlayPanelStore.getState().setCurrent(panel); }, [panel]);
+
   const openAlert = (alert: AnalysisAlert) => {
     usePlaybackStore.getState().seek(clockSeconds(alert.time));
     if (alert.track_id && analysis.entities.some(entity => entity.track_id === alert.track_id)) onSelectTrack(alert.track_id);
@@ -67,7 +73,7 @@ export function MapOverlays({ analysis, filters, setFilters, onSelectTrack, onCh
     finally { setAssessing(false); }
   };
 
-  return <div className="map-floating-overlays">
+  return <div className={`map-floating-overlays${panel ? ' has-open-panel' : ''}`}>
     <div className="map-quick-filters" data-tour="quick-filters" aria-label="Hızlı harita filtreleri">
       <label className={filters.risk !== 'ALL' ? 'active' : ''}><span>Risk</span><select aria-label="Risk filtresi" value={filters.risk} onChange={event => updateFilter('risk', event.target.value as MapFilterState['risk'])}>{riskOptions.map(option => <option key={option} value={option}>{option === 'ALL' ? 'Tümü' : formatRiskLevel(option)}</option>)}</select></label>
       <label className={filters.vehicleClass !== 'ALL' ? 'active' : ''}><span>Araç</span><select aria-label="Araç filtresi" value={filters.vehicleClass} onChange={event => updateFilter('vehicleClass', event.target.value)}><option value="ALL">Tümü</option>{vehicleOptions.map(option => <option key={option} value={option}>{formatVehicleClass(option)}</option>)}</select></label>

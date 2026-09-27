@@ -3110,3 +3110,25 @@ button,select,input,textarea{color:var(--text-primary)}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model::before{border-style:dashed}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model.filtered{opacity:.35}
 .analysis-map-shell .untracked-map-marker.has-vehicle-model:is(:hover,:focus-visible){opacity:1}
+
+/* Open action panels stay above timeline controls so their buttons remain reachable. */
+.map-floating-overlays.has-open-panel { z-index: 29; }
+
+/* Voice: top-bar voice commands (VoiceCommandButton) and agent-chat dictation (AgentChat) */
+.voice-command-anchor{position:relative;flex-shrink:0}
+.voice-command-button{min-height:var(--hit-sm);height:31px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--panel-border);border-radius:5px;background:var(--theme-surface, #172228);color:var(--theme-text, #a9bbc2);padding:0 10px;font-size:var(--font-xs);white-space:nowrap}
+.voice-command-button svg{width:15px;height:15px}
+.voice-command-button:hover:not(:disabled){border-color:var(--border-strong);background:var(--theme-green-soft, #21322e);box-shadow:0 0 0 2px color-mix(in srgb,var(--theme-accent, #9ed0bd) 20%,transparent)}
+.voice-command-button:disabled{opacity:.65;cursor:wait}
+.voice-command-button.recording,.chat-panel form button.voice-input.recording{border-color:var(--theme-red-border, #b35a5a);background:var(--theme-red-soft, #4a2626);color:var(--theme-red, #f0c9c9)}
+.voice-command-status{position:absolute;top:calc(100% + 8px);right:0;z-index:90;width:260px;display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px;padding:9px 10px;border:1px solid var(--panel-border);border-radius:6px;background:var(--theme-surface, #142129f5);box-shadow:0 10px 30px var(--theme-shadow, #0009);font-size:var(--font-xs);line-height:1.5;color:var(--theme-text, #b9c9d0)}
+.voice-command-status q{flex-basis:100%;color:var(--theme-accent, #e1eee8);font-style:italic}
+.voice-command-status span{flex:1}
+.voice-command-status button{display:grid;place-items:center;border:0;background:none;color:var(--theme-muted, #91a5af);padding:0}
+.voice-command-status ul{flex-basis:100%;margin:0;padding-left:14px;color:var(--theme-muted, #91a5af)}
+.voice-command-status.error{border-color:var(--theme-red-border, #754252);color:var(--theme-red, #efa2af)}
+.voice-recording{align-items:center;color:var(--theme-red, #e0a3a3)}
+.voice-dot{width:8px;height:8px;border-radius:50%;background:var(--theme-red, #e05b5b);animation:voice-pulse 1s ease-in-out infinite}
+@keyframes voice-pulse{50%{opacity:.35}}
+@media (max-width:1600px){.voice-command-button span{display:none}.voice-command-button{width:34px;height:34px;padding:0;border-radius:9px}}
+@media (prefers-reduced-motion:reduce){.voice-dot{animation:none}}

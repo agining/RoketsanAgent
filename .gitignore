@@ -9,6 +9,14 @@ predictions.json
 YOLO_outputs
 *.pyc
 *.pt
-.env
+
+.venv/
+.pytest_cache/
+node_modules/
+.vite/
+outputs/
 __pycache__/
-*.pyc
+.env
+
+.env.*
+!.env.example

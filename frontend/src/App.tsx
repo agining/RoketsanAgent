@@ -32,8 +32,12 @@ import { Timeline } from './components/Timeline';
 import { AppTutorial } from './components/tutorial/AppTutorial';
 import { Button } from './components/ui/button';
 import { VoiceAlertCard } from './components/voice/VoiceAlertCard';
+import { VoiceCommandButton } from './components/voice/VoiceCommandButton';
 
 import { useAnalysis } from './hooks/useAnalysis';
+import { useGraphAnalysis } from './hooks/useGraphAnalysis';
+import { GraphAnalysisPanel } from './components/graph/GraphAnalysisPanel';
+import type { GraphWindow } from './types/graph';
 import { useVoiceAlerts } from './hooks/useVoiceAlerts';
 
 import { api, API_BASE_URL, apiUrl } from './services/api';
@@ -41,6 +45,7 @@ import { clockSeconds, positionAtTime } from './services/analysis-playback';
 import { formatScenario, formatVehicleClass } from './services/formatters';
 import { startPlaybackClock } from './services/playback-clock';
 import { activeTrackEntities, isActiveTrackEntity } from './services/trackFilters';
+import type { UiController } from './services/uiActions';
 
 import type { AnalysisData } from './types/analysis';
 
@@ -278,6 +283,19 @@ function SettingsPanel({
 
 export default function App() {
   const analysis = useAnalysis();
+  const [graphOpen, setGraphOpen] = useState(false);
+  const [graphWindow, setGraphWindow] = useState<GraphWindow>({});
+  const [showNormalRegions, setShowNormalRegions] = useState(true);
+  const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
+  const graph = useGraphAnalysis(graphOpen, analysis.data, graphWindow);
+  const graphRegions = useMemo(() => graphOpen ? (graph.data?.regions ?? []).filter(region =>
+    showNormalRegions || region.interest_score >= (graph.data?.region_interest_threshold ?? 1)) : [], [graphOpen, graph.data, showNormalRegions]);
+  const selectedRegion = graph.data?.regions.find(region => region.region_id === selectedRegionId) ?? null;
+  const selectRegion = useCallback((regionId: string) => {
+    setSelectedRegionId(regionId);
+    useTrackingStore.getState().selectTrack(null);
+  }, []);
+
   const themeMode = useSettingsStore(state => state.themeMode);
   const setThemeMode = useSettingsStore(state => state.setThemeMode);
   const fontScale = useSettingsStore(state => state.fontScale);
@@ -662,6 +680,10 @@ export default function App() {
     setTutorialRunId(current => current + 1);
   }, []);
 
+  // Voice commands read the latest render's state and callbacks through this ref (see services/uiActions.ts).
+  const voiceControllerRef = useRef<UiController | null>(null);
+  const voiceController = useCallback(() => voiceControllerRef.current!, []);
+
   if (!data) {
     return (
       <div className="map-first-shell">
@@ -716,6 +738,25 @@ export default function App() {
       </div>
     );
   }
+
+  voiceControllerRef.current = {
+    analysis: data,
+    filters,
+    setFilters,
+    selectTrack,
+    sidebarOpen, setSidebarOpen,
+    bottomOpen, setBottomOpen,
+    notificationsOpen, setNotificationsOpen,
+    settingsOpen, setSettingsOpen,
+    helpOpen, setHelpOpen,
+    graphOpen, setGraphOpen,
+    showNormalRegions, setShowNormalRegions,
+    selectedFrameId: selectedEntity?.frame_id ?? null,
+    startTutorial,
+    openPdfReport,
+    reload: analysis.reload,
+    setHumanReview: async enabled => { if (enabled !== humanReview) await toggleHumanReview(); },
+  };
 
   const error =
     analysis.status === 'error'
@@ -913,6 +954,8 @@ export default function App() {
           )}
         </div>
 
+        <VoiceCommandButton controller={voiceController} />
+
         <button
           className="pdf-report-download"
           onClick={openPdfReport}
@@ -1011,9 +1054,20 @@ export default function App() {
           analysis={data}
           onSelectTrack={selectTrack}
           visibleTrackIds={visibleTrackIds}
+          graphRegions={graphRegions}
+          selectedRegionId={selectedRegionId}
+          onSelectRegion={selectRegion}
         />
 
         <MapSidebar
+          graphPanel={<GraphAnalysisPanel enabled={graphOpen} onToggle={() => setGraphOpen(value => !value)}
+            data={graph.data} loading={graph.loading} error={graph.error} reload={graph.reload}
+            onWindow={window => { setSelectedRegionId(null); setGraphWindow(window); }}
+            selected={selectedRegion} onSelect={regionId => {
+              selectRegion(regionId);
+              const region = graph.data?.regions.find(item => item.region_id === regionId);
+              if (region) useTrackingStore.getState().requestView('coordinate', undefined, [region.location.lon, region.location.lat]);
+            }} reports={data.reports} showNormal={showNormalRegions} onShowNormal={setShowNormalRegions} />}
           analysis={data}
           filters={filters}
           setFilters={setFilters}

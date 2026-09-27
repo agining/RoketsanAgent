@@ -21,6 +21,12 @@ Tehdit raporu (PDF, sabit tema):
   POST /api/threat-report                ← {"min_risk":"YUKSEK"} | {"levels":["KRITIK"]}  → özet + pdf_url
   GET  /api/threat-report/download?min_risk=KRITIK   → üretip PDF'i doğrudan döndürür
   GET  /api/threat-report/preview · GET /api/threat-report · GET /api/threat-report/{id|latest}[/pdf]
+
+Konuşma → metin (openai/whisper-small, Türkçe):
+  POST /api/asr/start · GET /api/asr/status · POST /api/asr/transcribe ← ham ses (audio/wav)  (bkz. asr.py)
+
+Sesli komut → arayüz eylemleri (katalog: ui_actions.md):
+  POST /api/ui-command ← {"command": "Sadece otobüsleri göster", "context": {...}} → {"message", "actions": [{"action", "params"}]}
 """
 from __future__ import annotations
 
@@ -35,11 +41,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
+from .asr import router as asr_router
 from .config import RISK_ORDER, settings
 from .geo import min_to_hhmm
 from .service import ReviewError, service
 from .steps import pipeline_steps
 from .threat_report.routes import router as threat_report_router
+from .graph.routes import router as graph_router
+from .inference import router as inference_router
+from .ui_actions import router as ui_actions_router
+from .voice import router as voice_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -58,6 +69,13 @@ app.add_middleware(
 )
 # Tehdit raporu (PDF): POST /api/threat-report, GET /api/threat-report/download?min_risk=… (bkz. threat_report/routes.py)
 app.include_router(threat_report_router)
+app.include_router(graph_router)
+app.include_router(inference_router)
+app.include_router(voice_router)
+# Konuşma → metin (Whisper): POST /api/asr/start, POST /api/asr/transcribe (bkz. asr.py)
+app.include_router(asr_router)
+# Sesli komut: POST /api/ui-command (bkz. ui_actions.py, ui_actions.md)
+app.include_router(ui_actions_router)
 
 
 def _frame_or_404(frame_id: str):

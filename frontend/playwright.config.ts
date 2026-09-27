@@ -7,7 +7,9 @@ export default defineConfig({
   use: {
     channel: 'chromium',
     baseURL: 'http://127.0.0.1:5175',
-    launchOptions: { args: ['--enable-unsafe-swiftshader'] },
+    launchOptions: { args: ['--enable-unsafe-swiftshader'],
+      ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } : {}),
+    },
   },
   webServer: {
     command: 'npm run dev -- --host 127.0.0.1 --port 5175',

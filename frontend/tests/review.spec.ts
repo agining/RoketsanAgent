@@ -4,7 +4,9 @@ import { mockApi } from './support/mock-api';
 test('analyst decides a pending review and can undo it', async ({ page }) => {
   const { calls } = await mockApi(page);
   await page.goto('/');
+  await page.getByRole('button', { name: 'Ayarları aç', exact: true }).click();
   await expect(page.getByRole('switch', { name: /Son söz insanda/ })).toHaveAttribute('aria-checked', 'true');
+  await page.getByRole('button', { name: 'Ayarlar panelini kapat', exact: true }).click();
   await page.getByRole('button', { name: /Analist Onayı/ }).click();
   const panel = page.getByRole('region', { name: 'Analist onayı' });
   const card = panel.getByRole('article', { name: 'img_006574_v0 analist kararı' });
@@ -24,10 +26,12 @@ test('analyst decides a pending review and can undo it', async ({ page }) => {
 test('human review switch calls PUT /api/settings', async ({ page }) => {
   const { calls } = await mockApi(page);
   await page.goto('/');
+  await page.getByRole('button', { name: 'Ayarları aç', exact: true }).click();
   const toggle = page.getByRole('switch', { name: /Son söz insanda/ });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-checked', 'false');
   expect(calls.find(call => call.method === 'PUT')?.body).toEqual({ human_review: false });
+  await page.getByRole('button', { name: 'Ayarlar panelini kapat', exact: true }).click();
   await page.getByRole('button', { name: /Analist Onayı/ }).click();
   await expect(page.getByRole('region', { name: 'Analist onayı' })).toContainText('"Son söz insanda" kapalı');
 });
@@ -38,6 +42,7 @@ test('frame assessment is requested from the API and shown in the detail', async
   await page.getByRole('button', { name: /Öncelikli Araçlar/ }).click();
   await page.getByRole('region', { name: 'Öncelikli araç kayıtları' }).locator(':scope > div > button').first().click();
   const detail = page.getByRole('complementary', { name: 'Araç detayları' });
+  await detail.getByRole('button', { name: /Ajan Değerlendirmesi/ }).click();
   await detail.getByRole('button', { name: 'Kareyi ajanla değerlendir' }).evaluate(element => element.scrollIntoView({ block: 'center' }));
   await detail.getByRole('button', { name: 'Kareyi ajanla değerlendir' }).click();
   await expect(detail).toContainText('img_006140 başlık');

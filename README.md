@@ -1,5 +1,7 @@
 # Roketsan DEMO
 
+Oyun içi trajectory graph modülü, API endpointleri, metrikler ve test talimatları: [Graph analizi](docs/graph-analysis.md).
+
 ## Çalıştırmak için
 python=>3.11 
 nodejs
@@ -14,6 +16,8 @@ npm run dev
 
 Arayüz localhost:5173
 API arayüz localhost:8000
+
+Görüntüden araç tespiti: [Inference API](docs/inference-api.md). Endpoint: `POST /api/inference/detect`; model durumu: `GET /api/inference/status`.
 
 ```bash
 python run_pipeline.py                          # deterministik analiz → outputs/analysis.json

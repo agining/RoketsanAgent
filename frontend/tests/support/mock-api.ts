@@ -14,6 +14,9 @@ export interface MockApi { state: Snapshot; calls: Array<{ method: string; path:
 
 /** Serves every /api/* call from memory, mimicking the FastAPI endpoints the frontend uses. */
 export async function mockApi(page: Page, customize?: (state: Snapshot) => void): Promise<MockApi> {
+  await page.route(/^https:\/\/tiles\.openfreemap\.org\//, route => route.abort());
+  // Existing feature tests start after onboarding; the tutorial is checked separately.
+  await page.addInitScript(() => localStorage.setItem('hisar-tutorial-completed', 'true'));
   const state = loadSnapshot();
   customize?.(state);
   const calls: MockApi['calls'] = [];

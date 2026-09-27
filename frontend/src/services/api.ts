@@ -1,7 +1,8 @@
 import type {
-  ApiAlert, ApiAssessment, ApiChatReply, ApiFrameDetail, ApiFrameListItem, ApiHealth, ApiReport, ApiReviewList,
-  ApiRiskLevel, ApiSettings, ApiSummary, ApiTrack, ApiTrackingData,
+  ApiAlert, ApiAsrStatus, ApiAssessment, ApiChatReply, ApiFrameDetail, ApiFrameListItem, ApiHealth, ApiReport, ApiReviewList,
+  ApiRiskLevel, ApiSettings, ApiSummary, ApiTrack, ApiTrackingData, ApiTranscription, ApiUiCommandPlan,
 } from '../types/api';
+import type { GraphAnalysis, GraphWindow } from '../types/graph';
 
 /**
  * The only transport layer. Every request goes to the analysis API (FastAPI, port 8000).
@@ -42,8 +43,20 @@ async function request<T>(path: string, init: RequestInit = {}, signal?: AbortSi
 
 const json = (body: unknown): RequestInit => ({ body: JSON.stringify(body) });
 const id = encodeURIComponent;
+const graphQuery = (window: GraphWindow) => {
+  const params = new URLSearchParams();
+  if (window.start_time) params.set('start_time', window.start_time);
+  if (window.end_time) params.set('end_time', window.end_time);
+  return params.size ? `?${params}` : '';
+};
 
 export const api = {
+  graphVehicleSummary: (regionId: string, window: GraphWindow = {}, signal?: AbortSignal) =>
+    request<import('../types/graph').VehicleSummary>(`/api/graph-analysis/regions/${id(regionId)}/vehicle-summary${graphQuery(window)}`, { method: 'POST' }, signal),
+  graphAnalysis: (window: GraphWindow = {}, signal?: AbortSignal) =>
+    request<GraphAnalysis>(`/api/graph-analysis${graphQuery(window)}`, {}, signal),
+  graphRecompute: (window: GraphWindow = {}, signal?: AbortSignal) =>
+    request<GraphAnalysis>(`/api/graph-analysis/recompute${graphQuery(window)}`, { method: 'POST', ...json({ force: true }) }, signal),
   health: (signal?: AbortSignal) => request<ApiHealth>('/api/health', {}, signal),
   summary: (signal?: AbortSignal) => request<ApiSummary>('/api/summary', {}, signal),
   trackingData: (signal?: AbortSignal) => request<ApiTrackingData>('/api/tracking-data', {}, signal),
@@ -65,6 +78,14 @@ export const api = {
   assessAll: (minRisk: ApiRiskLevel = 'ORTA', force = false) => request<{ assessed: string[] }>('/api/assess-all', { method: 'POST', ...json({ min_risk: minRisk, force }) }),
   chat: (message: string, threadId?: string | null, frameId?: string | null, signal?: AbortSignal) =>
     request<ApiChatReply>('/api/chat', { method: 'POST', ...json({ message, thread_id: threadId ?? null, frame_id: frameId ?? null }) }, signal),
+  /** Speech-to-text (Whisper). start loads the model once (slow on first call); transcribe needs it loaded. */
+  asrStatus: (signal?: AbortSignal) => request<ApiAsrStatus>('/api/asr/status', {}, signal),
+  asrStart: () => request<ApiAsrStatus>('/api/asr/start', { method: 'POST' }),
+  asrTranscribe: (audio: Blob, signal?: AbortSignal) =>
+    request<ApiTranscription>('/api/asr/transcribe', { method: 'POST', body: audio, headers: { 'Content-Type': audio.type || 'application/octet-stream' } }, signal),
+  /** Asks the LLM which UI actions carry out a spoken command, given the current UI state (see app/ui_actions.md). */
+  uiCommand: (command: string, context: unknown, signal?: AbortSignal) =>
+    request<ApiUiCommandPlan>('/api/ui-command', { method: 'POST', ...json({ command, context }) }, signal),
   imageUrl: (frameId: string) => apiUrl(`/api/images/${id(frameId)}`),
 };
 

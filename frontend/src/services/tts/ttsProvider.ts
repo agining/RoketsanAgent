@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 /**
  * Pluggable TTS Provider Interface.
  * Allows seamless switching between Browser SpeechSynthesis and ElevenLabs (or other external providers).
@@ -271,93 +272,204 @@ export class BrowserSpeechTTSProvider implements TTSProvider {
   }
 }
 
+const DEFAULT_ELEVENLABS_VOICE_ID =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ELEVENLABS_VOICE_ID) ||
+  'EXAVITQu4vr4xnSDxMaL'; // Sarah - Net, doğal Türkçe diksiyon ve kararlı premade ses
+
+const DEFAULT_ELEVENLABS_MODEL_ID =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ELEVENLABS_MODEL_ID) ||
+  'eleven_multilingual_v2';
+
 /**
- * Placeholder for future ElevenLabs integration.
- * Once ready, add apiKey & voiceId configuration.
+ * ElevenLabs Cloud TTS Provider.
+ * Provides ultra-realistic voice synthesis with in-memory audio caching,
+ * active request cancellation, and graceful fallback to browser speech.
  */
 export class ElevenLabsTTSProvider implements TTSProvider {
   public readonly name = 'elevenlabs';
-  private apiKey: string;
   private voiceId: string;
+  private modelId: string;
   private currentAudio: HTMLAudioElement | null = null;
+  private currentUrl: string | null = null;
+  private abortController: AbortController | null = null;
+  private activeReject: ((reason?: unknown) => void) | null = null;
+  private fallbackProvider: BrowserSpeechTTSProvider | null = null;
+  private audioCache = new Map<string, Blob>();
+  private readonly maxCacheSize = 40;
 
-  constructor(apiKey = '', voiceId = '21m00Tcm4TlvDq8ikWAM') {
-    this.apiKey = apiKey;
+  constructor(
+    voiceId = DEFAULT_ELEVENLABS_VOICE_ID,
+    modelId = DEFAULT_ELEVENLABS_MODEL_ID
+  ) {
     this.voiceId = voiceId;
+    this.modelId = modelId;
   }
 
-  public setCredentials(apiKey: string, voiceId?: string) {
-    this.apiKey = apiKey;
+  public configure(voiceId?: string, modelId?: string) {
     if (voiceId) this.voiceId = voiceId;
+    if (modelId) this.modelId = modelId;
   }
 
   public isSpeaking(): boolean {
-    return this.currentAudio !== null && !this.currentAudio.paused;
+    return (this.currentAudio !== null && !this.currentAudio.paused) || Boolean(this.fallbackProvider?.isSpeaking());
   }
 
   public stop(): void {
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
+    }
+
+    if (this.activeReject) {
+      this.activeReject(new Error('TTS_STOPPED'));
+      this.activeReject = null;
+    }
+
     if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
+      this.currentAudio.onended = null;
+      this.currentAudio.onerror = null;
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio.src = '';
+      } catch {
+        // ignore
+      }
       this.currentAudio = null;
+    }
+
+    if (this.currentUrl) {
+      try {
+        URL.revokeObjectURL(this.currentUrl);
+      } catch {
+        // ignore
+      }
+      this.currentUrl = null;
+    }
+
+    if (this.fallbackProvider) {
+      this.fallbackProvider.stop();
     }
   }
 
+  private cacheKey(text: string): string {
+    return `${this.voiceId}:${this.modelId}:${text.trim()}`;
+  }
+
   public async speak(text: string, options: TTSOptions = {}): Promise<void> {
-    if (!this.apiKey) {
-      console.warn('ElevenLabs API key is not configured. Falling back to browser speech.');
-      return;
+    if (!text || !text.trim()) {
+      return Promise.resolve();
     }
 
     this.stop();
 
-    try {
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'xi-api-key': this.apiKey,
-        },
-        body: JSON.stringify({
-          text,
-          model_id: 'eleven_multilingual_v2',
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
-          },
-        }),
-      });
+    const controller = new AbortController();
+    this.abortController = controller;
 
-      if (!response.ok) {
-        throw new Error(`ElevenLabs API error: ${response.statusText}`);
+    try {
+      const key = this.cacheKey(text);
+      let blob = this.audioCache.get(key);
+
+      if (!blob) {
+        const response = await fetch(
+          apiUrl('/api/voice/synthesize'),
+          {
+            method: 'POST',
+            signal: controller.signal,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text,
+              voice_id: this.voiceId,
+              model_id: this.modelId,
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75,
+              },
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => '');
+          throw new Error(`ElevenLabs API hatası: ${response.status} ${response.statusText} ${errorText}`);
+        }
+
+        blob = await response.blob();
+
+        if (this.audioCache.size >= this.maxCacheSize) {
+          const oldestKey = this.audioCache.keys().next().value;
+          if (oldestKey) this.audioCache.delete(oldestKey);
+        }
+        this.audioCache.set(key, blob);
       }
 
-      const blob = await response.blob();
+      if (controller.signal.aborted) {
+        throw new Error('TTS_STOPPED');
+      }
+
       const url = URL.createObjectURL(blob);
+      this.currentUrl = url;
       const audio = new Audio(url);
       this.currentAudio = audio;
+
       if (options.rate) audio.playbackRate = options.rate;
       if (options.volume !== undefined) audio.volume = options.volume;
 
-      return new Promise<void>((resolve, reject) => {
+      return await new Promise<void>((resolve, reject) => {
+        this.activeReject = reject;
+
         audio.onended = () => {
-          this.currentAudio = null;
-          URL.revokeObjectURL(url);
+          this.cleanupAudio();
           resolve();
         };
+
         audio.onerror = () => {
-          this.currentAudio = null;
-          URL.revokeObjectURL(url);
-          reject(new Error('Audio playback failed'));
+          this.cleanupAudio();
+          reject(new Error('ElevenLabs ses oynatma hatası'));
         };
-        audio.play().catch(reject);
+
+        audio.play().catch((err) => {
+          this.cleanupAudio();
+          reject(err);
+        });
       });
-    } catch (err) {
-      this.stop();
-      throw err;
+    } catch (err: unknown) {
+      if (err instanceof Error && (err.name === 'AbortError' || err.message === 'TTS_STOPPED')) {
+        return;
+      }
+
+      this.cleanupAudio();
+
+      console.warn('ElevenLabs TTS uyarısı (tarayıcı sesine geçiliyor):', err);
+      return this.getFallback().speak(text, options);
     }
+  }
+
+  private cleanupAudio() {
+    this.activeReject = null;
+    this.abortController = null;
+    if (this.currentAudio) {
+      this.currentAudio = null;
+    }
+    if (this.currentUrl) {
+      try {
+        URL.revokeObjectURL(this.currentUrl);
+      } catch {
+        // ignore
+      }
+      this.currentUrl = null;
+    }
+  }
+
+  private getFallback(): BrowserSpeechTTSProvider {
+    if (!this.fallbackProvider) {
+      this.fallbackProvider = new BrowserSpeechTTSProvider();
+    }
+    return this.fallbackProvider;
   }
 }
 
-// Default singleton instance using browser speech
-export const defaultTTSProvider: TTSProvider = new BrowserSpeechTTSProvider();
+// Default singleton instance using ElevenLabs with browser speech fallback
+export const defaultTTSProvider: TTSProvider = new ElevenLabsTTSProvider();

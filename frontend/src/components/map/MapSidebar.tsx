@@ -9,7 +9,7 @@ import {
   Search,
   Trash2,
 } from 'lucide-react';
-import type { Dispatch, PointerEvent as ReactPointerEvent, SetStateAction } from 'react';
+import type { Dispatch, ReactNode, PointerEvent as ReactPointerEvent, SetStateAction } from 'react';
 import { useMemo, useRef } from 'react';
 
 import type {
@@ -163,6 +163,7 @@ export function MapSidebar({
   open,
   setOpen,
   onSelectTrack,
+  graphPanel,
 }: {
   analysis: AnalysisData;
   filters: MapFilterState;
@@ -170,6 +171,7 @@ export function MapSidebar({
   open: boolean;
   setOpen: (open: boolean) => void;
   onSelectTrack: (trackId: string) => void;
+  graphPanel?: ReactNode;
 }) {
   const panelRef = useRef<HTMLElement | null>(null);
   const sidebarLayout = usePanelLayoutStore(state => state.sidebar);
@@ -384,6 +386,7 @@ export function MapSidebar({
       <div className="panel-resize-handle right-edge" role="separator" aria-orientation="vertical" aria-label="Harita paneli genişliği" onPointerDown={startResize} />
 
       <div className="map-sidebar-scroll">
+        {graphPanel}
         <section>
           <h2>
             <Layers3 size={12} />
